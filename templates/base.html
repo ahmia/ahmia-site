@@ -1,0 +1,75 @@
+{% spaceless %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset=utf-8 />
+ <meta name='description' content='Search onion web pages' />
+ <meta name='keywords' content='onion domains, hidden services, deep web, search engine, onion pages, onion sites, list, cache, tor, tor2web, index, search, pages, show content' />
+ <meta name='author' content='ahmia' />
+ <title>{% block title %}{% endblock %}</title>
+ <link rel='stylesheet' type='text/css' href='/static/styles/base_styles.css' />
+ <script src='/static/js/jquery.min.js'></script>
+ <script src='/static/js/highlight.js'></script>
+ <link href='/static/styles/fontstyles/Cagliostro.css' rel='stylesheet' />
+ <link href='/static/styles/fontstyles/Bitter.css' rel='stylesheet' />
+ <link href='/static/styles/fontstyles/OpenSans.css' rel='stylesheet' />
+</head>
+
+<body>
+    <header class="pagetitle" role="banner">
+	<a href="/" title="ahmia.fi home">
+		<h1>- Tor Hidden Service (.onion) search -</h1>
+		<p class="ahmia">AHMIA.FI</p>
+	</a>
+    </header> 
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    <hr />
+    <footer>
+	<p>This is a search engine for hidden onion sites running inside <a href="http://en.wikipedia.org/wiki/Tor_(anonymity_network)" rel="external">Tor</a> network.
+        Use <a href="http://www.howtogeek.com/114004/how-to-browse-anonymously-with-tor/">Tor Browser Bundle</a> to access hidden services.
+	<br />
+	Statistics: <strong class="color12">{{ count_online }}</strong> hidden services <strong class="color12">online</strong>, <strong class="color1">{{ count_banned }}</strong> have been <strong class="color1">banned</strong> from this index according to <a href="/policy/">our policy</a> (no&nbsp;CP!).</p>
+    </footer>
+    <nav class="clearfix" role="navigation">
+     <div class="item">
+      <h3>Searches</h3>
+      <ul>
+       <li><a href="/search/">A full text search</a></li>
+       <li><a href="/address/">A user-generated searchable URL list</a></li>
+       <li><a href="/about/">About us</a></li>
+      </ul>
+     </div>
+     <div class="item">
+      <h3>Contact</h3>
+      <p><a href="/disclaimer/">Disclaimer</a></p>
+      <p>irc.oftc.net #ahmia</p>
+      <script type="text/javascript">
+       <!--
+        var string1 = "hostmaster";
+        var string2 = "&#64";
+        var string3 = "ahmia.fi";
+        var string4 = string1 + string2 + string3;
+        document.write("<p> " + string4 + "</p>");
+       //-->
+      </script>
+     </div>
+     <div class="item">
+      <h3>Latest <a href="https://twitter.com/AhmiaNews">&#64;AhmiaNews</a></h3>
+      <div id="tweet_div">
+       <ul id="tweet_update_list">
+	<li><span><strong>Hermes Center </strong><a href="https://twitter.com/HermesCenter">@HermesCenter</a></span></li>
+	<li>
+	 <span>Do you know that <a href="https://twitter.com/AhmiaNews">@AhmiaNews</a> joined Hermes Center in September? 
+	  <a href="https://ahmia.fi/about/">https://ahmia.fi/about/</a>  :-) Digital Activism++!
+         </span>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </nav>
+  </body>	
+</html>
+{% endspaceless %}

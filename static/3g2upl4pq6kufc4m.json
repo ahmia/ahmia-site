@@ -1,0 +1,9 @@
+{
+   "title":"DuckDuckGo",
+   "description":"DuckDuckGo is a search engine that is based in Valley Forge, Pennsylvania and uses information from crowd-sourced sites (like Wikipedia) with the aim of augmenting traditional results and improving relevance. The search engine philosophy emphasizes privacy and does not record user information.",
+   "relation":"http://duckduckgo.com/",
+   "keywords":"search engine, privacy, no tracking, DuckDuckGo",
+   "type":"search engine",
+   "language":"en",
+   "contactInformation":"http://help.duckduckgo.com/customer/portal/emails/new"
+}

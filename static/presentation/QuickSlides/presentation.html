@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>My Slides</title> 
+    <link rel="stylesheet" type="text/css" media="screen, projection, print" 
+     href="slidy.css" />
+    <link rel="stylesheet" type="text/css" media="screen, projection, print" 
+     href="style.css" />
+    <script src="showdown.js"></script>
+    <script src="slidy.js"></script>
+    
+</head>
+<body>
+<script type=text/markdown>
+<!--
+
+Welcome to QuickSlides!
+=======================
+This is slide one
+
+-----------------------------------------------------
+
+This is slide two
+
+-----------------------------------------------------
+
+    
+-->
+</script>
+<script>
+var scripts = document.getElementsByTagName('script');
+for (var i = 0; i < scripts.length; i++){
+    var script = scripts[i];
+    if (script.type != 'text/markdown') continue;
+    var md = script.innerHTML.replace(/^\s<!--*/, '')
+        .replace(/-->\s*$/, '');
+    var markup = new Showdown.converter().makeHtml(md);
+    var slides = markup.split('<hr />');
+    for (var j = 0; j < slides.length; j++)
+        document.write('<div class=slide>' + slides[j] + '</div>');
+}
+w3c_slidy.add_listener(document.body, "touchend", w3c_slidy.mouse_button_click);
+</script>
+</body>
+</html>

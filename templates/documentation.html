@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation{% endblock %}
+
+{% block content %}
+
+<h2>Documentation</h2>
+
+<h3>Stats</h3>
+
+<p>
+Stats.
+</p>
+
+<h3>Visualizations</h3>
+
+<p>
+Visualizations.
+</p>
+
+<h3>APIs</h3>
+
+<p>
+All banned hidden services <a href="/banned/">https://ahmia.fi/banned/</a>. These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
+</p>
+
+<p>
+All known non-banned onion domains <a href="/onions/">https://ahmia.fi/onions/</a>. 
+</p>
+
+<p>
+See if a hidden service has been online within a week <a href="https://ahmia.fi/address/jntlesnev5o7zysa/status">https://ahmia.fi/address/jntlesnev5o7zysa/status</a> (answer is down/up).
+</p>
+
+<p>
+Ask a hidden service's information:
+<br />
+<code>
+curl -i -H "Content-Type: application/json" https://ahmia.fi/address/jntlesnev5o7zysa/
+</code>
+<br />
+<code>
+curl -i -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/jntlesnev5o7zysa/
+</code>
+</p>
+
+<p>
+Ask all hidden services' information:  
+<br />
+<code>
+curl -i -H "Content-Type: application/json" https://ahmia.fi/address/
+</code>
+<br />
+<code>
+curl -i -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/
+</code>
+</p>
+
+<h3>For hidden service operators</h3>
+
+<p>
+Please deliver your hidden service's official information: <a href="/documentation/descriptionProposal/">Proposal to hidden service operators.</a>
+</p>
+
+{% endblock %}

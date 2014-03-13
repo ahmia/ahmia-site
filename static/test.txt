@@ -1,0 +1,25 @@
+function loadScript(url, callback)
+{
+    // adding the script tag to the head as suggested before
+   var head = document.getElementsByTagName('head')[0];
+   var script = document.createElement('script');
+   script.type = 'text/javascript';
+   script.src = url;
+
+   // then bind the event to the callback function 
+   // there are several events for cross browser compatibility
+   script.onreadystatechange = callback;
+   script.onload = callback;
+
+   // fire the loading
+   head.appendChild(script);
+}
+
+function clustering(){
+  // Create the markers you want to add and collect them into a array.
+  var markers = SellsMarkersArray.concat(BuysMarkersArray);
+  var mcOptions = {gridSize: 50, maxZoom: 15};
+  var mc = new MarkerClusterer(map, markers, mcOptions);
+}
+
+loadScript("https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer.js",clustering);

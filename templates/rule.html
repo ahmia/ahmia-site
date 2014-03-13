@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Hidden service list - Rule content{% endblock %}
+
+{% block content %}
+<div>
+<a href="/rule/logout/">Logout</a>
+</div>
+
+<script type="text/javascript">
+function ban(id) {
+var url = "/address/"+id;
+var ban_id = "#ban_status_"+id;
+$.ajax({
+    url: url,
+    type: 'PUT',
+    success: function(result) {
+        // Do something with the result
+	$(ban_id).text('BANNED!');
+    }
+});
+}
+</script>
+
+ <h2>Onion domain list - Rule content</h2>
+ <noscript><p>WE DO NOT WANT TO HAVE ANY LOGS. ENABLE JAVASCRIPT (CLIENT SIDE).</p></noscript>
+ <script type="text/javascript" src="/static/js/search.js"></script>
+ <div id="search"></div>
+  <div id='wrap'>
+   <ul id='list' class='steps'>
+{% for site in description_list %}
+      <li class="hs_site">
+       <h3><a href="{{ site.about.url }}">{{ site.about.id }}</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
+       <strong id="ban_status_{{ site.about.id }}" class="color1">{% if site.about.banned %}BANNED!{% endif %}</strong>
+       {% if site.about.online %}<strong class="color12">Online</strong>{% else %}<strong>Offline</strong>{% endif %}
+       <p class='links'>
+         Proxy link:
+         <a href='https://{{ site.about.id }}.tor2web.fi'>https://{{ site.about.id }}.tor2web.fi</a>
+        {% if site.relation %}
+         <br />
+         Optional domain:
+         <a href='{{ site.relation  }}'>{{ site.relation }}</a>
+        {% endif %}
+       </p>
+       <div class='infotext'>
+        {% if site.description %}<b>Description: </b>{{ site.description }}<br />{% endif %}
+        {% if site.subject %}<b>Keywords: </b>{{ site.subject }}<br />{% endif %}
+        {% if site.type %}<b>Type: </b>{{ site.type }}<br />{% endif %}
+        {% if site.officialInfo %}
+                {% if site.language %}<b>Language: </b>{{ site.language }}<br />{% endif %}
+                {% if site.contactInformation %}<b>Contact info: </b>{{ site.contactInformation }}<br />{% endif %}
+        {% endif %}
+	<b>Edited: </b>{{ site.updated }} {% if not site.about.banned or site.officialInfo %}<a style='color:green' href='/address/{{ site.about.id  }}/edit/'>Edit description.</a> <br />
+	<button type="button" onclick="ban('{{ site.about.id }}');">BAN</button> (Edit this description first, after banning description cannot be changed.)
+	{% endif %}
+	</div>
+      </li>
+{% endfor %}
+   </ul>
+  </div>
+{% endblock %}

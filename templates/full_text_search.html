@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Full text hidden service search{% endblock %}
+
+{% block content %}
+
+<h2 style="padding: 5px; float: left; width: 300px;">Full Text Search</h2>
+
+ <noscript><p>This version of the search needs JavaScript. You can use <a href="/find/">search without JavaScript</a> instead.</p></noscript>
+
+ <div id="search">
+  <form action="/query/" id="searchForm">
+   <input style="float: left;" name="s" class="filterinput" id="torsearch" type="text" placeholder="search term" autofocus="autofocus">
+   <input style="margin-left: 5px; position: absolute;" class="input-add" type="submit" value="Search" />
+  </form>
+ </div>
+
+ <br style="clear: left;" />
+
+  <!-- the result of the search will be rendered inside this list -->
+  <ul id='list' class='steps'>
+  </ul>
+ 
+<script type="text/javascript">
+function attachEvent() {
+
+/* attach a submit handler to the form */
+$("#searchForm").unbind('submit').bind('submit',function(event) {
+ 
+  /* stop form from submitting normally */
+  event.preventDefault();
+
+  //clear all results
+  $( "#list" ).empty();
+  //show text that search is going on
+  $("#list").append( '<strong class="color12">Searching...</strong>' );
+ 
+  /* get some values from elements on the page: */
+  var $form = $( this ),
+      query = $form.find( 'input[name="s"]' ).val(),
+      url = $form.attr( 'action' );
+ 
+  /* Send the data using post */
+  var posting = $.post( url, query );
+ 
+  /* Put the results in a div */
+  posting.done(function( data ) {
+
+    //clear
+    $( "#list" ).empty();
+
+    $xml = $( data );
+    $xml.find('item').each(function(){
+	var descr = $(this).find('description').text();
+	var title = $(this).find('title').text();
+	var url = $(this).find('link').text();
+	var hs = '<li class="hs_site"><h3><a href="'+url+'">';
+	hs = hs+title+'</a></h3><div class="infotext">';
+	hs = hs+'<p class="links">Direct link: <a href="';
+	hs = hs+url+'">';
+	hs = hs+url+'</a>';
+	hs = hs+'<p class="links">Access without Tor Browser: <a href="';
+	hs = hs+url.replace( '.onion/', '.tor2web.fi/' )+'">';
+	hs = hs+url.replace( ".onion/", ".tor2web.fi/" )+'</a>';
+	hs = hs+'</p>'+descr+'</div></li>'
+	$( "#list" ).append( hs );
+
+      });
+
+
+   attachEvent();
+
+  });
+});
+
+}
+
+attachEvent();
+</script>
+
+
+{% endblock %}

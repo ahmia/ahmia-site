@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8" />
+
+<style>
+
+html {
+        font-size: 100%;
+        overflow-y: scroll;
+}
+
+.highlight { background-color: yellow }
+
+body {
+        color: #333;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        margin: 0 auto 0 auto;
+        padding: 20px 20px 0 20px;
+        width: 960px;
+}
+
+h1 {
+        font-family: 'Cagliostro', sans-serif;
+}
+
+h2, h3, h4, h5, h6 {
+        color: #333;
+        font-family: 'Bitter', serif;
+        margin: 0 0 20px 0;
+}
+
+h2 {
+        font-size: 230%;
+}
+
+p {
+        margin: 0 0 10px 0;
+}
+
+.btc {
+	color: #9DC425;
+        font-size: 150%;
+        font-weight: bold;
+	text-align:center;
+}
+
+</style>
+
+
+<title>This is a Tor Exit Router</title>
+
+
+<!--
+
+This notice is intended to be placed on a virtual host for a domain that
+your Tor exit node IP reverse resolves to so that people who may be about
+to file an abuse complaint would check it first before bothering you or
+your ISP. Ex:
+http://tor-exit.yourdomain.org or http://tor-readme.yourdomain.org.
+
+This type of setup has proven very effective at reducing abuse complaints
+for exit node operators.
+
+There are a few places in this document that you may want to customize.
+They are marked with FIXME.
+
+-->
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+  <script type="text/javascript">
+    function english(){
+        $('#finnish').hide();
+        $('#english').show();
+    }
+    function finnish(){
+        $('#english').hide();
+        $('#finnish').show();
+    }
+
+  $(document).ready(function () {
+    english();
+    $('.lang').css( 'cursor', 'pointer' );
+  });
+  </script>
+
+
+</head>
+<body>
+
+<div id="english">
+
+<h1>This is a Tor Exit Router - <span class="lang" onclick="finnish();" style="color:lightblue">see in Finnish</span></h1>
+
+<p>
+Most likely you are accessing this website because you had some issue with
+the traffic coming from this IP. This router is part of the <a
+href="https://www.torproject.org/">Tor Anonymity Network</a>, which is
+dedicated to providing people with anonymity who need it most: average
+computer users. This router IP should be generating no other traffic, unless
+it has been compromised.
+</p>
+
+<p>
+While Tor is not designed for malicious computer users, it is inevitable that
+some may use the network for malicious ends. In the mind of this operator,
+the social need for easily accessible censorship-resistant anonymous
+communication trumps the risk. Tor sees use by many important segments of the
+population, including whistle blowers, journalists, Chinese dissidents
+skirting the Great Firewall and oppressive censorship, abuse victims,
+stalker targets, the US military, and law enforcement, just to name a few.
+</p>
+
+<p>
+In terms of applicable law, the best way to understand Tor is to consider it a
+network of routers operating as common carriers, much like the Internet
+backbone. However, unlike the Internet backbone routers, Tor routers
+explicitly do not contain identifiable routing information about the source of
+a packet.
+</p>
+
+<p>
+As such, there is little the operator of this router can do to help you track
+the connection further. This router maintains no logs of any of the Tor
+traffic, so there is little that can be done to trace either legitimate or
+illegitimate traffic (or to filter one from the other).  Attempts to
+seize this router will accomplish nothing.
+</p>
+
+<p>
+<!--- FIXME: US-Only section. Remove if you are a non-US operator -->
+Furthermore, this machine also serves as a carrier of email, which means that
+its contents are further protected under the ECPA. <a
+href="http://www4.law.cornell.edu/uscode/html/uscode18/usc_sec_18_00002707----000-.html">18
+USC 2707</a> explicitly allows for civil remedies ($1000/account
+<i><b><u>plus</u></b></i>  legal fees)
+in the event of a seizure executed without good faith or probable cause (it
+should be clear at this point that traffic originating here 
+should not constitute probable cause to seize the
+machine). Similar considerations exist for 1st amendment content on this
+machine.
+</p>
+
+<p>
+<!-- FIXME: May or may not be US-only. Some non-US tor nodes have in
+fact reported DMCA harassment... -->
+If you are a representative of a company who feels that this router is being
+used to violate the DMCA, please be aware that this machine does not host or
+contain any illegal content. Also be aware that network infrastructure
+maintainers are not liable for the type of content that passes over their
+equipment, in accordance with <a
+href="http://www4.law.cornell.edu/uscode/html/uscode17/usc_sec_17_00000512----000-.html">DMCA
+"safe harbor" provisions</a>. In other words, you will have just as much luck
+sending a takedown notice to the Internet backbone providers. Please consult
+<a href="https://www.torproject.org/eff/tor-dmca-response.html">EFF's prepared
+response</a> for more information on this matter.
+</p>
+
+<p>
+For more information, please consult the following documentation:
+</p>
+<ol>
+<li><a href="https://www.torproject.org/overview.html">Tor Overview</a></li>
+<li><a href="https://www.torproject.org/faq-abuse.html">Tor Abuse FAQ</a></li>
+<li><a href="https://www.torproject.org//eff/tor-legal-faq.html">Tor Legal FAQ</a></li>
+</ol>
+
+<p>
+That being said, if you still have a complaint about the router,  you may
+email to the email of ours which you can find here <a href="https://ahmia.fi/">ahmia.fi</a>. If
+complaints are related to a particular service that is being abused, I will
+consider removing that service from my exit policy, which would prevent my
+router from allowing that traffic to exit through it. I can only do this on an
+IP+destination port basis, however. Common P2P ports are
+already blocked.
+</p>
+
+<p>
+You also have the option of blocking this IP address and others on
+the Tor network if you so desire. The Tor project provides a <a
+href="https://www.torproject.org/cvs/tor/contrib/exitlist">python script</a> to
+extract all IP addresses of Tor exit nodes, and an official <a
+href="http://exitlist.torproject.org/">DNSRBL</a> is also available to
+determine if a given IP address is actually a Tor exit server. Please
+be considerate
+when using these options. It would be unfortunate to deny all Tor users access
+to your site indefinitely simply because of a few bad apples.
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="finnish">
+
+<h1>Tämä on Tor-verkon julkinen reititin - <span class="lang" onclick="english();" style="color:lightblue">see in English</span></h1>
+
+<p>
+Olet todennäköisesti tullut tälle sivulle, koska olet havainnut jotain tähän IP-osoitteeseen liittyvää. 
+Tämä reititin on yksi monista Tor-verkon reitittimistä, joka on tarkoitettu tarjoamaan anonymiteettiä 
+niille ihmisille, jotka sitä eniten maailmassa tarvitsevat: keskiverroille tietokoneen käyttäjille.
+</p>
+
+<p>
+Tor-reitittimemme haluaisi tarjota <b>turvallista kommunikaatiota</b> niille, 
+jotka sitä oikeasti tarvitsevat. Tor-verkkoa käyttävät monet yhteiskunnalliset ryhmät, 
+kuten mm. väärinkäytösten ilmiantajat, journalistit, kiinalaiset ihmisoikeusaktivistit
+ja Lähi-idän diktatuureja kaatavat demokratia-aktivistit, hyväksikäytön uhrit, vainotut, 
+USA:n armeija, viranomaiset ympäri maailmaa ja Wikileaks.
+</p>
+
+<p>
+On ikävää, jos sivulla vierailusi johtuu siitä, että IP-osoitteesta on tehty jotain laitonta tai 
+sopimatonta Teitä kohtaan. Vaikka Tor-verkkoa ei ole suunniteltu vahingontekoja varten, 
+niin on väistämätöntä, että jotkut käyttävät verkkoa väärin.
+</p>
+
+<p>
+Muuta kuin Tor-verkon toimintaan liittyvää liikennettä tästä IP:stä ei pitäisi tulla ellei kyseessä 
+ole jokin tekninen vika tai tietomurto tarjoavaan reitittimeen.
+</p>
+
+<h2> Tor on osa internetin rakennetta </h2>
+
+<p>
+Lain näkökulmasta Tor on kuin muukin osa internetin rakennetta ja 
+tämän reitittimen toimintaa voi verrata operaattorin runkoreitittimeen. 
+Vieläpä sillä erolla, että Tor-verkon reitittimen ylläpitäjän on mahdoton tietää liikenteen aiheuttajaa.
+</p>
+
+<p>
+Emme voi mitenkään selvittää tämän reitittimen käyttäjistä mitään. 
+Meillä ei ole mitään seurantatietoja liikenteestä. Tor-protokolla on 
+nimenomaan suunniteltu siten, että käyttäjiä on jälkikäteen mahdotonta löytää. 
+Tämä ominaisuus on se, joka turvaa aiemmin mainittujen aktivistien, journalistien 
+ja väärinkäytösten ilmiantajien jatkuvan vapauden ja hyvinvoinnin.
+</p>
+
+<p>
+Suomessa lainsäädäntö suojelee yksikäsitteisesti tätäkin reititintä.
+Erityisesti kannattaa tarkastella reitittimien vastuuseen sovellettua lainsäädäntöä:
+<a href="http://www.finlex.fi/fi/laki/ajantasa/2002/20020458#e-3">Laki tietoyhteiskunnan palvelujen tarjoamisesta 5.6.2002/458</a>, 
+jossa luvussa 4 käsitellään asiaa seuraavasti:
+</p>
+
+<pre>
+"
+4 luku
+Välittäjinä toimivien palvelun tarjoajien vastuuvapaus
+13 §
+Vastuuvapaus tiedonsiirto- ja verkkoyhteyspalveluissa
+Kun tietoyhteiskunnan palvelu muodostuu palvelun 
+vastaanottajan toimittamien tietojen siirrosta 
+viestintäverkossa tai verkkoyhteyden tarjoamisesta, 
+palvelun tarjoaja ei ole vastuussa siirrettyjen 
+tietojen sisällöstä tai välittämisestä, jos hän:
+
+1) ei ole siirron alkuunpanija;
+
+2) ei valitse siirron vastaanottajaa; eikä
+
+3) valitse eikä muuta siirrettäviä tietoja.
+
+Edellä 1 momentissa tarkoitettuun siirtoon tai yhteyden 
+tarjoamiseen liittyvät toiminnot käsittävät siirrettyjen 
+tietojen automaattisen, tilapäisen ja lyhytaikaisen 
+tallentamisen siltä osin kuin tallentamisessa on kysymys 
+yksinomaan siirron suorittamisesta eikä tallentamisen 
+kesto ylitä siirtoon tarvittavaa kohtuullista aikaa.
+"
+</pre>
+
+<p>
+Emme halua lähteä vääntämään tästä kättä oikeudessa, mutta toisaalta tarvittaessa näin teemme.
+</p>
+
+<p>
+Meidän on mahdotonta seuloa laillista ja laitonta liikennettä, 
+koska haluamme toimia nimenomaan pykälän 13 tarkoittamana välittäjänä. 
+Olemme yrittäneet rajoittaa P2P-liikennettä tämän reitittimen läpi sulkemalla yleisiä 
+vertaisverkko-ohjelmien portteja. Rajoitus on luonteeltaan tekninen: 
+vertaisverkkoliikenne viesi kohtuuttoman paljon kaistastamme ja nostaisi ilmaiseksi tarjoamamme 
+palvelun tuotantokustannuksia.
+</p>
+
+<h2> Voit estää liikenteen Tor-verkosta tai juuri meidän reitittimeltä </h2>
+
+<p>
+Luettuasi tämän voit tietysti ottaa meihin yhteyttä ja myös valittaa toiminnastamme sähköpostiosoitteeseen, 
+jonka löydät osoitteesta <a href="https://ahmia.fi/">ahmia.fi</a>. Jos haluatte, 
+voimme pyynnöstänne harkita meiltä tulevan liikenteen estämistä teidän IP-osoitteisiin. 
+Tällöin tarvitsemme IP- ja porttikohtaiset tiedot teiltä.
+</p>
+
+<p>
+Voit torjua kaikki Tor-verkon reitittimet - tämä mukaanlukien - käyttämällä valmista IP-listaa Tor-verkon 
+reitittävistä laitteista. Voit tarkastella virallista 
+<a href="http://exitlist.torproject.org/">DNSRBL</a>-tietokantaa 
+Tor-projektin julkisten reitittimien tunnistamiseen. Harkitse kuitenkin tarkkaan, 
+jos olet sulkemassa pääsyä Tor-verkon kautta järjestelmiisi. 
+Haluatko sulkea kokonaisten kansakuntien pääsyn esimerkiksi nettisivuillesi sen takia, 
+että muutama yksilö on väärinkäyttänyt Tor-verkon anonyymiteettiä Teitä vastaan?
+</p>
+
+<h2> Lisätietoja </h2>
+
+<p>
+Englanniksi löydät seuraavat lisätiedot Tor-verkosta:
+</p>
+<ol>
+<li><a href="https://www.torproject.org/overview.html">Tor:n yleiskatsaus</a></li>
+<li><a href="https://www.torproject.org/faq-abuse.html">Tor:n väärinkäytöksistä vastauksia</a></li>
+<li><a href="https://www.torproject.org//eff/tor-legal-faq.html">Tor:n laillisuudesta</a></li>
+</ol>
+
+</div>
+
+<hr />
+
+<footer>
+<p style="text-align:center; word-spacing:30px;">
+<a href="https://ahmia.fi/">ahmia.fi</a>  
+
+<script type="text/javascript">
+<!--
+    var string1 = "hostmaster";
+    var string2 = "&#64";
+    var string3 = "ahmia.fi";
+    var string4 = string1 + string2 + string3;
+    document.write(string4);
+//-->
+</script>
+
+IRC: #ahmia@OFTC  
+
+<a href="https://twitter.com/AhmiaNews">&#64;AhmiaNews</a>
+
+</p>
+
+	  <p class="btc">You can support by sending Bitcoin donations to the address:
+          	<code> 1KyD4V4kNR6sXRTJvBT6APPbbrdrx2k1Ge </code>
+	  </p>
+
+</footer>
+
+
+</body>
+</html>
+

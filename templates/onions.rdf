@@ -1,0 +1,13 @@
+{% extends "base.rdf" %}
+{% block content %}
+{% for site in hs_list %}
+    <rdf:Description rdf:about="{{ site.about.url }}">
+        <dc:title>{% if site.title %}{{ site.title }}{% endif %}</dc:title>
+        <dc:description>{% if site.description %}{{ site.description }}{% endif %}</dc:description>
+        <dc:relation>{% if site.relation %}{{ site.relation }}{% endif %}</dc:relation>
+        <dc:subject>{% if site.subject %}{{ site.subject }}{% endif %}</dc:subject>
+        <dc:type>{% if site.type %}{{ site.type }}{% endif %}</dc:type>
+        <rdf:type rdf:resource="http://ahmia.fi/rdf/onionDomain" />
+    </rdf:Description>
+{% endfor %}
+{% endblock %}

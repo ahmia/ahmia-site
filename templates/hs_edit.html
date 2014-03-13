@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Edit hidden service information{% endblock %}
+
+{% block content %}
+ <h2>Edit information about the hidden service</h2>
+
+<div class="editor">
+ <form action='/address/' method='post'>
+  <fieldset>
+	<p><label for='url'>URL</label> <input type='text' name='url' id='url' value='{% if site.about.url %}{{ site.about.url }}{% endif %}' readonly='readonly' class='input-text' /></p> 
+	<p><label for='title'>Title</label> <input type='text' name='title' id='title' value='{% if site.title %}{{ site.title }}{% endif %}' class='input-text' /></p> 
+	<p><label for='description'>Description</label><textarea name='description' id='description' rows='5' class='input-text'>{% if site.description %}{{ site.description }}{% endif %}</textarea> 
+	<p><label for='relation'>Relation (if there is a same page in different domain)</label> <input type='text' name='relation' id='relation' value='{% if site.relation %}{{ site.relation }}{% endif %}' class='input-text' /></p>
+	<p><label for='keywords'>Keywords</label> <input type='text' name='subject' id='keywords' value='{% if site.subject %}{{ site.subject }}{% endif %}' class='input-text' /></p>  
+	<p><label for='type'>Type (example: wiki/forum/news/blog/upload)</label>  <input type='text' name='type' id='type' value='{% if site.type %}{{ site.type }}{% endif %}' class='input-text' /></p> 
+	<input type='submit' value='Save' class='input-add' />  
+
+        <noscript><p><label for="sign">Type the word antispammer:</label><br /><input name="sign" id="sign" size="15" /></p></noscript>
+        <script type="text/javascript">
+		document.write('<input type="hidden" name="sign" value="anti' + 'spammer" />');
+        </script>
+  </fieldset>
+ </form>
+</div>
+
+<div class="editor">
+	<h3>Example how to fill the form </h3>
+
+	<p><b>Url:</b> http://sx3jvhfgzhw44p3x.onion/ </p>
+	<br />
+        <br />
+	<p><b>Title:</b> Wikileaks </p>
+	<br />
+	<br />
+	<br />
+	<p><b>Description:</b> WikiLeaks is an international self-described not-for-profit organisation that publishes submissions of private, secret, and classified media from anonymous news sources, news leaks, and whistleblowers. </p>
+	<br />
+	<br />
+	<br />
+	<br />
+	<p><b>Relation:</b> http://wikileaks.org/</p>
+	<br />
+	<br />
+	<p><b>Keywords:</b> classified documents, international organizations, freedom of speech, whistleblowing, national security, online archives, mediawiki, wikileaks</p>
+	<br />
+	<p><b>Type:</b> Document archive and disclosure, wiki</p>
+</div>
+
+<br style="clear: left;" />
+
+{% endblock %}
+
