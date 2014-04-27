@@ -1,10 +1,12 @@
-import os  
-# Set the PROJECT_HOME variable. This will be used to prepend to all file/directory paths  
+"""Django project settings for ahmia."""
+import os
+# Set the PROJECT_HOME variable.
+# This will be used to prepend to all file/directory paths.
 PROJECT_HOME = os.getcwd()
 
 # Django settings for ahmia project.
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -15,12 +17,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ahmia_db',              # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Database engine
+        'NAME': 'ahmia_db',              # Database name
         'USER': 'ahmia_login',           # Not used with sqlite3.
         'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost.
+        'PORT': '',                      # Set to empty string for default.
     }
 }
 
@@ -90,7 +92,8 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware', #Cross Site Request Forgery protection
+    #Cross Site Request Forgery protection
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
