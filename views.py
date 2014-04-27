@@ -19,8 +19,8 @@ def query(request):
 def yacy_connection(request, query):
     if request.method == 'GET':
         http = urllib3.PoolManager()
-        #response = http.request('GET', "http://10.8.0.10:8090/"+query)
-        response = http.request('GET', "http://localhost:8090/"+query)
+        response = http.request('GET', "http://10.8.0.6:8090/"+query)
+        #response = http.request('GET', "http://localhost:8090/"+query)
         r_type = response.headers['Content-Type']
         data = response.data
         if "text" in r_type or "javascript" in r_type:
@@ -48,8 +48,8 @@ def find(request, query):
 #http://10.8.0.6:8090/yacysearch.rss?query=<search_string>&size=<max_hits>
 def get_query(query):
     try:
-        #url = "http://10.8.0.10:8090/yacysearch.rss?query=" + query
-        url = "http://localhost:8090/yacysearch.rss?query=" + query
+        url = "http://10.8.0.6:8090/yacysearch.rss?query=" + query
+        #url = "http://localhost:8090/yacysearch.rss?query=" + query
         http = urllib3.PoolManager()
         response = http.request('GET', url)
         data = response.data

@@ -6,7 +6,7 @@ PROJECT_HOME = os.getcwd()
 
 # Django settings for ahmia project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
