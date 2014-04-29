@@ -50,7 +50,7 @@ urlpatterns = patterns('',
     # The full text search API.
     (r'^query', 'ahmia.views.query'),
     # Full text search using YaCy wrapper.
-    (r'^yacy/(.*)', 'ahmia.views.yacy_connection'),
+    #(r'^yacy/(.*)', 'ahmia.views.yacy_connection'),
     # Search without JavaScript: with XSLT.
     (r'^find/(.*)', 'ahmia.views.find'),
     # Site's admin UI.
