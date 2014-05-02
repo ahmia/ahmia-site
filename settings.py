@@ -1,12 +1,15 @@
 """Django project settings for ahmia."""
 import os
+import sys
 # Set the PROJECT_HOME variable.
 # This will be used to prepend to all file/directory paths.
 PROJECT_HOME = os.getcwd()
 
 # Django settings for ahmia project.
 
-DEBUG = False
+# Define DEBUG state dynamically: 
+# if running server using manage.py => DEBUG = True else DEBUG = False
+DEBUG = (sys.argv[1] == 'runserver')
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
