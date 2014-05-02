@@ -9,7 +9,11 @@ PROJECT_HOME = os.getcwd()
 
 # Define DEBUG state dynamically: 
 # if running server using manage.py => DEBUG = True else DEBUG = False
-DEBUG = (sys.argv[1] == 'runserver')
+if sys.argv and sys.argv[1] == 'runserver':
+    DEBUG = True
+else:
+    DEBUG = False
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
