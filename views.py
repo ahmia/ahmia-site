@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadReq
 from django.contrib import auth
 from datetime import datetime, timedelta
 from ahmia.models import *
+from django.conf import settings
 import hashlib
 import simplejson
 import urllib3
@@ -20,8 +21,12 @@ def yacy_connection(request, query):
     if request.method == 'GET':
         query = query.replace(" ", "%20")
         http = urllib3.PoolManager()
-        response = http.request('GET', "http://10.8.0.10:8090/"+query)
-        #response = http.request('GET', "http://localhost:8090/"+query)
+        if settings.DEBUG:
+            message = "Demo environment: Using local YaCy connection."
+            print "DEBUG: %s" % message
+            response = http.request('GET', "http://localhost:8090/"+query)
+        else:
+            response = http.request('GET', "http://10.8.0.10:8090/"+query)
         if response.status is not 200:
             return HttpResponseBadRequest("Bad request")
         r_type = response.getheader('content-type')
@@ -52,8 +57,12 @@ def find(request, query):
 def get_query(query):
     try:
         query = query.replace(" ", "%20")
-        url = "http://10.8.0.10:8090/yacysearch.rss?query=" + query
-        #url = "http://localhost:8090/yacysearch.rss?query=" + query
+        if settings.DEBUG:
+            message = "Demo environment: Using local YaCy connection."
+            print "DEBUG: %s" % message
+            url = "http://localhost:8090/yacysearch.rss?query=" + query
+        else:
+            url = "http://10.8.0.10:8090/yacysearch.rss?query=" + query
         http = urllib3.PoolManager()
         response = http.request('GET', url)
         data = response.data
@@ -186,7 +195,7 @@ def add_hs(json, request):
         if not regex.match(relation):
             json['relation'] = ""
     try:
-        validate_onion_URL(url)
+        validate_onion_url(url)
     except ValidationError:
         print "Invalid onion domain"
         return HttpResponseBadRequest("Error: Invalid URL! URL must be exactly like http://something.onion/")

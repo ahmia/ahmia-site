@@ -49,8 +49,6 @@ urlpatterns = patterns('',
     (r'^search', 'ahmia.views.search_page'),
     # The full text search API.
     (r'^query', 'ahmia.views.query'),
-    # Full text search using YaCy wrapper.
-    #(r'^yacy/(.*)', 'ahmia.views.yacy_connection'),
     # Search without JavaScript: with XSLT.
     (r'^find/(.*)', 'ahmia.views.find'),
     # Site's admin UI.
@@ -75,4 +73,6 @@ urlpatterns = patterns('',
 if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+        # Full text search using YaCy wrapper.
+        (r'^yacy/(.*)', 'ahmia.views.yacy_connection'),
     )
