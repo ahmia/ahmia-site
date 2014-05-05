@@ -11,13 +11,11 @@ import urllib3
 from lxml import etree
 
 def query(query_string):
-    #try:
+    try:
         xml = get_query(query_string)
-        print xml
         root = etree.fromstring(xml)
         html_answer = ""
         for element in root.iter("item"):
-            print element
             title = element.find("title").text or ""
             link = element.find("link").text or ""
             tor2web_link = link.replace('.onion/', '.tor2web.fi/')
@@ -35,9 +33,9 @@ def query(query_string):
         if not html_answer:
             html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
         return html_answer
-    #except Exception as e:
-        #print e
-        #return '<li class="hs_site"><h3>No search results</h3></li>'
+    except Exception as e:
+        print e
+        return '<li class="hs_site"><h3>No search results</h3></li>'
 
 def yacy_connection(request, query):
     if request.method == 'GET':
