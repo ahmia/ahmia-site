@@ -46,9 +46,7 @@ urlpatterns = patterns('',
     # Show visitor's IP address.
     (r'^IP/', 'ahmia.views.show_ip'),
     # The full text search page.
-    (r'^search', 'ahmia.views.search_page'),
-    # The full text search API.
-    (r'^query', 'ahmia.views.query'),
+    (r'^search/', 'ahmia.views.search_page'),
     # Search without JavaScript: with XSLT.
     (r'^find/(.*)', 'ahmia.views.find'),
     # Site's admin UI.

@@ -8,14 +8,36 @@ from django.conf import settings
 import hashlib
 import simplejson
 import urllib3
+from lxml import etree
 
-def query(request):
-    if request.method == 'POST':
-        data = request.raw_post_data
-        xml = get_query(data)
-        return HttpResponse(xml, content_type="application/xml")
-    else:
-        return HttpResponseBadRequest("Bad request")
+def query(query_string):
+    #try:
+        xml = get_query(query_string)
+        print xml
+        root = etree.fromstring(xml)
+        html_answer = ""
+        for element in root.iter("item"):
+            print element
+            title = element.find("title").text or ""
+            link = element.find("link").text or ""
+            tor2web_link = link.replace('.onion/', '.tor2web.fi/')
+            description = element.find("description").text or ""
+            pub_date = element.find("pubDate").text or ""
+            answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
+            answer = answer + '<div class="infotext"><p class="links">'
+            answer = answer + 'Direct link: <a href="' + link + '">' + link + '</a></p>'
+            answer = answer + '<p class="links"> Access without Tor Browser: <a href="'
+            answer = answer + tor2web_link + '">' + tor2web_link + '</a></p>'
+            answer = answer + description
+            answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
+            answer = '<li class="hs_site">' + answer + '</li>'
+            html_answer = html_answer + answer
+        if not html_answer:
+            html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
+        return html_answer
+    #except Exception as e:
+        #print e
+        #return '<li class="hs_site"><h3>No search results</h3></li>'
 
 def yacy_connection(request, query):
     if request.method == 'GET':
@@ -24,7 +46,7 @@ def yacy_connection(request, query):
         if settings.DEBUG:
             message = "Demo environment: Using local YaCy connection."
             print "DEBUG: %s" % message
-            response = http.request('GET', "http://localhost:8090/"+query)
+            response = http.request('GET', "http://localhost:8888/"+query)
         else:
             response = http.request('GET', "http://10.8.0.10:8090/"+query)
         if response.status is not 200:
@@ -60,18 +82,18 @@ def get_query(query):
         if settings.DEBUG:
             message = "Demo environment: Using local YaCy connection."
             print "DEBUG: %s" % message
-            url = "http://localhost:8090/yacysearch.rss?query=" + query
+            url = "http://localhost:8888/yacysearch.rss?query=" + query
         else:
             url = "http://10.8.0.10:8090/yacysearch.rss?query=" + query
         http = urllib3.PoolManager()
         response = http.request('GET', url)
         data = response.data
         return data
-    except e as Exception:
+    except Exception as e:
         print e
 
 def default(request):
-    return redirect('ahmia.views.search_page')
+    return redirect('/search/')
 
 def add(request):
     if request.method == 'GET':
@@ -350,7 +372,17 @@ def gsoc(request):
 
 #full text search
 def search_page(request):
-    return render_page('full_text_search.html')
+    query_string = request.GET.get('q', '')
+    if query_string:
+        search_results = query(query_string)
+    else:
+        search_results = ""
+    onions = HiddenWebsite.objects.all()
+    t = loader.get_template('full_text_search.html')
+    c = Context({'search_results': search_results,
+        'count_banned': onions.filter(banned=True).count(),
+        'count_online': onions.filter(banned=False,online=True).count()})
+    return HttpResponse(t.render(c))
 
 #show IP address
 def show_ip(request):
