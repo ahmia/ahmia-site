@@ -10,43 +10,11 @@ import simplejson
 import urllib3
 from lxml import etree
 
-def query(query_string):
-    try:
-        xml = get_query(query_string)
-        root = etree.fromstring(xml)
-        html_answer = ""
-        for element in root.iter("item"):
-            title = element.find("title").text or ""
-            link = element.find("link").text or ""
-            tor2web_link = link.replace('.onion/', '.tor2web.fi/')
-            description = element.find("description").text or ""
-            pub_date = element.find("pubDate").text or ""
-            answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
-            answer = answer + '<div class="infotext"><p class="links">'
-            answer = answer + 'Direct link: <a href="' + link + '">' + link + '</a></p>'
-            answer = answer + '<p class="links"> Access without Tor Browser: <a href="'
-            answer = answer + tor2web_link + '">' + tor2web_link + '</a></p>'
-            answer = answer + description
-            answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
-            answer = '<li class="hs_site">' + answer + '</li>'
-            html_answer = html_answer + answer
-        if not html_answer:
-            html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
-        return html_answer
-    except Exception as e:
-        print e
-        return '<li class="hs_site"><h3>No search results</h3></li>'
-
 def yacy_connection(request, query):
     if request.method == 'GET':
         query = query.replace(" ", "%20")
         http = urllib3.PoolManager()
-        if settings.DEBUG:
-            message = "Demo environment: Using local YaCy connection."
-            print "DEBUG: %s" % message
-            response = http.request('GET', "http://localhost:8888/"+query)
-        else:
-            response = http.request('GET', "http://10.8.0.10:8090/"+query)
+        response = http.request('GET', settings.YACY + query)
         if response.status is not 200:
             return HttpResponseBadRequest("Bad request")
         r_type = response.getheader('content-type')
@@ -77,12 +45,7 @@ def find(request, query):
 def get_query(query):
     try:
         query = query.replace(" ", "%20")
-        if settings.DEBUG:
-            message = "Demo environment: Using local YaCy connection."
-            print "DEBUG: %s" % message
-            url = "http://localhost:8888/yacysearch.rss?query=" + query
-        else:
-            url = "http://10.8.0.10:8090/yacysearch.rss?query=" + query
+        url = settings.YACY + "yacysearch.rss?query=" + query
         http = urllib3.PoolManager()
         response = http.request('GET', url)
         data = response.data
@@ -92,6 +55,33 @@ def get_query(query):
 
 def default(request):
     return redirect('/search/')
+
+def query(query_string):
+    try:
+        xml = get_query(query_string)
+        root = etree.fromstring(xml)
+        html_answer = ""
+        for element in root.iter("item"):
+            title = element.find("title").text or ""
+            link = element.find("link").text or ""
+            tor2web_link = link.replace('.onion/', '.tor2web.fi/')
+            description = element.find("description").text or ""
+            pub_date = element.find("pubDate").text or ""
+            answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
+            answer = answer + '<div class="infotext"><p class="links">'
+            answer = answer + 'Direct link: <a href="' + link + '">' + link + '</a></p>'
+            answer = answer + '<p class="links"> Access without Tor Browser: <a href="'
+            answer = answer + tor2web_link + '">' + tor2web_link + '</a></p>'
+            answer = answer + description
+            answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
+            answer = '<li class="hs_site">' + answer + '</li>'
+            html_answer = html_answer + answer
+        if not html_answer:
+            html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
+        return html_answer
+    except Exception as e:
+        print e
+        return '<li class="hs_site"><h3>No search results</h3></li>'
 
 def add(request):
     if request.method == 'GET':

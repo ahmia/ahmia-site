@@ -8,10 +8,14 @@ PROJECT_HOME = os.getcwd()
 # Django settings for ahmia project.
 
 # Define DEBUG state dynamically: 
-# if running server using manage.py => DEBUG = True else DEBUG = False
+# If running server using manage.py => DEBUG = True else DEBUG = False
 if len(sys.argv) > 1 and sys.argv[1] == 'runserver':
     DEBUG = True
+    # In demo environment use this YaCy address
+    YACY = "http://localhost:8888/"
 else:
+    # This is the YaCy address in the ahmia.fi
+    YACY = "http://10.8.0.10:8090/"
     DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
