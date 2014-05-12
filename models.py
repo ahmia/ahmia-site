@@ -42,7 +42,8 @@ class HiddenWebsite(models.Model):
     #for instance: http://3g2upl4pq6kufc4m.onion/
     url = models.URLField(validators=[validate_onion_url], unique=True)
     #hidden service
-    id = models.CharField(primary_key=True, max_length=16, validators=[validate_length_16], unique=True)
+    id = models.CharField(primary_key=True, max_length=16,
+    validators=[validate_length_16], unique=True)
     #is this domain banned
     banned = models.BooleanField()
     #is it online or offline
@@ -50,7 +51,8 @@ class HiddenWebsite(models.Model):
     online = models.BooleanField()
     #echo -e "BLAHBLAHBLAH.onion\c" | md5sum
     #hashlib.md5(url[8:-1]).hexdigest()
-    md5 = models.CharField(max_length=32, validators=[validate_length_32], unique=True)
+    md5 = models.CharField(max_length=32,
+    validators=[validate_length_32], unique=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=True)
     def __unicode__(self):
         return self.url
@@ -67,5 +69,14 @@ class HiddenWebsiteDescription(models.Model):
     language = models.TextField(null=True, blank=True)
     contactInformation = models.TextField(null=True, blank=True)
     officialInfo = models.BooleanField()
+    def __unicode__(self):
+        return self.about.url
+
+class HiddenWebsitePopularity(models.Model):
+    """Hidden service website popularity."""
+    about = models.ForeignKey(HiddenWebsite)
+    clicks = models.PositiveIntegerField(default=0, blank=True, null=True)
+    public_backlinks = models.PositiveIntegerField(default=0, blank=True, null=True)
+    tor2web = models.PositiveIntegerField(default=0, blank=True, null=True)
     def __unicode__(self):
         return self.about.url

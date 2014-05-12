@@ -13,10 +13,14 @@ urlpatterns = patterns('',
     (r'^address/([a-z2-7]{16})/status', 'ahmia.views.onion_up'),
     # Edit information of a hidden service
     # domain:port/address/3g2upl4pq6kufc4m/edit
-    (r'^address/([a-z2-7]{16})/edit/', 'ahmia.views.onion_edit'),
+    (r'^address/([a-z2-7]{16})/edit', 'ahmia.views.onion_edit'),
+    # Popularity of a hidden service
+    (r'^address/([a-z2-7]{16})/popularity', 'ahmia.views.onion_popularity'),
     #/address/ API
     # domain:port/address/3g2upl4pq6kufc4m
     (r'^address/([a-z2-7]{16})', 'ahmia.views.onion'),
+    # All domains that are online and are not banned
+    (r'^address/online', 'ahmia.views.onions_online_txt'),
     # Invalid /address URL.
     (r'^address/(.+)', 'ahmia.views.onion_error'),
     # GET lists every known HS and POST adds a new HS.
@@ -60,8 +64,6 @@ urlpatterns = patterns('',
     (r'^banneddomains\.txt$', 'ahmia.views.banned_domains_plain'),
     # Every onion domain. Including banned. Only for localhost.
     (r'^alldomains', 'ahmia.views.all_onions_txt'),
-    # favicon.ico
-    (r'^favicon\.ico$', 'django.views.generic.base.RedirectView', {'url': '/static/images/favicon.ico'}),
     # Add domain form.
     (r'^add/', 'ahmia.views.add'), #domain:port/add
     (r'^$', 'ahmia.views.default'), #domain:port

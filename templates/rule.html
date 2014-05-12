@@ -13,7 +13,7 @@ var url = "/address/"+id;
 var ban_id = "#ban_status_"+id;
 $.ajax({
     url: url,
-    type: 'PUT',
+    type: 'DELETE',
     success: function(result) {
         // Do something with the result
 	$(ban_id).text('BANNED!');
