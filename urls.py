@@ -1,6 +1,5 @@
 """The URL patterns of the ahmia."""
-
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, include
 from django.conf import settings
 
 # For admin UI.
@@ -41,6 +40,8 @@ urlpatterns = patterns('',
     (r'^documentation/descriptionProposal/', 'ahmia.views.descriptionProposal'),
     # Banned hidden services (MD5).
     (r'^banned/', 'ahmia.views.banned'),
+    # Redirect link to hidden service
+    (r'^redirect', 'ahmia.views.onion_redirect'),
     # Documentation page.
     (r'^documentation/', 'ahmia.views.documentation'),
     # Information about ahmia.
@@ -72,7 +73,8 @@ urlpatterns = patterns('',
 #media files: CSS, JavaScript, images
 if settings.DEBUG:
     urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.STATIC_ROOT}),
         # Full text search using YaCy wrapper.
         (r'^yacy/(.*)', 'ahmia.views.yacy_connection'),
     )

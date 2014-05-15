@@ -64,14 +64,16 @@ def query(query_string):
         for element in root.iter("item"):
             title = element.find("title").text or ""
             link = element.find("link").text or ""
+            redirect_link = "/redirect?redirect_url=" + link
             tor2web_link = link.replace('.onion/', '.tor2web.fi/')
+            redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
             description = element.find("description").text or ""
             pub_date = element.find("pubDate").text or ""
             answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
             answer = answer + '<div class="infotext"><p class="links">'
-            answer = answer + 'Direct link: <a href="' + link + '">' + link + '</a></p>'
+            answer = answer + 'Direct link: <a href="' + redirect_link + '">' + link + '</a></p>'
             answer = answer + '<p class="links"> Access without Tor Browser: <a href="'
-            answer = answer + tor2web_link + '">' + tor2web_link + '</a></p>'
+            answer = answer + redirect_tor2web_link + '">' + tor2web_link + '</a></p>'
             answer = answer + description
             answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
             answer = '<li class="hs_site">' + answer + '</li>'
@@ -144,17 +146,52 @@ def put_data_to_onion(request, onion):
     """Add data to hidden service."""
     return HttpResponseBadRequest("Bad request")
 
+def onion_redirect(request):
+    """Add clicked information and redirect to .onion address."""
+    if request.method == 'GET':
+        redirect_url = request.GET.get('redirect_url', '')
+        if not redirect_url:
+            return HttpResponseBadRequest("Bad request: no GET parameter URL.")
+        onion = redirect_url.split("://")[1][:16]
+        try:
+            hs = HiddenWebsite.objects.get(id=onion)
+        except:
+            print "Redirecting unknown: http://" + onion + ".onion/"
+            return redirect_page("Redirecting to hidden service.", 0, redirect_url)
+        try:
+            popularity, created = HiddenWebsitePopularity.objects.get_or_create(about=hs)
+            if created:
+                popularity.clicks = 0
+                popularity.public_backlinks = 0
+                popularity.tor2web = 0
+            popularity.clicks = popularity.clicks + 1
+            popularity.full_clean()
+            popularity.save()
+        except Exception as error:
+            print error
+            return HttpResponseBadRequest("Bad request")
+        return redirect_page("Redirecting to hidden service.", 0, redirect_url)
+    else:
+        return HttpResponseBadRequest("Bad request")
+
+def redirect_page(message, time, url):
+    t = loader.get_template('redirect.html')
+    c = Context({'message': message,
+    'time': time,
+    'redirect': url})
+    return HttpResponse(t.render(c)) 
+
 def onion_popularity(request, onion):
     if request.method == 'GET':
         try:
             hs = HiddenWebsite.objects.get(id=onion)
         except:
-            return HttpResponseNotFound("There is no " + onion
-            + " indexed. Please add it if it exists.")
+            return HttpResponseNotFound("There is no " + onion + ".onion indexed. Please add it if it exists.")
         try:
             popularity = HiddenWebsitePopularity.objects.get(about=hs)
         except:
-            return HttpResponseBadRequest("There is no popularity data about "+onion+".")
+            return HttpResponseBadRequest("There is no popularity data about " 
+            + onion + ".onion.")
         if hs.banned:
             return HttpResponseBadRequest("This page is banned.")
         t = loader.get_template('onion_popularity.json')
@@ -177,7 +214,7 @@ def add_popularity(data, onion):
     try:
         hs = HiddenWebsite.objects.get(id=onion)
     except:
-        return HttpResponseNotFound("There is no "+onion+" indexed. Please add it if it exists.")
+        return HttpResponseNotFound("There is no " + onion + ".onion indexed. Please add it if it exists.")
     try:
         json_data = simplejson.loads(data)
     except:
@@ -286,10 +323,7 @@ def add_hs(json, request):
     except ValidationError as e:
         print "Invalid data."
         return HttpResponseBadRequest("Invalid data.")
-    t = loader.get_template('redirect.html')
-    c = Context({'message': 'Hidden service added.',
-    'redirect': '/address/'+id})
-    return HttpResponse(t.render(c))
+    return redirect_page('Hidden service added.', 3, '/address/'+id)
 
 def add_description(json, hs):
     title = json.get('title')
