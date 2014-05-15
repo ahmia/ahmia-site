@@ -253,10 +253,12 @@ def add_popularity(data, onion):
         return HttpResponseBadRequest('Error: Invalid JSON data.')
     try:
         popularity, created = HiddenWebsitePopularity.objects.get_or_create(about=hs)
-        if created:
+        if created or hs.banned:
             popularity.clicks = 0
             popularity.public_backlinks = 0
             popularity.tor2web = 0
+        if hs.banned:
+            return HttpResponse('No popularity tracking for banned sites.')
         if json_data.get('clicks'):
             popularity.clicks = json_data.get('clicks')
         if json_data.get('backlinks'):
