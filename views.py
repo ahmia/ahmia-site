@@ -9,6 +9,7 @@ import hashlib
 import simplejson
 import urllib3
 from lxml import etree
+from django.core import serializers
 
 def yacy_connection(request, query):
     if request.method == 'GET':
@@ -84,6 +85,37 @@ def query(query_string):
     except Exception as e:
         print e
         return '<li class="hs_site"><h3>No search results</h3></li>'
+    
+def stats(request):
+    """Return stats as JSON according to different GET query parameters."""
+    if request.method == 'GET':
+        offset = request.GET.get('offset', '0')
+        limit = request.GET.get('limit', '10')
+        order_by = request.GET.get('order_by', 'public_backlinks')
+        try:
+            offset = int(offset)
+            limit = int(limit)
+            order_by = str(order_by)
+            if limit > 100 or limit < 1:
+                return HttpResponse('Set limit between 1-100.')
+            if offset > 100 or limit < 0:
+                return HttpResponse('Set offset between 0-100.')
+            if limit < offset:
+                return HttpResponse('Set offset < limit.')
+            sort_options = ['public_backlinks', 'clicks', 'tor2web']
+            if not order_by in sort_options:
+                sort_options = ', '.join(sort_options)
+                return HttpResponse("Sort options are: " + sort_options)
+            order_by = "-" + order_by # Descending ordering
+            query_result = HiddenWebsitePopularity.objects.order_by(order_by)[offset:limit]
+            response_data = serializers.serialize('json', query_result, indent=2,
+            fields=('about', 'tor2web', 'public_backlinks', 'clicks'))
+            return HttpResponse(response_data, content_type="application/json")
+        except Exception as error:
+            print error
+            return HttpResponseBadRequest("Bad request")
+    else:
+        return HttpResponseBadRequest("Bad request")
 
 def add(request):
     if request.method == 'GET':
