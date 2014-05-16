@@ -4,13 +4,17 @@ var backlinks_list = []
 
 // downloads JSON stats from the JSON API
 function getStats(order_by, list){
-  $.getJSON( "/stats/popularity?order_by="+order_by, function( json ) {
+  var limit = 30;
+  var url = "/stats/popularity?limit=" + limit + "&order_by="+order_by
+  $.getJSON( url, function( json ) {
     $.each(json, function (index, result) {
       item = {y: result.fields[order_by], label: result.fields.about}
       list.push(item);
     });
     // wait until every list is ready
-    if(tor2web_list.length > 1 && clicks_list.length > 1 && backlinks_list.length > 1){
+    if(tor2web_list.length == limit && 
+      clicks_list.length == limit && 
+      backlinks_list.length == limit){
       //show the results
       viewer();
     }

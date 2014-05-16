@@ -288,7 +288,7 @@ def add_popularity(data, onion):
         if json_data.get('tor2web_access_count'):
             # There are four Tor2web nodes
             # This mechanism reduces the number of Tor2web visits saved
-            popularity.tor2web = (popularity.tor2web + json_data.get('tor2web_access_count'))/4
+            popularity.tor2web = (popularity.tor2web + json_data.get('tor2web_access_count'))/2
         popularity.full_clean()
         popularity.save()
         return HttpResponse('Popularity added.')
