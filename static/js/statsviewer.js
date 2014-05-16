@@ -97,7 +97,7 @@ function show_bars(){
       showInLegend: true,
       name: "Public WWW backlinks",
       axisYType: "secondary",
-      color: "#F0E6A7",
+      color: "#FF9900",
       dataPoints: backlinks_list
     },
     {
@@ -105,7 +105,7 @@ function show_bars(){
       showInLegend: true,
       name: "Total search results clicks",
       axisYType: "secondary",
-      color: "#EBB88A",
+      color: "#6699FF",
       dataPoints: clicks_list
     }
     ]
