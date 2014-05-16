@@ -10,6 +10,7 @@ import simplejson
 import urllib3
 from lxml import etree
 from django.core import serializers
+import random
 
 def yacy_connection(request, query):
     if request.method == 'GET':
@@ -92,30 +93,51 @@ def stats(request):
         offset = request.GET.get('offset', '0')
         limit = request.GET.get('limit', '10')
         order_by = request.GET.get('order_by', 'public_backlinks')
-        try:
-            offset = int(offset)
-            limit = int(limit)
-            order_by = str(order_by)
-            if limit > 100 or limit < 1:
-                return HttpResponse('Set limit between 1-100.')
-            if offset > 100 or limit < 0:
-                return HttpResponse('Set offset between 0-100.')
-            if limit < offset:
-                return HttpResponse('Set offset < limit.')
-            sort_options = ['public_backlinks', 'clicks', 'tor2web']
-            if not order_by in sort_options:
-                sort_options = ', '.join(sort_options)
-                return HttpResponse("Sort options are: " + sort_options)
-            order_by = "-" + order_by # Descending ordering
-            query_result = HiddenWebsitePopularity.objects.order_by(order_by)[offset:limit]
-            response_data = serializers.serialize('json', query_result, indent=2,
-            fields=('about', 'tor2web', 'public_backlinks', 'clicks'))
-            return HttpResponse(response_data, content_type="application/json")
-        except Exception as error:
-            print error
-            return HttpResponseBadRequest("Bad request")
+        return build_stats(offset, limit, order_by)
     else:
         return HttpResponseBadRequest("Bad request")
+
+def build_stats(offset, limit, order_by):
+    """Builds the stats results."""
+    try:
+        offset = int(offset)
+        limit = int(limit)
+        order_by = str(order_by)
+        if limit > 100 or limit < 1:
+            return HttpResponse('Set limit between 1-100.')
+        if offset > 100 or limit < 0:
+            return HttpResponse('Set offset between 0-100.')
+        if limit < offset:
+            return HttpResponse('Set offset < limit.')
+        sort_options = ['public_backlinks', 'clicks', 'tor2web']
+        if not order_by in sort_options:
+            sort_options = ', '.join(sort_options)
+            return HttpResponse("Sort options are: " + sort_options)
+        return calculate_stats(offset, limit, order_by)
+    except Exception as error:
+        print error
+        return HttpResponseBadRequest("Bad request")
+
+def calculate_stats(offset, limit, order_by):
+    """Calculate statistics."""
+    order_by = "-" + order_by # Descending ordering
+    query_result = HiddenWebsitePopularity.objects.order_by(order_by)[offset:limit]
+    # Security measure: obfuscate real-time stats
+    # This simple way prevents leaking too accurate stats
+    # For each number of clicks add some noise
+    for result in query_result:
+        clicks = result.clicks
+        clicks = clicks + random.randrange(-1, 2)
+        if clicks < 0:
+            clicks = random.randrange(1, 2)
+        result.clicks = clicks
+    response_data = serializers.serialize('json', query_result, indent=2,
+    fields=('about', 'tor2web', 'public_backlinks', 'clicks'))
+    return HttpResponse(response_data, content_type="application/json")
+
+def statsviewer(request):
+    """Opens JavaScript based stats viewer."""
+    return render_page('statistics.html')
 
 def add(request):
     if request.method == 'GET':
