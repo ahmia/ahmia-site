@@ -11,8 +11,12 @@ function getStats(order_by, list){
     $.each(json, function (index, result) {
       item = {y: result.fields[order_by], label: result.fields.about}
       list.push(item);
-      var content = '<li><a href="http://' + item.label + '.onion/">' + item.label + '.onion</a></li>'
-      ol_list_element.append(content);
+      // show the first 10
+      if(index < 10){
+	var content = '<li><a href="http://' + item.label + '.onion/">';
+	content = content + item.label + '.onion</a>, ' + item.y + '</li>';
+	ol_list_element.append(content);
+      }
     });
     // wait until every list is ready
     if(tor2web_list.length == limit && 
