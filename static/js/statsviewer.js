@@ -4,7 +4,7 @@ var backlinks_list = []
 
 // downloads JSON stats from the JSON API
 function getStats(order_by, list){
-  var limit = 30;
+  var limit = 100;
   var url = "/stats/popularity?limit=" + limit + "&order_by="+order_by
   $.getJSON( url, function( json ) {
     var ol_list_element = $("#"+order_by);
@@ -38,14 +38,18 @@ function viewer(){
   var new_tor2web_list = [];
   var new_backlinks_list = [];
   var new_clicks_list = [];
+  var intersection_size = 0;
   $.each(tor2web_list, function(t_index, tor2web) {
     $.each(backlinks_list, function(b_index, backlinks) {
       if(backlinks.label == tor2web.label){
 	$.each(clicks_list, function(c_index, clicks) {
 	  if(clicks.label == tor2web.label){
-	    new_tor2web_list.push(tor2web);
-	    new_backlinks_list.push(backlinks);
-	    new_clicks_list.push(clicks);
+	    if(intersection_size <= 30){
+	      new_tor2web_list.push(tor2web);
+	      new_backlinks_list.push(backlinks);
+	      new_clicks_list.push(clicks);
+	      ++intersection_size;
+	    }
 	  }
 	});
       }
@@ -61,7 +65,7 @@ function viewer(){
 function show_bars(){
   var chart = new CanvasJS.Chart("chartContainer", {
     title:{
-      text:"The most popular hidden services"
+      text:"Intersection of the different popularity sources"
     },
     axisX:{
       interval: 1,
