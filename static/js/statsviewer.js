@@ -33,8 +33,32 @@ getStats("tor2web", tor2web_list);
 getStats("clicks", clicks_list);
 getStats("public_backlinks", backlinks_list);
 
-// viewer function
 function viewer(){
+  // calculate the intersection between these three lists
+  var new_tor2web_list = [];
+  var new_backlinks_list = [];
+  var new_clicks_list = [];
+  $.each(tor2web_list, function(t_index, tor2web) {
+    $.each(backlinks_list, function(b_index, backlinks) {
+      if(backlinks.label == tor2web.label){
+	$.each(clicks_list, function(c_index, clicks) {
+	  if(clicks.label == tor2web.label){
+	    new_tor2web_list.push(tor2web);
+	    new_backlinks_list.push(backlinks);
+	    new_clicks_list.push(clicks);
+	  }
+	});
+      }
+    });
+  });
+  tor2web_list = new_tor2web_list;
+  backlinks_list = new_backlinks_list;
+  clicks_list = new_clicks_list;
+  show_bars(); 
+}
+
+// viewer function
+function show_bars(){
   var chart = new CanvasJS.Chart("chartContainer", {
     title:{
       text:"The most popular hidden services"
