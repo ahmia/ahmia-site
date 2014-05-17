@@ -4,7 +4,7 @@ var backlinks_list = []
 
 // downloads JSON stats from the JSON API
 function getStats(order_by, list){
-  var limit = 200;
+  var limit = 100;
   var url = "/stats/popularity?limit=" + limit + "&order_by="+order_by
   $.getJSON( url, function( json ) {
     var ol_list_element = $("#"+order_by);
