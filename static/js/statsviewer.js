@@ -4,17 +4,17 @@ var backlinks_list = []
 
 // downloads JSON stats from the JSON API
 function getStats(order_by, list){
-  var limit = 100;
+  var limit = 30;
   var url = "/stats/popularity?limit=" + limit + "&order_by="+order_by
   $.getJSON( url, function( json ) {
     var ol_list_element = $("#"+order_by);
     $.each(json, function (index, result) {
-      item = {y: result.fields[order_by], label: result.fields.about}
+      item = {y: result.fields[order_by], label: result.fields.about+".onion"}
       list.push(item);
       // show the first 10
       if(index < 10){
-	var content = '<li><a href="http://' + item.label + '.onion/">';
-	content = content + item.label + '.onion</a>, ' + item.y + '</li>';
+	var content = '<li style="list-style-type: none; text-align: right;">' + item.y;
+	content = content + ' <a href="http://' + item.label + '/">' + item.label + '</a></li>';
 	ol_list_element.append(content);
       }
     });

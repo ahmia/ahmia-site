@@ -13,22 +13,30 @@
 <h2>The most popular hidden services</h2>
 
 <div style="width: 100%;">
- <div style="float: left; width: 33.3%;">
-  <h3 style="color: #6699FF;">By total search results clicks</h3>
-  <ol id="clicks"></ol>
+ <div style="float: left; width: 33.3%; text-align: justify;">
+  <h3 style="color: #6699FF; text-align: right;">By total search results clicks</h3>
+  <ol style="color: #6699FF;" id="clicks"></ol>
  </div>
- <div style="float: left; width: 33.3%;">
-  <h3 style="color: #7E8F74;">By Tor2web average visits</h3>
-  <ol id="tor2web"></ol>
+ <div style="float: left; width: 33.3%; text-align: justify;">
+  <h3 style="color: #6699FF; text-align: right;">By Tor2web average visits</h3>
+  <ol style="color: #7E8F74;" id="tor2web"></ol>
  </div>
- <div style="float: left; width: 33.3%;">
-  <h3 style="color: #FF9900;">By public WWW backlinks</h3>
-  <ol id="public_backlinks"></ol>
+ <div style="float: left; width: 33.3%; text-align: justify;">
+  <h3 style="color: #6699FF; text-align: right;">By public WWW backlinks</h3>
+  <ol style="color: #FF9900;" id="public_backlinks"></ol>
  </div>
  <br style="clear: left;" />
 </div>
 
 <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+
+<p>The intersection graph shows those domains which are in the all three TOP 100 (<span style="color: #7E8F74;">Tor2web</span>, <span style="color: #6699FF;">clicks</span>, <span style="color: #FF9900;">backlinks</span>).</p>
+
+<br />
+
+<p>The <span style="color: #6699FF;">clicks</span> counter tells the total number of clicks of a search result in ahmia.fi.</p>
+<p>The <span style="color: #7E8F74;">Tor2web</span> counter tells the average visit count using Tor2web nodes.</p>
+<p>The <span style="color: #FF9900;">backlinks</span> counter tells the total number of public WWW backlinks.</p>
 
 {% endblock %}
 
