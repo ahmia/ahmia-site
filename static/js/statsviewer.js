@@ -41,7 +41,7 @@ function viewer(){
   var intersection_size = 0;
   $.each(tor2web_list, function(t_index, tor2web) {
     if(intersection_size == 30){
-      break;
+      return false;
     }
     $.each(backlinks_list, function(b_index, backlinks) {
       if(backlinks.label == tor2web.label){
