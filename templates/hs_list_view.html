@@ -12,13 +12,8 @@
    <ul id='list' class='steps'>
 {% for site in description_list %}
   {% if not site.about.banned and site.about.online %}
-   {% if site.about.id == "silkroadvb5piz3r" %}
-      <li style="background-color:#99FF66;" class="hs_site clickable_pointer" onclick="window.location='/address/{{ site.about.id  }}'">
-       <h3><a href="{{ site.about.url }}">{{ site.about.id }}.onion</a> - This was the Silk Road - Closed by FBI</h3>
-   {% else %}
       <li class="hs_site clickable_pointer" onclick="window.location='/address/{{ site.about.id  }}'">
-       <h3><a href="{{ site.about.url }}">{{ site.about.id }}</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
-   {% endif %}
+       <h3><a href="{{ site.about.url }}">{{ site.about.id }}.onion</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
        <p class='links'>
          Proxy link:
          <a href='https://{{ site.about.id }}.tor2web.fi'>https://{{ site.about.id }}.tor2web.fi</a>
