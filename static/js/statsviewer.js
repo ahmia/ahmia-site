@@ -28,11 +28,6 @@ function getStats(order_by, list){
   });
 }
 
-// download the JSON stats
-getStats("tor2web", tor2web_list);
-getStats("clicks", clicks_list);
-getStats("public_backlinks", backlinks_list);
-
 function viewer(){
   // calculate the intersection between these three lists
   var new_tor2web_list = [];
@@ -47,9 +42,18 @@ function viewer(){
       if(backlinks.label == tor2web.label){
 	$.each(clicks_list, function(c_index, clicks) {
 	  if(clicks.label == tor2web.label){
-	    new_tor2web_list.push(tor2web);
-	    new_backlinks_list.push(backlinks);
-	    new_clicks_list.push(clicks);
+	    var place = backlinks_list.length;
+	    for(var i = 0; i<new_tor2web_list.length; ++i){
+	      var sum1 = new_tor2web_list[i].y + new_backlinks_list[i].y + new_clicks_list[i].y;
+	      var sum2 = tor2web.y + backlinks.y + clicks.y;
+	      if(sum1 > sum2){
+		place = i;
+		break;
+	      }
+	    }
+	    new_tor2web_list.splice(place, 0, tor2web);
+	    new_backlinks_list.splice(place, 0, backlinks);
+	    new_clicks_list.splice(place, 0, clicks);
 	    ++intersection_size;
 	  }
 	});
@@ -61,6 +65,11 @@ function viewer(){
   clicks_list = new_clicks_list;
   show_bars(); 
 }
+
+// download the JSON stats
+getStats("tor2web", tor2web_list);
+getStats("clicks", clicks_list);
+getStats("public_backlinks", backlinks_list);
 
 // viewer function
 function show_bars(){
