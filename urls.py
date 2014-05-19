@@ -8,7 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Stats
-    (r'^stats/viewer', 'ahmia.views.statsviewer'),    
+    (r'^stats/viewer', 'ahmia.views.statsviewer'),
     (r'^stats/popularity', 'ahmia.views.stats'),
     # Check is domain up.
     # domain:port/address/3g2upl4pq6kufc4m/up
@@ -54,9 +54,9 @@ urlpatterns = patterns('',
     # Show visitor's IP address.
     (r'^IP/', 'ahmia.views.show_ip'),
     # The full text search page.
-    (r'^search/', 'ahmia.views.search_page'),
+    (r'^search/', 'ahmia.views_search.search_page'),
     # Search without JavaScript: with XSLT.
-    (r'^find/(.*)', 'ahmia.views.find'),
+    (r'^find/(.*)', 'ahmia.views_search.find'),
     # Site's admin UI.
     (r'^admin/', include(admin.site.urls)),
     # The plain texts list of onion URL.
@@ -70,7 +70,7 @@ urlpatterns = patterns('',
     (r'^alldomains', 'ahmia.views.all_onions_txt'),
     # Add domain form.
     (r'^add/', 'ahmia.views.add'), #domain:port/add
-    (r'^$', 'ahmia.views.default'), #domain:port
+    (r'^$', 'ahmia.views_search.default'), #domain:port
 )
 
 #media files: CSS, JavaScript, images
@@ -79,5 +79,5 @@ if settings.DEBUG:
         (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
         # Full text search using YaCy wrapper.
-        (r'^yacy/(.*)', 'ahmia.views.yacy_connection'),
+        (r'^yacy/(.*)', 'ahmia.views_search.yacy_connection'),
     )

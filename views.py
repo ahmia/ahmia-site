@@ -4,91 +4,11 @@ from django.http import *
 from django.contrib import auth
 from datetime import datetime, timedelta
 from ahmia.models import *
-from django.conf import settings
 import hashlib
 import simplejson
 import urllib3
-from lxml import etree
 from django.core import serializers
 import random
-
-def yacy_connection(request, query):
-    if request.method == 'GET':
-        query = query.replace(" ", "%20")
-        http = urllib3.PoolManager()
-        response = http.request('GET', settings.YACY + query)
-        if response.status is not 200:
-            return HttpResponseBadRequest("Bad request")
-        r_type = response.getheader('content-type')
-        data = response.data
-        if "text" in r_type or "javascript" in r_type:
-            data = data.replace('/suggest.json', '/yacy/suggest.json')
-            data = data.replace('href="/', 'href="/yacy/')
-            data = data.replace('src="/', 'scr="/yacy/')
-            data = data.replace("href='/", "href='/yacy/")
-            data = data.replace("src='/", "scr='/yacy/")
-        return HttpResponse(data, content_type=r_type)
-    else:
-        return HttpResponseBadRequest("Bad request")
-
-def find(request, query):
-    if request.method == 'GET':
-        if not query and 's' in request.GET:
-            query = request.GET.get('s')
-        xml = str(get_query(query))
-        xml = xml.replace("/yacysearch.xsl", "/static/xslt/yacysearch.xsl")
-        xml = xml.replace("<rss", "<lol")
-        xml = xml.replace("</rss>", "</lol>")
-        return HttpResponse(xml, content_type="application/xml")
-    else:
-        return HttpResponseBadRequest("Bad request")
-
-#http://10.8.0.6:8090/yacysearch.rss?query=<search_string>&size=<max_hits>
-def get_query(query):
-    try:
-        query = query.replace(" ", "%20")
-        url = settings.YACY + "yacysearch.rss?query=" + query
-        http = urllib3.PoolManager()
-        response = http.request('GET', url)
-        data = response.data
-        return data
-    except Exception as e:
-        print e
-
-def default(request):
-    return redirect('/search/')
-
-def query(query_string):
-    try:
-        xml = get_query(query_string)
-        root = etree.fromstring(xml)
-        html_answer = ""
-        for element in root.iter("item"):
-            title = element.find("title").text or ""
-            link = element.find("link").text or ""
-            redirect_link = "/redirect?redirect_url=" + link
-            tor2web_link = link.replace('.onion/', '.tor2web.fi/')
-            redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
-            description = element.find("description").text or ""
-            pub_date = element.find("pubDate").text or ""
-            answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
-            answer = answer + '<div class="infotext"><p class="links">'
-            answer = answer + 'Direct link: <a href="' + redirect_link + '">'
-            answer = answer + link + '</a></p>'
-            answer = answer + '<p class="links"> Access without Tor Browser: '
-            answer = answer + '<a href="'
-            answer = answer + redirect_tor2web_link + '">' + tor2web_link
-            answer = answer + '</a></p>'
-            answer = answer + description
-            answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
-            answer = '<li class="hs_site">' + answer + '</li>'
-            html_answer = html_answer + answer
-        if not html_answer:
-            html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
-        return html_answer
-    except Exception as e:
-        print e
-        return '<li class="hs_site"><h3>No search results</h3></li>'
 
 def stats(request):
     """Return stats as JSON according to different GET query parameters."""
@@ -565,20 +485,6 @@ def about(request):
 #Google Summer of Code 2014 proposal
 def gsoc(request):
     return render_page('gsoc.html')
-
-#full text search
-def search_page(request):
-    query_string = request.GET.get('q', '')
-    if query_string:
-        search_results = query(query_string)
-    else:
-        search_results = ""
-    onions = HiddenWebsite.objects.all()
-    t = loader.get_template('full_text_search.html')
-    c = Context({'search_results': search_results,
-        'count_banned': onions.filter(banned=True).count(),
-        'count_online': onions.filter(banned=False,online=True).count()})
-    return HttpResponse(t.render(c))
 
 #show IP address
 def show_ip(request):

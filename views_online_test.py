@@ -6,7 +6,8 @@ Or just show the online status.
 Use local socks proxy that is the Tor connection.
 
 """
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseNotAllowed
 from datetime import datetime, timedelta
 from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
 import simplejson
