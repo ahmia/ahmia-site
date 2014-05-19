@@ -73,9 +73,12 @@ def query(query_string):
             pub_date = element.find("pubDate").text or ""
             answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
             answer = answer + '<div class="infotext"><p class="links">'
-            answer = answer + 'Direct link: <a href="' + redirect_link + '">' + link + '</a></p>'
-            answer = answer + '<p class="links"> Access without Tor Browser: <a href="'
-            answer = answer + redirect_tor2web_link + '">' + tor2web_link + '</a></p>'
+            answer = answer + 'Direct link: <a href="' + redirect_link + '">'
+            answer = answer + link + '</a></p>'
+            answer = answer + '<p class="links"> Access without Tor Browser: '
+            answer = answer + '<a href="'
+            answer = answer + redirect_tor2web_link + '">' + tor2web_link
+            answer = answer + '</a></p>'
             answer = answer + description
             answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
             answer = '<li class="hs_site">' + answer + '</li>'
@@ -86,7 +89,7 @@ def query(query_string):
     except Exception as e:
         print e
         return '<li class="hs_site"><h3>No search results</h3></li>'
-    
+
 def stats(request):
     """Return stats as JSON according to different GET query parameters."""
     if request.method == 'GET':
@@ -121,7 +124,8 @@ def build_stats(offset, limit, order_by):
 def calculate_stats(offset, limit, order_by):
     """Calculate statistics."""
     order_by = "-" + order_by # Descending ordering
-    query_result = HiddenWebsitePopularity.objects.order_by(order_by)[offset:limit]
+    query_list = HiddenWebsitePopularity.objects.order_by(order_by)
+    query_result = query_list[offset:limit]
     # Security measure: obfuscate real-time stats
     # This simple way prevents leaking too accurate stats
     # For each number of clicks add some noise
@@ -142,8 +146,11 @@ def statsviewer(request):
 def add(request):
     if request.method == 'GET':
         t = loader.get_template("add.html")
-        c = Context({'count_banned': HiddenWebsite.objects.filter(banned=True).count(),
-            'count_online': HiddenWebsite.objects.filter(banned=False, online=True).count()})
+        onions = HiddenWebsite.objects.all()
+        count_online = onions.filter(banned=False, online=True).count()
+        count_banned = onions.filter(banned=True).count()
+        c = Context({'count_banned': count_banned,
+            'count_online': count_online})
         return HttpResponse(t.render(c))
     else:
         return HttpResponseBadRequest("Bad request")
@@ -169,11 +176,13 @@ def onion_error(request, input):
     return HttpResponseBadRequest('Invalid onion domain.')
 
 def onion(request, onion):
+    """Edits, bans or shows an onion site."""
     hs_list = HiddenWebsiteDescription.objects.filter(about=onion)
     if hs_list:
         hs = hs_list.latest('updated')
     else:
-        return HttpResponseBadRequest("There is no "+onion+" indexed. Please add it if it exists.")
+        answer = "There is no "+onion+" indexed. Please add it if it exists."
+        return HttpResponseBadRequest(answer)
     if request.method == 'GET':
         content_type = request.META.get('CONTENT_TYPE')
         if content_type and "json" in content_type:
@@ -182,16 +191,21 @@ def onion(request, onion):
             return onion_rdf(request, onion)
         else: #default return is human readable HTML page
             if hs.about.banned:
-                return HttpResponseBadRequest("This page is banned and it cannot be viewed.")
+                answer = "This page is banned and it cannot be viewed."
+                return HttpResponseBadRequest()
             t = loader.get_template("hs_view.html")
+            onions = HiddenWebsite.objects.all()
+            count_banned = onions.filter(banned=True).count()
+            count_online = onions.filter(banned=False, online=True).count()
             c = Context({'description': hs,
                         'onion': onion,
-                        'count_banned': HiddenWebsite.objects.filter(banned=True).count(),
-                        'count_online': HiddenWebsite.objects.filter(banned=False, online=True).count()})
+                        'count_banned': count_banned,
+                        'count_online': count_online})
             return HttpResponse(t.render(c))
     elif request.method == 'PUT':
         return put_data_to_onion(request, onion)
     elif request.method == 'DELETE' and request.user.is_authenticated():
+        # Delete means ban
         return ban(request, onion)
     else:
         return HttpResponseBadRequest("Bad request")
@@ -205,16 +219,18 @@ def onion_redirect(request):
     if request.method == 'GET':
         redirect_url = request.GET.get('redirect_url', '')
         if not redirect_url:
-            return HttpResponseBadRequest("Bad request: no GET parameter URL.")
+            answer = "Bad request: no GET parameter URL."
+            return HttpResponseBadRequest(answer)
         onion = redirect_url.split("://")[1][:16]
         try:
             hs = HiddenWebsite.objects.get(id=onion)
         except:
             print "Redirecting unknown: http://" + onion + ".onion/"
-            return redirect_page("Redirecting to hidden service.", 0, redirect_url)
+            message = "Redirecting to hidden service."
+            return redirect_page(message, 0, redirect_url)
         try:
             popularity, created = HiddenWebsitePopularity.objects.get_or_create(about=hs)
-            if created:
+            if created or hs.banned:
                 popularity.clicks = 0
                 popularity.public_backlinks = 0
                 popularity.tor2web = 0
@@ -240,11 +256,13 @@ def onion_popularity(request, onion):
         try:
             hs = HiddenWebsite.objects.get(id=onion)
         except:
-            return HttpResponseNotFound("There is no " + onion + ".onion indexed. Please add it if it exists.")
+            answer = "There is no " + onion
+            + ".onion indexed. Please add it if it exists."
+            return HttpResponseNotFound(answer)
         try:
             popularity = HiddenWebsitePopularity.objects.get(about=hs)
         except:
-            return HttpResponseBadRequest("There is no popularity data about " 
+            return HttpResponseBadRequest("There is no popularity data about "
             + onion + ".onion.")
         if hs.banned:
             return HttpResponseBadRequest("This page is banned.")
@@ -255,7 +273,8 @@ def onion_popularity(request, onion):
         # Allow POST data only from the localhost
         ip = get_client_ip(request)
         if not str(ip) in "127.0.0.1":
-            return HttpResponseBadRequest("Bad request: only allowed form the localhost.")
+            answer = "Bad request: only allowed form the localhost."
+            return HttpResponseBadRequest(answer)
         else:
             # Add new data
             data = request.raw_post_data
@@ -268,29 +287,31 @@ def add_popularity(data, onion):
     try:
         hs = HiddenWebsite.objects.get(id=onion)
     except:
-        return HttpResponseNotFound("There is no " + onion + ".onion indexed. Please add it if it exists.")
+        answer = "There is no " + onion
+        + ".onion indexed. Please add it if it exists."
+        return HttpResponseNotFound(answer)
     try:
         json_data = simplejson.loads(data)
     except:
         return HttpResponseBadRequest('Error: Invalid JSON data.')
     try:
-        popularity, created = HiddenWebsitePopularity.objects.get_or_create(about=hs)
+        pop, created = HiddenWebsitePopularity.objects.get_or_create(about=hs)
         if created or hs.banned:
-            popularity.clicks = 0
-            popularity.public_backlinks = 0
-            popularity.tor2web = 0
+            pop.clicks = 0
+            pop.public_backlinks = 0
+            pop.tor2web = 0
         if hs.banned:
             return HttpResponse('No popularity tracking for banned sites.')
         if json_data.get('clicks'):
-            popularity.clicks = json_data.get('clicks')
+            pop.clicks = json_data.get('clicks')
         if json_data.get('backlinks'):
-            popularity.public_backlinks = json_data.get('backlinks')
+            pop.public_backlinks = json_data.get('backlinks')
         if json_data.get('tor2web_access_count'):
             # There are four Tor2web nodes
             # This mechanism reduces the number of Tor2web visits saved
-            popularity.tor2web = (popularity.tor2web + json_data.get('tor2web_access_count'))/2
-        popularity.full_clean()
-        popularity.save()
+            pop.tor2web = (pop.tor2web+json_data.get('tor2web_access_count'))/2
+        pop.full_clean()
+        pop.save()
         return HttpResponse('Popularity added.')
     except ValidationError as error:
         print "Invalid data: %s" % error
@@ -305,15 +326,22 @@ def onion_edit(request, onion):
         if hs_list:
             hs = hs_list.latest('updated')
         else:
-            return HttpResponseBadRequest("There is no "+onion+" indexed. Please add it if it exists.")
+            answer = "There is no " + onion
+            + " indexed. Please add it if it exists."
+            return HttpResponseBadRequest(answer)
         if hs.officialInfo:
-            return HttpResponseBadRequest("This page has official info and it cannot be edited.")
+            answer = "This page has official info and it cannot be edited."
+            return HttpResponseBadRequest(answer)
         if hs.about.banned:
-            return HttpResponseBadRequest("This page is banned and it cannot be edited.")
+            answer = "This page is banned and it cannot be edited."
+            return HttpResponseBadRequest(answer)
         t = loader.get_template('hs_edit.html')
+        onions = HiddenWebsite.objects.all()
+        count_banned = onions.filter(banned=True).count()
+        count_online = onions.filter(banned=False, online=True).count()
         c = Context({'site': hs,
-                    'count_banned': HiddenWebsite.objects.filter(banned=True).count(),
-                    'count_online': HiddenWebsite.objects.filter(banned=False, online=True).count()})
+                    'count_banned': count_banned,
+                    'count_online': count_online})
         return HttpResponse(t.render(c))
     else:
         return HttpResponseBadRequest("Bad request")
@@ -331,7 +359,9 @@ def post_add_hs(request):
         sign = request.POST.get('sign', '')
         if sign != 'antispammer':
             return HttpResponse("Must have the anti-spam field filled.")
-        raw_json = '{"url":"'+url+'","title":"'+title+'","description":"'+description+'","relation":"'+relation+'","subject":"'+subject+'","type":"'+type+'"}'
+        raw_json = '{"url":"'+url+'","title":"'+title+'","description":"'
+        +description+'","relation":"'+relation+'","subject":"'+subject
+        +'","type":"'+type+'"}'
         json = simplejson.loads(raw_json)
     #json
     else:
@@ -352,9 +382,11 @@ def add_hs(json, request):
     if hs_list:
         hs = hs_list.latest('updated')
     if hs and hs.officialInfo:
-        return HttpResponseBadRequest("This page has official info and it cannot be edited.")
+        answer = "This page has official info and it cannot be edited."
+        return HttpResponseBadRequest(answer)
     if hs and hs.about.banned:
-        return HttpResponseBadRequest("This page is banned and it cannot be edited.")
+        answer = "This page is banned and it cannot be edited."
+        return HttpResponseBadRequest(answer)
     if relation:
         regex = re.compile(
                     r'^(?:http|ftp)s?://' # http:// or https://
@@ -369,7 +401,8 @@ def add_hs(json, request):
         validate_onion_url(url)
     except ValidationError:
         print "Invalid onion domain"
-        return HttpResponseBadRequest("Error: Invalid URL! URL must be exactly like http://something.onion/")
+        answer = "Invalid URL! URL must be exactly like http://something.onion/"
+        return HttpResponseBadRequest(answer)
     try:
         hs, created = HiddenWebsite.objects.get_or_create(id=id, url=url, md5=md5)
         if created:
@@ -390,7 +423,8 @@ def add_description(json, hs):
     subject = json.get('subject')
     type = json.get('type')
     try:
-        old_descr = HiddenWebsiteDescription.objects.filter(about=hs).latest('updated')
+        descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
+        old_descr = descriptions.latest('updated')
         descr = HiddenWebsiteDescription.objects.create(about=hs)
         if title:
             descr.title = title
@@ -443,13 +477,15 @@ def onion_rdf(request, onion):
     return HttpResponse(t.render(c), content_type="application/rdf+xml")
 
 def onions_json(request):
-    hs_list = HiddenWebsiteDescription.objects.order_by('about', '-updated').distinct('about')
+    hs_list = HiddenWebsiteDescription.objects.order_by('about', '-updated')
+    hs_list = hs_list.distinct('about')
     t = loader.get_template('onions.json')
     c = Context({'hs_list': hs_list})
     return HttpResponse(t.render(c), content_type="application/json")
 
 def onions_rdf(request):
-    hs_list = HiddenWebsiteDescription.objects.order_by('about', '-updated').distinct('about')
+    hs_list = HiddenWebsiteDescription.objects.order_by('about', '-updated')
+    hs_list = hs_list.distinct('about')
     t = loader.get_template('onions.rdf')
     c = Context({'hs_list': hs_list})
     return HttpResponse(t.render(c), content_type="application/rdf+xml")
@@ -463,7 +499,8 @@ def onions_txt(request):
 
 def onions_online_txt(request):
     """Return all domains that are online and are not banned."""
-    sites = HiddenWebsite.objects.filter(online=True, banned=False).order_by('url')
+    sites = HiddenWebsite.objects.filter(online=True, banned=False)
+    sites = sites.order_by('url')
     list = []
     for site in sites:
         list.append(site.url+"\n")
@@ -494,7 +531,9 @@ def banned_domains_plain(request):
 def render_page(page):
     onions = HiddenWebsite.objects.all()
     t = loader.get_template(page)
-    c = Context({'description_list': HiddenWebsiteDescription.objects.order_by('about','-updated').distinct('about'),
+    descriptions = HiddenWebsiteDescription.objects.order_by('about','-updated')
+    descriptions = descriptions.distinct('about')
+    c = Context({'description_list': descriptions,
         'count_banned': onions.filter(banned=True).count(),
         'count_online': onions.filter(banned=False,online=True).count()})
     return HttpResponse(t.render(c))
@@ -564,8 +603,9 @@ def login(request):
             user = auth.authenticate(username=request.POST['username'],
                             password=request.POST['password'])
             if user is None:
+                username = request.POST['username']
                 return render_to_response('login.html',
-                    {'error': 'Invalid password', 'username':request.POST['username']})
+                    {'error': 'Invalid password', 'username': username})
             else:
                 auth.login(request, user)
                 return redirect('ahmia.views.rule')
@@ -589,118 +629,8 @@ def rule(request):
     else:
         return HttpResponseBadRequest()
 
-#test if service is online
-#test descriptions
-#socket to use Tor SOCKS4 proxy
-import urllib2
-import httplib
-import socks
-
-class SocksiPyConnection(httplib.HTTPConnection):
-    def __init__(self, proxytype, proxyaddr, proxyport=None, rdns=True, username=None, password=None, *args, **kwargs):
-        self.proxyargs = (proxytype, proxyaddr, proxyport, rdns, username, password)
-        httplib.HTTPConnection.__init__(self, *args, **kwargs)
-    def connect(self):
-        self.sock = socks.socksocket()
-        self.sock.setproxy(*self.proxyargs)
-        if isinstance(self.timeout, float):
-            self.sock.settimeout(self.timeout)
-        self.sock.connect((self.host, self.port))
-
-class SocksiPyHandler(urllib2.HTTPHandler):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kw = kwargs
-        urllib2.HTTPHandler.__init__(self)
-    def http_open(self, req):
-        def build(host, port=None, strict=None, timeout=0):
-            conn = SocksiPyConnection(*self.args, host=host, port=port, strict=strict, timeout=timeout, **self.kw)
-            return conn
-        return self.do_open(build, req)
-
-#test if onion domain is up add get description if there is one
-def onion_up(request, onion):
-    try:
-        hs = HiddenWebsite.objects.get(id=onion)
-    except:
-        return HttpResponseBadRequest("There is no "+onion+" indexed. Please add it if it exists.")
-    if request.method == 'POST': # and request.user.is_authenticated():
-        return hs_online_check(hs, onion)
-    elif request.method == 'GET':
-        #is this http server been online within 7 days
-        if hs.online:
-            return HttpResponse("up")
-        else:
-            return HttpResponse("down")
-    else:
-        return HttpResponseBadRequest("Bad request")
-
-def hs_online_check(hs,onion):
-    try:
-        opener = urllib2.build_opener(SocksiPyHandler(socks.PROXY_TYPE_SOCKS4, '127.0.0.1', 9050))
-        handle = opener.open('http://'+str(onion)+'.onion/')
-        code = handle.getcode()
-        print code
-        #it is up!
-        if code != 404:
-            hs.seenOnline = datetime.now()
-            hs.online = True
-            hs.save()
-            try:
-                handle = opener.open('http://'+str(onion)+'.onion/description.json')
-                descr = handle.read()
-                try:
-                    #really, there cannot be that big descriptions
-                    if len(descr) > 5000:
-                        return HttpResponse("up")
-                    descr = descr.replace('\r', '')
-                    descr = descr.replace('\n', '')
-                    json = simplejson.loads(descr)
-                    add_official_info(json, hs)
-                except:
-                    print "Adding this JSON failed:"
-                    print descr
-            except Exception as e:
-                print e
-            return HttpResponse("up")
-        else:
-            if not hs.seenOnline or (datetime.now() - hs.seenOnline) > timedelta(days=7):
-                hs.online = False
-                hs.save()
-            return HttpResponse("down")
-    except Exception as e:
-        print e
-        return HttpResponse("down")
-
-def add_official_info(json, hs):
-    title = json.get('title')
-    description = json.get('description')
-    relation = json.get('relation')
-    subject = json.get('keywords')
-    type = json.get('type')
-    lan = json.get('language')
-    contact = json.get('contactInformation')
-    descr = HiddenWebsiteDescription.objects.create(about=hs)
-    descr.title = take_first_from_list(title)
-    descr.description = take_first_from_list(description)
-    descr.relation = take_first_from_list(relation)
-    descr.subject = take_first_from_list(subject)
-    descr.type = take_first_from_list(type)
-    descr.contactInformation = take_first_from_list(contact)
-    descr.language = take_first_from_list(lan)
-    descr.officialInfo = True
-    descr.full_clean()
-    descr.save()
-
-def take_first_from_list(list):
-    if not list:
-        return ""
-    elif isinstance(list, basestring):
-        return list
-    else:
-        return list[0]
-
 def ban(request,onion):
+    """Bans an onion site."""
     hs_list = HiddenWebsite.objects.filter(id=onion)
     if hs_list:
         hs = hs_list.latest('updated')

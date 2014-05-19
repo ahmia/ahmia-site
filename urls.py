@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     (r'^stats/popularity', 'ahmia.views.stats'),
     # Check is domain up.
     # domain:port/address/3g2upl4pq6kufc4m/up
-    (r'^address/([a-z2-7]{16})/status', 'ahmia.views.onion_up'),
+    (r'^address/([a-z2-7]{16})/status', 'ahmia.views_online_test.onion_up'),
     # Edit information of a hidden service
     # domain:port/address/3g2upl4pq6kufc4m/edit
     (r'^address/([a-z2-7]{16})/edit', 'ahmia.views.onion_edit'),
