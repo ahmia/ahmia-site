@@ -8,8 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Stats
-    (r'^stats/viewer', 'ahmia.views.statsviewer'),
-    (r'^stats/popularity', 'ahmia.views.stats'),
+    (r'^stats/viewer', 'ahmia.views_stats.statsviewer'),
+    (r'^stats/popularity', 'ahmia.views_stats.stats'),
     # Check is domain up.
     # domain:port/address/3g2upl4pq6kufc4m/up
     (r'^address/([a-z2-7]{16})/status', 'ahmia.views_online_test.onion_up'),

@@ -8,60 +8,7 @@ import hashlib
 import simplejson
 import urllib3
 from django.core import serializers
-import random
-
-def stats(request):
-    """Return stats as JSON according to different GET query parameters."""
-    if request.method == 'GET':
-        offset = request.GET.get('offset', '0')
-        limit = request.GET.get('limit', '10')
-        order_by = request.GET.get('order_by', 'public_backlinks')
-        return build_stats(offset, limit, order_by)
-    else:
-        return HttpResponseBadRequest("Bad request")
-
-def build_stats(offset, limit, order_by):
-    """Builds the stats results."""
-    try:
-        offset = int(offset)
-        limit = int(limit)
-        order_by = str(order_by)
-        if limit > 100 or limit < 1:
-            return HttpResponse('Set limit between 1-100.')
-        if offset > 100 or limit < 0:
-            return HttpResponse('Set offset between 0-100.')
-        if limit < offset:
-            return HttpResponse('Set offset < limit.')
-        sort_options = ['public_backlinks', 'clicks', 'tor2web']
-        if not order_by in sort_options:
-            sort_options = ', '.join(sort_options)
-            return HttpResponse("Sort options are: " + sort_options)
-        return calculate_stats(offset, limit, order_by)
-    except Exception as error:
-        print error
-        return HttpResponseBadRequest("Bad request")
-
-def calculate_stats(offset, limit, order_by):
-    """Calculate statistics."""
-    order_by = "-" + order_by # Descending ordering
-    query_list = HiddenWebsitePopularity.objects.order_by(order_by)
-    query_result = query_list[offset:limit]
-    # Security measure: obfuscate real-time stats
-    # This simple way prevents leaking too accurate stats
-    # For each number of clicks add some noise
-    for result in query_result:
-        clicks = result.clicks
-        clicks = clicks + random.randrange(-1, 2)
-        if clicks < 0:
-            clicks = random.randrange(1, 2)
-        result.clicks = clicks
-    response_data = serializers.serialize('json', query_result, indent=2,
-    fields=('about', 'tor2web', 'public_backlinks', 'clicks'))
-    return HttpResponse(response_data, content_type="application/json")
-
-def statsviewer(request):
-    """Opens JavaScript based stats viewer."""
-    return render_page('statistics.html')
+from ahmia import view_help_functions # My view_help_functions.py
 
 def add(request):
     if request.method == 'GET':
@@ -86,7 +33,7 @@ def onion_list(request):
         elif content_type and "rdf" in content_type:
             return onions_rdf(request)
         else: #default return is human readable HTML page
-            return render_page('hs_list_view.html')
+            return view_help_functions.render_page('hs_list_view.html')
     elif request.method == 'POST':
         return post_add_hs(request)
     else:
@@ -191,8 +138,8 @@ def onion_popularity(request, onion):
         return HttpResponse(t.render(c), content_type="application/json")
     elif request.method == 'PUT':
         # Allow POST data only from the localhost
-        ip = get_client_ip(request)
-        if not str(ip) in "127.0.0.1":
+        ip_addr = view_help_functions.get_client_ip(request)
+        if not str(ip_addr) in "127.0.0.1":
             answer = "Bad request: only allowed form the localhost."
             return HttpResponseBadRequest(answer)
         else:
@@ -447,58 +394,38 @@ def banned_domains_plain(request):
         url_list.append(site.url+"\n")
     return HttpResponse(url_list, content_type="text/plain")
 
-#return a page without any parameters
-def render_page(page):
-    onions = HiddenWebsite.objects.all()
-    t = loader.get_template(page)
-    descriptions = HiddenWebsiteDescription.objects.order_by('about','-updated')
-    descriptions = descriptions.distinct('about')
-    c = Context({'description_list': descriptions,
-        'count_banned': onions.filter(banned=True).count(),
-        'count_online': onions.filter(banned=False,online=True).count()})
-    return HttpResponse(t.render(c))
-
 #policy
 def policy(request):
-    return render_page('policy.html')
+    return view_help_functions.render_page('policy.html')
 
 #disclaimer
 def disclaimer(request):
-    return render_page('disclaimer.html')
+    return view_help_functions.render_page('disclaimer.html')
 
 #description proposal
 def descriptionProposal(request):
-    return render_page('descriptionProposal.html')
+    return view_help_functions.render_page('descriptionProposal.html')
 
 #create Hs description
 def createHsDescription(request):
-    return render_page('createHsDescription.html')
+    return view_help_functions.render_page('createHsDescription.html')
 
 #documentation
 def documentation(request):
-    return render_page('documentation.html')
+    return view_help_functions.render_page('documentation.html')
 
 #about us
 def about(request):
-    return render_page('about.html')
+    return view_help_functions.render_page('about.html')
 
 #Google Summer of Code 2014 proposal
 def gsoc(request):
-    return render_page('gsoc.html')
+    return view_help_functions.render_page('gsoc.html')
 
 #show IP address
 def show_ip(request):
-    ip = get_client_ip(request)
-    return HttpResponse(ip)
-
-#return ip address
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+    ip_addr = view_help_functions.get_client_ip(request)
+    return HttpResponse(ip_addr)
 
 #Administration login
 def login(request):
@@ -529,7 +456,7 @@ def logout(request):
 def rule(request):
     if request.method == 'GET':
         if request.user.is_authenticated():
-            return render_page('rule.html')
+            return view_help_functions.render_page('rule.html')
         else:
             return redirect('ahmia.views.login')
     else:

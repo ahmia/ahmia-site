@@ -83,6 +83,17 @@ def get_query(query_string):
     except Exception as error:
         print error
 
+def html_escape(text):
+    """Produce entities within text."""
+    html_escape_table = {
+    "&": "&amp;",
+    '"': "&quot;",
+    "'": "&apos;",
+    ">": "&gt;",
+    "<": "&lt;"
+    }
+    return "".join(html_escape_table.get(c, c) for c in text)
+
 def query(query_string):
     """Build HTML answer from the answer of the YaCy back-end."""
     try:
@@ -90,8 +101,11 @@ def query(query_string):
         root = etree.fromstring(xml)
         html_answer = ""
         for element in root.iter("item"):
-            title = element.find("title").text or ""
             link = element.find("link").text or ""
+            # HTML escape the link (href attribute)
+            link = html_escape(link)
+            # Show link on title if there is no title
+            title = element.find("title").text or link
             redirect_link = "/redirect?redirect_url=" + link
             tor2web_link = link.replace('.onion/', '.tor2web.fi/')
             redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
