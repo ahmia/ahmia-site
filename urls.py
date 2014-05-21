@@ -29,10 +29,10 @@ urlpatterns = patterns('',
     # domain:port/address/
     (r'^address/', 'ahmia.views.onion_list'),
     # Login and logout.
-    (r'^rule/login/', 'ahmia.views.login'),
-    (r'^rule/logout/', 'ahmia.views.logout'),
+    (r'^rule/login/', 'ahmia.views_admin.login'),
+    (r'^rule/logout/', 'ahmia.views_admin.logout'),
     # Rule content.
-    (r'^rule/$', 'ahmia.views.rule'),
+    (r'^rule/$', 'ahmia.views_admin.rule'),
     # Policy info.
     (r'^policy/', 'ahmia.views.policy'),
     # Disclaimer text.

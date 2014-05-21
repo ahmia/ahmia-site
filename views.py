@@ -1,7 +1,6 @@
 from django.template import Context, loader, RequestContext
 from django.shortcuts import redirect, render_to_response
 from django.http import *
-from django.contrib import auth
 from datetime import datetime, timedelta
 from ahmia.models import *
 import hashlib
@@ -9,6 +8,7 @@ import simplejson
 import urllib3
 from django.core import serializers
 from ahmia import view_help_functions # My view_help_functions.py
+from ahmia import views_admin # My views_admin.py
 
 def add(request):
     if request.method == 'GET':
@@ -71,9 +71,9 @@ def onion(request, onion):
             return HttpResponse(t.render(c))
     elif request.method == 'PUT':
         return put_data_to_onion(request, onion)
-    elif request.method == 'DELETE' and request.user.is_authenticated():
+    elif request.method == 'DELETE':
         # Delete means ban
-        return ban(request, onion)
+        return views_admin.ban(request, onion)
     else:
         return HttpResponseBadRequest("Bad request")
     
@@ -94,7 +94,7 @@ def onion_redirect(request):
         except:
             print "Redirecting unknown: http://" + onion + ".onion/"
             message = "Redirecting to hidden service."
-            return redirect_page(message, 0, redirect_url)
+            return view_help_functions.redirect_page(message, 0, redirect_url)
         try:
             popularity, created = HiddenWebsitePopularity.objects.get_or_create(about=hs)
             if created or hs.banned:
@@ -107,16 +107,10 @@ def onion_redirect(request):
         except Exception as error:
             print error
             return HttpResponseBadRequest("Bad request")
-        return redirect_page("Redirecting to hidden service.", 0, redirect_url)
+        message = "Redirecting to hidden service."
+        return view_help_functions.redirect_page(message, 0, redirect_url)
     else:
         return HttpResponseBadRequest("Bad request")
-
-def redirect_page(message, time, url):
-    t = loader.get_template('redirect.html')
-    c = Context({'message': message,
-    'time': time,
-    'redirect': url})
-    return HttpResponse(t.render(c)) 
 
 def onion_popularity(request, onion):
     if request.method == 'GET':
@@ -281,7 +275,9 @@ def add_hs(json, request):
     except ValidationError as e:
         print "Invalid data."
         return HttpResponseBadRequest("Invalid data.")
-    return redirect_page('Hidden service added.', 3, '/address/'+id)
+    message = 'Hidden service added.'
+    redirect_url = '/address/'+id
+    return view_help_functions.redirect_page(message, 3, redirect_url)
 
 def add_description(json, hs):
     title = json.get('title')
@@ -426,51 +422,3 @@ def gsoc(request):
 def show_ip(request):
     ip_addr = view_help_functions.get_client_ip(request)
     return HttpResponse(ip_addr)
-
-#Administration login
-def login(request):
-    if request.method == 'GET':
-        return render_to_response('login.html')
-    elif request.method == 'POST':
-        try:
-            user = auth.authenticate(username=request.POST['username'],
-                            password=request.POST['password'])
-            if user is None:
-                username = request.POST['username']
-                return render_to_response('login.html',
-                    {'error': 'Invalid password', 'username': username})
-            else:
-                auth.login(request, user)
-                return redirect('ahmia.views.rule')
-        except KeyError:
-            return HttpResponseBadRequest()
-    else:
-        return HttpResponseBadRequest()
-
-#Administration logout
-def logout(request):
-    auth.logout(request)
-    return redirect('ahmia.views.rule')
-
-#Administration rule content
-def rule(request):
-    if request.method == 'GET':
-        if request.user.is_authenticated():
-            return view_help_functions.render_page('rule.html')
-        else:
-            return redirect('ahmia.views.login')
-    else:
-        return HttpResponseBadRequest()
-
-def ban(request,onion):
-    """Bans an onion site."""
-    hs_list = HiddenWebsite.objects.filter(id=onion)
-    if hs_list:
-        hs = hs_list.latest('updated')
-    else:
-        answer = "There is no "+onion+" indexed. Please add it if it exists."
-        return HttpResponseBadRequest(answer)
-    hs.banned = True
-    hs.full_clean()
-    hs.save()
-    return HttpResponse("banned")

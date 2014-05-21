@@ -22,3 +22,11 @@ def get_client_ip(request):
     else:
         ip_addr = request.META.get('REMOTE_ADDR')
     return ip_addr
+
+def redirect_page(message, time, url):
+    """Build and return redirect page."""
+    template = loader.get_template('redirect.html')
+    content = Context({'message': message,
+    'time': time,
+    'redirect': url})
+    return HttpResponse(template.render(content))
