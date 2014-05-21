@@ -28,31 +28,15 @@ urlpatterns = patterns('',
     # GET lists every known HS and POST adds a new HS.
     # domain:port/address/
     (r'^address/', 'ahmia.views.onion_list'),
+    # Redirect link to hidden service
+    (r'^redirect', 'ahmia.views.onion_redirect'),
     # Login and logout.
     (r'^rule/login/', 'ahmia.views_admin.login'),
     (r'^rule/logout/', 'ahmia.views_admin.logout'),
-    # Rule content.
-    (r'^rule/$', 'ahmia.views_admin.rule'),
-    # Policy info.
-    (r'^policy/', 'ahmia.views.policy'),
-    # Disclaimer text.
-    (r'^disclaimer/', 'ahmia.views.disclaimer'),
-    # Documentation - create hidden service description to hidden services.
-    (r'^documentation/createHsDescription/', 'ahmia.views.createHsDescription'),
-    # Documentation - description proposal to hidden services.
-    (r'^documentation/descriptionProposal/', 'ahmia.views.descriptionProposal'),
     # Banned hidden services (MD5).
     (r'^banned/', 'ahmia.views.banned'),
-    # Redirect link to hidden service
-    (r'^redirect', 'ahmia.views.onion_redirect'),
-    # Documentation page.
-    (r'^documentation/', 'ahmia.views.documentation'),
-    # Information about ahmia.
-    (r'^about/', 'ahmia.views.about'),
-    # Information about Google Summer of Code 2014.
-    (r'^gsoc/', 'ahmia.views.gsoc'),
-    # Show visitor's IP address.
-    (r'^IP/', 'ahmia.views.show_ip'),
+    # Rule content.
+    (r'^rule/$', 'ahmia.views_admin.rule'),
     # The full text search page.
     (r'^search/', 'ahmia.views_search.search_page'),
     # Search without JavaScript: with XSLT.
@@ -71,6 +55,28 @@ urlpatterns = patterns('',
     # Add domain form.
     (r'^add/', 'ahmia.views.add'), #domain:port/add
     (r'^$', 'ahmia.views_search.default'), #domain:port
+)
+
+# From views_static
+urlpatterns += patterns('',
+    # Policy info.
+    (r'^policy/', 'ahmia.views_static.policy'),
+    # Disclaimer text.
+    (r'^disclaimer/', 'ahmia.views_static.disclaimer'),
+    # Documentation - create hidden service description to hidden services.
+    (r'^documentation/createHsDescription/',
+    'ahmia.views_static.create_description'),
+    # Documentation - description proposal to hidden services.
+    (r'^documentation/descriptionProposal/',
+    'ahmia.views_static.description_proposal'),
+    # Documentation page.
+    (r'^documentation/', 'ahmia.views_static.documentation'),
+    # Information about ahmia.
+    (r'^about/', 'ahmia.views_static.about'),
+    # Information about Google Summer of Code 2014.
+    (r'^gsoc/', 'ahmia.views_static.gsoc'),
+    # Show visitor's IP address.
+    (r'^IP/', 'ahmia.views_static.show_ip')
 )
 
 #media files: CSS, JavaScript, images

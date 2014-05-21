@@ -20,7 +20,7 @@ def add(request):
             'count_online': count_online})
         return HttpResponse(t.render(c))
     else:
-        return HttpResponseBadRequest("Bad request")
+        return HttpResponseNotAllowed("Only GET request is allowed.")
 
 def banned(request):
     return banned_txt(request)
@@ -37,7 +37,7 @@ def onion_list(request):
     elif request.method == 'POST':
         return post_add_hs(request)
     else:
-        return HttpResponseBadRequest('Only GET or POST requests accepted.')
+        return HttpResponseNotAllowed("Only GET and POST request are allowed.")
 
 def onion_error(request, input):
     return HttpResponseBadRequest('Invalid onion domain.')
@@ -75,7 +75,8 @@ def onion(request, onion):
         # Delete means ban
         return views_admin.ban(request, onion)
     else:
-        return HttpResponseBadRequest("Bad request")
+        answer = "Only GET, PUT and DELETE request are allowed."
+        return HttpResponseNotAllowed(answer)
     
 def put_data_to_onion(request, onion):
     """Add data to hidden service."""
@@ -110,7 +111,7 @@ def onion_redirect(request):
         message = "Redirecting to hidden service."
         return view_help_functions.redirect_page(message, 0, redirect_url)
     else:
-        return HttpResponseBadRequest("Bad request")
+        return HttpResponseNotAllowed("Only GET request is allowed.")
 
 def onion_popularity(request, onion):
     if request.method == 'GET':
@@ -141,7 +142,7 @@ def onion_popularity(request, onion):
             data = request.raw_post_data
             return add_popularity(data, onion)
     else:
-        return HttpResponseBadRequest("Bad request")
+        return HttpResponseNotAllowed("Only GET and PUT requests are allowed.")
 
 def add_popularity(data, onion):
     """Add new popularity information to hidden service."""
@@ -205,7 +206,7 @@ def onion_edit(request, onion):
                     'count_online': count_online})
         return HttpResponse(t.render(c))
     else:
-        return HttpResponseBadRequest("Bad request")
+        return HttpResponseNotAllowed("Only GET request is allowed.")
 
 def post_add_hs(request):
     postData = request.raw_post_data
@@ -221,8 +222,8 @@ def post_add_hs(request):
         if sign != 'antispammer':
             return HttpResponse("Must have the anti-spam field filled.")
         raw_json = '{"url":"'+url+'","title":"'+title+'","description":"'
-        +description+'","relation":"'+relation+'","subject":"'+subject
-        +'","type":"'+type+'"}'
+        raw_json = raw_json+description+'","relation":"'+relation
+        raw_json = raw_json+'","subject":"'+subject+'","type":"'+type+'"}'
         json = simplejson.loads(raw_json)
     #json
     else:
@@ -370,6 +371,12 @@ def onions_online_txt(request):
     return HttpResponse(list, content_type="text/plain")
 
 def all_onions_txt(request):
+    """Return a plain text list of onions including the banned ones."""
+    # Allow requests only from the localhost
+    ip_addr = view_help_functions.get_client_ip(request)
+    if not str(ip_addr) in "127.0.0.1":
+        answer = "Bad request: only allowed form the localhost."
+        return HttpResponseBadRequest(answer)
     sites = HiddenWebsite.objects.all().order_by('url')
     list = []
     for site in sites:
@@ -377,6 +384,7 @@ def all_onions_txt(request):
     return HttpResponse(list, content_type="text/plain")
 
 def banned_txt(request):
+    """Return the plain text MD5 sums of the banned onions."""
     sites = HiddenWebsite.objects.filter(banned=True)
     md5_list = []
     for site in sites:
@@ -384,41 +392,14 @@ def banned_txt(request):
     return HttpResponse(md5_list, content_type="text/plain")
 
 def banned_domains_plain(request):
+    """Return the plain text list of banned onions."""
+    # Allow requests only from the localhost
+    ip_addr = view_help_functions.get_client_ip(request)
+    if not str(ip_addr) in "127.0.0.1":
+        answer = "Bad request: only allowed form the localhost."
+        return HttpResponseBadRequest(answer)
     sites = HiddenWebsite.objects.filter(banned=True)
     url_list = []
     for site in sites:
         url_list.append(site.url+"\n")
     return HttpResponse(url_list, content_type="text/plain")
-
-#policy
-def policy(request):
-    return view_help_functions.render_page('policy.html')
-
-#disclaimer
-def disclaimer(request):
-    return view_help_functions.render_page('disclaimer.html')
-
-#description proposal
-def descriptionProposal(request):
-    return view_help_functions.render_page('descriptionProposal.html')
-
-#create Hs description
-def createHsDescription(request):
-    return view_help_functions.render_page('createHsDescription.html')
-
-#documentation
-def documentation(request):
-    return view_help_functions.render_page('documentation.html')
-
-#about us
-def about(request):
-    return view_help_functions.render_page('about.html')
-
-#Google Summer of Code 2014 proposal
-def gsoc(request):
-    return view_help_functions.render_page('gsoc.html')
-
-#show IP address
-def show_ip(request):
-    ip_addr = view_help_functions.get_client_ip(request)
-    return HttpResponse(ip_addr)
