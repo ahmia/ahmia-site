@@ -10,7 +10,8 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
 from ahmia import view_help_functions # My view_help_functions.py
-from ahmia.models import HiddenWebsite
+from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+from django.core.exceptions import ObjectDoesNotExist
 
 def login(request):
     """Administration login."""
@@ -60,4 +61,12 @@ def ban(request, onion):
     hs.banned = True
     hs.full_clean()
     hs.save()
+    try:
+        popularity = HiddenWebsitePopularity.objects.get(about=hs)
+        popularity.clicks = 0
+        popularity.public_backlinks = 0
+        popularity.tor2web = 0
+        popularity.save()
+    except ObjectDoesNotExist:
+        print "No popularity for this banned onion."
     return HttpResponse("banned")

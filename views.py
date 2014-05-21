@@ -7,6 +7,7 @@ import hashlib
 import simplejson
 import urllib3
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from ahmia import view_help_functions # My view_help_functions.py
 from ahmia import views_admin # My views_admin.py
 
@@ -123,7 +124,7 @@ def onion_popularity(request, onion):
             return HttpResponseNotFound(answer)
         try:
             popularity = HiddenWebsitePopularity.objects.get(about=hs)
-        except:
+        except ObjectDoesNotExist:
             return HttpResponseBadRequest("There is no popularity data about "
             + onion + ".onion.")
         if hs.banned:

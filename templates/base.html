@@ -29,10 +29,12 @@
     </div>
     <hr />
     <footer>
-	<p>This is a search engine for hidden onion sites running inside <a href="http://en.wikipedia.org/wiki/Tor_(anonymity_network)" rel="external">Tor</a> network.
-        Use <a href="http://www.howtogeek.com/114004/how-to-browse-anonymously-with-tor/">Tor Browser Bundle</a> to access hidden services.
+	<p>This is a search engine for hidden onion sites running inside <a href="https://www.torproject.org/" rel="external">Tor</a> network.
+        Use <a href="https://www.torproject.org/projects/torbrowser.html.en">Tor Browser Bundle</a> to access hidden services.
+        <br />
+        Please <a href="/add/">add</a> new .onion domains!
 	<br />
-	Statistics: <strong class="color12">{{ count_online }}</strong> hidden services <strong class="color12">online</strong>, <strong class="color1">{{ count_banned }}</strong> have been <strong class="color1">banned</strong> from this index according to <a href="/policy/">our policy</a> (no&nbsp;CP!).</p>
+	<a href="/stats/viewer">Statistics</a>: <strong class="color12">{{ count_online }}</strong> hidden services <strong class="color12">online</strong>, <strong class="color1">{{ count_banned }}</strong> have been <strong class="color1">banned</strong> from this index according to <a href="/policy/">our policy</a> (no&nbsp;CP!).</p>
     </footer>
     <nav class="clearfix" role="navigation">
      <div class="item">
@@ -58,20 +60,19 @@
       </script>
      </div>
      <div class="item">
-      <h3>Latest <a href="https://twitter.com/AhmiaNews">&#64;AhmiaNews</a></h3>
+      <h3>Twitter <a href="https://twitter.com/AhmiaNews">&#64;AhmiaNews</a></h3>
       <div id="tweet_div">
        <ul id="tweet_update_list">
-	<li><span><strong>Hermes Center </strong><a href="https://twitter.com/HermesCenter">@HermesCenter</a></span></li>
 	<li>
-	 <span>Do you know that <a href="https://twitter.com/AhmiaNews">@AhmiaNews</a> joined Hermes Center in September? 
-	  <a href="https://ahmia.fi/about/">https://ahmia.fi/about/</a>  :-) Digital Activism++!
+	 <span>
+	 I am speeding up with Google Summer of Code. New fresh search index is online. Check the search results: https://ahmia.fi/search
          </span>
         </li>
        </ul>
       </div>
      </div>
-      <p class="btc">Bitcoin address 19285TxUxYpGuyNMsJkCkBx8UyyvyTT2Ap</p>
     </nav>
+    <p class="btc">Bitcoin address 19285TxUxYpGuyNMsJkCkBx8UyyvyTT2Ap</p>
   </body>	
 </html>
 {% endspaceless %}
