@@ -88,7 +88,7 @@ def put_data_to_onion(request, onion):
         abuse_note = json_obj.get("abuse_note")
         url = json_obj.get("url")
         message = "User sended abuse notice: \n\n URL: " + url 
-        message = message + "\n\n User message:'" + abuse_note
+        message = message + "\n\n User message: " + abuse_note
         send_mail('Abuse notice', message, settings.DEFAULT_FROM_EMAIL,
         settings.RECIPIENT_LIST, fail_silently=False)
         return HttpResponse('Abuse notice sended.')
