@@ -36,7 +36,7 @@ def login(request):
 def logout(request):
     """Administration logout."""
     auth.logout(request)
-    return redirect('ahmia.views.rule')
+    return redirect('ahmia.views_admin.rule')
 
 def rule(request):
     """Administration rule content"""
