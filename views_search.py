@@ -11,7 +11,7 @@ from lxml import etree # To handle the XML answers from the YaCy
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
-from django.conf import settings # Back-end connection settings
+from django.conf import settings # For the back-end connection settings
 from ahmia.models import HiddenWebsite
 from django.template import Context, loader
 

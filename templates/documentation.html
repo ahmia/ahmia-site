@@ -6,19 +6,29 @@
 
 <h2>Documentation</h2>
 
-<h3>Stats</h3>
+<h3>Statistics</h3>
 
 <p>
-Stats.
+We have JSON popularity data here <a href="/stats/popularity">https://ahmia.fi/stats/popularity</a>.
+</p>
+
+<h4>Examples</h4>
+<p>
+TOP 5 ordered by Tor2web visit count: <br />
+<a href="https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web">https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web</a> <br />
+The 10th from ordered by public WWW backlinks: <br />
+<a href="https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks">https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks</a> <br />
+The first from ordered by number of search result clicks: <br />
+<a href="https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks">https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks</a>
 </p>
 
 <h3>Visualizations</h3>
 
 <p>
-Visualizations.
+<a href="/stats/viewer">Visualizations</a> of the statistics.
 </p>
 
-<h3>APIs</h3>
+<h3>Onion information</h3>
 
 <p>
 All banned hidden services <a href="/banned/">https://ahmia.fi/banned/</a>. These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).

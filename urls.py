@@ -7,9 +7,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Stats
-    (r'^stats/viewer', 'ahmia.views_stats.statsviewer'),
-    (r'^stats/popularity', 'ahmia.views_stats.stats'),
     # Check is domain up.
     # domain:port/address/3g2upl4pq6kufc4m/up
     (r'^address/([a-z2-7]{16})/status', 'ahmia.views_online_test.onion_up'),
@@ -30,19 +27,8 @@ urlpatterns = patterns('',
     (r'^address/', 'ahmia.views.onion_list'),
     # Redirect link to hidden service
     (r'^redirect', 'ahmia.views.onion_redirect'),
-    # Login and logout.
-    (r'^rule/login/', 'ahmia.views_admin.login'),
-    (r'^rule/logout/', 'ahmia.views_admin.logout'),
     # Banned hidden services (MD5).
     (r'^banned/', 'ahmia.views.banned'),
-    # Rule content.
-    (r'^rule/$', 'ahmia.views_admin.rule'),
-    # The full text search page.
-    (r'^search/', 'ahmia.views_search.search_page'),
-    # Search without JavaScript: with XSLT.
-    (r'^find/(.*)', 'ahmia.views_search.find'),
-    # Site's admin UI.
-    (r'^admin/', include(admin.site.urls)),
     # The plain texts list of onion URL.
     (r'^onions/', 'ahmia.views.onions_txt'),
     (r'^oniondomains\.txt$', 'ahmia.views.onions_txt'),
@@ -55,6 +41,32 @@ urlpatterns = patterns('',
     # Add domain form.
     (r'^add/', 'ahmia.views.add'), #domain:port/add
     (r'^$', 'ahmia.views_search.default'), #domain:port
+)
+
+# Search views
+urlpatterns += patterns('',
+    # The full text search page.
+    (r'^search/', 'ahmia.views_search.search_page'),
+    # Search without JavaScript: with XSLT.
+    (r'^find/(.*)', 'ahmia.views_search.find'),
+)
+
+# Stats views
+urlpatterns += patterns('',
+    # Stats
+    (r'^stats/viewer', 'ahmia.views_stats.statsviewer'),
+    (r'^stats/popularity', 'ahmia.views_stats.stats')
+)
+
+# Admin views
+urlpatterns += patterns('',
+    # Site's admin UI.
+    (r'^admin/', include(admin.site.urls)),
+    # Login and logout.
+    (r'^rule/login/', 'ahmia.views_admin.login'),
+    (r'^rule/logout/', 'ahmia.views_admin.logout'),
+    # Rule content.
+    (r'^rule/$', 'ahmia.views_admin.rule')
 )
 
 # From views_static

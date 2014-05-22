@@ -3,16 +3,41 @@
 {% block title %}Hidden service list{% endblock %}
 
 {% block content %}
+
+<script type="text/javascript">
+
+function abuse_notice(id) {
+  var url = "/address/"+id;
+  var note_id = "#note_"+id;
+  var button_id = "#button_"+id;
+  var question = "Please enter the reason for this notice."
+  var example = "e.g. there are abusive pictures."
+  var reason = prompt(question, example);
+  var json_data = '{ "url": "http://' + id + '.onion/", "abuse_note": "' + reason + '"}'
+  $.ajax({
+    url: url,
+    type: 'PUT',
+    contentType: 'application/json',
+    data: json_data,
+    success: function(result) {
+	$(button_id).hide();
+	$(note_id).show();
+  }
+});
+}
+</script>
+
  <a href="/add/" class="button-add right">Add new onion domain</a>
  <h2>Onion domain list</h2>
- <noscript><p>WE DO NOT WANT TO HAVE ANY LOGS. ENABLE JAVASCRIPT (CLIENT SIDE).</p></noscript>
+ <noscript><p>ENABLE JAVASCRIPT (CLIENT SIDE).</p></noscript>
  <script type="text/javascript" src="/static/js/search.js"></script>
  <div id="search"></div>
   <div id='wrap'>
    <ul id='list' class='steps'>
 {% for site in description_list %}
   {% if not site.about.banned and site.about.online %}
-      <li class="hs_site clickable_pointer" onclick="window.location='/address/{{ site.about.id  }}'">
+     <li class="hs_site clickable_pointer">
+      <div onclick="window.location='/address/{{ site.about.id  }}'">
        <h3><a href="{{ site.about.url }}">{{ site.about.id }}.onion</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
        <p class='links'>
          Proxy link:
@@ -34,8 +59,11 @@
         {% else %}
 		<b>Edited: </b>{{ site.updated }} <a style='color:green' href='/address/{{ site.about.id  }}/edit/'>Edit description.</a>
         {% endif %}
+        <strong style="display: none;" id="note_{{ site.about.id }}" class="color1">Thank you for the information. We will look it.</strong>
        </div>
-      </li>
+      </div>
+      <button id="button_{{ site.about.id }}" type="button" onclick="abuse_notice('{{ site.about.id }}');">Send a note that this site should be filtered.</button>
+     </li>
   {% endif %}
 {% endfor %}
    </ul>

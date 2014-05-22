@@ -37,6 +37,15 @@ DATABASES = {
     }
 }
 
+# Email settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'example@lol.fi'
+EMAIL_HOST_PASSWORD = 'well_I_am_not_pushing_it_to_git'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+RECIPIENT_LIST = [DEFAULT_FROM_EMAIL]
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.

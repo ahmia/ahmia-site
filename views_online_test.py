@@ -132,9 +132,7 @@ def add_official_info(json, hs):
     descr.save()
 
 def take_first_from_list(test_list):
-    """
-    Return the first from the list.
-    """
+    """Return the first from the list."""
     if not test_list:
         return ""
     elif isinstance(test_list, basestring):

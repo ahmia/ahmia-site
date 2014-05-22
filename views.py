@@ -7,9 +7,11 @@ import hashlib
 import simplejson
 import urllib3
 from django.core import serializers
+from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from ahmia import view_help_functions # My view_help_functions.py
 from ahmia import views_admin # My views_admin.py
+from django.conf import settings # For the SMTP settings
 
 def add(request):
     if request.method == 'GET':
@@ -81,7 +83,18 @@ def onion(request, onion):
     
 def put_data_to_onion(request, onion):
     """Add data to hidden service."""
-    return HttpResponseBadRequest("Bad request")
+    try:
+        json_obj = simplejson.loads(request.body)
+        abuse_note = json_obj.get("abuse_note")
+        url = json_obj.get("url")
+        message = "User sended abuse notice: \n\n URL: " + url 
+        message = message + "\n\n User message:'" + abuse_note
+        send_mail('Abuse notice', message, settings.DEFAULT_FROM_EMAIL,
+        settings.RECIPIENT_LIST, fail_silently=False)
+        return HttpResponse('Abuse notice sended.')
+    except Exception as error:
+        print "Error: %s" % error
+        return HttpResponseBadRequest(error)
 
 def onion_redirect(request):
     """Add clicked information and redirect to .onion address."""
