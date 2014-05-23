@@ -7,6 +7,11 @@
 <script type="text/javascript">
 
 function abuse_notice(id) {
+  var answer = prompt("How much is 2+3?", "answer the number here");
+  if( parseInt(answer) != 5 ){
+    return false;
+  }
+
   var url = "/address/"+id;
   var note_id = "#note_"+id;
   var button_id = "#button_"+id;
