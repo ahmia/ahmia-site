@@ -7,8 +7,7 @@ Statistics: JSON data API and JavaScript viewers.
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest
 from django.core import serializers
-from ahmia import view_help_functions # My view_help_functions.py
-import random
+from ahmia import view_help_functions as helpers # My view_help_functions.py
 from ahmia.models import HiddenWebsitePopularity
 
 def stats(request):
@@ -49,13 +48,9 @@ def calculate_stats(offset, limit, order_by):
     query_result = query_list[offset:limit]
     # Security measure: obfuscate real-time stats
     # This simple way prevents leaking too accurate stats
-    # For each number of clicks add some noise
+    # Round the clicks to the next multiple of 8
     for result in query_result:
-        clicks = result.clicks
-        clicks = clicks + random.randrange(-1, 2)
-        if clicks < 0:
-            clicks = random.randrange(1, 2)
-        result.clicks = clicks
+        result.clicks = helpers.round_to_next_multiple_of(result.clicks, 8)
     response_data = serializers.serialize('json', query_result, indent=2,
     fields=('about', 'tor2web', 'public_backlinks', 'clicks'))
     return HttpResponse(response_data, content_type="application/json")
@@ -63,6 +58,6 @@ def calculate_stats(offset, limit, order_by):
 def statsviewer(request):
     """Opens JavaScript based stats viewer."""
     if request.method == 'GET':
-        return view_help_functions.render_page('statistics.html')
+        return helpers.render_page('statistics.html')
     else:
         return HttpResponseNotAllowed("Only GET request is allowed.")

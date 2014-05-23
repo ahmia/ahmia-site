@@ -38,6 +38,10 @@
 <p>The <span style="color: #7E8F74;">Tor2web</span> counter tells the average visit count using Tor2web nodes.</p>
 <p>The <span style="color: #FF9900;">backlinks</span> counter tells the total number of public WWW backlinks.</p>
 
+<p>
+Security measure: obfuscate real-time stats. The <span style="color: #6699FF;">clicks</span> are rounded to the next multiple of 8. This simple way prevents leaking too accurate real-time statistics.
+</p>
+
 {% endblock %}
 
 
