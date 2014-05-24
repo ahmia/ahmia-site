@@ -51,8 +51,8 @@ def onion(request, onion):
     if hs_list:
         hs = hs_list.latest('updated')
     else:
-        answer = "There is no "+onion+" indexed. Please add it if it exists."
-        return HttpResponseBadRequest(answer)
+        answer = "There is no %s.onion indexed." % onion
+        return HttpResponseNotFound(answer)
     if request.method == 'GET':
         content_type = request.META.get('CONTENT_TYPE')
         if content_type and "json" in content_type:
@@ -132,8 +132,7 @@ def onion_popularity(request, onion):
         try:
             hs = HiddenWebsite.objects.get(id=onion)
         except:
-            answer = "There is no " + onion
-            + ".onion indexed. Please add it if it exists."
+            answer = "There is no %s.onion indexed." % onion
             return HttpResponseNotFound(answer)
         try:
             popularity = HiddenWebsitePopularity.objects.get(about=hs)
@@ -163,8 +162,7 @@ def add_popularity(data, onion):
     try:
         hs = HiddenWebsite.objects.get(id=onion)
     except:
-        answer = "There is no " + onion
-        + ".onion indexed. Please add it if it exists."
+        answer = "There is no %s.onion indexed." % onion
         return HttpResponseNotFound(answer)
     try:
         json_data = simplejson.loads(data)
@@ -202,15 +200,14 @@ def onion_edit(request, onion):
         if hs_list:
             hs = hs_list.latest('updated')
         else:
-            answer = "There is no " + onion
-            + " indexed. Please add it if it exists."
-            return HttpResponseBadRequest(answer)
+            answer = "There is no %s.onion indexed." % onion
+            return HttpResponseNotFound(answer)
         if hs.officialInfo:
             answer = "This page has official info and it cannot be edited."
-            return HttpResponseBadRequest(answer)
+            return HttpResponseNotAllowed(answer)
         if hs.about.banned:
             answer = "This page is banned and it cannot be edited."
-            return HttpResponseBadRequest(answer)
+            return HttpResponseNotAllowed(answer)
         t = loader.get_template('hs_edit.html')
         onions = HiddenWebsite.objects.all()
         count_banned = onions.filter(banned=True).count()
