@@ -7,7 +7,8 @@
 <script type="text/javascript">
 
 function abuse_notice(id) {
-  var answer = prompt("How much is 2+3?", "answer the number here");
+  var question = "Have you really checked that there are pictures of child abuse hosted in this " + id + ".onion domain? If you have, please answer to the security question: How much is 2+3?"
+  var answer = prompt(question, "answer the number here");
   if( parseInt(answer) != 5 ){
     return false;
   }
@@ -18,6 +19,10 @@ function abuse_notice(id) {
   var question = "Please enter the reason for this notice."
   var example = "e.g. there are abusive pictures."
   var reason = prompt(question, example);
+  if( !reason ){
+    return false;
+  }
+  
   var json_data = '{ "url": "http://' + id + '.onion/", "abuse_note": "' + reason + '"}'
   $.ajax({
     url: url,
