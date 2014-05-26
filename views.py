@@ -137,10 +137,10 @@ def onion_popularity(request, onion):
         try:
             popularity = HiddenWebsitePopularity.objects.get(about=hs)
         except ObjectDoesNotExist:
-            return HttpResponseBadRequest("There is no popularity data about "
-            + onion + ".onion.")
+            answer = "No popularity data about %s.onion." % onion
+            return HttpResponseNotFound("No popularity data about %s.onion.")
         if hs.banned:
-            return HttpResponseBadRequest("This page is banned.")
+            return HttpResponseNotAllowed("This page is banned.")
         t = loader.get_template('onion_popularity.json')
         c = Context({'popularity': popularity})
         return HttpResponse(t.render(c), content_type="application/json")

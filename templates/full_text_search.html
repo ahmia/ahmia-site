@@ -19,5 +19,6 @@
   <ul id='list' class='steps'>
     {% autoescape off %}{{ search_results }}{% endautoescape %}
   </ul>
+  {% if search_time %}<p>Search time <span>{{ search_time }}</span> seconds</p>{% endif %}
 
 {% endblock %}

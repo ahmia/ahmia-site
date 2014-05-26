@@ -14,6 +14,9 @@ from django.shortcuts import redirect
 from django.conf import settings # For the back-end connection settings
 from ahmia.models import HiddenWebsite
 from django.template import Context, loader
+from django.core.exceptions import ObjectDoesNotExist
+from ahmia.models import HiddenWebsitePopularity
+import time
 
 def default(request):
     """The default page."""
@@ -25,13 +28,19 @@ def default(request):
 def search_page(request):
     """The default full text search page."""
     query_string = request.GET.get('q', '')
+    search_time = ""
     if query_string:
+        start = time.time()
         search_results = query(query_string)
+        end = time.time()
+        search_time = end - start
+        search_time = round(search_time, 2)
     else:
         search_results = ""
     onions = HiddenWebsite.objects.all()
     template = loader.get_template('full_text_search.html')
     content = Context({'search_results': search_results,
+        'search_time': search_time,
         'count_banned': onions.filter(banned=True).count(),
         'count_online': onions.filter(banned=False, online=True).count()})
     return HttpResponse(template.render(content))
@@ -99,33 +108,109 @@ def query(query_string):
     try:
         xml = get_query(query_string)
         root = etree.fromstring(xml)
-        html_answer = ""
-        for element in root.iter("item"):
-            link = element.find("link").text or ""
-            # HTML escape the link (href attribute)
-            link = html_escape(link)
-            # Show link on title if there is no title
-            title = element.find("title").text or link
-            redirect_link = "/redirect?redirect_url=" + link
-            tor2web_link = link.replace('.onion/', '.tor2web.fi/')
-            redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
-            description = element.find("description").text or ""
-            pub_date = element.find("pubDate").text or ""
-            answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
-            answer = answer + '<div class="infotext"><p class="links">'
-            answer = answer + 'Direct link: <a href="' + redirect_link + '">'
-            answer = answer + link + '</a></p>'
-            answer = answer + '<p class="links"> Access without Tor Browser: '
-            answer = answer + '<a href="'
-            answer = answer + redirect_tor2web_link + '">' + tor2web_link
-            answer = answer + '</a></p>'
-            answer = answer + description
-            answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
-            answer = '<li class="hs_site">' + answer + '</li>'
-            html_answer = html_answer + answer
+        html_answer = build_html_answer(root)
         if not html_answer:
             html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
         return html_answer
     except Exception as error:
         print error
         return '<li class="hs_site"><h3>No search results</h3></li>'
+
+def build_html_answer(root):
+    """Builds HTML answer from the XML."""
+    results = []
+    for element in root.iter("item"):
+        link = element.find("link").text or ""
+        # HTML escape the link (href attribute)
+        link = html_escape(link)
+        # Show link on title if there is no title
+        title = element.find("title").text or link
+        redirect_link = "/redirect?redirect_url=" + link
+        tor2web_link = link.replace('.onion/', '.tor2web.fi/')
+        redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
+        description = element.find("description").text or ""
+        pub_date = element.find("pubDate").text or ""
+        answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
+        answer = answer + '<div class="infotext"><p class="links">'
+        answer = answer + 'Direct link: <a href="' + redirect_link + '">'
+        answer = answer + link + '</a></p>'
+        answer = answer + '<p class="links"> Access without Tor Browser: '
+        answer = answer + '<a href="'
+        answer = answer + redirect_tor2web_link + '">' + tor2web_link
+        answer = answer + '</a></p>'
+        answer = answer + description
+        answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
+        answer = '<li class="hs_site">' + answer + '</li>'
+        # Calculate the place of the result
+        namespaces = {'yacy': 'http://www.yacy.net/'}
+        host = element.find("yacy:host", namespaces=namespaces).text or ""
+        add_result(answer, host, results)
+    html_answer = sort_results(results)
+    return html_answer
+
+def add_result(answer, host, results):
+    """Add new search result and get the stats about it."""
+    if host:
+        onion_id = host.replace(".onion", "")
+        tor2web, backlinks, clicks = get_popularity(onion_id)
+        if tor2web > 0 or backlinks > 0 or clicks > 0:
+            results.append(Popularity(host, answer, tor2web, backlinks, clicks))
+    else:
+        results.append(Popularity(host, answer, 1, 1, 1))
+
+def get_popularity(onion):
+    """Calculate the popularity of an onion page."""
+    try:
+        hs = HiddenWebsite.objects.get(id=onion)
+    except ObjectDoesNotExist:
+        return 1, 1, 1
+    if hs.banned:
+        return 0, 0, 0
+    try:
+        pop = HiddenWebsitePopularity.objects.get(about=hs)
+        clicks = pop.clicks
+        public_backlinks = pop.public_backlinks
+        tor2web = pop.tor2web
+        return tor2web, public_backlinks, clicks
+    except ObjectDoesNotExist:
+        return 1, 1, 1
+
+def sort_results(p_tuples):
+    """Sort the results according to stats."""
+    # Scaling the number of backlinks
+    p_by_backlinks = sorted(p_tuples, key=lambda popularity: popularity.backlinks, reverse=True)
+    for index, p_info in enumerate(p_by_backlinks):
+        p_info.backlinks = 1 / (float(index) + 1)
+    # Scaling the number of clicks
+    p_by_clicks = sorted(p_by_backlinks, key=lambda popularity: popularity.clicks, reverse=True)
+    for index, p_info in enumerate(p_by_clicks):
+        p_info.clicks = 1 / (float(index) + 1)
+    # Scaling the number of Tor2web
+    p_by_clicks = sorted(p_by_backlinks, key=lambda popularity: popularity.clicks, reverse=True)
+    for index, p_info in enumerate(p_by_clicks):
+        p_info.clicks = 1 / (float(index) + 1)
+    p_by_sum = sorted(p_by_clicks, key=lambda popularity: popularity.sum(), reverse=True)
+    html_answer = ""
+    for p_info in p_by_sum:
+        html_answer = html_answer + p_info.content
+    return html_answer
+
+class Popularity(object):
+    """Popularity by Tor2web visits, backlinks and clicks."""
+    def __init__(self, url, content, tor2web, backlinks, clicks):
+        self.url = url
+        self.content = content
+        self.tor2web = float(tor2web)
+        self.backlinks = float(backlinks)
+        self.clicks = float(clicks)
+    def func(self):
+        """Print the sum function."""
+        print "2.0*%f + 3.0*%f + 1.0*%f" % self.tor2web, self.backlinks, self.clicks
+    def sum(self):
+        """Calculate the popularity."""
+        #The model can be very simple (sum)
+        #What are the proper coefficients?
+        sum_function = 2.0*self.tor2web + 3.0*self.backlinks + 1.0*self.clicks
+        return sum_function
+    def __repr__(self):
+        return repr((self.url, self.tor2web, self.backlinks, self.clicks, self.sum))
