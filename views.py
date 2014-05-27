@@ -224,6 +224,11 @@ def post_add_hs(request):
     #build post to json form
     if postData.startswith('url'):
         url = request.POST.get('url', '')
+        # Add the / in the end if it lacks
+        # http://something.onion => http://something.onion/
+        url = url.strip(' \t\n\r')
+        if url and url[-1] != "/":
+            url = url + "/"
         title = request.POST.get('title', '')
         description = request.POST.get('description', '')
         relation = request.POST.get('relation', '')
