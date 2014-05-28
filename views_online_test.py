@@ -10,6 +10,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.http import HttpResponseNotAllowed
 from datetime import datetime, timedelta
 from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
+from django.core.exceptions import ObjectDoesNotExist
 import simplejson
 
 #For socks connection
@@ -49,10 +50,11 @@ def onion_up(request, onion):
     """Test if onion domain is up add get description if there is one."""
     try:
         hs = HiddenWebsite.objects.get(id=onion)
-    except HiddenWebsite.DoesNotExist:
+    except ObjectDoesNotExist:
         answer = "There is no "+onion+" indexed. Please add it if it exists."
         return HttpResponseNotFound(answer)
     if request.method == 'POST': # and request.user.is_authenticated():
+        remove_historical_descriptions(hs)
         return hs_online_check(hs, onion)
     elif request.method == 'GET':
         #is this http server been online within 7 days
@@ -100,7 +102,8 @@ def hs_online_check(hs, onion):
                 hs.save()
             else:
                 # Test if hidden service has been online during this week
-                # If it hasn't been online a week, then it is officially offline
+                # If it hasn't been online a week,
+                # then it is officially offline
                 last_seen_online = datetime.now() - hs.seenOnline
                 if last_seen_online > timedelta(days=7):
                     hs.online = False
@@ -109,6 +112,14 @@ def hs_online_check(hs, onion):
     except Exception as error:
         print error
         return HttpResponse("down")
+
+def remove_historical_descriptions(hs):
+    """Remove old descriptions."""
+    descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
+    descriptions = descriptions.order_by('-updated')
+    if len(descriptions) > 3:
+        for desc in descriptions[3:]:
+            desc.delete()
 
 def add_official_info(json, hs):
     """Add official description.json information to the ahmia."""
