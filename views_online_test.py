@@ -115,13 +115,13 @@ def analyze_front_page(raw_html, hs):
         description = ""
         h1_element = soup.find('h1')
         if title_element:
-            title = title_element.string
+            title = title_element.string.encode('utf-8')
         if desc_element and desc_element['content']:
-            description = desc_element['content']
+            description = desc_element['content'].encode('utf-8')
         if keywords_element and keywords_element['content']:
-            keywords = keywords_element['content']
+            keywords = keywords_element['content'].encode('utf-8')
         if not title and h1_element:
-            title = h1_element.string
+            title = h1_element.string.encode('utf-8')
         if title or keywords or description:
             fill_description(hs, title, keywords, description)
     except Exception as error:
