@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
 from django.core.exceptions import ObjectDoesNotExist
 import simplejson
+from bs4 import BeautifulSoup #To parse HTML
 
 #For socks connection
 import urllib2
@@ -68,50 +69,119 @@ def onion_up(request, onion):
 def hs_online_check(hs, onion):
     """Online check for hidden service."""
     try:
-        socks_con = SocksiPyHandler(socks.PROXY_TYPE_SOCKS4, '127.0.0.1', 9050)
-        opener = urllib2.build_opener(socks_con)
-        handle = opener.open('http://'+str(onion)+'.onion/')
-        code = handle.getcode()
-        print code
-        #it is up!
-        if code != 404:
-            hs.seenOnline = datetime.now()
-            hs.online = True
-            hs.save()
-            try:
-                dec_url = 'http://'+str(onion)+'.onion/description.json'
-                handle = opener.open(dec_url)
-                descr = handle.read()
-                try:
-                    #really, there cannot be that big descriptions
-                    if len(descr) > 5000:
-                        return HttpResponse("up")
-                    descr = descr.replace('\r', '')
-                    descr = descr.replace('\n', '')
-                    json = simplejson.loads(descr)
-                    add_official_info(json, hs)
-                except:
-                    print "Adding this JSON failed:"
-                    print descr
-            except Exception as error:
-                print error
-            return HttpResponse("up")
-        else:
-            if not hs.seenOnline:
-                hs.online = False
-                hs.save()
-            else:
-                # Test if hidden service has been online during this week
-                # If it hasn't been online a week,
-                # then it is officially offline
-                last_seen_online = datetime.now() - hs.seenOnline
-                if last_seen_online > timedelta(days=7):
-                    hs.online = False
-                    hs.save()
-            return HttpResponse("down")
+        return hs_http_checker(hs, onion)
     except Exception as error:
         print error
         return HttpResponse("down")
+
+def hs_http_checker(hs, onion):
+    """Socks connection to the Tor network. Try to download an onion."""
+    socks_con = SocksiPyHandler(socks.PROXY_TYPE_SOCKS4, '127.0.0.1', 9050)
+    opener = urllib2.build_opener(socks_con)
+    return hs_downloader(opener, hs, onion)
+
+def hs_downloader(opener, hs, onion):
+    """Try to download the front page and description.json."""
+    handle = opener.open('http://'+str(onion)+'.onion/')
+    code = handle.getcode()
+    print "Site answers to the online check with code %d." % code
+    if code != 404: # It is up
+        analyze_front_page(handle.read(), hs)
+        hs_download_description(opener, hs, onion)
+        return HttpResponse("up")
+    else:
+        if not hs.seenOnline:
+            hs.online = False
+            hs.save()
+        else:
+            # Test if hidden service has been online during this week
+            # If it hasn't been online a week,
+            # then it is officially offline
+            last_seen_online = datetime.now() - hs.seenOnline
+            if last_seen_online > timedelta(days=7):
+                hs.online = False
+                hs.save()
+        return HttpResponse("down")
+
+def analyze_front_page(raw_html, hs):
+    """Analyze raw HTML page."""
+    try:
+        soup = BeautifulSoup(raw_html)
+        title_element = soup.find('title')
+        desc_element = soup.find(attrs={"name":"description"})
+        keywords_element = soup.find(attrs={"name":"keywords"})
+        title = ""
+        keywords = ""
+        description = ""
+        h1_element = soup.find('h1')
+        if title_element:
+            title = title_element.string
+        if desc_element and desc_element['content']:
+            description = desc_element['content']
+        if keywords_element and keywords_element['content']:
+            keywords = keywords_element['content']
+        if not title and h1_element:
+            title = h1_element.string
+        if title or keywords or description:
+            fill_description(hs, title, keywords, description)
+    except Exception as error:
+        print error
+
+def fill_description(hs, title, keywords, description):
+    """Fill description information if there are none."""
+    old_descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
+    relation = ""
+    site_type = ""
+    if old_descriptions:
+        old_descr = old_descriptions.latest('updated')
+        # Do nothing with the official info
+        if old_descr.officialInfo:
+            return
+        # Do nothing if the title, description and subject already exists
+        if old_descr.title and old_descr.description and old_descr.subject:
+            return
+        # Else use the old content as much as possible
+        if old_descr.title:
+            title = old_descr.title
+        if old_descr.description:
+            description = old_descr.description
+        if old_descr.subject:
+            keywords = old_descr.subject
+        if old_descr.relation:
+            relation = old_descr.relation
+        if old_descr.type:
+            site_type = old_descr.type
+    descr = HiddenWebsiteDescription.objects.create(about=hs)
+    descr.title = title
+    descr.description = description
+    descr.relation = relation
+    descr.subject = keywords
+    descr.type = site_type
+    descr.officialInfo = False
+    descr.full_clean()
+    descr.save()
+
+def hs_download_description(opener, hs, onion):
+    """Try to download description.json."""
+    hs.seenOnline = datetime.now()
+    hs.online = True
+    hs.save()
+    try:
+        dec_url = 'http://'+str(onion)+'.onion/description.json'
+        handle = opener.open(dec_url)
+        descr = handle.read()
+        try:
+            # There cannot be that big descriptions
+            if len(descr) < 5000:
+                descr = descr.replace('\r', '')
+                descr = descr.replace('\n', '')
+                json = simplejson.loads(descr)
+                add_official_info(json, hs)
+        except:
+            print "Adding this JSON failed:"
+            print descr
+    except Exception as error:
+        print error
 
 def remove_historical_descriptions(hs):
     """Remove old descriptions."""

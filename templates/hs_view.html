@@ -5,7 +5,7 @@
 {% block content %}
  <a href="/add/" class="button-add right">Add new onion domain</a>
   {% if description and not description.about.banned %}
- <h2><a href='{{ description.about.url }}'>{{ description.about.id }} {% if description.title %} - {{ description.title }} {% endif %}</a></h2>
+ <h2><a href='{{ description.about.url }}'>{{ description.about.id }}.onion{% if description.title %} - {{ description.title }} {% endif %}</a></h2>
   <div id='wrap'>
    <ul id='list' class='steps'>
       <li>
