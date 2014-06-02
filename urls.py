@@ -75,6 +75,7 @@ urlpatterns += patterns('',
     (r'^policy/', 'ahmia.views_static.policy'),
     # Disclaimer text.
     (r'^disclaimer/', 'ahmia.views_static.disclaimer'),
+    (r'^documentation/indexing/', 'ahmia.views_static.indexing'),
     # Documentation - create hidden service description to hidden services.
     (r'^documentation/createHsDescription/',
     'ahmia.views_static.create_description'),

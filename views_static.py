@@ -8,6 +8,12 @@ These pages does not require database connection.
 from django.http import HttpResponseNotAllowed, HttpResponse
 from ahmia import view_help_functions # My view_help_functions.py
 
+def indexing(request):
+    """Static page about the indexing and crawling."""
+    if request.method == 'GET':
+        return view_help_functions.render_page('indexing.html')
+    return HttpResponseNotAllowed("Only GET request is allowed.")
+
 def policy(request):
     """Static policy page."""
     if request.method == 'GET':
