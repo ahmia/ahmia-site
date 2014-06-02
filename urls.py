@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     (r'^address/([a-z2-7]{16})/popularity', 'ahmia.views.onion_popularity'),
     #/address/ API
     # domain:port/address/3g2upl4pq6kufc4m
-    (r'^address/([a-z2-7]{16})', 'ahmia.views.onion'),
+    (r'^address/([a-z2-7]{16})', 'ahmia.views.single_onion'),
     # All domains that are online and are not banned
     (r'^address/online', 'ahmia.views.onions_online_txt'),
     # Invalid /address URL.
