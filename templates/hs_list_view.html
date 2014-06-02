@@ -45,13 +45,14 @@ function abuse_notice(id) {
   <div id='wrap'>
    <ul id='list' class='steps'>
 {% for site in description_list %}
-  {% if not site.about.banned and site.about.online %}
+ {% with about=site.about hs_id=site.about.id %}
+  {% if not about.banned and about.online %}
      <li class="hs_site clickable_pointer">
-      <div onclick="window.location='/address/{{ site.about.id  }}'">
-       <h3><a href="{{ site.about.url }}">{{ site.about.id }}.onion</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
+      <div onclick="window.location='/address/{{ hs_id  }}'">
+       <h3><a href="{{ about.url }}">{{ hs_id }}.onion</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
        <p class='links'>
          Proxy link:
-         <a href='https://{{ site.about.id }}.tor2web.fi'>https://{{ site.about.id }}.tor2web.fi</a>
+         <a href='https://{{ hs_id }}.tor2web.fi'>https://{{ hs_id }}.tor2web.fi</a>
 	{% if site.relation %}
          <br />
          Optional domain:
@@ -67,14 +68,15 @@ function abuse_notice(id) {
                 {% if site.contactInformation %}<b>Contact info: </b>{{ site.contactInformation }}<br />{% endif %}
 		<a href="/documentation/descriptionProposal/"><strong class="color10">Description downloaded directly from the hidden service.</strong></a>
         {% else %}
-		<b>Edited: </b>{{ site.updated }} <a style='color:green' href='/address/{{ site.about.id  }}/edit/'>Edit description.</a>
+		<b>Edited: </b>{{ site.updated }} <a style='color:green' href='/address/{{ hs_id  }}/edit/'>Edit description.</a>
         {% endif %}
-        <strong style="display: none;" id="note_{{ site.about.id }}" class="color1">Thank you for the information. We will look it.</strong>
+        <strong style="display: none;" id="note_{{ hs_id }}" class="color1">Thank you for the information. We will look it.</strong>
        </div>
       </div>
-      <button id="button_{{ site.about.id }}" type="button" onclick="abuse_notice('{{ site.about.id }}');">Send a note that this site should be filtered.</button>
+      <button id="button_{{ hs_id }}" type="button" onclick="abuse_notice('{{ hs_id }}');">Send a note that this site should be filtered.</button>
      </li>
   {% endif %}
+ {% endwith %}
 {% endfor %}
    </ul>
   </div>

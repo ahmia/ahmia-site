@@ -28,13 +28,14 @@ $.ajax({
   <div id='wrap'>
    <ul id='list' class='steps'>
 {% for site in description_list %}
+  {% with about=site.about hs_id=site.about.id %}
       <li class="hs_site">
-       <h3><a href="{{ site.about.url }}">{{ site.about.id }}</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
-       <strong id="ban_status_{{ site.about.id }}" class="color1">{% if site.about.banned %}BANNED!{% endif %}</strong>
-       {% if site.about.online %}<strong class="color12">Online</strong>{% else %}<strong>Offline</strong>{% endif %}
+       <h3><a href="{{ about.url }}">{{ hs_id }}</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>
+       <strong id="ban_status_{{ hs_id }}" class="color1">{% if about.banned %}BANNED!{% endif %}</strong>
+       {% if about.online %}<strong class="color12">Online</strong>{% else %}<strong>Offline</strong>{% endif %}
        <p class='links'>
          Proxy link:
-         <a href='https://{{ site.about.id }}.tor2web.fi'>https://{{ site.about.id }}.tor2web.fi</a>
+         <a href='https://{{ hs_id }}.tor2web.fi'>https://{{ hs_id }}.tor2web.fi</a>
         {% if site.relation %}
          <br />
          Optional domain:
@@ -49,13 +50,14 @@ $.ajax({
                 {% if site.language %}<b>Language: </b>{{ site.language }}<br />{% endif %}
                 {% if site.contactInformation %}<b>Contact info: </b>{{ site.contactInformation }}<br />{% endif %}
         {% endif %}
-	<b>Edited: </b>{{ site.updated }} {% if not site.about.banned or site.officialInfo %}<a style='color:green' href='/address/{{ site.about.id  }}/edit/'>Edit description.</a> 
+	<b>Edited: </b>{{ site.updated }} {% if not about.banned or site.officialInfo %}<a style='color:green' href='/address/{{ hs_id  }}/edit/'>Edit description.</a> 
 	<br />
-	<button style="background: #EA4C89;" type="button" onclick="ban('{{ site.about.id }}');">BAN</button> 
+	<button style="background: #EA4C89;" type="button" onclick="ban('{{ hs_id }}');">BAN</button> 
 	(Edit this description first, after banning description cannot be changed.)
 	{% endif %}
 	</div>
       </li>
+  {% endwith %}
 {% endfor %}
    </ul>
   </div>
