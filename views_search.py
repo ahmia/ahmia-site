@@ -31,7 +31,11 @@ def search_page(request):
     search_time = ""
     if query_string:
         start = time.time()
-        search_results = query(query_string)
+        if request.get_host() == "msydqstlz2kzerdg.onion":
+            show_tor2web_links = False
+        else:
+            show_tor2web_links = True
+        search_results = query(query_string, show_tor2web_links)
         end = time.time()
         search_time = end - start
         search_time = round(search_time, 2)
@@ -103,12 +107,12 @@ def html_escape(text):
     }
     return "".join(html_escape_table.get(c, c) for c in text)
 
-def query(query_string):
+def query(query_string, show_tor2web_links=True):
     """Build HTML answer from the answer of the YaCy back-end."""
     try:
         xml = get_query(query_string)
         root = etree.fromstring(xml)
-        html_answer = build_html_answer(root)
+        html_answer = build_html_answer(root, show_tor2web_links)
         if not html_answer:
             html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
         return html_answer
@@ -116,7 +120,7 @@ def query(query_string):
         print error
         return '<li class="hs_site"><h3>No search results</h3></li>'
 
-def build_html_answer(root):
+def build_html_answer(root, show_tor2web_links):
     """Builds HTML answer from the XML."""
     results = []
     for element in root.iter("item"):
@@ -126,18 +130,19 @@ def build_html_answer(root):
         # Show link on title if there is no title
         title = element.find("title").text or link
         redirect_link = "/redirect?redirect_url=" + link
-        tor2web_link = link.replace('.onion/', '.tor2web.fi/')
-        redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
         description = element.find("description").text or ""
         pub_date = element.find("pubDate").text or ""
         answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
         answer = answer + '<div class="infotext"><p class="links">'
         answer = answer + 'Direct link: <a href="' + redirect_link + '">'
         answer = answer + link + '</a></p>'
-        answer = answer + '<p class="links"> Access without Tor Browser: '
-        answer = answer + '<a href="'
-        answer = answer + redirect_tor2web_link + '">' + tor2web_link
-        answer = answer + '</a></p>'
+        if show_tor2web_links:
+            tor2web_link = link.replace('.onion/', '.tor2web.fi/')
+            redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
+            answer = answer + '<p class="links"> Access without Tor Browser: '
+            answer = answer + '<a href="'
+            answer = answer + redirect_tor2web_link + '">' + tor2web_link
+            answer = answer + '</a></p>'
         answer = answer + description
         answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
         answer = '<li class="hs_site">' + answer + '</li>'
