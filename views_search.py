@@ -31,7 +31,7 @@ def search_page(request):
     search_time = ""
     if query_string:
         start = time.time()
-        if request.get_host() == "msydqstlz2kzerdg.onion":
+        if ".onion" in request.get_host():
             show_tor2web_links = False
         else:
             show_tor2web_links = True
