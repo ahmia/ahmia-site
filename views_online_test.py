@@ -88,6 +88,10 @@ def hs_downloader(opener, onion):
     if code != 404: # It is up
         analyze_front_page(handle.read(), onion)
         hs_download_description(opener, onion)
+        hs = HiddenWebsite.objects.get(id=onion)
+        hs.seenOnline = datetime.now()
+        hs.online = True
+        hs.save()
         return HttpResponse("up")
     else:
         hs = HiddenWebsite.objects.get(id=onion)
@@ -165,10 +169,6 @@ def fill_description(onion, title, keywords, description):
 
 def hs_download_description(opener, onion):
     """Try to download description.json."""
-    hs = HiddenWebsite.objects.get(id=onion)
-    hs.seenOnline = datetime.now()
-    hs.online = True
-    hs.save()
     try:
         dec_url = 'http://'+str(onion)+'.onion/description.json'
         handle = opener.open(dec_url)
