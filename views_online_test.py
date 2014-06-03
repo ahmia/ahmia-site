@@ -56,7 +56,7 @@ def onion_up(request, onion):
         return HttpResponseNotFound(answer)
     if request.method == 'POST': # and request.user.is_authenticated():
         remove_historical_descriptions(hs)
-        return hs_online_check(hs, onion)
+        return hs_online_check(onion)
     elif request.method == 'GET':
         #is this http server been online within 7 days
         if hs.online:
@@ -66,30 +66,31 @@ def onion_up(request, onion):
     else:
         return HttpResponseNotAllowed("Only GET and POST is allowed.")
 
-def hs_online_check(hs, onion):
+def hs_online_check(onion):
     """Online check for hidden service."""
     try:
-        return hs_http_checker(hs, onion)
+        return hs_http_checker(onion)
     except Exception as error:
         print error
         return HttpResponse("down")
 
-def hs_http_checker(hs, onion):
+def hs_http_checker(onion):
     """Socks connection to the Tor network. Try to download an onion."""
     socks_con = SocksiPyHandler(socks.PROXY_TYPE_SOCKS4, '127.0.0.1', 9050)
     opener = urllib2.build_opener(socks_con)
-    return hs_downloader(opener, hs, onion)
+    return hs_downloader(opener, onion)
 
-def hs_downloader(opener, hs, onion):
+def hs_downloader(opener, onion):
     """Try to download the front page and description.json."""
     handle = opener.open('http://'+str(onion)+'.onion/')
     code = handle.getcode()
     print "Site answers to the online check with code %d." % code
     if code != 404: # It is up
-        analyze_front_page(handle.read(), hs)
-        hs_download_description(opener, hs, onion)
+        analyze_front_page(handle.read(), onion)
+        hs_download_description(opener, onion)
         return HttpResponse("up")
     else:
+        hs = HiddenWebsite.objects.get(id=onion)
         if not hs.seenOnline:
             hs.online = False
             hs.save()
@@ -103,7 +104,7 @@ def hs_downloader(opener, hs, onion):
                 hs.save()
         return HttpResponse("down")
 
-def analyze_front_page(raw_html, hs):
+def analyze_front_page(raw_html, onion):
     """Analyze raw HTML page."""
     try:
         soup = BeautifulSoup(raw_html)
@@ -123,12 +124,13 @@ def analyze_front_page(raw_html, hs):
         if not title and h1_element:
             title = h1_element.string.encode('utf-8')
         if title or keywords or description:
-            fill_description(hs, title, keywords, description)
+            fill_description(onion, title, keywords, description)
     except Exception as error:
         print error
 
-def fill_description(hs, title, keywords, description):
+def fill_description(onion, title, keywords, description):
     """Fill description information if there are none."""
+    hs = HiddenWebsite.objects.get(id=onion)
     old_descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
     relation = ""
     site_type = ""
@@ -161,8 +163,9 @@ def fill_description(hs, title, keywords, description):
     descr.full_clean()
     descr.save()
 
-def hs_download_description(opener, hs, onion):
+def hs_download_description(opener, onion):
     """Try to download description.json."""
+    hs = HiddenWebsite.objects.get(id=onion)
     hs.seenOnline = datetime.now()
     hs.online = True
     hs.save()
@@ -176,7 +179,7 @@ def hs_download_description(opener, hs, onion):
                 descr = descr.replace('\r', '')
                 descr = descr.replace('\n', '')
                 json = simplejson.loads(descr)
-                add_official_info(json, hs)
+                add_official_info(json, onion)
         except:
             print "Adding this JSON failed:"
             print descr
@@ -191,7 +194,7 @@ def remove_historical_descriptions(hs):
         for desc in descriptions[3:]:
             desc.delete()
 
-def add_official_info(json, hs):
+def add_official_info(json, onion):
     """Add official description.json information to the ahmia."""
     title = json.get('title')
     description = json.get('description')
@@ -200,6 +203,7 @@ def add_official_info(json, hs):
     hs_type = json.get('type')
     lan = json.get('language')
     contact = json.get('contactInformation')
+    hs = HiddenWebsite.objects.get(id=onion)
     descr = HiddenWebsiteDescription.objects.create(about=hs)
     descr.title = take_first_from_list(title)
     descr.description = take_first_from_list(description)
