@@ -14,8 +14,8 @@ from django.shortcuts import redirect
 from django.conf import settings # For the back-end connection settings
 from django.template import Context, loader
 from django.core.exceptions import ObjectDoesNotExist
-from models import HiddenWebsitePopularity
-from models import HiddenWebsite
+from ahmia.models import HiddenWebsitePopularity
+from ahmia.models import HiddenWebsite
 import time
 
 def default(request):

@@ -3,7 +3,7 @@ import os
 import sys
 # Set the PROJECT_HOME variable.
 # This will be used to prepend to all file/directory paths.
-PROJECT_HOME = os.getcwd()
+PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
 
 # Django settings for ahmia project.
 
@@ -126,7 +126,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'ahmia.urls'
 
 TEMPLATE_DIRS = (os.path.join(PROJECT_HOME, 'templates'),)
 

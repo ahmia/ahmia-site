@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest
 from django.core import serializers
 import view_help_functions as helpers # My view_help_functions.py
-from models import HiddenWebsitePopularity
+from ahmia.models import HiddenWebsitePopularity
 
 def stats(request):
     """Return stats as JSON according to different GET query parameters."""

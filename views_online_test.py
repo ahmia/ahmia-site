@@ -9,7 +9,7 @@ Use local socks proxy that is the Tor connection.
 from django.http import HttpResponse, HttpResponseNotFound
 from django.http import HttpResponseNotAllowed
 from datetime import datetime, timedelta
-from models import HiddenWebsite, HiddenWebsiteDescription
+from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
 from django.core.exceptions import ObjectDoesNotExist
 import simplejson
 from bs4 import BeautifulSoup #To parse HTML

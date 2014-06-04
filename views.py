@@ -2,15 +2,15 @@
 from django.template import Context, loader
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from models import HiddenWebsite, HiddenWebsitePopularity
-from models import HiddenWebsiteDescription
+from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+from ahmia.models import HiddenWebsiteDescription
 import hashlib
 import simplejson
 import re # Regular expressions
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-import view_help_functions # My view_help_functions.py
-import views_admin # My views_admin.py
+import ahmia.view_help_functions as helpers # My view_help_functions.py
+import ahmia.views_admin # My views_admin.py
 from django.conf import settings # For the SMTP settings
 
 def add(request):
@@ -39,7 +39,7 @@ def onion_list(request):
         elif content_type and "rdf" in content_type:
             return onions_rdf(request)
         else: #default return is human readable HTML page
-            return view_help_functions.render_page('hs_list_view.html')
+            return helpers.render_page('hs_list_view.html')
     elif request.method == 'POST':
         return post_add_hs(request)
     else:
@@ -116,7 +116,7 @@ def onion_redirect(request):
         except ObjectDoesNotExist:
             print "Redirecting unknown: http://" + onion + ".onion/"
             message = "Redirecting to hidden service."
-            return view_help_functions.redirect_page(message, 0, redirect_url)
+            return helpers.redirect_page(message, 0, redirect_url)
         try:
             pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
             if creat or hs.banned:
@@ -130,7 +130,7 @@ def onion_redirect(request):
             print error
             return HttpResponseBadRequest("Bad request")
         message = "Redirecting to hidden service."
-        return view_help_functions.redirect_page(message, 0, redirect_url)
+        return helpers.redirect_page(message, 0, redirect_url)
     else:
         return HttpResponseNotAllowed("Only GET request is allowed.")
 
@@ -155,7 +155,7 @@ def onion_popularity(request, onion):
         return HttpResponse(template.render(content), content_type=type_str)
     elif request.method == 'PUT':
         # Allow POST data only from the localhost
-        ip_addr = view_help_functions.get_client_ip(request)
+        ip_addr = helpers.get_client_ip(request)
         if not str(ip_addr) in "127.0.0.1":
             answer = "Bad request: only allowed form the localhost."
             return HttpResponseBadRequest(answer)
@@ -288,7 +288,7 @@ def add_hs(json):
         if not regex.match(relation):
             json['relation'] = ""
     try:
-        view_help_functions.validate_onion_url(url)
+        helpers.validate_onion_url(url)
     except ValidationError:
         print "Invalid onion domain"
         answer = "Invalid URL! URL must be exactly like http://something.onion/"
@@ -306,7 +306,7 @@ def add_hs(json):
         return HttpResponseBadRequest("Invalid data.")
     message = 'Hidden service added.'
     redirect_url = '/address/'+id_str
-    return view_help_functions.redirect_page(message, 3, redirect_url)
+    return helpers.redirect_page(message, 3, redirect_url)
 
 def add_description(json, hs):
     """Add description JSON data."""
@@ -432,7 +432,7 @@ def onions_online_txt(request):
 def all_onions_txt(request):
     """Return a plain text list of onions including the banned ones."""
     # Allow requests only from the localhost
-    ip_addr = view_help_functions.get_client_ip(request)
+    ip_addr = helpers.get_client_ip(request)
     if not str(ip_addr) in "127.0.0.1":
         answer = "Bad request: only allowed form the localhost."
         return HttpResponseBadRequest(answer)
@@ -456,7 +456,7 @@ def banned_txt(request):
 def banned_domains_plain(request):
     """Return the plain text list of banned onions."""
     # Allow requests only from the localhost
-    ip_addr = view_help_functions.get_client_ip(request)
+    ip_addr = helpers.get_client_ip(request)
     if not str(ip_addr) in "127.0.0.1":
         answer = "Bad request: only allowed form the localhost."
         return HttpResponseBadRequest(answer)

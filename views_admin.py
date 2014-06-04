@@ -9,8 +9,8 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
-import view_help_functions # My view_help_functions.py
-from models import HiddenWebsite, HiddenWebsitePopularity
+import ahmia.view_help_functions as helpers # My view_help_functions.py
+from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 from django.core.exceptions import ObjectDoesNotExist
 
 def login(request):
@@ -42,7 +42,7 @@ def rule(request):
     """Administration rule content"""
     if request.method == 'GET':
         if request.user.is_authenticated():
-            return view_help_functions.render_page('rule.html')
+            return helpers.render_page('rule.html')
         else:
             return redirect('ahmia.views_admin.login')
     else:
