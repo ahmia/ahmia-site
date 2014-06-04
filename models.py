@@ -3,8 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 import re
 
-# Validators.
-
+# Validators
 def validate_onion_url(url):
     """ Test is url correct onion URL."""
     #Must be like http://3g2upl4pq6kufc4m.onion/
@@ -35,8 +34,6 @@ def validate_length_2(string):
     if len(string) != length:
         raise ValidationError(u'%s length is not %d' % (string, length))
 
-# Models.
-
 class HiddenWebsite(models.Model):
     """Hidden service website."""
     #for instance: http://3g2upl4pq6kufc4m.onion/
@@ -54,6 +51,9 @@ class HiddenWebsite(models.Model):
     md5 = models.CharField(max_length=32,
     validators=[validate_length_32], unique=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=True)
+    class Meta:
+        """Meta class."""
+        app_label = 'ahmia'
     def __unicode__(self):
         return self.url
 
@@ -69,6 +69,9 @@ class HiddenWebsiteDescription(models.Model):
     language = models.TextField(null=True, blank=True)
     contactInformation = models.TextField(null=True, blank=True)
     officialInfo = models.BooleanField()
+    class Meta:
+        """Meta class."""
+        app_label = 'ahmia'
     def __unicode__(self):
         return self.about.url
 
@@ -76,7 +79,11 @@ class HiddenWebsitePopularity(models.Model):
     """Hidden service website popularity."""
     about = models.ForeignKey(HiddenWebsite)
     clicks = models.PositiveIntegerField(default=0, blank=True, null=True)
-    public_backlinks = models.PositiveIntegerField(default=0, blank=True, null=True)
+    public_backlinks = models.PositiveIntegerField(default=0, blank=True,
+    null=True)
     tor2web = models.PositiveIntegerField(default=0, blank=True, null=True)
+    class Meta:
+        """Meta class."""
+        app_label = 'ahmia'
     def __unicode__(self):
         return self.about.url

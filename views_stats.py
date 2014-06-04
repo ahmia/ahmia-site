@@ -7,8 +7,8 @@ Statistics: JSON data API and JavaScript viewers.
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest
 from django.core import serializers
-from ahmia import view_help_functions as helpers # My view_help_functions.py
-from ahmia.models import HiddenWebsitePopularity
+import view_help_functions as helpers # My view_help_functions.py
+from models import HiddenWebsitePopularity
 
 def stats(request):
     """Return stats as JSON according to different GET query parameters."""

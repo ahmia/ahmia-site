@@ -2,15 +2,15 @@
 from django.template import Context, loader
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
-from ahmia.models import HiddenWebsiteDescription
+from models import HiddenWebsite, HiddenWebsitePopularity
+from models import HiddenWebsiteDescription
 import hashlib
 import simplejson
 import re # Regular expressions
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from ahmia import view_help_functions # My view_help_functions.py
-from ahmia import views_admin # My views_admin.py
+import view_help_functions # My view_help_functions.py
+import views_admin # My views_admin.py
 from django.conf import settings # For the SMTP settings
 
 def add(request):

@@ -1,7 +1,7 @@
 """ Generig help functions for the views. """
 from django.template import Context, loader
 from django.http import HttpResponse
-from ahmia.models import HiddenWebsiteDescription, HiddenWebsite
+from models import HiddenWebsiteDescription, HiddenWebsite
 from django.core.exceptions import ValidationError
 import re # Regular expressions
 

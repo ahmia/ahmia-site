@@ -6,7 +6,7 @@ These pages does not require database connection.
 
 """
 from django.http import HttpResponseNotAllowed, HttpResponse
-from ahmia import view_help_functions # My view_help_functions.py
+import view_help_functions # My view_help_functions.py
 
 def indexing(request):
     """Static page about the indexing and crawling."""

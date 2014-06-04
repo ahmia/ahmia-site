@@ -9,8 +9,8 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
-from ahmia import view_help_functions # My view_help_functions.py
-from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+import view_help_functions # My view_help_functions.py
+from models import HiddenWebsite, HiddenWebsitePopularity
 from django.core.exceptions import ObjectDoesNotExist
 
 def login(request):

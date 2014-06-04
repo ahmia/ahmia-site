@@ -7,7 +7,7 @@ PROJECT_HOME = os.getcwd()
 
 # Django settings for ahmia project.
 
-# Define DEBUG state dynamically: 
+# Define DEBUG state dynamically:
 # If running server using manage.py => DEBUG = True else DEBUG = False
 if len(sys.argv) > 1 and sys.argv[1] == 'runserver':
     DEBUG = True
@@ -26,7 +26,15 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
+if 'test' in sys.argv:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Database engine
+        'NAME': 'ahmia_db_test', # Database name
+        }
+    }
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Database engine
         'NAME': 'ahmia_db',              # Database name
@@ -34,8 +42,8 @@ DATABASES = {
         'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost.
         'PORT': '',                      # Set to empty string for default.
+        }
     }
-}
 
 # Email settings
 EMAIL_USE_TLS = True
@@ -118,11 +126,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'ahmia.urls'
+ROOT_URLCONF = 'urls'
 
-TEMPLATE_DIRS = (
-    PROJECT_HOME+"/templates/"
-)
+TEMPLATE_DIRS = (os.path.join(PROJECT_HOME, 'templates'),)
 
 INSTALLED_APPS = (
     'django.contrib.admin', #admin UI for user administration
@@ -131,13 +137,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'ahmia',
+    #'ahmia',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
-
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -167,4 +172,3 @@ LOGGING = {
         },
     }
 }
-
