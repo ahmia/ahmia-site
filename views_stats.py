@@ -61,3 +61,10 @@ def statsviewer(request):
         return helpers.render_page('statistics.html')
     else:
         return HttpResponseNotAllowed("Only GET request is allowed.")
+
+def trafficviewer(request):
+    """Opens JavaScript based traffic viewer."""
+    if request.method == 'GET':
+        return helpers.render_page('traffic.html')
+    else:
+        return HttpResponseNotAllowed("Only GET request is allowed.")

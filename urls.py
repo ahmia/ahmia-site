@@ -55,7 +55,8 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     # Stats
     (r'^stats/viewer', 'ahmia.views_stats.statsviewer'),
-    (r'^stats/popularity', 'ahmia.views_stats.stats')
+    (r'^stats/popularity', 'ahmia.views_stats.stats'),
+    (r'^stats/traffic', 'ahmia.views_stats.trafficviewer')
 )
 
 # Admin views
