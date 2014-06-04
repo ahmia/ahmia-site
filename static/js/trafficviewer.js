@@ -42,13 +42,14 @@ function draw_chart(){
 		{
 
 			title:{
-				text: "Search counts",
+				text: "Search count / hour",
 				fontSize: 30
 			},
 			axisX:{
 
 				gridColor: "Silver",
-				tickColor: "silver"
+				tickColor: "silver",
+				valueFormatString: "DD/MMM HH"
 
 			},                        
                         toolTip:{
