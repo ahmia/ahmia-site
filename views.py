@@ -161,7 +161,7 @@ def onion_popularity(request, onion):
             return HttpResponseBadRequest(answer)
         else:
             # Add new data
-            data = request.raw_post_data
+            data = request.body
             return add_popularity(data, onion)
     else:
         return HttpResponseNotAllowed("Only GET and PUT requests are allowed.")
@@ -231,7 +231,7 @@ def onion_edit(request, onion):
 
 def post_add_hs(request):
     """The post JSON data about .onion address."""
-    post_data = request.raw_post_data
+    post_data = request.body
     #build post to json form
     if post_data.startswith('url'):
         url = request.POST.get('url', '')

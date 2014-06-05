@@ -20,6 +20,13 @@ else:
 
 TEMPLATE_DEBUG = DEBUG
 
+ALLOWED_HOSTS = [
+    '.ahmia.fi', # Allow domain and subdomains
+    '.ahmia.fi.', # Also allow FQDN and subdomains
+    '.msydqstlz2kzerdg.onion',
+    '.msydqstlz2kzerdg.onion.',
+]
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
