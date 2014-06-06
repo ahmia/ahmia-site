@@ -2,6 +2,7 @@
 from django.template import Context, loader
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
+from django.http import StreamingHttpResponse
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 from ahmia.models import HiddenWebsiteDescription
 import hashlib
@@ -318,7 +319,7 @@ def add_description(json, hs):
     try:
         descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
         old_descr = descriptions.latest('updated')
-        descr = HiddenWebsiteDescription.objects.create(about=hs)
+        descr = HiddenWebsiteDescription.objects.create(about=hs, officialInfo=False)
         if title:
             descr.title = title
         else:
@@ -348,7 +349,7 @@ def add_description(json, hs):
         print error
         return
     except:
-        descr = HiddenWebsiteDescription.objects.create(about=hs)
+        descr = HiddenWebsiteDescription.objects.create(about=hs, officialInfo=False)
         descr.title = title
         descr.description = description
         descr.relation = relation
@@ -413,7 +414,7 @@ def onions_txt(request):
         site_list = []
         for site in sites:
             site_list.append(site.url+"\n")
-        return HttpResponse(site_list, content_type="text/plain")
+        return StreamingHttpResponse(site_list, content_type="text/plain")
     else:
         return HttpResponseNotAllowed("Only GET request is allowed.")
 
@@ -425,7 +426,7 @@ def onions_online_txt(request):
         site_list = []
         for site in sites:
             site_list.append(site.url+"\n")
-        return HttpResponse(site_list, content_type="text/plain")
+        return StreamingHttpResponse(site_list, content_type="text/plain")
     else:
         return HttpResponseNotAllowed("Only GET request is allowed.")
 
@@ -440,7 +441,7 @@ def all_onions_txt(request):
     site_list = []
     for site in sites:
         site_list.append(site.url+"\n")
-    return HttpResponse(site_list, content_type="text/plain")
+    return StreamingHttpResponse(site_list, content_type="text/plain")
 
 def banned_txt(request):
     """Return the plain text MD5 sums of the banned onions."""
@@ -449,7 +450,7 @@ def banned_txt(request):
         md5_list = []
         for site in sites:
             md5_list.append(site.md5+"\n")
-        return HttpResponse(md5_list, content_type="text/plain")
+        return StreamingHttpResponse(md5_list, content_type="text/plain")
     else:
         return HttpResponseNotAllowed("Only GET request is allowed.")
 
@@ -464,4 +465,4 @@ def banned_domains_plain(request):
     url_list = []
     for site in sites:
         url_list.append(site.url+"\n")
-    return HttpResponse(url_list, content_type="text/plain")
+    return StreamingHttpResponse(url_list, content_type="text/plain")

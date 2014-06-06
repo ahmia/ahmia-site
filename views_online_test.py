@@ -157,7 +157,7 @@ def fill_description(onion, title, keywords, description):
             relation = old_descr.relation
         if old_descr.type:
             site_type = old_descr.type
-    descr = HiddenWebsiteDescription.objects.create(about=hs)
+    descr = HiddenWebsiteDescription.objects.create(about=hs, officialInfo=False)
     descr.title = title
     descr.description = description
     descr.relation = relation
@@ -204,7 +204,7 @@ def add_official_info(json, onion):
     lan = json.get('language')
     contact = json.get('contactInformation')
     hs = HiddenWebsite.objects.get(id=onion)
-    descr = HiddenWebsiteDescription.objects.create(about=hs)
+    descr = HiddenWebsiteDescription.objects.create(about=hs, officialInfo=False)
     descr.title = take_first_from_list(title)
     descr.description = take_first_from_list(description)
     descr.relation = take_first_from_list(relation)
