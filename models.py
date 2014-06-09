@@ -1,5 +1,7 @@
 """Models for the database of ahmia."""
 from django.db import models
+from django.core.validators import MaxLengthValidator
+from django.core.validators import MinLengthValidator
 from django.core.exceptions import ValidationError
 import re
 
@@ -16,31 +18,13 @@ def validate_onion_url(url):
     if not re.match("[a-z2-7]{16}", url[7:-7]):
         raise ValidationError(u'%s is not valid onion domain' % url)
 
-def validate_length_32(string):
-    """Test that length of the string is 32."""
-    length = 32
-    if len(string) != length:
-        raise ValidationError(u'%s length is not %d' % (string, length))
-
-def validate_length_16(string):
-    """Test that length of the string is 16."""
-    length = 16
-    if len(string) != length:
-        raise ValidationError(u'%s length is not %d' % (string, length))
-
-def validate_length_2(string):
-    """Test that length of the string is 2."""
-    length = 2
-    if len(string) != length:
-        raise ValidationError(u'%s length is not %d' % (string, length))
-
 class HiddenWebsite(models.Model):
     """Hidden service website."""
     #for instance: http://3g2upl4pq6kufc4m.onion/
     url = models.URLField(validators=[validate_onion_url], unique=True)
     #hidden service
     id = models.CharField(primary_key=True, max_length=16,
-    validators=[validate_length_16], unique=True)
+    validators=[MinLengthValidator(16), MaxLengthValidator(16)], unique=True)
     #is this domain banned
     banned = models.BooleanField()
     #is it online or offline
@@ -49,7 +33,7 @@ class HiddenWebsite(models.Model):
     #echo -e "BLAHBLAHBLAH.onion\c" | md5sum
     #hashlib.md5(url[8:-1]).hexdigest()
     md5 = models.CharField(max_length=32,
-    validators=[validate_length_32], unique=True)
+    validators=[MinLengthValidator(32), MaxLengthValidator(32)], unique=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=True)
     class Meta:
         """Meta class."""
