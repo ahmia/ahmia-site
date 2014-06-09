@@ -26,10 +26,10 @@ class HiddenWebsite(models.Model):
     id = models.CharField(primary_key=True, max_length=16,
     validators=[MinLengthValidator(16), MaxLengthValidator(16)], unique=True)
     #is this domain banned
-    banned = models.BooleanField()
+    banned = models.BooleanField(default=False)
     #is it online or offline
     seenOnline = models.DateTimeField(blank=True, null=True)
-    online = models.BooleanField()
+    online = models.BooleanField(default=False)
     #echo -e "BLAHBLAHBLAH.onion\c" | md5sum
     #hashlib.md5(url[8:-1]).hexdigest()
     md5 = models.CharField(max_length=32,
@@ -52,7 +52,7 @@ class HiddenWebsiteDescription(models.Model):
     updated = models.DateTimeField(auto_now=True, auto_now_add=True)
     language = models.TextField(null=True, blank=True)
     contactInformation = models.TextField(null=True, blank=True)
-    officialInfo = models.BooleanField()
+    officialInfo = models.BooleanField(default=False)
     class Meta:
         """Meta class."""
         app_label = 'ahmia'
