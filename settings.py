@@ -5,8 +5,6 @@ import sys
 # This will be used to prepend to all file/directory paths.
 PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
 
-DATABASE_NAME = os.getcwd() + "/ahmia_db"
-
 # Define DEBUG state dynamically:
 # If running server using manage.py => DEBUG = True else DEBUG = False
 if len(sys.argv) > 1 and sys.argv[1] == 'runserver':
@@ -37,14 +35,14 @@ if 'test' in sys.argv:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Database engine
-        'NAME': 'ahmia_db_test', # Database name
+        'NAME': os.getcwd() + '/ahmia_db_test', # Database name
         }
     }
 else:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Database engine
-        'NAME': 'ahmia_db', # Database name
+        'NAME': os.getcwd() + '/ahmia_db', # Database name
         }
     }
 
