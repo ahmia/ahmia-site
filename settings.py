@@ -7,7 +7,7 @@ PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
 
 # Define DEBUG state dynamically:
 # If running server using manage.py => DEBUG = True else DEBUG = False
-if len(sys.argv) > 1 and sys.argv[1] == 'runserver':
+if 'runserver' in sys.argv:
     DEBUG = True
     # In demo environment use this YaCy address
     YACY = "http://localhost:8888/"
@@ -38,11 +38,22 @@ if 'test' in sys.argv:
         'NAME': os.getcwd() + '/ahmia_db_test', # Database name
         }
     }
-else:
+elif 'runserver' in sys.argv:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Database engine
         'NAME': os.getcwd() + '/ahmia_db', # Database name
+        }
+    }
+else: # Production environment
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Database engine
+        'NAME': 'ahmia_db',              # Database name
+        'USER': 'ahmia_login',           # Not used with sqlite3.
+        'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost.
+        'PORT': '6432', # pbbouncer port
         }
     }
 
