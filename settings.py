@@ -7,7 +7,7 @@ PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
 
 # Define DEBUG state dynamically:
 # If running server using manage.py => DEBUG = True else DEBUG = False
-if 'runserver' in sys.argv:
+if 'runserver' in sys.argv or 'test' in sys.argv:
     DEBUG = True
     # In demo environment use this YaCy address
     YACY = "http://localhost:8888/"
@@ -38,7 +38,7 @@ if 'test' in sys.argv:
         'NAME': os.getcwd() + '/ahmia_db_test', # Database name
         }
     }
-elif 'runserver' in sys.argv:
+elif 'runserver' in sys.argv or 'sqlflush' in sys.argv or 'syncdb' in sys.argv:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Database engine
