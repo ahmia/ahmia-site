@@ -5,7 +5,7 @@ import sys
 # This will be used to prepend to all file/directory paths.
 PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
 
-# Django settings for ahmia project.
+DATABASE_NAME = os.getcwd() + "/ahmia_db"
 
 # Define DEBUG state dynamically:
 # If running server using manage.py => DEBUG = True else DEBUG = False
