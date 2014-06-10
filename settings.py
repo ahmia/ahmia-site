@@ -43,12 +43,8 @@ if 'test' in sys.argv:
 else:
     DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Database engine
-        'NAME': 'ahmia_db',              # Database name
-        'USER': 'ahmia_login',           # Not used with sqlite3.
-        'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost.
-        'PORT': '',                      # Set to empty string for default.
+        'ENGINE': 'django.db.backends.sqlite3', # Database engine
+        'NAME': 'ahmia_db', # Database name
         }
     }
 

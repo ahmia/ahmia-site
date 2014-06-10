@@ -17,7 +17,7 @@ def indexing(request):
 def policy(request):
     """Static policy page."""
     if request.method == 'GET':
-        return helpers.render_page('policy.html')
+        return helpers.render_page('policy.html', show_descriptions=True)
     return HttpResponseNotAllowed("Only GET request is allowed.")
 
 def disclaimer(request):

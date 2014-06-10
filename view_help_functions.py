@@ -17,14 +17,30 @@ def validate_onion_url(url):
     if not re.match("[a-z2-7]{16}", url[7:-7]):
         raise ValidationError(u'%s is not valid onion domain' % url)
 
-def render_page(page):
+def latest_descriptions(onions):
+    """Return the latest descriptions to these onion objects."""
+    #The old implementatation was working only with PostgreSQL database
+    #desc = HiddenWebsiteDescription.objects.order_by('about', '-updated')
+    #desc = desc.distinct('about')
+    descriptions = HiddenWebsiteDescription.objects.all()
+    descs = []
+    for onion in onions:
+        desc = descriptions.filter(about=onion)
+        if desc:
+            descs.append(desc.order_by('-updated')[0])
+    return descs
+
+def render_page(page, show_descriptions=False):
     """ Return a page without any parameters """
     onions = HiddenWebsite.objects.all()
     template = loader.get_template(page)
-    desc = HiddenWebsiteDescription.objects.order_by('about', '-updated')
-    desc = desc.distinct('about')
-    content = Context({'description_list': desc,
-        'count_banned': onions.filter(banned=True).count(),
+    if show_descriptions:
+        descs = latest_descriptions(onions)
+        content = Context({'description_list': descs,
+        'count_banned': onions.filter(banned=True, online=True).count(),
+        'count_online': onions.filter(banned=False, online=True).count()})
+    else:
+        content = Context({'count_banned': onions.filter(banned=True).count(),
         'count_online': onions.filter(banned=False, online=True).count()})
     return HttpResponse(template.render(content))
 

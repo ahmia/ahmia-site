@@ -42,7 +42,7 @@ def rule(request):
     """Administration rule content"""
     if request.method == 'GET':
         if request.user.is_authenticated():
-            return helpers.render_page('rule.html')
+            return helpers.render_page('rule.html', show_descriptions=True)
         else:
             return redirect('ahmia.views_admin.login')
     else:

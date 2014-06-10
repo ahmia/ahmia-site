@@ -40,7 +40,8 @@ def onion_list(request):
         elif content_type and "rdf" in content_type:
             return onions_rdf(request)
         else: #default return is human readable HTML page
-            return helpers.render_page('hs_list_view.html')
+            show_descriptions = True
+            return helpers.render_page('hs_list_view.html', show_descriptions)
     elif request.method == 'POST':
         return post_add_hs(request)
     else:
@@ -72,7 +73,7 @@ def single_onion(request, onion):
                 return HttpResponseBadRequest()
             template = loader.get_template("hs_view.html")
             onions = HiddenWebsite.objects.all()
-            count_banned = onions.filter(banned=True).count()
+            count_banned = onions.filter(banned=True, online=True).count()
             count_online = onions.filter(banned=False, online=True).count()
             content = Context({'description': hs,
             'onion': onion,
@@ -221,7 +222,7 @@ def onion_edit(request, onion):
             return HttpResponseNotAllowed(answer)
         template = loader.get_template('hs_edit.html')
         onions = HiddenWebsite.objects.all()
-        count_banned = onions.filter(banned=True).count()
+        count_banned = onions.filter(banned=True, online=True).count()
         count_online = onions.filter(banned=False, online=True).count()
         content = Context({'site': hs,
                     'count_banned': count_banned,
@@ -386,8 +387,8 @@ def onion_rdf(request, onion):
 def onions_json(request):
     """All onion information as a JSON file."""
     if request.method == 'GET':
-        hs_list = HiddenWebsiteDescription.objects.order_by('about', '-updated')
-        hs_list = hs_list.distinct('about')
+        onions = HiddenWebsite.objects.all()
+        hs_list = helpers.latest_descriptions(onions)
         template = loader.get_template('onions.json')
         content = Context({'hs_list': hs_list})
         type_str = "application/json"
@@ -398,8 +399,8 @@ def onions_json(request):
 def onions_rdf(request):
     """All onion information as a RDF file."""
     if request.method == 'GET':
-        hs_list = HiddenWebsiteDescription.objects.order_by('about', '-updated')
-        hs_list = hs_list.distinct('about')
+        onions = HiddenWebsite.objects.all()
+        hs_list = helpers.latest_descriptions(onions)
         template = loader.get_template('onions.rdf')
         content = Context({'hs_list': hs_list})
         type_str = "application/rdf+xml"
