@@ -21,3 +21,42 @@ class OnionAddressViewsTestCase(TestCase):
         file_name = this_path + "/example_addresses.html"
         raw_html = read_file(file_name)
         self.assertHTMLEqual(raw_html, resp.content)
+
+    def test_description_edition(self):
+        """Edit a description and test the result."""
+        # Test the result
+        resp = self.client.get('/address/')
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue('description_list' in resp.context)
+        hs_1 = resp.context['description_list'][0]
+        self.assertEqual(hs_1.title, u"Tor Bazaar Member's Forum")
+        self.assertTrue('count_banned' in resp.context)
+        self.assertEqual(resp.context['count_banned'], 13)
+        self.assertTrue('count_online' in resp.context)
+        self.assertEqual(resp.context['count_online'], 1331)
+
+    def test_unknown(self):
+        """Test locations that should answer 404 not found."""
+        # Ensure that non-existent valid onion address throw a 404
+        resp = self.client.get('/address/aaaaaaaaaaaaaaaa')
+        self.assertEqual(resp.status_code, 404)
+        correct_result = "There is no aaaaaaaaaaaaaaaa.onion indexed."
+        self.assertEqual(resp.content, correct_result)
+        # Ensure that the edition throws 404
+        resp = self.client.get('/address/aaaaaaaaaaaaaaaa/edit')
+        self.assertEqual(resp.status_code, 404)
+        correct_result = "There is no aaaaaaaaaaaaaaaa.onion indexed."
+        self.assertEqual(resp.content, correct_result)
+        # Ensure that the status throws 404
+        resp = self.client.get('/address/aaaaaaaaaaaaaaaa/status')
+        self.assertEqual(resp.status_code, 404)
+        # Ensure that the popularity throws 404
+        resp = self.client.get('/address/aaaaaaaaaaaaaaaa/popularity')
+        self.assertEqual(resp.status_code, 404)
+
+    def test_invalid(self):
+        """Test locations that should answer 400 bad request."""
+        resp = self.client.get('/address/invalid')
+        self.assertEqual(resp.status_code, 400)
+        correct_result = "Invalid onion domain: invalid"
+        self.assertEqual(resp.content, correct_result)
