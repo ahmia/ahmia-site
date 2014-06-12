@@ -11,7 +11,7 @@ import re # Regular expressions
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 import ahmia.view_help_functions as helpers # My view_help_functions.py
-import ahmia.views_admin # My views_admin.py
+import ahmia.views_admin as admin # My views_admin.py
 from django.conf import settings # For the SMTP settings
 
 def add(request):
@@ -84,7 +84,7 @@ def single_onion(request, onion):
         return put_data_to_onion(request, onion)
     elif request.method == 'DELETE':
         # Delete means ban
-        return views_admin.ban(request, onion)
+        return admin.ban(request, onion)
     else:
         answer = "Only GET, PUT and DELETE request are allowed."
         return HttpResponseNotAllowed(answer)
