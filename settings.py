@@ -23,6 +23,8 @@ ALLOWED_HOSTS = [
     '.ahmia.fi.', # Also allow FQDN and subdomains
     '.msydqstlz2kzerdg.onion',
     '.msydqstlz2kzerdg.onion.',
+    'localhost',
+    '127.0.0.1',
 ]
 
 ADMINS = (
