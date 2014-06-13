@@ -2,6 +2,8 @@
 from django.test import TestCase
 import hashlib
 from ahmia.models import HiddenWebsite
+from ahmia.models import HiddenWebsiteDescription
+from ahmia.models import HiddenWebsitePopularity
 
 class HiddenWebsiteTest(TestCase):
     """Test HiddenWebsite model."""
@@ -54,3 +56,100 @@ class HiddenWebsiteTest(TestCase):
         for char in chars:
             onion = HiddenWebsite.objects.get(id=char*16)
             onion.delete()
+
+class HiddenWebsiteDescriptionTest(TestCase):
+    """Test HiddenWebsiteDescription model."""
+
+    def setUp(self):
+        """Creating models."""
+        onions = HiddenWebsite.objects.all()
+        self.assertEqual(HiddenWebsiteDescription.objects.all().count(), 4234)
+        index = 0
+        while index < 10:
+            descr = HiddenWebsiteDescription.objects.create(about=onions[index])
+            descr.title = "This is the title" + str(index)
+            descr.description = "This is the description" + str(index)
+            descr.relation = "http://example.com/" + str(index)
+            descr.subject = "This, is, the, subject" + str(index)
+            descr.type = "This is the type" + str(index)
+            if index % 2 == 0:
+                descr.officialInfo = True
+            else:
+                descr.officialInfo = False
+            descr.full_clean()
+            descr.save()
+            index = index + 1
+        self.assertEqual(HiddenWebsiteDescription.objects.all().count(), 4244)
+
+    def test_description_works(self):
+        """Test all the properties of the description."""
+        index = 0
+        onions = HiddenWebsite.objects.all()
+        while index < 10:
+            descr = HiddenWebsiteDescription.objects.get(about=onions[index],
+            type="This is the type" + str(index))
+            text = "This is the description" + str(index)
+            self.assertEqual(descr.description, text)
+            descr.description = ""
+            if index % 2 == 0:
+                self.assertTrue(descr.officialInfo)
+            else:
+                descr.officialInfo = True
+            descr.save()
+            # Get it again using filter and test that it has saved values
+            descr = HiddenWebsiteDescription.objects.filter(about=onions[index])
+            descr = descr.latest('updated')
+            self.assertTrue(descr.officialInfo)
+            self.assertEqual(descr.description, "")
+            index = index + 1
+
+    def delete_test(self):
+        """Delete each object that was created in the init."""
+        index = 0
+        onions = HiddenWebsite.objects.all()
+        while index < 10:
+            descr = HiddenWebsiteDescription.objects.filter(about=onions[index])
+            descr = descr.latest('updated').delete()
+            descr = HiddenWebsiteDescription.objects.filter(about=onions[index])
+            descr = descr.latest('updated').delete()
+        self.assertEqual(HiddenWebsiteDescription.objects.all().count(), 4234)
+
+class HiddenWebsitePopularityTest(TestCase):
+    """Test HiddenWebsitePopularity model."""
+
+    def setUp(self):
+        """Creating models."""
+        onions = HiddenWebsite.objects.all()
+        self.assertEqual(HiddenWebsitePopularity.objects.all().count(), 1391)
+        index = 0
+        while index < 10:
+            pop = HiddenWebsitePopularity.objects.filter(about=onions[index])
+            pop = pop[0]
+            pop.tor2web = 0
+            if index % 2 == 0:
+                pop.clicks = 10
+            elif index % 3 == 0:
+                pop.public_backlinks = 100
+            pop.full_clean()
+            pop.save()
+            index = index + 1
+        self.assertEqual(HiddenWebsitePopularity.objects.all().count(), 1391)
+
+    def test_popularity_works(self):
+        """Test all the properties of the popularity."""
+        index = 0
+        onions = HiddenWebsite.objects.all()
+        while index < 10:
+            pop = HiddenWebsitePopularity.objects.get(about=onions[index])
+            self.assertEqual(pop.tor2web, 0)
+            pop.tor2web = 1000
+            if index % 2 == 0:
+                self.assertEqual(pop.clicks, 10)
+            elif index % 3 == 0:
+                self.assertEqual(pop.public_backlinks, 100)
+            pop.save()
+            index = index + 1
+        # Get it again using filter and test that it has saved values
+        pops = HiddenWebsitePopularity.objects.filter(tor2web=1000)
+        self.assertEqual(pops.count(), 10)
+        self.assertEqual(pops[3].clicks, 10)
