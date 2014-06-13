@@ -5,14 +5,17 @@ Site admin features.
 Helps to rule the content and ban sites etc.
 
 """
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
 import ahmia.view_help_functions as helpers # My view_help_functions.py
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_GET
 
+@require_http_methods(["GET", "POST"])
 def login(request):
     """Administration login."""
     if request.method == 'GET':
@@ -30,23 +33,19 @@ def login(request):
                 return redirect('ahmia.views_admin.rule')
         except KeyError:
             return HttpResponseBadRequest()
-    else:
-        return HttpResponseNotAllowed("Only GET or POST requests are allowed.")
 
 def logout(request):
     """Administration logout."""
     auth.logout(request)
     return redirect('ahmia.views_admin.rule')
 
+@require_GET
 def rule(request):
     """Administration rule content"""
-    if request.method == 'GET':
-        if request.user.is_authenticated():
-            return helpers.render_page('rule.html', show_descriptions=True)
-        else:
-            return redirect('ahmia.views_admin.login')
+    if request.user.is_authenticated():
+        return helpers.render_page('rule.html', show_descriptions=True)
     else:
-        return HttpResponseNotAllowed("Only GET request is allowed.")
+        return redirect('ahmia.views_admin.login')
 
 def ban(request, onion):
     """Bans an onion site."""

@@ -8,23 +8,23 @@ YaCy back-end connections.
 import urllib2 # URL encode
 import urllib3 # HTTP conncetions
 from lxml import etree # To handle the XML answers from the YaCy
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.conf import settings # For the back-end connection settings
 from django.template import Context, loader
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_GET
 from ahmia.models import HiddenWebsitePopularity
 from ahmia.models import HiddenWebsite
 import time
 
+@require_GET
 def default(request):
     """The default page."""
-    if request.method == 'GET':
-        return redirect('/search/')
-    else:
-        return HttpResponseNotAllowed("Only GET request is allowed.")
+    return redirect('/search/')
 
+@require_GET
 def search_page(request):
     """The default full text search page."""
     query_string = request.GET.get('q', '')
@@ -49,39 +49,35 @@ def search_page(request):
         'count_online': onions.filter(banned=False, online=True).count()})
     return HttpResponse(template.render(content))
 
+@require_GET
 def yacy_connection(request, query_string):
     """Direct YaCy search wrapper."""
-    if request.method == 'GET':
-        http = urllib3.PoolManager()
-        query_string = urllib2.quote(query_string.encode("utf8"))
-        url = settings.YACY + query_string
-        response = http.request('GET', url)
-        if response.status is not 200:
-            return HttpResponseBadRequest("Bad request")
-        r_type = response.getheader('content-type')
-        data = response.data
-        if "text" in r_type or "javascript" in r_type:
-            data = data.replace('/suggest.json', '/yacy/suggest.json')
-            data = data.replace('href="/', 'href="/yacy/')
-            data = data.replace('src="/', 'scr="/yacy/')
-            data = data.replace("href='/", "href='/yacy/")
-            data = data.replace("src='/", "scr='/yacy/")
-        return HttpResponse(data, content_type=r_type)
-    else:
-        return HttpResponseNotAllowed("Only GET request is allowed.")
+    http = urllib3.PoolManager()
+    query_string = urllib2.quote(query_string.encode("utf8"))
+    url = settings.YACY + query_string
+    response = http.request('GET', url)
+    if response.status is not 200:
+        return HttpResponseBadRequest("Bad request")
+    r_type = response.getheader('content-type')
+    data = response.data
+    if "text" in r_type or "javascript" in r_type:
+        data = data.replace('/suggest.json', '/yacy/suggest.json')
+        data = data.replace('href="/', 'href="/yacy/')
+        data = data.replace('src="/', 'scr="/yacy/')
+        data = data.replace("href='/", "href='/yacy/")
+        data = data.replace("src='/", "scr='/yacy/")
+    return HttpResponse(data, content_type=r_type)
 
+@require_GET
 def find(request, query_string):
     """XSLT based search view. For special use."""
-    if request.method == 'GET':
-        if not query_string and 's' in request.GET:
-            query_string = request.GET.get('s')
-        xml = str(get_query(query_string))
-        xml = xml.replace("/yacysearch.xsl", "/static/xslt/yacysearch.xsl")
-        xml = xml.replace("<rss", "<lol")
-        xml = xml.replace("</rss>", "</lol>")
-        return HttpResponse(xml, content_type="application/xml")
-    else:
-        return HttpResponseNotAllowed("Only GET request is allowed.")
+    if not query_string and 's' in request.GET:
+        query_string = request.GET.get('s')
+    xml = str(get_query(query_string))
+    xml = xml.replace("/yacysearch.xsl", "/static/xslt/yacysearch.xsl")
+    xml = xml.replace("<rss", "<lol")
+    xml = xml.replace("</rss>", "</lol>")
+    return HttpResponse(xml, content_type="application/xml")
 
 def get_query(query_string):
     """Wrapper to YaCy installation."""
@@ -191,10 +187,10 @@ def sort_results(p_tuples):
     for index, p_info in enumerate(p_by_clicks):
         p_info.clicks = 1 / (float(index) + 1)
     # Scaling the number of Tor2web
-    p_by_clicks = sorted(p_by_backlinks, key=lambda popularity: popularity.clicks, reverse=True)
-    for index, p_info in enumerate(p_by_clicks):
-        p_info.clicks = 1 / (float(index) + 1)
-    p_by_sum = sorted(p_by_clicks, key=lambda popularity: popularity.sum(), reverse=True)
+    p_by_tor2web = sorted(p_by_clicks, key=lambda popularity: popularity.tor2web, reverse=True)
+    for index, p_info in enumerate(p_by_tor2web):
+        p_info.tor2web = 1 / (float(index) + 1)
+    p_by_sum = sorted(p_by_tor2web, key=lambda popularity: popularity.sum(), reverse=True)
     html_answer = ""
     for p_info in p_by_sum:
         html_answer = html_answer + p_info.content

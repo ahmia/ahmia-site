@@ -157,8 +157,8 @@ def onion_popularity(request, onion):
         # Allow POST data only from the localhost
         ip_addr = helpers.get_client_ip(request)
         if not str(ip_addr) in "127.0.0.1":
-            answer = "Bad request: only allowed form the localhost."
-            return HttpResponseBadRequest(answer)
+            answer = "Only allowed form the localhost."
+            return HttpResponseForbidden(answer)
         else:
             # Add new data
             data = request.body
@@ -421,8 +421,8 @@ def all_onions_txt(request):
     # Allow requests only from the localhost
     ip_addr = helpers.get_client_ip(request)
     if not str(ip_addr) in "127.0.0.1":
-        answer = "Bad request: only allowed form the localhost."
-        return HttpResponseBadRequest(answer)
+        answer = "Only allowed form the localhost."
+        return HttpResponseForbidden(answer)
     sites = HiddenWebsite.objects.all().order_by('url')
     site_list = []
     for site in sites:
@@ -444,8 +444,8 @@ def banned_domains_plain(request):
     # Allow requests only from the localhost
     ip_addr = helpers.get_client_ip(request)
     if not str(ip_addr) in "127.0.0.1":
-        answer = "Bad request: only allowed form the localhost."
-        return HttpResponseBadRequest(answer)
+        answer = "Only allowed form the localhost."
+        return HttpResponseForbidden(answer)
     sites = HiddenWebsite.objects.filter(banned=True)
     url_list = []
     for site in sites:
