@@ -154,7 +154,7 @@ def onion_popularity(request, onion):
         type_str = "application/json"
         return HttpResponse(template.render(content), content_type=type_str)
     elif request.method == 'PUT':
-        # Allow POST data only from the localhost
+        # Allow PUT data only from the localhost
         ip_addr = helpers.get_client_ip(request)
         if not str(ip_addr) in "127.0.0.1":
             answer = "Only allowed form the localhost."
@@ -164,7 +164,6 @@ def onion_popularity(request, onion):
             data = request.body
             return add_popularity(data, onion)
 
-@require_http_methods(['PUT'])
 def add_popularity(data, onion):
     """Add new popularity information to hidden service."""
     try:

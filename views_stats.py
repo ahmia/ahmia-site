@@ -4,21 +4,20 @@ Views
 Statistics: JSON data API and JavaScript viewers.
 
 """
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.core import serializers
-import view_help_functions as helpers # My view_help_functions.py
+import ahmia.view_help_functions as helpers # My view_help_functions.py
 from ahmia.models import HiddenWebsitePopularity
+from django.views.decorators.http import require_GET
 
+@require_GET
 def stats(request):
     """Return stats as JSON according to different GET query parameters."""
-    if request.method == 'GET':
-        offset = request.GET.get('offset', '0')
-        limit = request.GET.get('limit', '10')
-        order_by = request.GET.get('order_by', 'public_backlinks')
-        return build_stats(offset, limit, order_by)
-    else:
-        return HttpResponseNotAllowed("Only GET request is allowed.")
+    offset = request.GET.get('offset', '0')
+    limit = request.GET.get('limit', '10')
+    order_by = request.GET.get('order_by', 'public_backlinks')
+    return build_stats(offset, limit, order_by)
 
 def build_stats(offset, limit, order_by):
     """Builds the stats results."""
@@ -55,16 +54,12 @@ def calculate_stats(offset, limit, order_by):
     fields=('about', 'tor2web', 'public_backlinks', 'clicks'))
     return HttpResponse(response_data, content_type="application/json")
 
+@require_GET
 def statsviewer(request):
     """Opens JavaScript based stats viewer."""
-    if request.method == 'GET':
-        return helpers.render_page('statistics.html')
-    else:
-        return HttpResponseNotAllowed("Only GET request is allowed.")
+    return helpers.render_page('statistics.html')
 
+@require_GET
 def trafficviewer(request):
     """Opens JavaScript based traffic viewer."""
-    if request.method == 'GET':
-        return helpers.render_page('traffic.html')
-    else:
-        return HttpResponseNotAllowed("Only GET request is allowed.")
+    return helpers.render_page('traffic.html')
