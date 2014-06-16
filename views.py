@@ -71,7 +71,7 @@ def single_onion(request, onion):
         else: #default return is human readable HTML page
             if hs.about.banned:
                 answer = "This page is banned and it cannot be viewed."
-                return HttpResponseBadRequest()
+                return HttpResponse(answer)
             template = loader.get_template("hs_view.html")
             onions = HiddenWebsite.objects.all()
             count_banned = onions.filter(banned=True, online=True).count()
