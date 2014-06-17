@@ -29,42 +29,45 @@
 
 <h2>The filtering policies of the Tor2web nodes</h2>
 
+<p>Click a domain to see the MD5 filtering list.</p>
+<p>These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).</p>
+
 <div style="width: 100%;">
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #6699FF; text-align: right;">Tor2web.fi</h3>
-  <ol style="color: #6699FF;" id="tor2webfi"></ol>
+  <h3 onclick="showmd5list(this);" style="color: #6699FF; text-align: right;">Tor2web.fi</h3>
+  <ol style="color: #6699FF; display: none;" id="tor2webfi"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #7E8F74; text-align: right;">Tor2web.org</h3>
-  <ol style="color: #7E8F74;" id="tor2weborg"></ol>
+  <h3 onclick="showmd5list();" style="color: #7E8F74; text-align: right;">Tor2web.org</h3>
+  <ol style="color: #7E8F74; display: none;" id="tor2weborg"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #FF9900; text-align: right;">onion.to</h3>
-  <ol style="color: #FF9900;" id="onionto"></ol>
+  <h3 onclick="showmd5list();" style="color: #FF9900; text-align: right;">onion.to</h3>
+  <ol style="color: #FF9900; display: none;" id="onionto"></ol>
  </div>
  <br style="clear: left;" />
 </div>
 
 <div style="width: 100%;">
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #6666FF; text-align: right;">Tor2web.blutmagie.de</h3>
-  <ol style="color: #6666FF;" id="tor2webblutmagiede"></ol>
+  <h3 onclick="showmd5list();" style="color: #6666FF; text-align: right;">Tor2web.blutmagie.de</h3>
+  <ol style="color: #6666FF; display: none;" id="tor2webblutmagiede"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #FF8F74; text-align: right;">onion.lt</h3>
-  <ol style="color: #FF8F74;" id="onionlt"></ol>
+  <h3 onclick="showmd5list();" style="color: #FF8F74; text-align: right;">onion.lt</h3>
+  <ol style="color: #FF8F74; display: none;" id="onionlt"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #FF6600; text-align: right;">onion.cab</h3>
-  <ol style="color: #FF6600;" id="onioncab"></ol>
+  <h3 onclick="showmd5list();" style="color: #FF6600; text-align: right;">onion.cab</h3>
+  <ol style="color: #FF6600; display: none;" id="onioncab"></ol>
  </div>
  <br style="clear: left;" />
 </div>
 
 <div style="width: 100%;">
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #776677; text-align: right;">onion.lu</h3>
-  <ol style="color: #776677;" id="onionlu"></ol>
+  <h3 onclick="showmd5list();" style="color: #776677; text-align: right;">onion.lu</h3>
+  <ol style="color: #776677; display: none;" id="onionlu"></ol>
  </div>
  <br style="clear: left;" />
 </div>

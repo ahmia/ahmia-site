@@ -38,9 +38,7 @@ function ping(ip, callback) {
     }
 }
 
-
-$( document ).ready(function() {
-  
+function pingAllNodes(){
  var PingModel = function (servers) {
     var self = this;
     var myServers = [];
@@ -60,5 +58,36 @@ $( document ).ready(function() {
  };
  var komodel = new PingModel(TOR2WEB_NODE_LIST);
  ko.applyBindings(komodel);
+}
+
+function loadFilter(node){
+  var url = "/static/log/" + node + "_md5filterlist.txt";
+  var total = 0;
+  var ol_list_element = $("#"+node.replace(".", ""));
+  var h3 = ol_list_element.prev();
+  $.get( url, function( data ) {
+    if(data){
+      var lines = data.split("\n");
+      $.each(lines, function(n, line) {
+	var content = '<li style="list-style-type: none; text-align: right;">' + line + '</li>';
+	ol_list_element.append(content);
+	++total;
+      });
+      h3.text( h3.text() + " - " + total );
+    }
+  });
+}
+
+$( document ).ready(function() {
+  
+  pingAllNodes();
+
+  $.each(TOR2WEB_NODE_LIST, function( index, node ) {
+    loadFilter(node);
+  });
+  
+ $( "h3" ).click(function() {
+   $(this).next().toggle();
+ });
 
 });
