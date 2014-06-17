@@ -63,3 +63,8 @@ def statsviewer(request):
 def trafficviewer(request):
     """Opens JavaScript based traffic viewer."""
     return helpers.render_page('traffic.html')
+
+@require_GET
+def tor2web(request):
+    """Opens JavaScript based traffic viewer."""
+    return helpers.render_page('tor2web.html')

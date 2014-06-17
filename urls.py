@@ -56,6 +56,7 @@ urlpatterns += patterns('',
     # Stats
     (r'^stats/viewer', 'ahmia.views_stats.statsviewer'),
     (r'^stats/popularity', 'ahmia.views_stats.stats'),
+    (r'^stats/tor2web', 'ahmia.views_stats.tor2web'),
     (r'^stats/traffic', 'ahmia.views_stats.trafficviewer')
 )
 
