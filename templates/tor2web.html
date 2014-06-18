@@ -34,15 +34,15 @@
 
 <div style="width: 100%;">
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 onclick="showmd5list(this);" style="color: #6699FF; text-align: right;">Tor2web.fi</h3>
+  <h3 style="color: #6699FF; text-align: right;">Tor2web.fi</h3>
   <ol style="color: #6699FF; display: none;" id="tor2webfi"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 onclick="showmd5list();" style="color: #7E8F74; text-align: right;">Tor2web.org</h3>
+  <h3 style="color: #7E8F74; text-align: right;">Tor2web.org</h3>
   <ol style="color: #7E8F74; display: none;" id="tor2weborg"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 onclick="showmd5list();" style="color: #FF9900; text-align: right;">onion.to</h3>
+  <h3 style="color: #FF9900; text-align: right;">onion.to</h3>
   <ol style="color: #FF9900; display: none;" id="onionto"></ol>
  </div>
  <br style="clear: left;" />
@@ -50,15 +50,15 @@
 
 <div style="width: 100%;">
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 onclick="showmd5list();" style="color: #6666FF; text-align: right;">Tor2web.blutmagie.de</h3>
+  <h3 style="color: #6666FF; text-align: right;">Tor2web.blutmagie.de</h3>
   <ol style="color: #6666FF; display: none;" id="tor2webblutmagiede"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 onclick="showmd5list();" style="color: #FF8F74; text-align: right;">onion.lt</h3>
+  <h3 style="color: #FF8F74; text-align: right;">onion.lt</h3>
   <ol style="color: #FF8F74; display: none;" id="onionlt"></ol>
  </div>
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 onclick="showmd5list();" style="color: #FF6600; text-align: right;">onion.cab</h3>
+  <h3 style="color: #FF6600; text-align: right;">onion.cab</h3>
   <ol style="color: #FF6600; display: none;" id="onioncab"></ol>
  </div>
  <br style="clear: left;" />
@@ -66,10 +66,21 @@
 
 <div style="width: 100%;">
  <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 onclick="showmd5list();" style="color: #776677; text-align: right;">onion.lu</h3>
+  <h3 style="color: #776677; text-align: right;">onion.lu</h3>
   <ol style="color: #776677; display: none;" id="onionlu"></ol>
  </div>
  <br style="clear: left;" />
 </div>
+
+<h2>Build a filtering list</h2>
+
+<form id="setform">
+  <input type="radio" name="set" value="intersection">Intersection 
+  <input type="radio" name="set" value="sum">Sum
+  <input type="radio" name="set" value="difference" checked="checked">Difference <br>
+</form>
+
+<ol id="generatedlist">
+</ol>
 
 {% endblock %}

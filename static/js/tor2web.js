@@ -5,6 +5,8 @@ TOR2WEB_NODE_LIST = ['tor2web.fi',
     'onion.lt',
     'onion.lu',
     'onion.cab']
+    
+FILTERS = {}
 
 function ping(ip, callback) {
 
@@ -34,7 +36,7 @@ function ping(ip, callback) {
                 _that.inUse = false;
                 _that.callback(' - timeout');
             }
-        }, 5000);
+        }, 10000);
     }
 }
 
@@ -63,31 +65,100 @@ function pingAllNodes(){
 function loadFilter(node){
   var url = "/static/log/" + node + "_md5filterlist.txt";
   var total = 0;
-  var ol_list_element = $("#"+node.replace(".", ""));
+  var node_name = node.replace(".", "");
+  var ol_list_element = $("#"+node_name);
   var h3 = ol_list_element.prev();
   $.get( url, function( data ) {
     if(data){
       var lines = data.split("\n");
+      lines.sort();
       $.each(lines, function(n, line) {
 	var content = '<li style="list-style-type: none; text-align: right;">' + line + '</li>';
 	ol_list_element.append(content);
 	++total;
       });
       h3.text( h3.text() + " - " + total );
+      var content = '<input type="checkbox" name="node" value="' 
+      content = content + node_name + '">' + node + '<br>';
+      $("#setform").append(content);
+      FILTERS[node_name] = lines;
     }
   });
 }
 
-$( document ).ready(function() {
+function generateList() {
+  var setOption = setOption = $("form input:radio:checked").val();
+  var filtering = [];
+  var ul_element = $("#generatedlist");
+  ul_element.empty();
+  var init = true;
+  $( "form input:checkbox:checked" ).each(function() {
+      var node_name = $(this).val();
+      var md5list = FILTERS[node_name];
+      if(init){
+	init = false;
+	filtering = md5list;
+      }
+      else if( setOption == "sum" ){
+	filtering.push.apply(filtering, md5list);
+      }
+      else if( setOption == "intersection" ){
+	  filtering = intersection(md5list, filtering);
+      }
+      else if( setOption == "difference" ){
+	filtering = diff(md5list, filtering);
+      }
+  });
+  
+  var finallist = [];
+  
+  // Remove Duplicates from the array 
+  $.each(filtering, function(i, el){
+    if($.inArray(el, finallist) === -1) finallist.push(el);
+  });
+  
+  // Show the results
+  $.each(finallist, function(n, line) {
+    var content = "<li>" + line + "</li>";
+    ul_element.append(content);
+  });
+}
+
+
+// Finds the intersection of two arrays
+function intersection(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter(function (e) {
+        if (b.indexOf(e) !== -1) return true;
+    });
+}
+
+
+function diff(array1, array2)
+{
+  var difference = [];
+  jQuery.grep(array2, function(el) {
+        if (jQuery.inArray(el, array1) == -1) difference.push(el);
+  });
+  return difference;
+}
+
+
+$(document).ready(function() {
   
   pingAllNodes();
 
-  $.each(TOR2WEB_NODE_LIST, function( index, node ) {
+  $.each(TOR2WEB_NODE_LIST, function(index, node) {
     loadFilter(node);
   });
   
- $( "h3" ).click(function() {
-   $(this).next().toggle();
- });
+  $("h3").click(function() {
+    $(this).next().toggle();
+  });
 
+  $("#setform").change(function() {
+    generateList();
+  });
+  
 });
