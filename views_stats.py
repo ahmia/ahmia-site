@@ -8,8 +8,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.core import serializers
 import ahmia.view_help_functions as helpers # My view_help_functions.py
-from ahmia.models import HiddenWebsitePopularity
+from ahmia.models import HiddenWebsitePopularity, HiddenWebsite
 from django.views.decorators.http import require_GET
+from django.template import Context, loader
 
 @require_GET
 def stats(request):
@@ -58,6 +59,16 @@ def calculate_stats(offset, limit, order_by):
 def statsviewer(request):
     """Opens JavaScript based stats viewer."""
     return helpers.render_page('statistics.html')
+
+@require_GET
+def history(request):
+    """Opens JavaScript based stats viewer."""
+    onions = HiddenWebsite.objects.all()
+    template = loader.get_template('history.html')
+    content = Context({'onions': onions.filter(banned=False),
+    'count_banned': onions.filter(banned=True, online=True).count(),
+    'count_online': onions.filter(banned=False, online=True).count()})
+    return HttpResponse(template.render(content))
 
 @require_GET
 def trafficviewer(request):

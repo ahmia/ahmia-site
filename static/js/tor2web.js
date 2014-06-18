@@ -78,8 +78,7 @@ function loadFilter(node){
 	++total;
       });
       h3.text( h3.text() + " - " + total );
-      var content = '<input type="checkbox" name="node" value="' 
-      content = content + node_name + '">' + node + '<br>';
+      var content = '<input type="checkbox" name="node" value="' + node_name + '">' + node;
       $("#setform").append(content);
       FILTERS[node_name] = lines;
     }
