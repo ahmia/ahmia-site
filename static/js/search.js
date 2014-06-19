@@ -15,10 +15,25 @@ var glb_timeout = "";
         if(filter) {
           // this finds all links in a list that contain the input,
           // and hide the ones not containing the input while showing the ones that do
-          $(list).find("li:not(:Contains(" + filter + "))").hide();
-          $(list).find("li:Contains(" + filter + ")").show();
+	  
+	  // Hide
+          var li_hide = $(list).find("li:not(:Contains(" + filter + "))");
+	  li_hide.each(function( index ) {
+	    li_hide[index].style.display = "none"
+	  });
+	  
+	  // Show
+          var li_show = $(list).find("li:Contains(" + filter + ")");
+	  li_show.each(function( index ) {
+	    li_show[index].style.display = "block"
+	  });
+	  
         } else {
-          $(list).find("li").show();
+	  // Show
+          var li_show = $(list).find("li:Contains(" + filter + ")");
+	  li_show.each(function( index ) {
+	    li_show[index].style.display = "block"
+	  });
         }
         showNumberOfResults();
 	highlightText();

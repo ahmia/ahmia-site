@@ -4,26 +4,26 @@
 
 {% block content %}
 
-<script type="text/javascript">
-
-</script>
+<script type="text/javascript" src='/static/js/history.js'></script>
 
  <a href="/add/" class="button-add right">Add new onion domain</a>
  <h2>Onion domain list</h2>
  <noscript><p>ENABLE JAVASCRIPT (CLIENT SIDE).</p></noscript>
- <script type="text/javascript" src="/static/js/search.js"></script>
- <div id="search"></div>
+ <form id="filters"></form>
+ <br>
+ <p>Online means that a HS has answered to HTTP GET request within a week. Otherwise, it is marked as offline.</p>
+ <br>
   <div id='wrap'>
    <ul id='list' class='steps'>
 {% for site in onions %}
-     <li class="hs_site clickable_pointer">
+     <li class='hs_site clickable_pointer {% if site.online %}online{% else %}offline{% endif %}'>
       <div onclick="window.location='/address/{{ site.id  }}'">
        <h3><a href="{{ site.url }}">{{ site.id }}.onion</a></h3>
        <div class='infotext'>
         {% if site.online %}<strong class="color12">Online</strong>{% else %}<strong class="color1">Offline</strong>{% endif %}
         <br />
         {% if site.seenOnline %}
-	  <b>Last time seen online: </b>{{ site.seenOnline }}<br />
+	  <b>Last time seen online: </b><span class="seenonline">{{ site.seenOnline }}</span><br />
 	{% else %}
 	  <b>Never seen online</b><br />
         {% endif %}
@@ -36,5 +36,5 @@
 {% endfor %}
    </ul>
   </div>
-  <strong id="totalresults" class="color12" style="text-align:center;"></strong> sites matches to the search
+
 {% endblock %}

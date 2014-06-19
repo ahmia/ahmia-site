@@ -86,7 +86,7 @@ function loadFilter(node){
 }
 
 function generateList() {
-  var setOption = setOption = $("form input:radio:checked").val();
+  var setOption = $("form input:radio:checked").val();
   var filtering = [];
   var ul_element = $("#generatedlist");
   ul_element.empty();
