@@ -269,10 +269,10 @@ def add_hs(json):
         hs = hs_list.latest('updated')
         if hs.officialInfo:
             answer = "This page has official info and it cannot be edited."
-            return HttpResponseBadRequest(answer)
+            return HttpResponseForbidden(answer)
         if hs.about.banned:
             answer = "This page is banned and it cannot be edited."
-            return HttpResponseBadRequest(answer)
+            return HttpResponseForbidden(answer)
     if relation:
         regex = re.compile(
         r'^(?:http|ftp)s?://' # http:// or https://
