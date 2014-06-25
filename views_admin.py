@@ -68,4 +68,6 @@ def ban(request, onion):
         popularity.save()
     except ObjectDoesNotExist:
         print "No popularity for this banned onion."
+    # Send notification to Tor2web nodes
+    # noteTor2webNodes()
     return HttpResponse("banned")
