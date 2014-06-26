@@ -6,19 +6,20 @@
 
 <h2 style="padding: 5px; float: left; width: 300px;">Full Text Search</h2>
 
- <div id="search">
+<div id="search">
   <form action="/search/" id="searchForm" method="get">
-   <input style="float: left;" name="q" class="filterinput" id="torsearch" type="text" placeholder="search term" autofocus="autofocus">
-   <input style="margin-left: 5px; position: absolute;" class="input-add" type="submit" value="Search" />
+    <input style="float: left;" name="q" class="filterinput" id="torsearch" type="text" placeholder="search term" autofocus="autofocus">
+    <input style="margin-left: 5px; position: absolute;" class="input-add" type="submit" value="Search" />
   </form>
- </div>
+</div>
 
- <br style="clear: left;" />
+<br style="clear: left;" />
 
-  <!-- the result of the search will be rendered inside this list -->
-  <ul id='list' class='steps'>
-    {% autoescape off %}{{ search_results }}{% endautoescape %}
-  </ul>
-  {% if search_time %}<p>Search time <span>{{ search_time }}</span> seconds</p>{% endif %}
+<!-- the result of the search will be rendered inside this list -->
+<ul id='list' class='steps'>
+  {% autoescape off %}{{ search_results }}{% endautoescape %}
+</ul>
+{% if search_time %}
+<p>Search time <span>{{ search_time }}</span> seconds</p>{% endif %}
 
 {% endblock %}

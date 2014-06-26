@@ -16,59 +16,62 @@
 </ul>
 
 <p>
-Security measure: obfuscate real-time stats. The clicks are rounded to the next multiple of 8. This simple way prevents leaking too accurate real-time statistics.
+  Security measure: obfuscate real-time stats. The clicks are rounded to the next multiple of 8. This simple way prevents leaking too accurate real-time statistics.
 </p>
 
 <h4>Examples</h4>
 <p>
-TOP 5 ordered by Tor2web visit count: <br />
-<a href="https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web">https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web</a> <br />
-The 10th from ordered by public WWW backlinks: <br />
-<a href="https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks">https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks</a> <br />
-The first from ordered by number of search result clicks: <br />
-<a href="https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks">https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks</a>
+  TOP 5 ordered by Tor2web visit count:
+  <br />
+  <a href="https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web">https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web</a>
+  <br />The 10th from ordered by public WWW backlinks:
+  <br />
+  <a href="https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks">https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks</a>
+  <br />The first from ordered by number of search result clicks:
+  <br />
+  <a href="https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks">https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks</a>
 </p>
 
 <h3>Visualizations</h3>
 
 <p>
-<a href="/stats/viewer">Visualizations</a> of the statistics.
+  <a href="/stats/viewer">Visualizations</a> of the statistics.
 </p>
 
 <h3>Onion information</h3>
 
 <p>
-All banned hidden services <a href="/banned/">https://ahmia.fi/banned/</a>. These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
+  All banned hidden services <a href="/banned/">https://ahmia.fi/banned/</a>. These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
 </p>
 
 <p>
-All known non-banned onion domains <a href="/onions/">https://ahmia.fi/onions/</a>. 
+  All known non-banned onion domains <a href="/onions/">https://ahmia.fi/onions/</a>.
 </p>
 
 <p>
-See if a hidden service has been online within a week <a href="https://ahmia.fi/address/jntlesnev5o7zysa/status">https://ahmia.fi/address/jntlesnev5o7zysa/status</a> (answer is down/up).
+  See if a hidden service has been online within a week <a href="https://ahmia.fi/address/jntlesnev5o7zysa/status">https://ahmia.fi/address/jntlesnev5o7zysa/status</a> (answer is down/up).
 </p>
 
 <p>
-Ask a hidden service's information:
-<br />
-<code>
+  Ask a hidden service's information:
+  <br />
+  <code>
 curl -i -H "Content-Type: application/json" https://ahmia.fi/address/jntlesnev5o7zysa/
 </code>
-<br />
-<code>
+  <br />
+  <code>
 curl -i -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/jntlesnev5o7zysa/
 </code>
 </p>
 
 <p>
-Ask all hidden services' information:  
-<br />
-<code>
+  Ask all hidden services' information:
+  <br />
+  <code>
 curl -i -H "Content-Type: application/json" https://ahmia.fi/address/
 </code>
-<br />
-<code>
+  <br />
+  <code>
 curl -i -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/
 </code>
 </p>
@@ -76,11 +79,11 @@ curl -i -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/
 <h3>For hidden service operators</h3>
 
 <p>
-You can check <a href="/documentation/indexing/">how our hidden service indexing</a> works.
+  You can check <a href="/documentation/indexing/">how our hidden service indexing</a> works.
 </p>
 
 <p>
-Please deliver your hidden service's official information: <a href="/documentation/descriptionProposal/">Proposal to hidden service operators.</a>
+  Please deliver your hidden service's official information: <a href="/documentation/descriptionProposal/">Proposal to hidden service operators.</a>
 </p>
 
 {% endblock %}

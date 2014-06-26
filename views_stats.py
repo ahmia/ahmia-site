@@ -4,13 +4,14 @@ Views
 Statistics: JSON data API and JavaScript viewers.
 
 """
-from django.http import HttpResponse
-from django.http import HttpResponseBadRequest
 from django.core import serializers
-import ahmia.view_help_functions as helpers # My view_help_functions.py
-from ahmia.models import HiddenWebsitePopularity, HiddenWebsite
-from django.views.decorators.http import require_GET
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import Context, loader
+from django.views.decorators.http import require_GET
+
+import ahmia.view_help_functions as helpers  # My view_help_functions.py
+from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+
 
 @require_GET
 def stats(request):

@@ -6,14 +6,17 @@ Or just show the online status.
 Use local socks proxy that is the Tor connection.
 
 """
-from django.http import HttpResponse, HttpResponseNotFound
-from django.http import HttpResponseForbidden, HttpResponseBadRequest
 from datetime import datetime, timedelta
-from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.http import require_http_methods
-import ahmia.view_help_functions as helpers # My view_help_functions.py
+
 import simplejson
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import (HttpResponse, HttpResponseBadRequest,
+                         HttpResponseForbidden, HttpResponseNotFound)
+from django.views.decorators.http import require_http_methods
+
+import ahmia.view_help_functions as helpers  # My view_help_functions.py
+from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
+
 
 @require_http_methods(["GET", "PUT"])
 def onion_up(request, onion):

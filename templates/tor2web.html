@@ -8,25 +8,29 @@
 <script src='/static/js/knockout-3.1.0.js'></script>
 
 <style>
-.responded {
-    color:green;
-}
-.checking,.unchecked {
-    color:#FF8C00;
-}
-.timeout {
-    color:red;
-}
+  .responded {
+    color: green;
+  }
+  .checking,
+  .unchecked {
+    color: #FF8C00;
+  }
+  .timeout {
+    color: red;
+  }
 </style>
 
-<noscript><p>Please enable JavaScript to view these statistics.</p></noscript>
+<noscript>
+  <p>Please enable JavaScript to view these statistics.</p>
+</noscript>
 
 <h2>Tor2web nodes</h2>
 
 <p>Checking which Tor2web nodes are online</p>
 
 <ul data-bind="foreach:servers">
-    <li> <a href="#" data-bind="text:name,attr:{href: 'https://'+name}">tester</a> <span data-bind="text:status,css:status"></span></li>
+  <li> <a href="#" data-bind="text:name,attr:{href: 'https://'+name}">tester</a>  <span data-bind="text:status,css:status"></span>
+  </li>
 </ul>
 
 <h2>The filtering policies of the Tor2web nodes</h2>
@@ -35,51 +39,53 @@
 <p>Click a domain to see the MD5 filtering list.</p>
 
 <div style="width: 100%;">
- <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #6699FF; text-align: right;">Tor2web.fi</h3>
-  <ol style="color: #6699FF; display: none;" id="tor2webfi"></ol>
- </div>
- <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #7E8F74; text-align: right;">Tor2web.org</h3>
-  <ol style="color: #7E8F74; display: none;" id="tor2weborg"></ol>
- </div>
- <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #FF9900; text-align: right;">onion.to</h3>
-  <ol style="color: #FF9900; display: none;" id="onionto"></ol>
- </div>
- <br style="clear: left;" />
+  <div style="float: left; width: 33.3%; text-align: justify;">
+    <h3 style="color: #6699FF; text-align: right;">Tor2web.fi</h3>
+    <ol style="color: #6699FF; display: none;" id="tor2webfi"></ol>
+  </div>
+  <div style="float: left; width: 33.3%; text-align: justify;">
+    <h3 style="color: #7E8F74; text-align: right;">Tor2web.org</h3>
+    <ol style="color: #7E8F74; display: none;" id="tor2weborg"></ol>
+  </div>
+  <div style="float: left; width: 33.3%; text-align: justify;">
+    <h3 style="color: #FF9900; text-align: right;">onion.to</h3>
+    <ol style="color: #FF9900; display: none;" id="onionto"></ol>
+  </div>
+  <br style="clear: left;" />
 </div>
 
 <div style="width: 100%;">
- <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #6666FF; text-align: right;">Tor2web.blutmagie.de</h3>
-  <ol style="color: #6666FF; display: none;" id="tor2webblutmagiede"></ol>
- </div>
- <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #FF8F74; text-align: right;">onion.lt</h3>
-  <ol style="color: #FF8F74; display: none;" id="onionlt"></ol>
- </div>
- <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #FF6600; text-align: right;">onion.cab</h3>
-  <ol style="color: #FF6600; display: none;" id="onioncab"></ol>
- </div>
- <br style="clear: left;" />
+  <div style="float: left; width: 33.3%; text-align: justify;">
+    <h3 style="color: #6666FF; text-align: right;">Tor2web.blutmagie.de</h3>
+    <ol style="color: #6666FF; display: none;" id="tor2webblutmagiede"></ol>
+  </div>
+  <div style="float: left; width: 33.3%; text-align: justify;">
+    <h3 style="color: #FF8F74; text-align: right;">onion.lt</h3>
+    <ol style="color: #FF8F74; display: none;" id="onionlt"></ol>
+  </div>
+  <div style="float: left; width: 33.3%; text-align: justify;">
+    <h3 style="color: #FF6600; text-align: right;">onion.cab</h3>
+    <ol style="color: #FF6600; display: none;" id="onioncab"></ol>
+  </div>
+  <br style="clear: left;" />
 </div>
 
 <div style="width: 100%;">
- <div style="float: left; width: 33.3%; text-align: justify;">
-  <h3 style="color: #776677; text-align: right;">onion.lu</h3>
-  <ol style="color: #776677; display: none;" id="onionlu"></ol>
- </div>
- <br style="clear: left;" />
+  <div style="float: left; width: 33.3%; text-align: justify;">
+    <h3 style="color: #776677; text-align: right;">onion.lu</h3>
+    <ol style="color: #776677; display: none;" id="onionlu"></ol>
+  </div>
+  <br style="clear: left;" />
 </div>
 
 <h2>Build a filtering list</h2>
 
 <form id="setform">
-  <input type="radio" name="set" value="intersection">Intersection 
+  <input type="radio" name="set" value="intersection">Intersection
   <input type="radio" name="set" value="sum">Sum
-  <input type="radio" name="set" value="difference" checked="checked">Difference <br> <br>
+  <input type="radio" name="set" value="difference" checked="checked">Difference
+  <br>
+  <br>
 </form>
 
 <ol id="generatedlist">

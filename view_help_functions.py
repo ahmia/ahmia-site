@@ -1,9 +1,12 @@
 """ Generig help functions for the views. """
-from django.template import Context, loader
-from django.http import HttpResponse
-from ahmia.models import HiddenWebsiteDescription, HiddenWebsite
+import re  # Regular expressions
+
 from django.core.exceptions import ValidationError
-import re # Regular expressions
+from django.http import HttpResponse
+from django.template import Context, loader
+
+from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
+
 
 def validate_onion_url(url):
     """ Test is url correct onion URL."""

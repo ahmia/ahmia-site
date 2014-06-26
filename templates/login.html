@@ -10,11 +10,14 @@
 
 <form method="post" action="/rule/login/">
 
-  Username: <input type="text" name="username" size="15" /><br />
-  Password: <input type="password" name="password" size="15" /><br />
+  Username:
+  <input type="text" name="username" size="15" />
+  <br />Password:
+  <input type="password" name="password" size="15" />
+  <br />
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
+  <input type="submit" value="login" />
+  <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
 {% endblock %}

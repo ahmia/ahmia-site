@@ -1,9 +1,11 @@
 """Tests: ahmia/tests/test_models.py is testing ahmia/models.py"""
-from django.test import TestCase
 import hashlib
-from ahmia.models import HiddenWebsite
-from ahmia.models import HiddenWebsiteDescription
-from ahmia.models import HiddenWebsitePopularity
+
+from django.test import TestCase
+
+from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
+                          HiddenWebsitePopularity)
+
 
 class HiddenWebsiteTest(TestCase):
     """Test HiddenWebsite model."""

@@ -1,9 +1,9 @@
 """The URL patterns of the ahmia."""
-from django.conf.urls import patterns, include
 from django.conf import settings
+from django.conf.urls import include, patterns
+from django.contrib import admin
 
 # For admin UI.
-from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',

@@ -5,15 +5,16 @@ Site admin features.
 Helps to rule the content and ban sites etc.
 
 """
-from django.http import HttpResponse
-from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from django.shortcuts import redirect, render_to_response
 from django.contrib import auth
-import ahmia.view_help_functions as helpers # My view_help_functions.py
-from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.http import require_http_methods
-from django.views.decorators.http import require_GET
+from django.http import (HttpResponse, HttpResponseBadRequest,
+                         HttpResponseNotFound)
+from django.shortcuts import redirect, render_to_response
+from django.views.decorators.http import require_GET, require_http_methods
+
+import ahmia.view_help_functions as helpers  # My view_help_functions.py
+from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+
 
 @require_http_methods(["GET", "POST"])
 def login(request):
@@ -68,4 +69,6 @@ def ban(request, onion):
         popularity.save()
     except ObjectDoesNotExist:
         print "No popularity for this banned onion."
+    # Send notification to Tor2web nodes
+    # noteTor2webNodes()
     return HttpResponse("banned")
