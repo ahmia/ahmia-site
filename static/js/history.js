@@ -27,9 +27,12 @@ $(document).ready(function() {
   // Build filtering buttons
   var filter_form = $("form");
   
-  var online_selection = '<input type="radio" name="status" value="online"> <strong class="color12">Online</strong> (' + onlinecount + ')';
-  var offline_selection = '<input type="radio" name="status" value="offline"> <strong class="color1">Offline</strong> (' + offlinecount + ')';
-  var all_selection = '<input type="radio" name="status" value="hs_site" checked="checked"> <strong>All</strong> (' + total + ')';
+  var online_selection = '<label class="nostyle" for="online"><strong class="color12">Online</strong> (' + onlinecount + ')</label>';
+  online_selection = online_selection + '<input type="radio" name="status" id="online" value="online">';
+  var offline_selection = '<label class="nostyle" for="offline"><strong class="color1">Offline</strong> (' + offlinecount + ')</label>';
+  offline_selection = offline_selection + '<input type="radio" name="status" id="offline" value="offline">';
+  var all_selection = '<label class="nostyle" for="hs_site"><strong>All</strong> (' + total + ')</label>';
+  all_selection = all_selection + '<input type="radio" name="status" id="hs_site" value="hs_site" checked="checked">';
   
   filter_form.append( all_selection );
   filter_form.append( online_selection );

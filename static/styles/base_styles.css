@@ -84,6 +84,10 @@ label {
 	margin-bottom: 6px;
 }
 
+.nostyle {
+  display: inline;
+}
+
 input, textarea {
 	font-family: inherit;
 	font-size: 100%;
