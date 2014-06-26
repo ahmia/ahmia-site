@@ -1,21 +1,23 @@
 """Basic views."""
-from django.template import Context, loader
-from django.http import HttpResponse, HttpResponseForbidden
-from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from django.http import StreamingHttpResponse
-from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
-from ahmia.models import HiddenWebsiteDescription
 import hashlib
+import re  # Regular expressions
+
 import simplejson
-import re # Regular expressions
-from django.core.mail import send_mail
+from django.conf import settings  # For the SMTP settings
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.views.decorators.http import require_http_methods
-from django.views.decorators.http import require_GET
-from django.views.decorators.http import require_POST
-import ahmia.view_help_functions as helpers # My view_help_functions.py
-import ahmia.views_admin as admin # My views_admin.py
-from django.conf import settings # For the SMTP settings
+from django.core.mail import send_mail
+from django.http import (HttpResponse, HttpResponseBadRequest,
+                         HttpResponseForbidden, HttpResponseNotFound,
+                         StreamingHttpResponse)
+from django.template import Context, loader
+from django.views.decorators.http import (require_GET, require_http_methods,
+                                          require_POST)
+
+import ahmia.view_help_functions as helpers  # My view_help_functions.py
+import ahmia.views_admin as admin  # My views_admin.py
+from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
+                          HiddenWebsitePopularity)
+
 
 @require_GET
 def add(request):

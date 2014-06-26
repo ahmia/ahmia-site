@@ -5,8 +5,10 @@ Static HTML pages.
 These pages does not require database connection.
 
 """
-from django.http import HttpResponseNotAllowed, HttpResponse
-import view_help_functions as helpers # My view_help_functions.py
+from django.http import HttpResponse, HttpResponseNotAllowed
+
+import view_help_functions as helpers  # My view_help_functions.py
+
 
 def indexing(request):
     """Static page about the indexing and crawling."""

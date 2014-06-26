@@ -1,7 +1,10 @@
 """Tests: ahmia/tests/test_views.py is testing ahmia/views.py"""
+import codecs  # UTF-8 support for the text files
+import os
+import sys
+
 from django.test import TestCase
-import codecs # UTF-8 support for the text files
-import os, sys
+
 
 def read_file(filename):
     """Read a file and return the text content."""

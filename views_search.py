@@ -5,19 +5,20 @@ Full text search views.
 YaCy back-end connections.
 
 """
-import urllib2 # URL encode
-import urllib3 # HTTP conncetions
-from lxml import etree # To handle the XML answers from the YaCy
-from django.http import HttpResponse
-from django.http import HttpResponseBadRequest
-from django.shortcuts import redirect
-from django.conf import settings # For the back-end connection settings
-from django.template import Context, loader
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.http import require_GET
-from ahmia.models import HiddenWebsitePopularity
-from ahmia.models import HiddenWebsite
 import time
+import urllib2  # URL encode
+
+import urllib3  # HTTP conncetions
+from django.conf import settings  # For the back-end connection settings
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import redirect
+from django.template import Context, loader
+from django.views.decorators.http import require_GET
+from lxml import etree  # To handle the XML answers from the YaCy
+
+from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+
 
 @require_GET
 def default(request):

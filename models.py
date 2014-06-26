@@ -1,9 +1,10 @@
 """Models for the database of ahmia."""
-from django.db import models
-from django.core.validators import MaxLengthValidator
-from django.core.validators import MinLengthValidator
-from django.core.exceptions import ValidationError
 import re
+
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxLengthValidator, MinLengthValidator
+from django.db import models
+
 
 # Validators
 def validate_onion_url(url):
