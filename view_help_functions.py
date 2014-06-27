@@ -8,6 +8,17 @@ from django.template import Context, loader
 from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
 
 
+def html_escape(text):
+    """Produce entities within text."""
+    html_escape_table = {
+    "&": "&amp;",
+    '"': "&quot;",
+    "'": "&apos;",
+    ">": "&gt;",
+    "<": "&lt;"
+    }
+    return "".join(html_escape_table.get(c, c) for c in text)
+
 def validate_onion_url(url):
     """ Test is url correct onion URL."""
     #Must be like http://3g2upl4pq6kufc4m.onion/

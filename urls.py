@@ -58,7 +58,7 @@ urlpatterns += patterns('',
     (r'^stats/popularity', 'ahmia.views_stats.stats'),
     (r'^stats/tor2web', 'ahmia.views_stats.tor2web'),
     (r'^stats/history', 'ahmia.views_stats.history'),
-    (r'^stats/traffic', 'ahmia.views_stats.trafficviewer')
+    (r'^stats/traffic', 'ahmia.views_stats.trafficviewer'),
 )
 
 # Admin views
@@ -69,7 +69,7 @@ urlpatterns += patterns('',
     (r'^rule/login/', 'ahmia.views_admin.login'),
     (r'^rule/logout/', 'ahmia.views_admin.logout'),
     # Rule content.
-    (r'^rule/$', 'ahmia.views_admin.rule')
+    (r'^rule/$', 'ahmia.views_admin.rule'),
 )
 
 # From views_static
@@ -92,7 +92,27 @@ urlpatterns += patterns('',
     # Information about Google Summer of Code 2014.
     (r'^gsoc/', 'ahmia.views_static.gsoc'),
     # Show visitor's IP address.
-    (r'^IP/', 'ahmia.views_static.show_ip')
+    (r'^IP/', 'ahmia.views_static.show_ip'),
+)
+
+# Yacy wrapping
+urlpatterns += patterns('',
+    # Full text search using YaCy wrapper.
+    # Load under /static/
+    (r'^yacy/(.*)', 'ahmia.views_search.yacy_static'),
+    (r'^env/(.*)', 'ahmia.views_search.yacy_static'),
+    (r'^currentyacypeer/(.*)', 'ahmia.views_search.yacy_static'),
+    (r'^portalsearch/(.*)', 'ahmia.views_search.yacy_static'),
+    (r'^jquery/(.*)', 'ahmia.views_search.yacy_static'),
+    (r'^js/(.*)', 'ahmia.views_search.yacy_static'),
+    # Use the wrapper
+    (r'^api/(.*)', 'ahmia.views_search.yacy_connection'),
+    (r'^yacysearch.rss(.*)', 'ahmia.views_search.yacy_connection'),
+    (r'^yacysearch.html(.*)', 'ahmia.views_search.yacy_connection'),
+    (r'^suggest.json(.*)', 'ahmia.views_search.yacy_connection'),
+    (r'^cytag.png(.*)', 'ahmia.views_search.yacy_connection'),
+    (r'^index.html(.*)', 'ahmia.views_search.yacy_connection'),
+    (r'^ViewImage.png(.*)', 'ahmia.views_search.yacy_connection'),
 )
 
 #media files: CSS, JavaScript, images
@@ -100,6 +120,4 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
-        # Full text search using YaCy wrapper.
-        (r'^yacy/(.*)', 'ahmia.views_search.yacy_connection'),
     )

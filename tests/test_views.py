@@ -1,4 +1,5 @@
 """Tests: ahmia/tests/test_views.py is testing ahmia/views.py"""
+# -*- coding: utf-8 -*-
 import codecs  # UTF-8 support for the text files
 import os
 import sys

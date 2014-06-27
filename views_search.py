@@ -17,6 +17,7 @@ from django.template import Context, loader
 from django.views.decorators.http import require_GET
 from lxml import etree  # To handle the XML answers from the YaCy
 
+import ahmia.view_help_functions as helpers  # My view_help_functions.py
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 
 
@@ -53,21 +54,22 @@ def search_page(request):
 @require_GET
 def yacy_connection(request, query_string):
     """Direct YaCy search wrapper."""
+    url = request.get_full_path()
+    if url == "/yacysearch.html":
+        url = ""
     http = urllib3.PoolManager()
     query_string = urllib2.quote(query_string.encode("utf8"))
-    url = settings.YACY + query_string
+    url = settings.YACY[:-1] + url
     response = http.request('GET', url)
-    if response.status is not 200:
-        return HttpResponseBadRequest("Bad request")
     r_type = response.getheader('content-type')
-    data = response.data
-    if "text" in r_type or "javascript" in r_type:
-        data = data.replace('/suggest.json', '/yacy/suggest.json')
-        data = data.replace('href="/', 'href="/yacy/')
-        data = data.replace('src="/', 'scr="/yacy/')
-        data = data.replace("href='/", "href='/yacy/")
-        data = data.replace("src='/", "scr='/yacy/")
-    return HttpResponse(data, content_type=r_type)
+    r_data = response.data
+    r_status = response.status
+    return HttpResponse(content=r_data, content_type=r_type, status=r_status)
+
+@require_GET
+def yacy_static(request, query_string):
+    url = request.get_full_path()
+    return redirect('/static/yacy'+url)
 
 @require_GET
 def find(request, query_string):
@@ -93,17 +95,6 @@ def get_query(query_string):
     except Exception as error:
         print error
 
-def html_escape(text):
-    """Produce entities within text."""
-    html_escape_table = {
-    "&": "&amp;",
-    '"': "&quot;",
-    "'": "&apos;",
-    ">": "&gt;",
-    "<": "&lt;"
-    }
-    return "".join(html_escape_table.get(c, c) for c in text)
-
 def query(query_string, show_tor2web_links=True):
     """Build HTML answer from the answer of the YaCy back-end."""
     try:
@@ -123,7 +114,7 @@ def build_html_answer(root, show_tor2web_links):
     for element in root.iter("item"):
         link = element.find("link").text or ""
         # HTML escape the link (href attribute)
-        link = html_escape(link)
+        link = helpers.html_escape(link)
         # Show link on title if there is no title
         title = element.find("title").text or link
         redirect_link = "/redirect?redirect_url=" + link
