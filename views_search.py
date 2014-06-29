@@ -11,7 +11,7 @@ import urllib2  # URL encode
 import urllib3  # HTTP conncetions
 from django.conf import settings  # For the back-end connection settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import Context, loader
 from django.views.decorators.http import require_GET
@@ -58,7 +58,6 @@ def yacy_connection(request, query_string):
     if url == "/yacysearch.html":
         url = ""
     http = urllib3.PoolManager()
-    query_string = urllib2.quote(query_string.encode("utf8"))
     url = settings.YACY[:-1] + url
     response = http.request('GET', url)
     r_type = response.getheader('content-type')
