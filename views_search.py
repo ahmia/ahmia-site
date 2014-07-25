@@ -47,7 +47,7 @@ def search_page(request):
     template = loader.get_template('full_text_search.html')
     content = Context({'search_results': search_results,
         'search_time': search_time,
-        'count_banned': onions.filter(banned=True).count(),
+        'count_banned': onions.filter(banned=True, online=True).count(),
         'count_online': onions.filter(banned=False, online=True).count()})
     return HttpResponse(template.render(content))
 

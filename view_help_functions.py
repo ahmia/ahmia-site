@@ -54,7 +54,7 @@ def render_page(page, show_descriptions=False):
         'count_banned': onions.filter(banned=True, online=True).count(),
         'count_online': onions.filter(banned=False, online=True).count()})
     else:
-        content = Context({'count_banned': onions.filter(banned=True).count(),
+        content = Context({'count_banned': onions.filter(banned=True, online=True).count(),
         'count_online': onions.filter(banned=False, online=True).count()})
     return HttpResponse(template.render(content))
 

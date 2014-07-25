@@ -25,7 +25,7 @@ def add(request):
     template = loader.get_template("add.html")
     onions = HiddenWebsite.objects.all()
     count_online = onions.filter(banned=False, online=True).count()
-    count_banned = onions.filter(banned=True).count()
+    count_banned = onions.filter(banned=True, online=True).count()
     content = Context({'count_banned': count_banned,
     'count_online': count_online})
     return HttpResponse(template.render(content))
