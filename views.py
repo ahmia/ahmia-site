@@ -158,10 +158,8 @@ def onion_popularity(request, onion):
     elif request.method == 'PUT':
         # Allow PUT data only from the localhost
         ip_addr = helpers.get_client_ip(request)
-        if not str(ip_addr) in "127.0.0.1":
-            if not str(request.get_host()) in "127.0.0.1":
-                answer = "Only allowed form the localhost."
-                return HttpResponseForbidden(answer)
+        if not str(ip_addr) in "127.0.0.1" or not str(request.get_host()) in "127.0.0.1":
+            return HttpResponseForbidden(answer)
         else:
             # Add new data
             data = request.body
@@ -422,10 +420,9 @@ def all_onions_txt(request):
     """Return a plain text list of onions including the banned ones."""
     # Allow requests only from the localhost
     ip_addr = helpers.get_client_ip(request)
-    if not str(ip_addr) in "127.0.0.1":
-        if not str(request.get_host()) in "127.0.0.1":
-            answer = "Only allowed form the localhost."
-            return HttpResponseForbidden(answer)
+    if not str(ip_addr) in "127.0.0.1" or not str(request.get_host()) in "127.0.0.1":
+        answer = "Only allowed form the localhost."
+        return HttpResponseForbidden(answer)
     sites = HiddenWebsite.objects.all().order_by('url')
     site_list = []
     for site in sites:
@@ -446,10 +443,9 @@ def banned_domains_plain(request):
     """Return the plain text list of banned onions."""
     # Allow requests only from the localhost
     ip_addr = helpers.get_client_ip(request)
-    if not str(ip_addr) in "127.0.0.1":
-        if not str(request.get_host()) in "127.0.0.1":
-            answer = "Only allowed form the localhost."
-            return HttpResponseForbidden(answer)
+    if not str(ip_addr) in "127.0.0.1" or not str(request.get_host()) in "127.0.0.1":
+        answer = "Only allowed form the localhost."
+        return HttpResponseForbidden(answer)
     sites = HiddenWebsite.objects.filter(banned=True)
     url_list = []
     for site in sites:
