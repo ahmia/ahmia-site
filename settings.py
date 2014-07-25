@@ -34,6 +34,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell']
+
 if 'test' in sys.argv:
     DATABASES = {
     'default': {
@@ -41,7 +43,7 @@ if 'test' in sys.argv:
         'NAME': os.getcwd() + '/ahmia_db_test', # Database name
         }
     }
-elif 'runserver' in sys.argv or 'sqlflush' in sys.argv or 'syncdb' in sys.argv or 'loaddata' in sys.argv:
+elif [cmd for cmd in demo_env if cmd in sys.argv]:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Database engine
