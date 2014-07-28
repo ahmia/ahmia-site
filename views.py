@@ -432,7 +432,7 @@ def all_onions_txt(request):
 @require_GET
 def banned_txt(request):
     """Return the plain text MD5 sums of the banned onions."""
-    sites = HiddenWebsite.objects.filter(banned=True)
+    sites = HiddenWebsite.objects.filter(banned=True, online=True)
     md5_list = []
     for site in sites:
         md5_list.append(site.md5+"\n")
