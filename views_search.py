@@ -19,7 +19,13 @@ from lxml import etree  # To handle the XML answers from the YaCy
 
 import ahmia.view_help_functions as helpers  # My view_help_functions.py
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+from haystack.views import SearchView
 
+from .forms import WordsSearchForm
+
+
+class MySearchView(SearchView):
+    form = WordsSearchForm
 
 @require_GET
 def default(request):

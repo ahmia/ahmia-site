@@ -67,7 +67,7 @@ footer {
 	$FORM ELEMENTS
 \*------------------------------------*/
 .editor {
-	float: left; 
+	float: left;
 	width: 400px;
 	margin: 30px;
 }
@@ -130,7 +130,7 @@ textarea {
 	display: block;
 	margin-bottom: 35px;
 	/*border: 2solid 1px #85b1de;
-	
+
 	font-size: 24px;
 	margin-bottom: 5px;
 	padding: 4px;
@@ -166,7 +166,7 @@ nav a {
 	font-size: 14px;
 	margin-right: 20px;
 	text-decoration: underline;
-	
+
 }
 
 nav a:hover {
@@ -188,7 +188,7 @@ nav .item {
 /*------------------------------------*\
 	$BOXES
 \*------------------------------------*/
-.pagetitle { 
+.pagetitle {
 	background: #009933;
 	-moz-border-radius: 1em;
 	-webkit-border-radius: 1em;
@@ -263,18 +263,18 @@ nav .item {
 
 .clickable_pointer:hover {
 	opacity: 0.7;
-        margin: 20px; 
+        margin: 20px;
         border: 5px solid #eee;
 
 	text-shadow: 0 0 20px #EAF8FF;
 
         background-color:#fff;
         z-index:10;
-        
+
         box-shadow:0 0 15px #333;
         -moz-box-shadow:0 0 15px #333;
         -webkit-box-shadow:0 0 15px #333;
-        
+
         transform: scale(1.1);
         -moz-transform: scale(1.1);
         -webkit-transform: scale(1.1)
@@ -351,7 +351,7 @@ nav .item {
         text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
         width: 260px;
 }
- 
+
 .button-add:hover {
         color: #fff;
 }
@@ -412,11 +412,11 @@ nav .item {
 .right { float: right; }
 
 
-.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; visibility: hidden;	} 
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; visibility: hidden;	}
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
-	
-	
+
+
 ::-moz-selection {
 	/*background: #f8f087;*/
 	/*background: #4CB1CA;*/
@@ -435,8 +435,11 @@ nav .item {
 	text-shadow: none;
 }
 
+.highlighted {
+    background-color: yellow;
+}
 
-	
+
 /*------------------------------------*\
 	$PRINT
 \*------------------------------------*/
@@ -484,8 +487,8 @@ ul#tweet_update_list a { color: #96997a; }
  white-space: -pre-wrap; /* Opera 4-6 */
  white-space: -o-pre-wrap; /* Opera 7 */
  word-wrap: break-word; /* Internet Explorer 5.5+ */
- style="background: #F2F2F2; 
- border-width: 1px; 
+ style="background: #F2F2F2;
+ border-width: 1px;
  border-style: dashed;
 }
 
@@ -498,18 +501,18 @@ ul#tweet_update_list a { color: #96997a; }
 
 
 .logos {
-	display: inline-block; 
-	margin-left: 20px; 
-	margin-right: 20px; 
+	display: inline-block;
+	margin-left: 20px;
+	margin-right: 20px;
 	height: 70px;
 	opacity:0.4;
 	filter:alpha(opacity=40); /* For IE8 and earlier */
 }
 
 .logos:hover {
-        display: inline-block; 
-        margin-left: 20px; 
-        margin-right: 20px; 
+        display: inline-block;
+        margin-left: 20px;
+        margin-right: 20px;
         height: 70px;
 	opacity:1.0;
 	filter:alpha(opacity=100); /* For IE8 and earlier */
@@ -518,4 +521,3 @@ ul#tweet_update_list a { color: #96997a; }
 #syndicate {
 	text-align: center;
 }
-

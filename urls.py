@@ -1,7 +1,10 @@
 """The URL patterns of the ahmia."""
 from django.conf import settings
-from django.conf.urls import include, patterns
+from django.conf.urls import include, patterns, url
 from django.contrib import admin
+
+from ahmia.forms import WordsSearchForm
+from haystack.views import search_view_factory
 
 # For admin UI.
 admin.autodiscover()
@@ -46,9 +49,15 @@ urlpatterns = patterns('',
 # Search views
 urlpatterns += patterns('',
     # The full text search page.
-    (r'^search/', 'ahmia.views_search.search_page'),
+    (r'^oldsearch/', 'ahmia.views_search.search_page'),
     # Search without JavaScript: with XSLT.
     (r'^find/(.*)', 'ahmia.views_search.find'),
+)
+
+# Haystack based search
+urlpatterns += patterns('',
+    # The full text search page.
+    url(r'^search/', search_view_factory(form_class=WordsSearchForm), name='haystack_search'),
 )
 
 # Stats views

@@ -72,3 +72,15 @@ class HiddenWebsitePopularity(models.Model):
         app_label = 'ahmia'
     def __unicode__(self):
         return self.about.url
+
+class WebsiteIndex(models.Model):
+    """Model for an indexed website."""
+    domain = models.TextField()
+    url = models.URLField(unique=True)
+    tor2web_url = models.URLField(unique=True)
+    text = models.TextField()
+    title = models.TextField()
+    date_inserted = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.url

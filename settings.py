@@ -34,7 +34,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell']
+demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush', 'rebuild_index']
 
 if 'test' in sys.argv:
     DATABASES = {
@@ -61,6 +61,14 @@ else: # Production environment
         'PORT': '6432', # pbbouncer port
         }
     }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:33433/solr',
+        'INCLUDE_SPELLING': True,
+    },
+}
 
 # Email settings
 EMAIL_USE_TLS = True
@@ -145,7 +153,9 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'ahmia.urls'
 
-TEMPLATE_DIRS = (os.path.join(PROJECT_HOME, 'templates'),)
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_HOME, 'templates'),
+    )
 
 INSTALLED_APPS = (
     'django.contrib.admin', #admin UI for user administration
@@ -155,6 +165,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'ahmia',
+    'haystack',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
