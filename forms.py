@@ -1,12 +1,36 @@
+from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
-from haystack.forms import HighlightedSearchForm
-from haystack.query import AutoQuery, SearchQuerySet
+from haystack.forms import SearchForm
+from haystack.query import AutoQuery, EmptySearchQuerySet, SearchQuerySet
 
 
-class WordsSearchForm(HighlightedSearchForm):
+class WordsSearchForm(forms.Form):
     """Sort and return the search results."""
+    q = forms.CharField(required=False, label="",
+        widget=forms.TextInput(attrs={'type': 'search'}))
+
+    def __init__(self, *args, **kwargs):
+        self.searchqueryset = kwargs.pop('searchqueryset', None)
+        self.load_all = kwargs.pop('load_all', False)
+
+        if self.searchqueryset is None:
+            self.searchqueryset = SearchQuerySet()
+
+        super(WordsSearchForm, self).__init__(*args, **kwargs)
+
+    def no_query_found(self):
+        """
+        Determines the behavior when no query was found.
+
+        By default, no results are returned (``EmptySearchQuerySet``).
+
+        Should you want to show all results, override this method in your
+        own ``SearchForm`` subclass and do ``return self.searchqueryset.all()``.
+        """
+        return EmptySearchQuerySet()
+
     def search(self):
         if not self.is_valid():
             return self.no_query_found()
@@ -15,8 +39,15 @@ class WordsSearchForm(HighlightedSearchForm):
             return self.no_query_found()
 
         user_query = self.cleaned_data['q'] # the query from the user
-        sqs = SearchQuerySet().filter(content=user_query)
+        sqs = SearchQuerySet().filter(content=user_query) # Solr query
+
         return sqs
+
+    def get_suggestion(self):
+        if not self.is_valid():
+            return None
+
+        return self.searchqueryset.spelling_suggestion(self.cleaned_data['q'])
 
 """
         #for item in sqs:

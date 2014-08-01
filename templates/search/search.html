@@ -4,10 +4,14 @@
 
 {% block content %}
 
-    <form id="searchForm" method="get" action=".">
+    <div id="search">
+        <form id="searchForm" method="get" action=".">
         {{ form }}
-        <input style="margin-left: 5px; position: absolute;" class="input-add" type="submit" value="Search">
-    </form>
+            <input style="margin-left: 5px; position: absolute;" class="input-add" type="submit" value="Search">
+        </form>
+    </div>
+
+    <br style="clear: left;">
 
         {% if query %}
             <h3>Results</h3>

@@ -443,6 +443,22 @@ nav .item {
     font-weight: bold;
 }
 
+#id_q {
+	float: left;
+	background-color: #fff;
+	border: 2px solid;
+	border-color: #999999 #DDDDDD #DDDDDD #999999;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 3px;
+	padding: 9px 10px;
+	-moz-transition: border-color 0.3s ease;
+	-webkit-transition: border-color 0.3s ease;
+	-o-transition: border-color 0.3s ease;
+	transition: border-color 0.3s ease;
+	width: 23em;
+}
+
 
 /*------------------------------------*\
 	$PRINT

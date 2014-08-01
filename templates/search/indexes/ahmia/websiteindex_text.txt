@@ -4,3 +4,4 @@
 {{ object.date_inserted }}
 {{ object.tor2web_url }}
 {{ object.domain }}
+{{ object.content_auto }}
