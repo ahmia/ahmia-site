@@ -19,9 +19,11 @@
                 <li class="hs_site">
                     <h3><a href="/redirect?redirect_url={{ result.url }}">{{ result.title }}</a></h3>
                     <p class="links">Access without Tor Browser: <a href="/redirect?redirect_url={{ result.tor2web_url }}">{{ result.tor2web_url }}</a></p>
+                    {% if result.text %}
                     <div class="infotext">
-                        {% highlight result.text with query %}
+                            {% highlight result.text with query %}
                     </div>
+                    {% endif %}
                     <p class="urlinfo">{{ result.date_inserted }}</p>
                 </li>
                 {% endif %}

@@ -356,6 +356,10 @@ nav .item {
         color: #fff;
 }
 
+.urlinfo {
+	color: #006600;
+	font-size: x-small;
+}
 
 #search {
 	margin-top: 10px;
@@ -436,7 +440,7 @@ nav .item {
 }
 
 .highlighted {
-    background-color: yellow;
+    font-weight: bold;
 }
 
 

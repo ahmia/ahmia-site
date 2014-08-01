@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 from haystack.forms import HighlightedSearchForm
+from haystack.query import AutoQuery, SearchQuerySet
 
 
 class WordsSearchForm(HighlightedSearchForm):
@@ -13,26 +14,26 @@ class WordsSearchForm(HighlightedSearchForm):
         if not self.cleaned_data.get('q'):
             return self.no_query_found()
 
-        q = self.cleaned_data['q'] # the query from the user
-        sqs = self.searchqueryset.auto_query(q)
+        user_query = self.cleaned_data['q'] # the query from the user
+        sqs = SearchQuerySet().filter(content=user_query)
         return sqs
-        """
+
+"""
+        #for item in sqs:
+        #    print item.domain + " : " + str(item.score)
         results = []
-        for item in sqs:
-            print item.domain
+        answer = ""
         for item in sqs:
             host = item.domain
-            host = host.replace("http://", "")
-            host = host.replace("https://", "")
+            host = host.replace("http://", "").replace("https://", "")
             host = host.replace(".onion/", ".onion")
             add_result(item, host, results)
-        answer = sort_results(results)
-        print "-------------------------------------"
-        for item in answer:
-            print item.domain
+            answer = sort_results(results)
+        print "-----------------------"
+        #for item in answer:
+        #    print item.domain + " : " + str(item.score)
         return answer
-        """
-
+"""
 def add_result(answer, host, results):
     """Add new search result and get the stats about it."""
     if host:
@@ -85,17 +86,22 @@ class Popularity(object):
     def __init__(self, url, content, tor2web, backlinks, clicks):
         self.url = url
         self.content = content
+        self.score = content.score
         self.tor2web = float(tor2web)
         self.backlinks = float(backlinks)
         self.clicks = float(clicks)
     def func(self):
         """Print the sum function."""
-        print "2.0*%f + 3.0*%f + 1.0*%f" % self.tor2web, self.backlinks, self.clicks
+        print "1.5*%f * 1.5*%f * 1.0*%f + %f" % self.tor2web, self.backlinks, self.clicks, self.score
     def sum(self):
         """Calculate the popularity."""
         #The model can be very simple (sum)
         #What are the proper coefficients?
-        sum_function = 2.0*self.tor2web + 3.0*self.backlinks + 1.0*self.clicks
+        sum_function = 2.0*self.tor2web * 3.0*self.backlinks * 1.0*self.clicks + self.score
+        print "\n"
+        print "content.score =    " + str(self.score)
+        print "sum_function  =    " + str(sum_function)
+        print "\n"
         return sum_function
     def __repr__(self):
         return repr((self.url, self.tor2web, self.backlinks, self.clicks, self.sum))
