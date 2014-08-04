@@ -39,7 +39,11 @@ class WordsSearchForm(forms.Form):
             return self.no_query_found()
 
         user_query = self.cleaned_data['q'] # the query from the user
-        sqs = SearchQuerySet().filter(content=user_query) # Solr query
+        LIMIT = 100
+        sqs = SearchQuerySet().filter(content=user_query)[:LIMIT] # Solr query
+
+        for item in sqs:
+            print len(sqs)
 
         return sqs
 
