@@ -8,6 +8,7 @@ YaCy back-end connections.
 import time
 import urllib2  # URL encode
 
+import simplejson as json
 import urllib3  # HTTP conncetions
 from django.conf import settings  # For the back-end connection settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -18,21 +19,20 @@ from django.views.decorators.http import require_GET
 from lxml import etree  # To handle the XML answers from the YaCy
 
 import ahmia.view_help_functions as helpers  # My view_help_functions.py
-from ahmia.forms import WordsSearchForm
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
-from haystack.views import SearchView
+from haystack.query import SearchQuerySet
 
 
-class MySearchView(SearchView):
-    #start = time.time()
-    form = WordsSearchForm
-    #onions = HiddenWebsite.objects.all()
-    #count_banned = onions.filter(banned=True, online=True).count()
-    #count_online = onions.filter(banned=False, online=True).count()
-    #end = time.time()
-    #search_time = end - start
-    #search_time = round(search_time, 2)
-    #print "\n" + str(search_time) + "\n"
+@require_GET
+def autocomplete(request):
+    sqs = SearchQuerySet().autocomplete(text=request.GET.get('q', ''))[:5]
+    suggestions = [result.title for result in sqs]
+    # Make sure you return a JSON object, not a bare list.
+    # Otherwise, you could be vulnerable to an XSS attack.
+    the_data = json.dumps({
+        'results': suggestions
+    })
+    return HttpResponse(the_data, content_type='application/json')
 
 @require_GET
 def default(request):

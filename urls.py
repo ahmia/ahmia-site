@@ -4,8 +4,7 @@ from django.conf.urls import include, patterns, url
 from django.contrib import admin
 
 from ahmia.forms import WordsSearchForm
-from ahmia.views_search import MySearchView
-from haystack.views import search_view_factory
+from haystack.views import search_view_factory, SearchView
 
 # For admin UI.
 admin.autodiscover()
@@ -58,8 +57,9 @@ urlpatterns += patterns('',
 # Haystack based search
 urlpatterns += patterns('',
     # The full text search page.
+    (r'^search/autocomplete', 'ahmia.views_search.autocomplete'),
     url(r'^search/', search_view_factory(
-            view_class=MySearchView,
+            view_class=SearchView,
             form_class=WordsSearchForm
         ), name='haystack_search'),
 )

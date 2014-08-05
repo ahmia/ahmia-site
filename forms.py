@@ -41,7 +41,7 @@ class WordsSearchForm(forms.Form):
         user_query = self.cleaned_data['q'] # the query from the user
         LIMIT = 100
         sqs = SearchQuerySet().filter(content=user_query)[:LIMIT] # Solr query
-        
+
         return sqs
 
     def get_suggestion(self):
