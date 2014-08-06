@@ -64,7 +64,8 @@ else: # Production environment
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        #'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'ENGINE': 'ahmia.solr_grouping_backend.GroupedSolrEngine',
         'URL': 'http://127.0.0.1:33433/solr',
         'INCLUDE_SPELLING': True,
     },
