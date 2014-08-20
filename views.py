@@ -17,7 +17,22 @@ import ahmia.view_help_functions as helpers  # My view_help_functions.py
 import ahmia.views_admin as admin  # My views_admin.py
 from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
                           HiddenWebsitePopularity)
+from haystack.views import SearchView
 
+
+class CustomSearchView(SearchView):
+    """Custom hack to Haystack SearchView"""
+
+    def extra_context(self):
+        """
+        Allows the addition of more context variables as needed.
+
+        Must return a dictionary.
+        """
+        onions = HiddenWebsite.objects.all()
+        count_online = onions.filter(banned=False, online=True).count()
+        count_banned = onions.filter(banned=True, online=True).count()
+        return {"count_online": count_online, "count_banned": count_banned}
 
 @require_GET
 def add(request):
