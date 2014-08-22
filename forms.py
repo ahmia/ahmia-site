@@ -5,7 +5,7 @@ from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 from haystack.forms import SearchForm
 from haystack.query import SearchQuerySet
 from solr_grouping_backend import GroupedSearchQuerySet
-
+from mem_top import mem_top
 
 class WordsSearchForm(SearchForm):
     """Sort and return the search results."""
@@ -13,6 +13,9 @@ class WordsSearchForm(SearchForm):
         widget=forms.TextInput(attrs={'type': 'search'}))
 
     def search(self):
+
+        print mem_top()
+
         if not self.is_valid():
             return self.no_query_found()
 
