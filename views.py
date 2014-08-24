@@ -129,10 +129,14 @@ def onion_redirect(request):
         answer = "Bad request: no GET parameter URL."
         return HttpResponseBadRequest(answer)
     onion = redirect_url.split("://")[1][:16]
+    if "." in onion:
+        onion_parts = onion.split(".")
+        for part in onion_parts:
+            if len(part) == 16:
+                onion = part
+                break
     try:
         hs = HiddenWebsite.objects.get_or_create(id=onion)
-        hs.save()
-        hs = HiddenWebsite.objects.get(id=onion)
         pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
         if creat or hs.banned:
             pop.clicks = 0
