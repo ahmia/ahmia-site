@@ -131,6 +131,7 @@ def onion_redirect(request):
     onion = redirect_url.split("://")[1][:16]
     try:
         hs = HiddenWebsite.objects.get_or_create(id=onion)
+        hs.save()
         pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
         if creat or hs.banned:
             pop.clicks = 0
