@@ -135,7 +135,7 @@ def onion_redirect(request):
             onion = part
             break
     try:
-        hs = HiddenWebsite.objects.get_or_create(id=onion)
+        hs, hs_creat = HiddenWebsite.objects.get_or_create(id=onion)
         pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
         if creat or hs.banned:
             pop.clicks = 0
