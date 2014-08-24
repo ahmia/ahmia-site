@@ -128,13 +128,12 @@ def onion_redirect(request):
     if not redirect_url:
         answer = "Bad request: no GET parameter URL."
         return HttpResponseBadRequest(answer)
-    onion = redirect_url.split("://")[1][:16]
-    if "." in onion:
-        onion_parts = onion.split(".")
-        for part in onion_parts:
-            if len(part) == 16:
-                onion = part
-                break
+    onion = redirect_url.split("://")[1]
+    onion_parts = onion.split(".")
+    for part in onion_parts:
+        if len(part) == 16:
+            onion = part
+            break
     try:
         hs = HiddenWebsite.objects.get_or_create(id=onion)
         pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
@@ -146,6 +145,7 @@ def onion_redirect(request):
         pop.full_clean()
         pop.save()
     except Exception as error:
+        print "Error with redirect URL: " + redirect_url
         print error
         return HttpResponseBadRequest("Bad request")
     message = "Redirecting to hidden service."
