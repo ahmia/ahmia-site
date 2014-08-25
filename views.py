@@ -135,7 +135,12 @@ def onion_redirect(request):
             onion = part
             break
     try:
-        hs, hs_creat = HiddenWebsite.objects.get_or_create(id=onion)
+        md5 = hashlib.md5(onion+".onion").hexdigest()
+        url = "http://" + onion + ".onion/"
+        hs, hs_creat = HiddenWebsite.objects.get_or_create(id=onion, url=url, md5=md5)
+        print hs.id
+        print hs.url
+        print hs.md5
         pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
         if creat or hs.banned:
             pop.clicks = 0
@@ -147,7 +152,6 @@ def onion_redirect(request):
     except Exception as error:
         print "Error with redirect URL: " + redirect_url
         print error
-        return HttpResponseBadRequest("Bad request")
     message = "Redirecting to hidden service."
     return helpers.redirect_page(message, 0, redirect_url)
 
