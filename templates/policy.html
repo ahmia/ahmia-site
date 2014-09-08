@@ -20,8 +20,8 @@
 <h2>Banned hidden services</h2>
 
 <ul id='list' class='steps'>
-  {% for site in description_list %} {% if site.about.banned %}
-  <li class="hs_site">MD5: {{ site.about.md5 }}</li>
+  {% for onion in onions %} {% if onion.banned and onion.online %}
+  <li class="hs_site">MD5: {{ onion.md5 }}</li>
   {% endif %} {% endfor %}
 </ul>
 
