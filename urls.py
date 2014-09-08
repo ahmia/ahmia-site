@@ -48,12 +48,12 @@ urlpatterns = patterns('',
 )
 
 # Search views
-urlpatterns += patterns('',
+#urlpatterns += patterns('',
     # The full text search page.
-    (r'^oldsearch/', 'ahmia.views_search.search_page'),
+    #(r'^oldsearch/', 'ahmia.views_search.search_page'),
     # Search without JavaScript: with XSLT.
-    (r'^find/(.*)', 'ahmia.views_search.find'),
-)
+    #(r'^find/(.*)', 'ahmia.views_search.find'),
+#)
 
 # Haystack based search
 urlpatterns += patterns('',
