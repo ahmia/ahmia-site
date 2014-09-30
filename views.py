@@ -137,6 +137,7 @@ def onion_redirect(request):
     try:
         md5 = hashlib.md5(onion+".onion").hexdigest()
         url = "http://" + onion + ".onion/"
+        helpers.validate_onion_url(url)
         hs, hs_creat = HiddenWebsite.objects.get_or_create(id=onion, url=url, md5=md5)
         pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
         if creat or hs.banned:
