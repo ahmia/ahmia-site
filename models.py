@@ -80,6 +80,10 @@ class WebsiteIndex(models.Model):
     tor2web_url = models.URLField(unique=True)
     text = models.TextField()
     title = models.TextField()
+    h1 = models.TextField()
+    h2 = models.TextField()
+    crawling_session = models.TextField()
+    server_header = models.TextField()
     date_inserted = models.DateTimeField()
 
     def __unicode__(self):
