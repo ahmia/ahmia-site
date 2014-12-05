@@ -427,17 +427,17 @@ Tor is a software for anonymous TCP connections. This means that Tor enables ano
 
 \section{Introduction}
 % no \IEEEPARstart
-Using the Tor network, it is possible to run web servers anonymously and without fear of censorship\cite{tor}. Servers configured to receive inbound connections through Tor are called hidden services (HSs): rather than revealing the real IP address of the server, a hidden service (HS) is accessed through the Tor network by mean of a virtual top level domain .onion\cite{tor}.
+Using the Tor network, it is possible to run web servers anonymously and without fear of censorship \cite{tor}. Servers configured to receive inbound connections through Tor are called hidden services (HSs): rather than revealing the real IP address of the server, a hidden service (HS) is accessed through the Tor network by mean of a virtual top level domain .onion \cite{tor}.
 
 In particular, we are interested in websites that operate as a hidden service. In this paper we call them hidden websites.
 
-The published content is diverse\cite{contentanalysis}. Undoubtedly, some hidden websites are sharing pictures of child abuse, or operate as marketplaces for illegal drugs, including the widely known black market Silk Road. These few services are obviously controversial and often pointed out by critics of Tor and anonymity. On the other hand, vast number of hidden websites are devoted to human rights, freedom of speech, and information prohibited by oppressive governments.
+The published content is diverse \cite{contentanalysis}. Undoubtedly, some hidden websites are sharing pictures of child abuse, or operate as marketplaces for illegal drugs, including the widely known black market Silk Road. These few services are obviously controversial and often pointed out by critics of Tor and anonymity. On the other hand, vast number of hidden websites are devoted to human rights, freedom of speech, and information prohibited by oppressive governments.
 
 Web search engines support finding web content. Because there were no search engines to search web content published using the Tor network, we built a working search engine for indexing, searching and cataloging content published inside the Tor network. Furthermore, we created an environment to share meaningful statistics, insights and news about the Tor network itself.
 
 Ahmia provides the search and the access to hidden websites and believes that this is very important to the entire Tor network because we are efficiently enabling the diffusion and use of anonymous resources.
 
-Whole search engine, Ahmia, is a free software and the source code is available online. This makes the research and our methods very transparent: Everyone is welcome to study our implementation.
+The whole search engine, Ahmia, is a free software and the source code is available online. This makes the research and our methods very transparent: Everyone is welcome to study our implementation.
 
 In this paper we demonstrate how we can understand hidden service usage and how this reflects to our search engine design.
 
@@ -530,7 +530,7 @@ In this paper we demonstrate how we can understand hidden service usage and how 
 \section{Related work}
 
 \subsection{Tor2web}
-Tor2web is an HTTP proxy for Tor HSs designed initially by Aaron Swartz\cite{aaron}. It aims at creating a network of proxies able to allow access to Tor HSs from the public internet. The software allows Tor hidden services to be reachable by means of a common browser and without the use of Tor client. Basically, it acts like a transparent proxy, translating the onion address into an HTTPS web URL\cite{tor2web}.
+Tor2web is an HTTP proxy for Tor HSs designed initially by Aaron Swartz \cite{aaron}. It aims at creating a network of proxies able to allow access to Tor HSs from the public internet. The software allows Tor hidden services to be reachable by means of a common browser and without the use of Tor client. Basically, it acts like a transparent proxy, translating the onion address into an HTTPS web URL \cite{tor2web}.
 
 In order to support tor2web.org, we maintain the Tor2web.fi proxy that enables people to connect to the .onion TLD with a regular web browser by replacing .onion part with .tor2web.fi. For example, http://msydqstlz2kzerdg.onion can be accessed using http://msydqstlz2kzerdg.tor2web.fi.
 
@@ -538,13 +538,13 @@ In order to support tor2web.org, we maintain the Tor2web.fi proxy that enables p
 There are several hidden website directories similar to the early development of the web when Tim Berners-Lee maintained a list of websites. These sites, such as multiple hidden wikis, are specialized in linking to other hidden websites and categorizing those links. In addition, there are few other search engines crawling hidden websites.
 
 \subsection{Content and popularity analysis}
-The popularity and content of hidden services is measured and researched\cite{contentanalysis}. To do this, hidden services addresses has been collected by running Tor relays, the services has been port scanned, and in the case of HTTP services the content have been analyzed. Furthermore, the popularity of hidden services has been measured by looking at the request rate for hidden service descriptors by clients. However, this method exploits Tor's design flaws and may cause privacy issues for hidden services. As such, it is not a sustainable way to measure the popularity and find hidden services.
+The popularity and content of hidden services has already been measured and researched \cite{contentanalysis}. To do this, hidden services addresses has been collected by running Tor relays, the services has been port scanned, and in the case of HTTP services the content have been analyzed. Furthermore, the popularity of hidden services has been measured by looking at the request rate for hidden service descriptors by clients. However, this method exploits Tor's design flaws and may cause privacy issues for hidden services. As such, it is not a sustainable way to measure the popularity and find hidden services.
 
-The metrics measures the performance of the Tor network based on different data\cite{karsten}. Some of these data sources are not sensitive at all, like properties and capabilities of a relay. Others are more sensitive, like statistics on fetched directory listings by country. As a result, Tor Metrics measures and shares the data about number of clients, bridges, relays, bandwidth, performance and diversity. While having lots of statistics on the Tor network, Tor metrics is not offering any insight to hidden services and their content.
+The metrics measures the performance of the Tor network based on different data \cite{karsten}. Some of these data sources are not sensitive at all, like properties and capabilities of a relay. Others are more sensitive, like statistics on fetched directory listings by country. As a result, Tor Metrics measures and shares the data about number of clients, bridges, relays, bandwidth, performance and diversity. While having lots of statistics on the Tor network, Tor metrics is not offering any insight to hidden services and their content.
 
 
 \section{Finding, ranking and understanding content}
-First, the start point is to crawl the web content form the hidden services. Before that can be performed a seed list of .onion domains is used. However, Tor technology does not offer a list of existing HSs.  Therefore, the first seed list was originally gathered from the sites that were listing .onion URLs.
+First, the start point is to crawl the web content from the hidden services. Before that can be performed, a seed list of .onion domains has to exist. However, Tor technology does not offer a list of existing HSs.  Therefore, the first seed list was originally gathered from the sites that were listing .onion URLs.
 
 Unfortunately, this method finds only those new .onion sites which are linked to those .onion pages which are already indexed. Moreover, only few hidden websites links to other hidden websites and there is no linking to every .onion. As a result, we cannot find all hidden sites. We visualized this problem by generating a SVG image of the crawling paths (see figure \ref{fig:onionlinking}). More visualizations material is available on https://ahmia.fi/static/visuals/.
 
@@ -555,7 +555,7 @@ Unfortunately, this method finds only those new .onion sites which are linked to
   \label{fig:onionlinking}
 \end{figure}
 
-Another problem is that typical search ranking algorithms are based on linking between websites. Because the linking between hidden websites is thin normal ranking algorithms perform poorly.
+Another problem with current linking structure is that typical search ranking algorithms are based on linking between websites. Because the linking between hidden websites is thin, normal ranking algorithms perform poorly.
 
 We would like to show a glance of the hidden website content in general. Ahmia produced a word cloud visualization of the front pages of hidden websites (see figure \ref{fig:wordcloud}).
 
