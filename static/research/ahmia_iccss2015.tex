@@ -536,7 +536,7 @@ There are several hidden website directories similar to the early development of
 \subsection{Content and popularity analysis}
 The popularity and content of hidden services has already been measured and researched \cite{contentanalysis}. To do this, hidden services addresses has been collected by running Tor relays, the services has been port scanned, and in the case of HTTP services the content have been analyzed. Furthermore, the popularity of hidden services has been measured by looking at the request rate for hidden service descriptors by clients. However, this method exploits Tor's design flaws and may cause privacy issues for hidden services. As such, it is not a sustainable way to measure the popularity and find hidden services.
 
-The metrics measures the performance of the Tor network based on different data \cite{karsten}. Some of these data sources are not sensitive at all, like properties and capabilities of a relay. Others are more sensitive, like statistics on fetched directory listings by country. As a result, Tor Metrics measures and shares the data about number of clients, bridges, relays, bandwidth, performance and diversity. While having lots of statistics on the Tor network, Tor metrics is not offering any insight to hidden services and their content.
+Tor Metrics measures the performance of the Tor network based on different data \cite{karsten}. Some of these data sources are not sensitive at all, like properties and capabilities of a relay. Others are more sensitive, like statistics on fetched directory listings by country. As a result, the Tor Metrics measures and shares the data about number of clients, bridges, relays, bandwidth, performance and diversity. While having lots of statistics on the Tor network, Tor metrics is not offering any insight to hidden services and their content.
 
 
 \section{Finding, ranking and understanding content}
@@ -564,7 +564,7 @@ Similarly, using the search index of hidden websites, we are locating malicious 
   \label{fig:wordcloud}
 \end{figure}
 
-With the Tor2web software developers we introduced a HS discovery function to Tor2web software. This means that Tor2web is gathering a list of the visited .onion websites and the visit counts and search engines can download this list. In this way we can find new .onion domains and use their popularity information. This means that we can find new hidden websites and measure their popularity.
+With the Tor2web software developers we introduced a HS discovery function to Tor2web software. This means that Tor2web is gathering a list of the visited websites and the visit counts and search engines can download this list. In this way we can find new hidden websites and measure the popularity of hidden websites in general.
 
 Moreover, very informative measurement is the total number of public WWW backlinks pointing to known hidden websites. We fetch this information automatically from the popular normal search engines.
 
