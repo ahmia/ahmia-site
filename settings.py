@@ -62,11 +62,13 @@ else: # Production environment
         }
     }
 
+SOLR_ADDRESS = "http://127.0.0.1:33433/solr"
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         #'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
         'ENGINE': 'ahmia.solr_grouping_backend.GroupedSolrEngine',
-        'URL': 'http://127.0.0.1:33433/solr',
+        'URL': SOLR_ADDRESS,
         'INCLUDE_SPELLING': True,
     },
 }

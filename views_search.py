@@ -12,7 +12,7 @@ import simplejson as json
 import urllib3  # HTTP conncetions
 from django.conf import settings  # For the back-end connection settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import redirect
 from django.template import Context, loader
 from django.views.decorators.http import require_GET
@@ -24,7 +24,39 @@ from haystack.query import SearchQuerySet
 
 
 @require_GET
+def solrapi(request):
+    """Solr API to search domain. Returns a list of domains."""
+    query = request.GET.get('q', '')
+    domain_list = []
+    # Query format is key=value
+    # /search/API?q=key=value
+    # Examples: title=alert, server_header=openresty, text=ahmia, h1=Hidden Service, h2=Hidden Service
+    # Query key=value must be shorter than 120 chars
+    if query and "=" in query and len(query) < 120 and len(query.split("=")) == 2:
+        query = query.split("=")
+        key =  query[0]
+        value = query[1].replace(" ", "+")
+        http = urllib3.PoolManager()
+        url = settings.SOLR_ADDRESS + "/select/?q=" + key + "%3A" + value + "&fl=domain"
+        url = url + '&start=0&rows=200&indent=on&group.field=domain&wt=python&group=true&group.limit=100'
+        response = http.request('GET', url)
+        print response.status
+        # If Solr answer is 200 OK then build a domain list
+        if response.status == 200:
+            obj_data = eval(response.data) # Answer string to object
+            groups = obj_data["grouped"]["domain"]["groups"]
+            for group in groups:
+                domains = group["doclist"]["docs"]
+                for domain in domains:
+                    domain_str = domain["domain"]
+                    if 28 < len(domain_str) < 32: # Seems to be onion domain
+                        domain_list.append(domain_str+"\n")
+        domain_list = sorted(domain_list) # Sort the domains
+    return StreamingHttpResponse(domain_list, content_type="text/plain")
+
+@require_GET
 def autocomplete(request):
+    """Autocomplete function to full text Haystack based search."""
     sqs = SearchQuerySet().autocomplete(text=request.GET.get('q', ''))[:5]
     suggestions = [result.title for result in sqs]
     # Make sure you return a JSON object, not a bare list.

@@ -55,6 +55,11 @@ urlpatterns = patterns('',
     #(r'^find/(.*)', 'ahmia.views_search.find'),
 #)
 
+# Apache Solr connection API
+urlpatterns += patterns('',
+    (r'^search/API', 'ahmia.views_search.solrapi'),
+)
+
 # Haystack based search
 urlpatterns += patterns('',
     # The full text search page.
