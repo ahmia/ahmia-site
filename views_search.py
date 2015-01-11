@@ -40,7 +40,6 @@ def solrapi(request):
         url = settings.SOLR_ADDRESS + "/select/?q=" + key + "%3A" + value + "&fl=domain"
         url = url + '&start=0&rows=200&indent=on&group.field=domain&wt=python&group=true&group.limit=100'
         response = http.request('GET', url)
-        print response.status
         # If Solr answer is 200 OK then build a domain list
         if response.status == 200:
             obj_data = eval(response.data) # Answer string to object
@@ -51,7 +50,7 @@ def solrapi(request):
                     domain_str = domain["domain"]
                     if 28 < len(domain_str) < 32: # Seems to be onion domain
                         domain_list.append(domain_str+"\n")
-        domain_list = sorted(domain_list) # Sort the domains
+        domain_list = sorted(set(domain_list)) # Sort the domains
     return StreamingHttpResponse(domain_list, content_type="text/plain")
 
 @require_GET
