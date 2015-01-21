@@ -61,6 +61,23 @@ footer {
 	padding: 25px 0;
 }
 
+#cornerBanner {
+	text-decoration: none;
+	z-index: 1;
+	color: #F47D31;
+	background-color: #333;
+	-moz-box-shadow: 2px 2px 20px #888;
+	-moz-transform: rotate(-45deg);
+	-moz-transform-origin: 50% 50%;
+	-webkit-transform: rotate(-45deg);
+	-webkit-transform-origin: 50% 50%;
+	position: absolute;
+	width: 310px;
+	top: 55px;
+	left: -95px;
+	text-align: center;
+}
+
 
 
 /*------------------------------------*\
