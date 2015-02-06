@@ -62,6 +62,11 @@ def statsviewer(request):
     return helpers.render_page('statistics.html')
 
 @require_GET
+def services(request):
+    """Opens JavaScript based port viewer."""
+    return helpers.render_page('services.html')
+
+@require_GET
 def history(request):
     """Opens JavaScript based stats viewer."""
     onions = HiddenWebsite.objects.all()
