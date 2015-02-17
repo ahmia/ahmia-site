@@ -9,7 +9,8 @@ function getOverTimeData( onion ){
         type: "line",
         showInLegend: true,
         markerType: "none",
-        name: onion + ".onion" };
+        name: onion + ".onion"
+        };
     $.getJSON( url, function( json ) {
       $.each(json, function (index, result) {
           for (var key in result) {
@@ -38,7 +39,7 @@ function viewer(){
         zoomEnabled: true,
         animationEnabled: true,
         title:{
-            text: "Zoom-in And Observe Axis Labels"
+            text: "Zoom-in by selecting area with mouse"
         },
         axisX :{
             labelAngle: -30
@@ -86,7 +87,23 @@ function createOnionOptionMenu(){
     var url = "/static/log/onion_site_history/onions.json";
     $.getJSON( url, function( json ) {
       $.each(json, function (index, result) {
-          $( "#select_onions" ).append( '<input type="checkbox" value="' + result + '" />' + result + '.onion<br />' );
+          var content = '<input type="checkbox" value="' + result + '" />' + result + '.onion<br />';
+          if( !isNaN(parseInt(result[0])) ) {
+              $( "#select_onions_1" ).append( content );
+          }
+          else if( 97 <= result.charCodeAt(0) && result.charCodeAt(0) <= 104 ) {
+              $( "#select_onions_2" ).append( content );
+          }
+          else if( 105 <= result.charCodeAt(0) && result.charCodeAt(0) <= 113 ) {
+              $( "#select_onions_3" ).append( content );
+          }
+          else if( 114 <= result.charCodeAt(0) && result.charCodeAt(0) <= 122 ) {
+              $( "#select_onions_4" ).append( content );
+          }
+          else {
+              console.log("ERROR: " + result);
+          }
+
       });
       $( "input" ).on( "click", onion_check );
       $('.uncheck:button').click(function(){
