@@ -79,6 +79,7 @@ urlpatterns += patterns('',
     (r'^stats/history', 'ahmia.views_stats.history'),
     (r'^stats/traffic', 'ahmia.views_stats.trafficviewer'),
     (r'^stats/services', 'ahmia.views_stats.services'),
+    (r'^stats/onionsovertime', 'ahmia.views_stats.onionsovertime'),
 )
 
 # Admin views

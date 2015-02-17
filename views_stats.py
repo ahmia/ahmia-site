@@ -62,6 +62,11 @@ def statsviewer(request):
     return helpers.render_page('statistics.html')
 
 @require_GET
+def onionsovertime(request):
+    """Opens JavaScript based stats viewer."""
+    return helpers.render_page('onions_over_time.html')
+
+@require_GET
 def services(request):
     """Opens JavaScript based port viewer."""
     return helpers.render_page('services.html')

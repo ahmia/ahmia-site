@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Ahmia - Onion Websites Over Time{% endblock %}
+
+{% block content %}
+
+<noscript>
+  <p>Please enable JavaScript to view these statistics.</p>
+</noscript>
+
+<script type="text/javascript" src="/static/js/canvasjs.min.js"></script>
+
+<script type="text/javascript" src="/static/js/onions_overtime.js"></script>
+
+<h2>Tor2web stats Over Time</h2>
+
+<div id="select_onions" style="border:2px solid #ccc; width:250px; height: 100px; overflow-y: scroll;">
+</div>
+
+<input type="button" class="uncheck" value="uncheck all" />
+
+<div id="chartContainer" style="height: 400px; width: 960px;"></div>
+
+{% endblock %}
