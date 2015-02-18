@@ -18,7 +18,10 @@ function getOverTimeData( onion ){
                 // add new date - visit count pair
                 // fill the missing dates
                 var time_stamp = key.split("-");
-                var new_time = new Date(time_stamp[0], time_stamp[1], time_stamp[2]);
+                // month must be 0-11
+                // 0 -> Jan ... 11 -> Dec
+                var month = parseInt(time_stamp[1])-1;
+                var new_time = new Date(time_stamp[0], month, time_stamp[2]);
                 dataPoints.push({
                     x: new_time,
                     y: result[key]
