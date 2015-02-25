@@ -34,7 +34,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush', 'rebuild_index']
+demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
+'migrate', 'dumpdata', 'rebuild_index']
 
 if 'test' in sys.argv:
     DATABASES = {
