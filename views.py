@@ -10,6 +10,7 @@ from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseForbidden, HttpResponseNotFound,
                          StreamingHttpResponse)
 from django.template import Context, loader
+from django.views.decorators.cache import cache_page
 from django.views.decorators.http import (require_GET, require_http_methods,
                                           require_POST)
 
@@ -51,6 +52,7 @@ def banned(request):
     return banned_txt(request)
 
 @require_http_methods(["GET", "POST"])
+@cache_page(60 * 60) # Cache for 60 minutes
 def onion_list(request):
     """List the onion addresses."""
     content_type = request.META.get('CONTENT_TYPE')
