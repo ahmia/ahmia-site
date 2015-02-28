@@ -1,14 +1,10 @@
 """The URL patterns of the ahmia."""
 from django.conf import settings
 from django.conf.urls import include, patterns, url
-from django.contrib import admin
 
 from ahmia.forms import WordsSearchForm
 from ahmia.views import CustomSearchView
 from haystack.views import search_view_factory
-
-# For admin UI.
-admin.autodiscover()
 
 urlpatterns = patterns('',
     # Check is domain up.
@@ -82,10 +78,8 @@ urlpatterns += patterns('',
     (r'^stats/onionsovertime', 'ahmia.views_stats.onionsovertime'),
 )
 
-# Admin views
+# Rule views
 urlpatterns += patterns('',
-    # Site's admin UI.
-    (r'^admin/', include(admin.site.urls)),
     # Login and logout.
     (r'^rule/login/', 'ahmia.views_admin.login'),
     (r'^rule/logout/', 'ahmia.views_admin.logout'),

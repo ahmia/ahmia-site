@@ -28,12 +28,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
-
-MANAGERS = ADMINS
-
 demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
 'migrate', 'dumpdata', 'rebuild_index']
 
@@ -106,20 +100,11 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
 STATIC_URL = '/media/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 STATIC_ROOT = PROJECT_HOME+'/static/'
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/media/'
-MEDIA_ROOT = PROJECT_HOME+MEDIA_URL
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -147,10 +132,11 @@ TEMPLATE_DIRS = (
     )
 
 INSTALLED_APPS = (
-    'django.contrib.admin', #admin UI for user administration
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sites',
+    'django.contrib.staticfiles',
+    'debug_toolbar',
     'ahmia',
     'haystack',
 )

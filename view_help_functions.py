@@ -41,7 +41,12 @@ def latest_descriptions(onions):
     for onion in onions:
         desc = descriptions.filter(about=onion)
         if desc:
-            descs.append(desc.order_by('-updated')[0])
+            desc = desc.order_by('-updated')[0]
+            desc.url = onion.url
+            desc.hs_id = onion.id
+            desc.banned = onion.banned
+            desc.online = onion.online
+            descs.append(desc)
     return descs
 
 def render_page(page, show_descriptions=False):
