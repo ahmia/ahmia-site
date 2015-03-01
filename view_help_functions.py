@@ -36,15 +36,15 @@ def latest_descriptions(onions):
     #The old implementatation was working only with PostgreSQL database
     #desc = HiddenWebsiteDescription.objects.order_by('about', '-updated')
     #desc = desc.distinct('about')
-    descriptions = HiddenWebsiteDescription.objects.filter(about__in=onions)
+    descriptions = HiddenWebsiteDescription.objects.select_related("about").filter(about__in=onions).order_by('about', '-updated')
     descs = []
-    for onion in onions:
-        desc = descriptions.filter(about=onion)
-        if desc:
-            desc = desc.latest('updated')
-            desc.url = onion.url
-            desc.hs_id = onion.id
-            desc.banned = onion.banned
+    last_onion = ""
+    for desc in descriptions:
+        if last_onion != desc.about.id:
+            last_onion = desc.about.id
+            desc.url = desc.about.url
+            desc.hs_id = desc.about.id
+            desc.banned = desc.about.banned
             descs.append(desc)
     return descs
 
