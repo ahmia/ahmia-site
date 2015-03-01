@@ -45,7 +45,7 @@
 <div id="search"></div>
 <div id='wrap'>
   <ul id='list' class='steps'>
-    {% for site in description_list %} {% if not site.banned and site.online %}
+    {% for site in description_list %} {% if not site.banned %}
     <li class="hs_site clickable_pointer">
       <div onclick="window.location='/address/{{ site.hs_id  }}'">
         <h3><a href="{{ site.url }}">{{ site.hs_id }}.onion</a>{% if site.title %} - {{ site.title }} {% endif %}</h3>

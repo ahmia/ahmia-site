@@ -36,31 +36,30 @@ def latest_descriptions(onions):
     #The old implementatation was working only with PostgreSQL database
     #desc = HiddenWebsiteDescription.objects.order_by('about', '-updated')
     #desc = desc.distinct('about')
-    descriptions = HiddenWebsiteDescription.objects.all()
+    descriptions = HiddenWebsiteDescription.objects.filter(about__in=onions)
     descs = []
     for onion in onions:
         desc = descriptions.filter(about=onion)
         if desc:
-            desc = desc.order_by('-updated')[0]
+            desc = desc.latest('updated')
             desc.url = onion.url
             desc.hs_id = onion.id
             desc.banned = onion.banned
-            desc.online = onion.online
             descs.append(desc)
     return descs
 
 def render_page(page, show_descriptions=False):
     """ Return a page without any parameters """
-    onions = HiddenWebsite.objects.all()
+    onions = HiddenWebsite.objects.filter(online=True)
     template = loader.get_template(page)
     if show_descriptions:
         descs = latest_descriptions(onions)
         content = Context({'description_list': descs,
-        'count_banned': onions.filter(banned=True, online=True).count(),
-        'count_online': onions.filter(banned=False, online=True).count()})
+        'count_banned': onions.filter(banned=True).count(),
+        'count_online': onions.filter(banned=False).count()})
     else:
-        content = Context({'count_banned': onions.filter(banned=True, online=True).count(),
-        'count_online': onions.filter(banned=False, online=True).count()})
+        content = Context({'count_banned': onions.filter(banned=True).count(),
+        'count_online': onions.filter(banned=False).count()})
     return HttpResponse(template.render(content))
 
 def get_client_ip(request):
