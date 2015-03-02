@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /rule/
+Disallow: /address/
+Disallow: /static/
+Disallow: /*?

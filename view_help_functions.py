@@ -36,9 +36,15 @@ def latest_descriptions(onions):
     #The old implementatation was working only with PostgreSQL database
     #desc = HiddenWebsiteDescription.objects.order_by('about', '-updated')
     #desc = desc.distinct('about')
-    descriptions = HiddenWebsiteDescription.objects.select_related("about").filter(about__in=onions).order_by('about', '-updated')
+    # Select the onions related to the descriptions
+    descriptions = HiddenWebsiteDescription.objects.select_related("about")
+    # Select only the onions, online ones
+    descriptions = descriptions.filter(about__in=onions)
+    # Order the results
+    descriptions = descriptions.order_by('about', '-updated')
     descs = []
-    last_onion = ""
+    last_onion = "" # The latest onion selected
+    # Select the first (the latest) from each onion group
     for desc in descriptions:
         if last_onion != desc.about.id:
             last_onion = desc.about.id

@@ -1,6 +1,7 @@
 """The URL patterns of the ahmia."""
 from django.conf import settings
 from django.conf.urls import include, patterns, url
+from django.views.generic import TemplateView
 
 from ahmia.forms import WordsSearchForm
 from ahmia.views import CustomSearchView
@@ -108,6 +109,12 @@ urlpatterns += patterns('',
     (r'^gsoc/', 'ahmia.views_static.gsoc'),
     # Show visitor's IP address.
     (r'^IP/', 'ahmia.views_static.show_ip'),
+)
+
+# robots.txt file
+urlpatterns += patterns('',
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt',
+    content_type='text/plain')),
 )
 
 # Yacy wrapping
