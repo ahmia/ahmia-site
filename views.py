@@ -147,6 +147,9 @@ def onion_redirect(request):
         pop.clicks = pop.clicks + 1
         pop.full_clean()
         pop.save()
+        if hs_creat:
+            hs.full_clean()
+            hs.save()
     except Exception as error:
         print "Error with redirect URL: " + redirect_url
         print error

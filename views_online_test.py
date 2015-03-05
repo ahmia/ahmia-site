@@ -59,6 +59,7 @@ def remove_offline_services(onion):
         last_seen_online = datetime.now() - hs.seenOnline
         if last_seen_online > timedelta(days=7):
             hs.online = False
+            hs.full_clean()
             hs.save()
 
 def fill_description(onion, title, keywords, description):
@@ -66,6 +67,7 @@ def fill_description(onion, title, keywords, description):
     hs = HiddenWebsite.objects.get(id=onion)
     hs.seenOnline = datetime.now()
     hs.online = True
+    hs.full_clean()
     hs.save()
     old_descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
     relation = ""
@@ -133,6 +135,7 @@ def add_official_info(json, onion):
     hs = HiddenWebsite.objects.get(id=onion)
     hs.seenOnline = datetime.now()
     hs.online = True
+    hs.full_clean()
     hs.save()
     descr = HiddenWebsiteDescription.objects.create(about=hs)
     descr.title = take_first_from_list(title)
