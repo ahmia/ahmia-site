@@ -29,7 +29,6 @@ class HiddenWebsite(models.Model):
     #is this domain banned
     banned = models.BooleanField(default=False)
     #is it online or offline
-    seenOnline = models.DateTimeField(blank=True, null=True)
     online = models.BooleanField(default=False)
     #echo -e "BLAHBLAHBLAH.onion\c" | md5sum
     #hashlib.md5(url[8:-1]).hexdigest()
@@ -41,6 +40,22 @@ class HiddenWebsite(models.Model):
         app_label = 'ahmia'
     def __unicode__(self):
         return self.url
+
+    def last_seen(self):
+        """The datetime when the hidden service was last seen online"""
+        try:
+            return self.hiddenwebsitestatus_set.filter(online=True).latest('id').time
+        except HiddenWebsiteStatus.DoesNotExist:
+            return None
+
+    def add_status(self, **kwargs):
+        """Create a HiddenWebsiteStatus object for a hidden service
+        
+        Keyword arguments:
+        time -- when the hidden service was tested (default=now)
+        online -- whether the hidden service was found online (default=True)
+        """
+        self.hiddenwebsitestatus_set.create(**kwargs)
 
 class HiddenWebsiteDescription(models.Model):
     """Hidden service website description."""
@@ -70,6 +85,14 @@ class HiddenWebsitePopularity(models.Model):
     class Meta:
         """Meta class."""
         app_label = 'ahmia'
+    def __unicode__(self):
+        return self.about.url
+
+class HiddenWebsiteStatus(models.Model):
+    """Hidden website online status"""
+    about = models.ForeignKey(HiddenWebsite)
+    time = models.DateTimeField(auto_now_add=True)
+    online = models.BooleanField(default=True)
     def __unicode__(self):
         return self.about.url
 

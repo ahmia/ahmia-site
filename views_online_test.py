@@ -52,12 +52,12 @@ def onion_up(request, onion):
 def remove_offline_services(onion):
     """Remove those services that have not responsed within a week."""
     hs = HiddenWebsite.objects.get(id=onion)
-    if hs.seenOnline:
+    if hs.last_seen():
         # Test if hidden service has been online during this week
         # If it hasn't been online a week,
         # then it is officially offline
-        last_seen_online = datetime.now() - hs.seenOnline
-        if last_seen_online > timedelta(days=7):
+        days_seen = (datetime.now() - hs.last_seen()).days
+        if days_seen > 7:
             hs.online = False
             hs.full_clean()
             hs.save()
@@ -65,10 +65,10 @@ def remove_offline_services(onion):
 def fill_description(onion, title, keywords, description):
     """Fill description information if there are none."""
     hs = HiddenWebsite.objects.get(id=onion)
-    hs.seenOnline = datetime.now()
     hs.online = True
     hs.full_clean()
     hs.save()
+    hs.add_status()
     old_descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
     relation = ""
     site_type = ""
@@ -133,10 +133,10 @@ def add_official_info(json, onion):
     lan = json.get('language')
     contact = json.get('contactInformation')
     hs = HiddenWebsite.objects.get(id=onion)
-    hs.seenOnline = datetime.now()
     hs.online = True
     hs.full_clean()
     hs.save()
+    hs.add_status()
     descr = HiddenWebsiteDescription.objects.create(about=hs)
     descr.title = take_first_from_list(title)
     descr.description = take_first_from_list(description)

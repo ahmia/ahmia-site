@@ -23,8 +23,8 @@
         <h3><a href="{{ site.url }}">{{ site.id }}.onion</a></h3>
         <div class='infotext'>
           {% if site.online %}<strong class="color12">Online</strong>{% else %}<strong class="color1">Offline</strong>{% endif %}
-          <br />{% if site.seenOnline %}
-          <b>Last time seen online: </b><span class="seenonline">{{ site.seenOnline }}</span>
+          <br />{% if site.last_seen %}
+          <b>Last time seen online: </b><span class="seenonline">{{ site.last_seen }}</span>
           <br />{% else %}
           <b>Never seen online</b>
           <br />{% endif %} {% if site.updated %}
