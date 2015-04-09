@@ -44,7 +44,7 @@ class HiddenWebsite(models.Model):
     def last_seen(self):
         """The datetime when the hidden service was last seen online"""
         try:
-            return self.hiddenwebsitestatus_set.filter(online=True).latest('id').time
+            return self.hiddenwebsitestatus_set.filter(online=True).latest('time').time
         except HiddenWebsiteStatus.DoesNotExist:
             return None
 

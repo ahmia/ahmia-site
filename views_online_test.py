@@ -33,7 +33,12 @@ def onion_up(request, onion):
             return HttpResponseForbidden(answer)
         else:
             remove_historical_descriptions(onion)
-            if request.body:
+            # If there is no request body, the onion is offline
+            is_online = bool(request.body)
+            # Log (store) online status
+            hs.add_status(online=is_online)
+
+            if is_online:
                 try:
                     json_data = request.body
                     return add_info(json_data, onion)
@@ -57,7 +62,7 @@ def remove_offline_services(onion):
         # If it hasn't been online a week,
         # then it is officially offline
         days_seen = (datetime.now() - hs.last_seen()).days
-        if days_seen > 7:
+        if days_seen >= 7:
             hs.online = False
             hs.full_clean()
             hs.save()
@@ -68,7 +73,6 @@ def fill_description(onion, title, keywords, description):
     hs.online = True
     hs.full_clean()
     hs.save()
-    hs.add_status()
     old_descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
     relation = ""
     site_type = ""
@@ -136,7 +140,6 @@ def add_official_info(json, onion):
     hs.online = True
     hs.full_clean()
     hs.save()
-    hs.add_status()
     descr = HiddenWebsiteDescription.objects.create(about=hs)
     descr.title = take_first_from_list(title)
     descr.description = take_first_from_list(description)
