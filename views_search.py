@@ -15,13 +15,25 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import redirect
 from django.template import Context, loader
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_http_methods
 from lxml import etree  # To handle the XML answers from the YaCy
 
 import ahmia.view_help_functions as helpers  # My view_help_functions.py
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 from haystack.query import SearchQuerySet
 
+@require_http_methods(["GET", "POST"])
+def proxy(request):
+    """Proxy connection to """
+    full_url = request.get_full_path()
+    http = urllib3.PoolManager()
+    url = settings.PROXY_BASE_URL + full_url.replace("/elasticsearch/", "")
+    content_type = {'Content-Type':request.META.get('CONTENT_TYPE')}
+    response = http.request(request.method, url, headers=content_type, body=request.body)
+    r_type = response.getheader('content-type')
+    r_data = response.data
+    r_status = response.status
+    return HttpResponse(content=r_data, content_type=r_type, status=r_status)
 
 @require_GET
 def solrapi(request):

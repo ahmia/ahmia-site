@@ -57,6 +57,11 @@ urlpatterns += patterns('',
     (r'^search/API', 'ahmia.views_search.solrapi'),
 )
 
+# Elasticsearch API
+urlpatterns += patterns('',
+    (r'^elasticsearch/', 'ahmia.views_search.proxy'),
+)
+
 # Haystack based search
 urlpatterns += patterns('',
     # The full text search page.

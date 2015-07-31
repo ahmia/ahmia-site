@@ -58,6 +58,7 @@ else: # Production environment
     }
 
 SOLR_ADDRESS = "http://127.0.0.1:33433/solr"
+PROXY_BASE_URL = 'http://localhost:9200/'
 
 HAYSTACK_CONNECTIONS = {
     'default': {
