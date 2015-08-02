@@ -16,7 +16,7 @@
     </div>
     <ol class="searchResults">
       {% for result in search_results %}
-        {% include 'partial/search_result.html' with (use_t2w=usetor2web, search_result=result) %}
+        {% include 'partial/search_result.html' with use_t2w=usetor2web search_result=result %}
       {% endfor %}
     </ol>
   {% endif %}
