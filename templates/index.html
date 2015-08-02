@@ -20,21 +20,25 @@
 
   <div id="ahmiaDescriptionArea">
     {% trans "Tor browser bundle" as tor_browser_bundle %}
-    {% trans "report it to us" as report_it_to_us %}
+    {% trans "report abuse material" as report_abuse_material %}
+    {% trans "service blacklist" as service_blacklist %}
     <p>
     {% blocktrans %}
       Ahmia searches hidden services on the Tor network. To access these hidden services, you need
       the <a href="https://www.torproject.org/projects/torbrowser.html">{{ tor_browser_bundle }}</a>.
-      We actively filter abuse material; if you find it, please <a href="/address">{{ report_it_to_us }}</a>
-      and we will remove it from the index as soon as possible.
+      Abuse material is not allowed on Ahmia. See our <a href="/blacklist">{{ service_blacklist }}</a> and
+      <a href="/blacklist/report">{{ report_abuse_material }}</a> if you find it in the index. It will
+      be removed as soon as possible.
     {% endblocktrans %}
     </p>
 
     {% trans "indexing information" as indexing_info %}
+    {% trans "contribute to the source code" as contribute_to_source %}
     {% trans "donate Bitcoin to the Ahmia project" as donate_bitcoin %}
     <p>
     {% blocktrans %}
       For more about Ahmia, see <a href="/documentation/indexing">{{ indexing_info }}</a>,
+      <a href="//github.com/juhanurmi/ahmia">{{contribute_to_source}}, 
       <a href="//twitter.com/AhmiaNews">@AhmiaNews</a> on Twitter, or maybe
       <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.
     {% endblocktrans %}
