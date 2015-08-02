@@ -134,7 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-    'debug_toolbar',
+    #'debug_toolbar',
     'ahmia',
     'haystack',
 )
