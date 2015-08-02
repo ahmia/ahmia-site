@@ -41,16 +41,9 @@ urlpatterns = patterns('',
     (r'^alldomains', 'ahmia.views.all_onions_txt'),
     # Add domain form.
     (r'^add/', 'ahmia.views.add'), #domain:port/add
-    (r'^$', 'ahmia.views_search.default'), #domain:port
+    (r'^search/', 'ahmia.views_search.results'), # results
+    (r'^$', 'ahmia.views_search.default') #domain:port
 )
-
-# Search views
-#urlpatterns += patterns('',
-    # The full text search page.
-    #(r'^oldsearch/', 'ahmia.views_search.search_page'),
-    # Search without JavaScript: with XSLT.
-    #(r'^find/(.*)', 'ahmia.views_search.find'),
-#)
 
 # Apache Solr connection API
 urlpatterns += patterns('',

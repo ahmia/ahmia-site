@@ -7,7 +7,7 @@
   <div class="maxiContent">
     <h1><a href="/">Ahmia</a></h1>
     <form id="searchForm" class="searchForm autocomplete" action="/" method="get">
-      <input id="id_q" type="search" name="q" placeholder="{% trans "Search Ahmia" %}">
+      <input id="id_q" type="search" name="q" placeholder="{% trans "Search Ahmia" %}" value="{{ query_string }}">
       <input type="submit" value="{% trans "Search" %}" style="submitButton">
     </form>
   </div>

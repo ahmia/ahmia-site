@@ -5,6 +5,7 @@ Full text search views.
 YaCy back-end connections.
 
 """
+import math
 import time
 import urllib2  # URL encode
 
@@ -80,28 +81,70 @@ def autocomplete(request):
 @require_GET
 def default(request):
     """The default page."""
-    return redirect('/search/')
+    template = loader.get_template('index.html')
+    content = Context()
+    return HttpResponse(template.render(content))
 
 @require_GET
-def search_page(request):
-    """The default full text search page."""
+def results(request):
+    """Search results page."""
+    RESULTS_PER_PAGE = 20
     query_string = request.GET.get('q', '')
+    page  = request.GET.get('page', '')
+
     search_time = ""
+    if '.onion' in request.get_host():
+        use_tor2web = False
+    else:
+        use_tor2web = True
+
     if query_string:
         start = time.time()
-        if ".onion" in request.get_host():
-            show_tor2web_links = False
-        else:
-            show_tor2web_links = True
-        search_results = query(query_string, show_tor2web_links)
+        search_results = query_object(query_string, use_tor2web)
         end = time.time()
         search_time = end - start
         search_time = round(search_time, 2)
     else:
-        search_results = ""
+        # don't query anything
+        redirect('/')
+        return
+
+    # fake paginate results
+    if page:
+        try:
+            page = int(page) - 1
+        except:
+            page = 0
+    else:
+        page = 0
+
+    total_search_results = len(search_results)
+
+    # calculate offsets
+    result_offset = page * RESULTS_PER_PAGE
+    result_final  = result_offset + RESULTS_PER_PAGE
+
+    max_pages = int(math.ceil(float(total_search_results) / RESULTS_PER_PAGE))
+    if result_offset >= total_search_results:
+        page = max_pages
+        result_offset = max_pages * RESULTS_PER_PAGE
+    if result_final >= total_search_results:
+        result_final = total_search_results -1
+
+    # truncate results
+    search_results = search_results[result_offset:result_final-1]
+
     onions = HiddenWebsite.objects.all()
-    template = loader.get_template('full_text_search.html')
-    content = Context({'search_results': search_results,
+    template = loader.get_template('results.html')
+    content = Context({
+        'use_tor2web': use_tor2web,
+        'page': page+1,
+        'max_pages': max_pages,
+        'result_begin': result_offset+1,
+        'result_end': result_final,
+        'total_search_results': total_search_results,
+        'query_string' : query_string,
+        'search_results': search_results,
         'search_time': search_time,
         'count_banned': onions.filter(banned=True, online=True).count(),
         'count_online': onions.filter(banned=False, online=True).count()})
@@ -162,6 +205,28 @@ def query(query_string, show_tor2web_links=True):
     except Exception as error:
         print error
         return '<li class="hs_site"><h3>No search results</h3></li>'
+
+def query_object(query_string, use_tor2web=False):
+    """Return a dict of YaCy search results."""
+    try:
+        xml = get_query(query_string)
+        root = etree.fromstring(xml)
+        results = []
+        for element in root.iter('item'):
+            res = {
+                'title': element.find('title').text or '',
+                'description': element.find('description').text or '',
+                'pub_date': element.find('pubDate').text or ''
+            }
+            url = element.find('link').text or ''
+            if use_tor2web:
+                res['url'] = url.replace('.onion/', '.tor2web.org/')
+            else:
+                res['url'] = url
+            results.append(res)
+    except:
+        results =[]
+    return results
 
 def build_html_answer(root, show_tor2web_links):
     """Builds HTML answer from the XML."""

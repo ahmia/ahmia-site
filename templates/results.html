@@ -1,0 +1,28 @@
+{% extends 'core.html' %}
+{% load i18n %}
+{% load ahmia_custom %}
+{% block title %}{% blocktrans %}Search results for {{query_string}}{% endblocktrans %} &mdash; Ahmia{% endblock %}
+{% block body %}
+{% include 'partial/nav.html' with nav_type='maxi' %}
+<div id="ahmiaResultsPage">
+  {% if total_search_results == 0 %}
+    {% include 'partial/no_results.html' %}
+  {% else %}
+    <div class="resultsSubheader">
+      <p>
+        Found <span class="resultNumber" id="totalResults">{{ total_search_results }}</span> matches.
+        Displaying page <span class="resultNumber" id="pageResultBegin">{{ page }}</span> of <span class="resultNumber" id="pageResultEnd">{{ max_pages }}</span>.
+      </p>
+    </div>
+    <ol class="searchResults">
+      {% for result in search_results %}
+        {% include 'partial/search_result.html' with (use_t2w=usetor2web, search_result=result) %}
+      {% endfor %}
+    </ol>
+  {% endif %}
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/results.js"></script>
+{% endblock %}

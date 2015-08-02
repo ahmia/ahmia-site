@@ -22,8 +22,8 @@
   </head>
   <body class="{% get_environment %} {% block body_class %}{% endblock %}">
     {% block precontent %}{% endblock %}
-    <div class="elastic outer">
-      <div id="content" class="elastic inner">
+    <div class="outer">
+      <div id="content" class="inner">
         {% block body %}{% endblock %}
       </div>
     </div>
