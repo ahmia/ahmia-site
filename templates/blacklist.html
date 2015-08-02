@@ -1,0 +1,81 @@
+{% extends 'core.html' %}
+{% load i18n %}
+{% load ahmia_custom %}
+{% block title %}{% trans "Hidden Service Blacklist" %} &mdash; Ahmia{% endblock %}
+{% block extra_js %}
+  {% is_development_environment as is_dev %}
+  {% if is_dev %}
+    <script src="/static/js/blacklist.js"></script>
+    <script src="/static/js/md5.js"></script>
+  {% else %}
+    <script src="/static/blacklist.signed.js"></script>
+  {% endif %}
+{% endblock %}
+{% block body %}
+{% include 'partial/nav.html' with nav_type='maxi' %}
+
+<div id="ahmiaBlacklist">
+  <p class="end">
+    {% blocktrans %}
+    Ahmia blacklists sites containing child abuse material from its index. This list contains
+    a masked version of all hidden service .onion addresses that have been added to the Ahmia
+    blacklist, and is updated whenever Ahmia blacklists a new .onion site for abuse material.
+    {% endblocktrans %}
+  </p>
+  <h3>{% trans "Blacklist information" %}</h3>
+  <p>
+    {% blocktrans %}
+    Hidden service names are masked by creating an MD5 sum of the onion name plus a new line. 
+    For example, if
+    the onion is <code>abcdefghijk.onion</code>, the resulting hash would be
+    <code>e271dc47fa80ddc9e6590042ad9ed2b7</code>.
+    This way it is possible for researchers and administrators to check if a site has been
+    blacklisted from the index without making the .onion hostnames easily accessible.
+    {% endblocktrans %}
+  </p>
+  <p>
+    {% blocktrans %}
+    Ahmia offers an API endpoint for this blacklisting. To check if a site has been blacklisted,
+    make a GET request to 
+    <code>https://ahmia.fi/address/$ONION_SERVICE_NAME/</code>, where 
+    <code>$ONION_SERVICE_NAME</code> is
+    the "abcdefghijk" part of the .onion address. If you have JavaScript enabled, the form below will
+    perform a client side confirmation of being blacklisted or not.
+    {% endblocktrans %}
+  </p>
+  <p class="end">
+    {% blocktrans %}
+    Blacklist hash data is available for raw text download <a href="#">here</a>. You may use this
+    in your own search indexes to remove abusive content.
+    {% endblocktrans %}
+  </p>
+  <div id="checkForBannedService" class="hidden">
+  <h3 class="checkForm">{% trans "Check For a Banned Service" %}</h3>
+  <div id="ahmiaFormContainer">
+    <form id="checkBlacklist" method="post" action="#">
+      <input type="text" id="blacklistInput" placeholder="{% trans "Enter your .onion address here" %}">
+      <input type="submit" value="{% trans "Check" %}">
+    </form>
+    <div id="flashMessage">
+      <p class="info">info</p>
+      <p class="warn">warn</p>
+      <p class="error">error</p>
+    </div>
+  </div>
+  </div>
+  <div id="bannedHiddenServices">
+  <h3>{% trans "Banned Hidden Services" %}</h3>
+  <ul id="blacklist">
+    {% comment %}
+      originally this filtered only to banned services online.
+      i don't understand why. show everything that is banned.
+    {% endcomment %}
+    {% for onion in banned_onions %}
+    <li><code>{{ onion.md5 }} </code></li>
+    {% endfor %}
+  </ul>
+  </div>
+</div>
+
+
+{% endblock %}

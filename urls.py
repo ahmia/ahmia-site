@@ -88,6 +88,8 @@ urlpatterns += patterns('',
 
 # From views_static
 urlpatterns += patterns('',
+    # Banned services
+    (r'^blacklist', 'ahmia.views.blacklist'),
     # Policy info.
     (r'^policy/', 'ahmia.views_static.policy'),
     # Disclaimer text.

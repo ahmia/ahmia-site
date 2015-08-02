@@ -50,6 +50,17 @@ def banned(request):
     """Return the plain text MD5 sums of the banned onions."""
     return banned_txt(request)
 
+@require_GET
+def blacklist(request):
+    """Return a blacklist page with MD5 sums of banned content."""
+    try:
+      banned_onions = HiddenWebsite.objects.get(banned=True)
+    except HiddenWebsite.DoesNotExist:
+      banned_onions = []
+    content = Context({ 'banned_onions': banned_onions })
+    template = loader.get_template('blacklist.html')
+    return HttpResponse(template.render(content))
+
 @require_http_methods(["GET", "POST"])
 def onion_list(request):
     """List the onion addresses."""

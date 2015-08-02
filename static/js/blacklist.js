@@ -64,15 +64,17 @@
   };
 
   $(document).ready(function() {
+    hideMessages();
     flashMessageContainer = $('#flashMessage');
-    formContainer = $('#ahmiaFormContainer');
+    formContainer = $('#checkForBannedService');
+    noScriptList  = $('#bannedHiddenServices');
     if (formContainer && flashMessageContainer &&
       typeof window.md5 === 'function') {
       formContainer.removeClass('hidden');
+      noScriptList.addClass('hidden');
     } else {
       return;
     }
-    hideMessages();
     $('#checkBlacklist').on('submit', checkAddress);
   });
 

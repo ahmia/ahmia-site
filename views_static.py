@@ -19,15 +19,9 @@ def indexing(request):
     return helpers.render_page('indexing.html')
 
 @require_GET
-def policy(request):
     """Static policy page."""
-    template = loader.get_template("policy.html")
-    onions = HiddenWebsite.objects.all()
-    count_online = onions.filter(banned=False, online=True).count()
-    count_banned = onions.filter(banned=True, online=True).count()
-    content = Context({'onions': onions, 'count_banned': count_banned,
-    'count_online': count_online})
-    return HttpResponse(template.render(content))
+def policy(request):
+    redirect('/blacklist')
 
 @require_GET
 def disclaimer(request):
