@@ -32,7 +32,7 @@ def policy(request):
 @require_GET
 def disclaimer(request):
     """Static disclaimer page."""
-    return helpers.render_page('disclaimer.html')
+    return helpers.render_page('static/disclaimer.html')
 
 @require_GET
 def description_proposal(request):
@@ -53,12 +53,7 @@ def documentation(request):
 @require_GET
 def about(request):
     """Static about page of ahmia."""
-    return helpers.render_page('about.html')
-
-@require_GET
-def gsoc(request):
-    """Static Google Summer of Code 2014 proposal page."""
-    return helpers.render_page('gsoc.html')
+    return helpers.render_page('static/about.html')
 
 @require_GET
 def show_ip(request):
