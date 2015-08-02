@@ -86,14 +86,14 @@ urlpatterns += patterns('',
     (r'^rule/$', 'ahmia.views_admin.rule'),
 )
 
+
 # From views_static
 urlpatterns += patterns('',
     # Banned services
     (r'^blacklist', 'ahmia.views.blacklist'),
-    # Policy info.
-    (r'^policy/', 'ahmia.views_static.policy'),
-    # Disclaimer text.
-    (r'^disclaimer/', 'ahmia.views_static.disclaimer'),
+    # legalese
+    (r'^legal', 'ahmia.views_static.legal'),
+    # documentation/indexing
     (r'^documentation/indexing/', 'ahmia.views_static.indexing'),
     # Documentation - create hidden service description to hidden services.
     (r'^documentation/createHsDescription/',
@@ -133,6 +133,12 @@ urlpatterns += patterns('',
     (r'^cytag.png(.*)', 'ahmia.views_search.yacy_connection'),
     (r'^index.html(.*)', 'ahmia.views_search.yacy_connection'),
     (r'^ViewImage.png(.*)', 'ahmia.views_search.yacy_connection'),
+)
+
+# DEPRECATED ROUTES
+urlpatterns += patterns('',
+    (r'^policy/', 'ahmia.views_legacy_redirect.policy'),
+    (r'^disclaimer/', 'ahmia.views_legacy_redirect.disclaimer')
 )
 
 #media files: CSS, JavaScript, images

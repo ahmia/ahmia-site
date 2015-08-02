@@ -19,14 +19,9 @@ def indexing(request):
     return helpers.render_page('indexing.html')
 
 @require_GET
-    """Static policy page."""
-def policy(request):
-    redirect('/blacklist')
-
-@require_GET
-def disclaimer(request):
-    """Static disclaimer page."""
-    return helpers.render_page('static/disclaimer.html')
+def legal(request):
+    """Static legal page."""
+    return helpers.render_page('static/legal.html')
 
 @require_GET
 def description_proposal(request):
