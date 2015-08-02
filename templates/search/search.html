@@ -1,1 +1,52 @@
 {% extends 'core.html' %}
+{% load i18n %}
+
+{% block body_class %}main{% endblock %}
+
+{% block precontent %}
+  <div id="imageOverlay">&nbsp;</div>
+{% endblock %}
+
+{% block body %}
+{% include 'partial/nav.html' with nav_type='mini' %}
+<div id="ahmiaMainContent">
+  <div id="ahmiaSearchArea">
+    <h1>Ahmia</h1>
+    <form id="searchForm" class="autocomplete" action="/" method="get">
+      <input id="id_q" type="search" name="q">
+      <input type="submit" value="{% trans "Search" %}" style="submitButton">
+    </form>
+  </div>
+
+  <div id="ahmiaDescriptionArea">
+    {% trans "Tor browser bundle" as tor_browser_bundle %}
+    {% trans "report it to us" as report_it_to_us %}
+    <p>
+    {% blocktrans %}
+      Ahmia searches hidden services on the Tor network. To access these hidden services, you need
+      the <a href="https://www.torproject.org/projects/torbrowser.html">{{ tor_browser_bundle }}</a>.
+      We actively filter abuse material; if you find it, please <a href="/address">{{ report_it_to_us }}</a>
+      and we will remove it from the index as soon as possible.
+    {% endblocktrans %}
+    </p>
+
+    {% trans "indexing information" as indexing_info %}
+    {% trans "donate Bitcoin to the Ahmia project" as donate_bitcoin %}
+    <p>
+    {% blocktrans %}
+      For more about Ahmia, see <a href="/documentation/indexing">{{ indexing_info }}</a>,
+      <a href="//twitter.com/AhmiaNews">@AhmiaNews</a> on Twitter, or maybe
+      <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.
+    {% endblocktrans %}
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    $('#id_q').focus();
+  });
+</script>
+{% endblock %}

@@ -21,6 +21,22 @@
       {% endif %}
   </head>
   <body class="{% get_environment %} {% block body_class %}{% endblock %}">
-
+    {% block precontent %}{% endblock %}
+    <div class="elastic outer">
+      <div id="content" class="elastic inner">
+        {% block body %}{% endblock %}
+      </div>
+    </div>
+    {% if is_dev %}
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.scrollTo.js"></script>
+    <script src="/static/js/jquery.pow.js"></script>
+    <script src="/static/js/sha256.js"></script>
+    <script src="/static/js/utils.js"></script>
+    {% else %}
+    <script src="/static/js/jquery.signed.js"></script>
+    <script src="/static/js/utils.signed.js"></script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
   </body>
 </html>

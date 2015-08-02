@@ -1,0 +1,29 @@
+{% load i18n %}
+<div id="ahmiaHeader" class="{{ nav_type }}">
+  <div id="notTorBrowserWarning">
+    <p>{% trans "It appears that you are not using the Tor Browser." %}</p>
+  </div>
+  {% if nav_type == 'maxi' %}
+  <div class="maxiContent">
+    <h1><a href="/">Ahmia</a></h1>
+    <form id="searchForm" class="searchForm autocomplete" action="/" method="get">
+      <input id="id_q" type="search" name="q" placeholder="{% trans "Search Ahmia" %}">
+      <input type="submit" value="{% trans "Search" %}" style="submitButton">
+    </form>
+  </div>
+  {% endif %}
+  <nav>
+    <ul class="primary">
+      <li><a href="/about" title="{% trans "Learn more about Ahmia and its team." %}">{% trans "About Ahmia" %}</a></li>
+      <li><a href="/directory" title="{% trans "A directory of .onion services." %}">{% trans "Directory" %}</a></li>
+      <li><a href="/search" title="{% trans "Advanced (full-text) search." %}">{% trans "Advanced" %}</a></li>
+      <li><a href="/stats/viewer" title="{% trans "Statistics about the Ahmia engine." %}">{% trans "Statistics" %}</a></li>
+    </ul>
+    <ul class="secondary">
+      <li><a href="/add">{% trans "Add your .onion" %}</a></li>
+      <li><a href="/disclaimer">{% trans "Disclaimer" %}</a></li>
+      <li><a href="/contact">{% trans "Contact" %}</a></li>
+    </ul>
+  </nav>
+</div>
+
