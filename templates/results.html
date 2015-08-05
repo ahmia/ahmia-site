@@ -10,8 +10,10 @@
   {% else %}
     <div class="resultsSubheader">
       <p>
-        Found <span class="resultNumber" id="totalResults">{{ total_search_results }}</span> matches.
+        {% blocktrans %}
+        Found <span class="resultNumber" id="totalResults">{{ total_search_results }}</span> matches in <span class="resultNumber" id="searchTime">{{ search_time }}</span> seconds.
         Displaying page <span class="resultNumber" id="pageResultBegin">{{ page }}</span> of <span class="resultNumber" id="pageResultEnd">{{ max_pages }}</span>.
+        {% endblocktrans %}
       </p>
     </div>
     <ol class="searchResults">
@@ -22,7 +24,4 @@
   {% endif %}
 </div>
 
-{% endblock %}
-{% block extra_js %}
-<script src="/static/js/results.js"></script>
 {% endblock %}

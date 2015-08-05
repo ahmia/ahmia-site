@@ -1,14 +1,13 @@
 {% load i18n %}
-<li class="result" href="https://some.onion/" id="onion_key">
-  <h4><a href="//some.onion">Hidden Service Title</a></h4>
-  <p>
-  GlobaLeaks Error! :( Your browser is not running Javascript, and It's required to use GlobaLeaks
-  anonymous submission client, because is entirely Javascript based. It's common believe that Javascript ...
-  </p>
+<li class="result" href="//{{ search_result.url }}" id="onion_key">
+<h4><a href="//{{ search_result.url }}">{{ search_result.title }}</a></h4>
+  <p>{{ search_result.description | truncatechars:300 }}</p>
   <p class="metadata">
-    <cite>some.onion</cite> &mdash;
-    <span class="lastSeen" data-timestamp="0">last seen 14 hours ago</span> &mdash;
-    <a href="#" title="Report this link to us">Report Abuse</a>
+  <cite>{{ search_result.onion_url }}</cite> &mdash;
+  <span class="lastSeen" data-timestamp="{{ search_result.timestamp }}">
+    {{ search_result.date|timesince:now }} {% trans "ago" %}
+  </span> &mdash;
+  <a href="#" data-href="{{ search_result.onion_url }}" title="Report this link to us">Report Abuse</a>
   </p>
 </li>
 

@@ -7,6 +7,7 @@ YaCy back-end connections.
 """
 import math
 import time
+from datetime import date
 import urllib2  # URL encode
 
 import simplejson as json
@@ -100,7 +101,7 @@ def results(request):
 
     if query_string:
         start = time.time()
-        search_results = query_object(query_string, use_tor2web)
+        search_results = query_object_elasticsearch(query_string, use_tor2web)
         end = time.time()
         search_time = end - start
         search_time = round(search_time, 2)
@@ -128,11 +129,11 @@ def results(request):
     if result_offset >= total_search_results:
         page = max_pages
         result_offset = max_pages * RESULTS_PER_PAGE
-    if result_final >= total_search_results:
-        result_final = total_search_results -1
+    if result_final > total_search_results:
+        result_final = total_search_results
 
     # truncate results
-    search_results = search_results[result_offset:result_final-1]
+    search_results = search_results[result_offset:result_final]
 
     onions = HiddenWebsite.objects.all()
     template = loader.get_template('results.html')
@@ -146,8 +147,8 @@ def results(request):
         'query_string' : query_string,
         'search_results': search_results,
         'search_time': search_time,
-        'count_banned': onions.filter(banned=True, online=True).count(),
-        'count_online': onions.filter(banned=False, online=True).count()})
+        'now': date.fromtimestamp(time.time())
+        })
     return HttpResponse(template.render(content))
 
 @require_GET
@@ -206,26 +207,33 @@ def query(query_string, show_tor2web_links=True):
         print error
         return '<li class="hs_site"><h3>No search results</h3></li>'
 
-def query_object(query_string, use_tor2web=False):
-    """Return a dict of YaCy search results."""
-    try:
-        xml = get_query(query_string)
-        root = etree.fromstring(xml)
-        results = []
-        for element in root.iter('item'):
-            res = {
-                'title': element.find('title').text or '',
-                'description': element.find('description').text or '',
-                'pub_date': element.find('pubDate').text or ''
-            }
-            url = element.find('link').text or ''
-            if use_tor2web:
-                res['url'] = url.replace('.onion/', '.tor2web.org/')
-            else:
-                res['url'] = url
-            results.append(res)
-    except:
-        results =[]
+def query_object_elasticsearch(query_string, use_tor2web=False):
+    """Return a dict of Elasticsearch results."""
+    # make an http request to elasticsearch
+    pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
+            settings.ELASTICSEARCH_PORT,
+            assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
+    endpoint = '/elasticsearch/crawl/general/_search'
+    query_data = { 'q': str(query_string) }
+    response = json.loads(pool.request('GET', endpoint, query_data).data)
+    results = []
+    for element in response['hits']['hits']:
+        element = element['_source']
+        res = {
+            'title': element['title'] or 'No title found',
+            'description': element['text'] or 'No description found',
+            'pub_date': element['timestamp'] or -1,
+            'onion_url': element['domain'] or ''
+        }
+        timestamp = time.strptime(element['timestamp'], '%Y-%m-%dT%H:%M:%S')
+        res['date'] = date.fromtimestamp(time.mktime(timestamp))
+        res['timestamp'] = int(time.mktime(timestamp))
+        url = element['domain'] or ''
+        if use_tor2web:
+            res['url'] = url.replace('.onion', '.tor2web.org')
+        else:
+            res['url'] = url
+        results.append(res)
     return results
 
 def build_html_answer(root, show_tor2web_links):

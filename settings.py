@@ -45,7 +45,7 @@ elif [cmd for cmd in demo_env if cmd in sys.argv]:
         'NAME': os.getcwd() + '/ahmia_db', # Database name
         }
     }
-else: # Production environment
+else:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Database engine
@@ -56,6 +56,11 @@ else: # Production environment
         'PORT': '6432', # pbbouncer port
         }
     }
+
+# ELASTICSEARCH STUFF
+ELASTICSEARCH_TLS_FPRINT = "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
+ELASTICSEARCH_HOST = "ahmia.fi"
+ELASTICSEARCH_PORT = 443 
 
 SOLR_ADDRESS = "http://127.0.0.1:33433/solr"
 PROXY_BASE_URL = 'http://localhost:9200/'
