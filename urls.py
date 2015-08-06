@@ -131,7 +131,7 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     (r'^policy/', 'ahmia.views_legacy_redirect.policy'),
     (r'^disclaimer/', 'ahmia.views_legacy_redirect.disclaimer'),
-    (r'^banned/', 'ahmia.views_legacy_redirect.blacklist'),
+    (r'^banned/', 'ahmia.views_legacy_redirect.banned'),
     (r'^bannedMD5\.txt$', 'ahmia.views_legacy_redirect.banned')
 )
 
