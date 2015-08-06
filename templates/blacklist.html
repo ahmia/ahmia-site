@@ -33,16 +33,6 @@
     blacklisted from the index without making the .onion hostnames easily accessible.
     {% endblocktrans %}
   </p>
-  <p>
-    {% blocktrans %}
-    Ahmia offers an API endpoint for this blacklisting. To check if a site has been blacklisted,
-    make a GET request to 
-    <code>https://ahmia.fi/address/$ONION_SERVICE_NAME/</code>, where 
-    <code>$ONION_SERVICE_NAME</code> is
-    the "abcdefghijk" part of the .onion address. If you have JavaScript enabled, the form below will
-    perform a client side confirmation of being blacklisted or not.
-    {% endblocktrans %}
-  </p>
   <p class="end">
     {% blocktrans %}
     Blacklist hash data is available for raw text download <a href="/blacklist/banned">here</a>. You may use this
