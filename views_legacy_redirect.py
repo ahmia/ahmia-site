@@ -14,5 +14,9 @@ def policy(request):
     return redirect('/blacklist')
 
 @require_GET
+def banned(request):
+    return redirect('/blacklist/banned')
+
+@require_GET
 def disclaimer(request):
     return redirect('/legal')

@@ -54,7 +54,7 @@ def banned(request):
 def blacklist(request):
     """Return a blacklist page with MD5 sums of banned content."""
     try:
-      banned_onions = HiddenWebsite.objects.get(banned=True)
+      banned_onions = HiddenWebsite.objects.all().filter(banned=True)
     except HiddenWebsite.DoesNotExist:
       banned_onions = []
     content = Context({ 'banned_onions': banned_onions })
@@ -448,20 +448,6 @@ def onions_online_txt(request):
     return StreamingHttpResponse(site_list, content_type="text/plain")
 
 @require_GET
-def all_onions_txt(request):
-    """Return a plain text list of onions including the banned ones."""
-    # Allow requests only from the localhost
-    ip_addr = helpers.get_client_ip(request)
-    if not str(ip_addr) in "127.0.0.1" or not "127.0.0.1" in str(request.get_host()):
-        answer = "Only allowed form the localhost."
-        return HttpResponseForbidden(answer)
-    sites = HiddenWebsite.objects.all().order_by('url')
-    site_list = []
-    for site in sites:
-        site_list.append(site.url+"\n")
-    return StreamingHttpResponse(site_list, content_type="text/plain")
-
-@require_GET
 def banned_txt(request):
     """Return the plain text MD5 sums of the banned onions."""
     sites = HiddenWebsite.objects.filter(banned=True, online=True)
@@ -469,17 +455,3 @@ def banned_txt(request):
     for site in sites:
         md5_list.append(site.md5+"\n")
     return StreamingHttpResponse(md5_list, content_type="text/plain")
-
-@require_GET
-def banned_domains_plain(request):
-    """Return the plain text list of banned onions."""
-    # Allow requests only from the localhost
-    ip_addr = helpers.get_client_ip(request)
-    if not str(ip_addr) in "127.0.0.1" or not "127.0.0.1" in str(request.get_host()):
-        answer = "Only allowed form the localhost."
-        return HttpResponseForbidden(answer)
-    sites = HiddenWebsite.objects.filter(banned=True)
-    url_list = []
-    for site in sites:
-        url_list.append(site.url+"\n")
-    return StreamingHttpResponse(url_list, content_type="text/plain")

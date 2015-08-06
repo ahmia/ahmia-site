@@ -27,7 +27,7 @@
   var getBlacklist = function() {
     if (blacklistedAddresses.length > 0) return blacklistedAddresses;
     var addressList = $('ul#blacklist li code').each(function() {
-      blacklistedAddresses.push($(this).text().toLowerCase());
+      blacklistedAddresses.push($(this).text().toLowerCase().trim());
     });
     return blacklistedAddresses;
   };
@@ -42,10 +42,9 @@
   var checkAddress = function(evt) {
     hideMessages();
     evt.preventDefault();
-    // get value from form
     getBlacklist();
-    var plaintext = normalizeInput($('#blacklistInput').val()) + "\n";
-    if (plaintext.length !== 12) {
+    var plaintext = normalizeInput($('#blacklistInput').val()) + ".onion";
+    if (plaintext.length !== 22) {
       showMessage('warn', "This doesn't appear to be a valid onion.");
       return;
     }

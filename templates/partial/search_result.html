@@ -1,7 +1,7 @@
 {% load i18n %}
 <li class="result" href="//{{ search_result.url }}" id="onion_key">
-<h4><a href="//{{ search_result.url }}">{{ search_result.title }}</a></h4>
-  <p>{{ search_result.description | truncatechars:300 }}</p>
+<h4><a href="//{{ search_result.url }}">{{ search_result.title | escape }}</a></h4>
+  <p>{{ search_result.description | escape | truncatechars:300 }}</p>
   <p class="metadata">
   <cite>{{ search_result.onion_url }}</cite> &mdash;
   <span class="lastSeen" data-timestamp="{{ search_result.timestamp }}">

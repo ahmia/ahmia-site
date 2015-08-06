@@ -29,25 +29,13 @@ urlpatterns = patterns('',
     # Redirect link to hidden service
     (r'^redirect', 'ahmia.views.onion_redirect'),
     # Banned hidden services (MD5).
-    (r'^banned/', 'ahmia.views.banned'),
     # The plain texts list of onion URL.
     (r'^onions/', 'ahmia.views.onions_txt'),
     (r'^oniondomains\.txt$', 'ahmia.views.onions_txt'),
-    # MD5 list of banned onion URLs.
-    (r'^bannedMD5\.txt$', 'ahmia.views.banned'),
-    # Plain texts list of banned onion URLs.
-    (r'^banneddomains\.txt$', 'ahmia.views.banned_domains_plain'),
-    # Every onion domain. Including banned. Only for localhost.
-    (r'^alldomains', 'ahmia.views.all_onions_txt'),
     # Add domain form.
     (r'^add/', 'ahmia.views.add'), #domain:port/add
     (r'^search/', 'ahmia.views_search.results'), # results
     (r'^$', 'ahmia.views_search.default') #domain:port
-)
-
-# Apache Solr connection API
-urlpatterns += patterns('',
-    (r'^search/API', 'ahmia.views_search.solrapi'),
 )
 
 # Elasticsearch API
@@ -91,6 +79,8 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     # Banned services
     (r'^blacklist', 'ahmia.views.blacklist'),
+    # Blacklist MD5
+    (r'^blacklist/banned', 'ahmia.views.banned'),
     # legalese
     (r'^legal', 'ahmia.views_static.legal'),
     # documentation/indexing
@@ -138,7 +128,9 @@ urlpatterns += patterns('',
 # DEPRECATED ROUTES
 urlpatterns += patterns('',
     (r'^policy/', 'ahmia.views_legacy_redirect.policy'),
-    (r'^disclaimer/', 'ahmia.views_legacy_redirect.disclaimer')
+    (r'^disclaimer/', 'ahmia.views_legacy_redirect.disclaimer'),
+    (r'^banned/', 'ahmia.views_legacy_redirect.blacklist'),
+    (r'^bannedMD5\.txt$', 'ahmia.views_legacy_redirect.banned')
 )
 
 #media files: CSS, JavaScript, images
