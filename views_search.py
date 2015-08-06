@@ -216,7 +216,7 @@ def query_object_elasticsearch(query_string, use_tor2web=False):
     endpoint = '/elasticsearch/crawl/general/_search'
     query_data = { 'q': str(query_string) }
     response = json.loads(pool.request('GET', endpoint, query_data).data)
-    results = []
+    results = {}
     for element in response['hits']['hits']:
         element = element['_source']
         res = {
@@ -233,8 +233,8 @@ def query_object_elasticsearch(query_string, use_tor2web=False):
             res['url'] = url.replace('.onion', '.tor2web.org')
         else:
             res['url'] = url
-        results.append(res)
-    return results
+        results[res['onion_url']] = res
+    return results.values()
 
 def build_html_answer(root, show_tor2web_links):
     """Builds HTML answer from the XML."""

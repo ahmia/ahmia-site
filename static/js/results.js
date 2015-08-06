@@ -1,16 +1,9 @@
 (function($) {
-
-  /**
-   * THIS IS NOT A KEYLOGGER.
-   *
-   * All this code does is capture your arrow keys and
-   * enter to make it easier to select search results
-   * with your keyboard. Nothing is ever transmitted to
-   * the Ahmia servers.
-   **/
   $(document).ready(function() {
     $('ol.searchResults li').each(function() {
-      $(this).on('click', $.proxy(
+      $(this).find('a.reportAbuse').on('click', evtReportAbuse);
+    });
+    /* $(this).find(':not(a)').on('click', $.proxy(
         function(e) {
           // todo scope into navigationKeyCapture
           // or otherwise catch tor browser/usage
@@ -24,7 +17,6 @@
           }
         }, this));
     });
-
     navigationKeyCapture.listItems = $('ol.searchResults li');
     if (navigationKeyCapture.listItems.length) {
       navigationKeyCapture.maxIndex = navigationKeyCapture.listItems.length - 1;
@@ -44,7 +36,22 @@
       navigationKeyCapture.startTracking();
     });
     navigationKeyCapture.startTracking();
+    */
   });
+
+  // abuse reporting endpoint
+  var evtReportAbuse = function(evt) {
+    evt.preventDefault();
+    var abusiveOnion = $(this).attr('data-href');
+    var currentLink  = $(this);
+    var successMsg   = $(this).siblings('.abuseReportReceived');
+    var errorMsg     = $(this).siblings('.abuseReportError');
+    successMsg.hide().removeClass('hidden');
+    errorMsg.hide().removeClass('hidden');
+    $.post('/blacklist/report', { onion: abusiveOnion })
+     .done(function() { currentLink.hide(); successMsg.show(); })
+     .fail(function() { currentLink.hide(); errorMsg.show(); });
+  };
 
   // shortcuts for keycodes
   var KEY = {
@@ -55,6 +62,15 @@
     Enter:        13
   };
 
+
+  /**
+   * THIS IS NOT A KEYLOGGER.
+   *
+   * All this code does is capture your arrow keys and
+   * enter to make it easier to select search results
+   * with your keyboard. Nothing is ever transmitted to
+   * the Ahmia servers.
+   **/
   var navigationKeyCapture = {};
   $.extend(navigationKeyCapture, {
 

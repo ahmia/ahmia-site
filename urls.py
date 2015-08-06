@@ -77,10 +77,12 @@ urlpatterns += patterns('',
 
 # From views_static
 urlpatterns += patterns('',
-    # Banned services
-    (r'^blacklist', 'ahmia.views.blacklist'),
     # Blacklist MD5
     (r'^blacklist/banned', 'ahmia.views.banned'),
+    # Blacklist reporting
+    (r'^blacklist/report', 'ahmia.views.blacklist_report'),
+    # Banned services
+    (r'^blacklist', 'ahmia.views.blacklist'),
     # legalese
     (r'^legal', 'ahmia.views_static.legal'),
     # documentation/indexing

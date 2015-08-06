@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail
 from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseForbidden, HttpResponseNotFound,
-                         StreamingHttpResponse)
+                         StreamingHttpResponse, JsonResponse)
 from django.template import Context, loader
 from django.views.decorators.http import (require_GET, require_http_methods,
                                           require_POST)
@@ -60,6 +60,28 @@ def blacklist(request):
     content = Context({ 'banned_onions': banned_onions })
     template = loader.get_template('blacklist.html')
     return HttpResponse(template.render(content))
+
+@require_http_methods(['GET', 'POST'])
+def blacklist_report(request):
+    if request.method == 'POST':
+      if 'onion' in request.POST and helpers.is_valid_onion(request.POST['onion']):
+          helpers.send_abuse_report(request.POST['onion'])
+          return JsonResponse({'success': True})
+      else:
+          return JsonResponse({'success': False})
+    else:
+      if 'onion' in request.GET and helpers.is_valid_onion(request.GET['onion']):
+          helpers.send_abuse_report(request.GET['onion'])
+          onion = request.GET['onion']
+          success = True
+      else:
+          onion = ''
+          success = False
+      content = Context({
+          'success': success,
+          'onion': onion })
+      template = loader.get_template('blacklist_report.html')
+      return HttpResponse(template.render(content))
 
 @require_http_methods(["GET", "POST"])
 def onion_list(request):

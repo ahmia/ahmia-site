@@ -7,7 +7,11 @@
   <span class="lastSeen" data-timestamp="{{ search_result.timestamp }}">
     {{ search_result.date|timesince:now }} {% trans "ago" %}
   </span> &mdash;
-  <a href="#" data-href="{{ search_result.onion_url }}" title="Report this link to us">Report Abuse</a>
+  <span class="abuseReportForm">
+    <a href="/blacklist/report?onion={{ search_result.onion_url|urlencode }}" data-href="{{ search_result.onion_url }}" title="{% trans "Report this link to us" %}" class="reportAbuse">{% trans "Report Abuse" %}</a>
+    <span class="abuseReportReceived hidden">{% trans "Abuse report sent." %}</span>
+    <span class="abuseReportError hidden">{% trans "Abuse report error." %}</span>
+  </span>
   </p>
 </li>
 

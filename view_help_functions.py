@@ -1,12 +1,22 @@
 """ Generig help functions for the views. """
 import re  # Regular expressions
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.template import Context, loader
+from django.core.mail import send_mail
 
 from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
 
+def send_abuse_report(onion_url=None):
+    if onion_url is None: return
+    if settings.DEBUG: return
+    subject = "Hidden service abuse notice"
+    message = "User sent abuse notice for onion url %s" % (onion_url)
+    send_mail(subject, message,
+            settings.DEFAULT_FROM_EMAIL, settings.RECIPIENT_LIST,
+            fail_silently=False)
 
 def html_escape(text):
     """Produce entities within text."""
@@ -18,6 +28,9 @@ def html_escape(text):
     "<": "&lt;"
     }
     return "".join(html_escape_table.get(c, c) for c in text)
+
+def is_valid_onion(url):
+    return re.match("^[a-z2-7]{16}(\.onion)?", url.strip())
 
 def validate_onion_url(url):
     """ Test is url correct onion URL."""
