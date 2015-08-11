@@ -63,10 +63,10 @@
   };
 
   $(document).ready(function() {
-    hideMessages();
     flashMessageContainer = $('#flashMessage');
     formContainer = $('#checkForBannedService');
     noScriptList  = $('#bannedHiddenServices');
+    hideMessages();
     if (formContainer && flashMessageContainer &&
       typeof window.md5 === 'function') {
       formContainer.removeClass('hidden');
