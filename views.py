@@ -38,11 +38,6 @@ class CustomSearchView(SearchView):
 def add(request):
     """Add form for a new .onion address."""
     template = loader.get_template("add.html")
-    onions = HiddenWebsite.objects.all()
-    count_online = onions.filter(banned=False, online=True).count()
-    count_banned = onions.filter(banned=True, online=True).count()
-    content = Context({'count_banned': count_banned,
-    'count_online': count_online})
     return HttpResponse(template.render(content))
 
 @require_GET
@@ -136,23 +131,6 @@ def single_onion(request, onion):
     elif request.method == 'DELETE':
         # Delete means ban
         return admin.ban(request, onion)
-
-@require_http_methods(['PUT'])
-def put_data_to_onion(request, onion):
-    """Add data to hidden service."""
-    try:
-        json_obj = simplejson.loads(request.body)
-        abuse_note = json_obj.get("abuse_note")
-        url = json_obj.get("url")
-        message = "User sended abuse notice: \n\n URL: " + url
-        message = message + "\n\n User message: " + abuse_note
-        send_mail('Abuse notice', message, settings.DEFAULT_FROM_EMAIL,
-        settings.RECIPIENT_LIST, fail_silently=False)
-        return HttpResponse('Abuse notice sended.')
-    except Exception as error:
-        print "Error: %s" % onion
-        print "Error: %s" % error
-        return HttpResponseBadRequest(error)
 
 @require_GET
 def onion_redirect(request):

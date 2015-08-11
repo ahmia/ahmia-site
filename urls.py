@@ -5,7 +5,6 @@ from django.views.generic import TemplateView
 
 from ahmia.forms import WordsSearchForm
 from ahmia.views import CustomSearchView
-from haystack.views import search_view_factory
 
 urlpatterns = patterns('',
     # Check is domain up.
@@ -43,15 +42,6 @@ urlpatterns += patterns('',
     (r'^elasticsearch/', 'ahmia.views_search.proxy'),
 )
 
-# Haystack based search
-urlpatterns += patterns('',
-    # The full text search page.
-    (r'^search/autocomplete', 'ahmia.views_search.autocomplete'),
-    url(r'^search/', search_view_factory(
-            view_class=CustomSearchView,
-            form_class=WordsSearchForm
-        ), name='haystack_search'),
-)
 
 # Stats views
 urlpatterns += patterns('',
@@ -105,26 +95,6 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt',
     content_type='text/plain')),
-)
-
-# Yacy wrapping
-urlpatterns += patterns('',
-    # Full text search using YaCy wrapper.
-    # Load under /static/
-    (r'^yacy/(.*)', 'ahmia.views_search.yacy_static'),
-    (r'^env/(.*)', 'ahmia.views_search.yacy_static'),
-    (r'^currentyacypeer/(.*)', 'ahmia.views_search.yacy_static'),
-    (r'^portalsearch/(.*)', 'ahmia.views_search.yacy_static'),
-    (r'^jquery/(.*)', 'ahmia.views_search.yacy_static'),
-    (r'^js/(.*)', 'ahmia.views_search.yacy_static'),
-    # Use the wrapper
-    (r'^api/(.*)', 'ahmia.views_search.yacy_connection'),
-    (r'^yacysearch.rss(.*)', 'ahmia.views_search.yacy_connection'),
-    (r'^yacysearch.html(.*)', 'ahmia.views_search.yacy_connection'),
-    (r'^suggest.json(.*)', 'ahmia.views_search.yacy_connection'),
-    (r'^cytag.png(.*)', 'ahmia.views_search.yacy_connection'),
-    (r'^index.html(.*)', 'ahmia.views_search.yacy_connection'),
-    (r'^ViewImage.png(.*)', 'ahmia.views_search.yacy_connection'),
 )
 
 # DEPRECATED ROUTES
