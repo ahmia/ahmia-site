@@ -26,7 +26,7 @@ from haystack.query import SearchQuerySet
 
 @require_http_methods(["GET", "POST"])
 def proxy(request):
-    """Proxy connection to """
+    """Proxy connection to Elasticsearch"""
     full_url = request.get_full_path()
     http = urllib3.PoolManager()
     url = settings.PROXY_BASE_URL + full_url.replace("/elasticsearch/", "")
@@ -36,48 +36,6 @@ def proxy(request):
     r_data = response.data
     r_status = response.status
     return HttpResponse(content=r_data, content_type=r_type, status=r_status)
-
-@require_GET
-def solrapi(request):
-    """Solr API to search domain. Returns a list of domains."""
-    query = request.GET.get('q', '')
-    domain_list = []
-    # Query format is key=value
-    # /search/API?q=key=value
-    # Examples: title=alert, server_header=openresty, text=ahmia, h1=Hidden Service, h2=Hidden Service
-    # Query key=value must be shorter than 120 chars
-    if query and "=" in query and len(query) < 120 and len(query.split("=")) == 2:
-        query = query.split("=")
-        key =  query[0]
-        value = query[1].replace(" ", "+")
-        http = urllib3.PoolManager()
-        url = settings.SOLR_ADDRESS + "/select/?q=" + key + "%3A" + value + "&fl=domain"
-        url = url + '&start=0&rows=200&indent=on&group.field=domain&wt=python&group=true&group.limit=100'
-        response = http.request('GET', url)
-        # If Solr answer is 200 OK then build a domain list
-        if response.status == 200:
-            obj_data = eval(response.data) # Answer string to object
-            groups = obj_data["grouped"]["domain"]["groups"]
-            for group in groups:
-                domains = group["doclist"]["docs"]
-                for domain in domains:
-                    domain_str = domain["domain"]
-                    if 28 < len(domain_str) < 32: # Seems to be onion domain
-                        domain_list.append(domain_str+"\n")
-        domain_list = sorted(set(domain_list)) # Sort the domains
-    return StreamingHttpResponse(domain_list, content_type="text/plain")
-
-@require_GET
-def autocomplete(request):
-    """Autocomplete function to full text Haystack based search."""
-    sqs = SearchQuerySet().autocomplete(text=request.GET.get('q', ''))[:5]
-    suggestions = [result.title for result in sqs]
-    # Make sure you return a JSON object, not a bare list.
-    # Otherwise, you could be vulnerable to an XSS attack.
-    the_data = json.dumps({
-        'results': suggestions
-    })
-    return HttpResponse(the_data, content_type='application/json')
 
 @require_GET
 def default(request):
@@ -151,62 +109,6 @@ def results(request):
         })
     return HttpResponse(template.render(content))
 
-@require_GET
-def yacy_connection(request, query_string):
-    """Direct YaCy search wrapper."""
-    url = request.get_full_path()
-    if url == "/yacysearch.html":
-        url = ""
-    http = urllib3.PoolManager()
-    url = settings.YACY[:-1] + url
-    response = http.request('GET', url)
-    r_type = response.getheader('content-type')
-    r_data = response.data
-    r_status = response.status
-    return HttpResponse(content=r_data, content_type=r_type, status=r_status)
-
-@require_GET
-def yacy_static(request, query_string):
-    url = request.get_full_path()
-    return redirect('/static/yacy'+url)
-
-@require_GET
-def find(request, query_string):
-    """XSLT based search view. For special use."""
-    if not query_string and 's' in request.GET:
-        query_string = request.GET.get('s')
-    xml = str(get_query(query_string))
-    xml = xml.replace("/yacysearch.xsl", "/static/xslt/yacysearch.xsl")
-    xml = xml.replace("<rss", "<lol")
-    xml = xml.replace("</rss>", "</lol>")
-    return HttpResponse(xml, content_type="application/xml")
-
-def get_query(query_string):
-    """Wrapper to YaCy installation."""
-    #<yacy_host>/yacysearch.rss?query=<search_string>&size=<max_hits>
-    try:
-        query_string = urllib2.quote(query_string.encode("utf8"))
-        url = settings.YACY + "yacysearch.rss?query=" + query_string
-        http = urllib3.PoolManager()
-        response = http.request('GET', url)
-        data = response.data
-        return data
-    except Exception as error:
-        print error
-
-def query(query_string, show_tor2web_links=True):
-    """Build HTML answer from the answer of the YaCy back-end."""
-    try:
-        xml = get_query(query_string)
-        root = etree.fromstring(xml)
-        html_answer = build_html_answer(root, show_tor2web_links)
-        if not html_answer:
-            html_answer = '<li class="hs_site"><h3>No search results</h3></li>'
-        return html_answer
-    except Exception as error:
-        print error
-        return '<li class="hs_site"><h3>No search results</h3></li>'
-
 def query_object_elasticsearch(query_string, use_tor2web=False):
     """Return a dict of Elasticsearch results."""
     # make an http request to elasticsearch
@@ -235,39 +137,6 @@ def query_object_elasticsearch(query_string, use_tor2web=False):
             res['url'] = url
         results[res['onion_url']] = res
     return results.values()
-
-def build_html_answer(root, show_tor2web_links):
-    """Builds HTML answer from the XML."""
-    results = []
-    for element in root.iter("item"):
-        link = element.find("link").text or ""
-        # HTML escape the link (href attribute)
-        link = helpers.html_escape(link)
-        # Show link on title if there is no title
-        title = element.find("title").text or link
-        redirect_link = "/redirect?redirect_url=" + link
-        description = element.find("description").text or ""
-        pub_date = element.find("pubDate").text or ""
-        answer = '<h3><a href="' + link + '">' + title + '</a></h3>'
-        answer = answer + '<div class="infotext"><p class="links">'
-        answer = answer + 'Direct link: <a href="' + redirect_link + '">'
-        answer = answer + link + '</a></p>'
-        if show_tor2web_links:
-            tor2web_link = link.replace('.onion/', '.tor2web.fi/')
-            redirect_tor2web_link = "/redirect?redirect_url=" + tor2web_link
-            answer = answer + '<p class="links"> Access without Tor Browser: '
-            answer = answer + '<a href="'
-            answer = answer + redirect_tor2web_link + '">' + tor2web_link
-            answer = answer + '</a></p>'
-        answer = answer + description
-        answer = answer + '<p class="urlinfo">' + pub_date + '</p></div>'
-        answer = '<li class="hs_site">' + answer + '</li>'
-        # Calculate the place of the result
-        namespaces = {'yacy': 'http://www.yacy.net/'}
-        host = element.find("yacy:host", namespaces=namespaces).text or ""
-        add_result(answer, host, results)
-    html_answer = sort_results(results)
-    return html_answer
 
 def add_result(answer, host, results):
     """Add new search result and get the stats about it."""
