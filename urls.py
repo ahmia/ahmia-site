@@ -4,7 +4,6 @@ from django.conf.urls import include, patterns, url
 from django.views.generic import TemplateView
 
 from ahmia.forms import WordsSearchForm
-from ahmia.views import CustomSearchView
 
 urlpatterns = patterns('',
     # Check is domain up.

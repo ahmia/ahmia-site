@@ -12,32 +12,50 @@ from django.http import (HttpResponse, HttpResponseBadRequest,
 from django.template import Context, loader
 from django.views.decorators.http import (require_GET, require_http_methods,
                                           require_POST)
+from django import forms
+from django.utils.translation import ugettext as _
 
 import ahmia.view_help_functions as helpers  # My view_help_functions.py
 import ahmia.views_admin as admin  # My views_admin.py
+from ahmia.forms import AddOnionForm
 from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
                           HiddenWebsitePopularity)
-from haystack.views import SearchView
 
-
-class CustomSearchView(SearchView):
-    """Custom hack to Haystack SearchView"""
-
-    def extra_context(self):
-        """
-        Allows the addition of more context variables as needed.
-
-        Must return a dictionary.
-        """
-        onions = HiddenWebsite.objects.all()
-        count_online = onions.filter(banned=False, online=True).count()
-        count_banned = onions.filter(banned=True, online=True).count()
-        return {"count_online": count_online, "count_banned": count_banned}
-
-@require_GET
+@require_http_methods(['GET', 'POST'])
 def add(request):
     """Add form for a new .onion address."""
+    err_msg = None
+
+    template_vars = {}
+    if request.method == 'POST':
+        form = AddOnionForm(request.POST)
+        if form.is_valid():
+            try:
+                onion_name = validate_onion_url(form.cleaned_data['onion'])
+                onion = HiddenWebsite.objects.get(id=onion_name)
+                if onion.banned:
+                    err_msg = _('This onion is banned and cannot be added to this index.')
+            except ValidationError:
+                err_msg = _('You did not enter a valid .onion')
+            except ObjectDoesNotExist:
+                # ok, add a new onion
+                # we dont need anything other than the service for now
+                hs, creat = HiddenWebsite.objects.get_or_create(id=id_str, url=url, md5=md5)
+                if creat:
+                  hs.online = False
+                  hs.banned = False
+                  hs.full_clean()
+                  hs.save()
+                info_msg = _('Your hidden service has been added.')
+        else:
+            err_msg = _('You did not enter a valid .onion')
+
+    if err_msg:
+        template_vars['flash_message'] = { 'error': err_msg }
+    if info_msg:
+        template_vars['flash_message'] = { 'info': info_msg }
     template = loader.get_template("add.html")
+    content = Context(template_vars)
     return HttpResponse(template.render(content))
 
 @require_GET
@@ -324,7 +342,7 @@ def add_hs(json):
         answer = "Invalid URL! URL must be exactly like http://something.onion/"
         return HttpResponseBadRequest(answer)
     try:
-        hs, creat = HiddenWebsite.objects.get_or_create(id=id_str, url=url, md5=md5)
+        vhs, creat = HiddenWebsite.objects.get_or_create(id=id_str, url=url, md5=md5)
         if creat:
             hs.online = False
             hs.banned = False

@@ -6,6 +6,8 @@ from haystack.forms import SearchForm
 from haystack.query import SearchQuerySet
 from solr_grouping_backend import GroupedSearchQuerySet
 
+class AddOnionForm(forms.Form):
+    onion = forms.CharField()
 
 class WordsSearchForm(SearchForm):
     """Sort and return the search results."""
