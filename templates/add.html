@@ -1,0 +1,38 @@
+{% extends 'core.html' %}
+{% load i18n %}
+{% load ahmia_custom %}
+{% block title %}{% trans "Add a hidden service" %} &mdash; Ahmia{% endblock %}
+{% block extra_js %}
+  {% is_development_environment as is_dev %}
+  {% if is_dev %}
+    <script src="/static/js/add.js"></script>
+  {% else %}
+    <script src="/static/add.signed.js"></script>
+  {% endif %}
+{% endblock %}
+{% block body %}
+{% include 'partial/nav.html' with nav_type='maxi' %}
+
+<div id="ahmiaAddService">
+  <p class="end">
+    {% blocktrans %}
+    Add your site to the Ahmia index to help us learn more about hidden services. Adding your
+    onion will allow users of Ahmia to find your hidden service and its content. Please do not
+    add child abuse material; it will not be indexed and your hidden service will be blacklisted.
+    {% endblocktrans %}
+  </p>
+  <h3 class="checkForm">{% trans "Add your hidden service" %}</h3>
+  <div id="ahmiaFormContainer">
+    <form id="addOnion" method="post" action="/add">
+      <input type="text" id="onionInput" placeholder="{% trans "Enter your .onion address here" %}">
+      <input type="submit" value="{% trans "Add" %}">
+    </form>
+    <div id="flashMessage" class="{% if flash_message %}server{% endif %}">
+      <p class="info">{% if flash_message.info %}{{ flash_message.info }}{% endif %}</p>
+      <p class="warn">{% if flash_message.warn %}{{ flash_message.warn }}{% endif %}</p>
+      <p class="error">{% if flash_message.error %}{{ flash_message.error }}{% endif %}</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
