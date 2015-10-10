@@ -25,6 +25,7 @@ from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
 def add(request):
     """Add form for a new .onion address."""
     err_msg = None
+    info_msg = None
 
     template_vars = {}
     if request.method == 'POST':
