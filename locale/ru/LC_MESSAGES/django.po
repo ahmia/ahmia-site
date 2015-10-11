@@ -1,0 +1,554 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-10 20:35-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: templates/add.html:4
+msgid "Add a hidden service"
+msgstr ""
+
+#: templates/add.html:18
+msgid ""
+"\n"
+"    Add your site to the Ahmia index to help us learn more about hidden "
+"services. Adding your\n"
+"    onion will allow users of Ahmia to find your hidden service and its "
+"content. Please do not\n"
+"    add child abuse material; it will not be indexed and your hidden service "
+"will be blacklisted.\n"
+"    "
+msgstr ""
+
+#: templates/add.html:24
+msgid "Add your hidden service"
+msgstr ""
+
+#: templates/add.html:27 templates/blacklist.html:46
+msgid "Enter your .onion address here"
+msgstr ""
+
+#: templates/add.html:28
+msgid "Add"
+msgstr ""
+
+#: templates/blacklist.html:4 templates/blacklist_report.html:4
+msgid "Hidden Service Blacklist"
+msgstr ""
+
+#: templates/blacklist.html:19
+msgid ""
+"\n"
+"    Ahmia blacklists sites containing child abuse material from its index. "
+"This list contains\n"
+"    a masked version of all hidden service .onion addresses that have been "
+"added to the Ahmia\n"
+"    blacklist, and is updated whenever Ahmia blacklists a new .onion site "
+"for abuse material.\n"
+"    "
+msgstr ""
+
+#: templates/blacklist.html:25
+msgid "Blacklist information"
+msgstr ""
+
+#: templates/blacklist.html:27
+msgid ""
+"\n"
+"    Hidden service names are masked by creating an MD5 sum of the onion name "
+"plus a new line. \n"
+"    For example, if\n"
+"    the onion is <code>abcdefghijk.onion</code>, the resulting hash would "
+"be\n"
+"    <code>e271dc47fa80ddc9e6590042ad9ed2b7</code>.\n"
+"    This way it is possible for researchers and administrators to check if a "
+"site has been\n"
+"    blacklisted from the index without making the .onion hostnames easily "
+"accessible.\n"
+"    "
+msgstr ""
+
+#: templates/blacklist.html:37
+msgid ""
+"\n"
+"    Blacklist hash data is available for raw text download <a href=\"/"
+"blacklist/banned\">here</a>. You may use this\n"
+"    in your own search indexes to remove abusive content.\n"
+"    "
+msgstr ""
+
+#: templates/blacklist.html:43
+msgid "Check For a Banned Service"
+msgstr ""
+
+#: templates/blacklist.html:47
+msgid "Check"
+msgstr ""
+
+#: templates/blacklist.html:57
+msgid "Banned Hidden Services"
+msgstr ""
+
+#: templates/blacklist_report.html:20
+#, python-format
+msgid ""
+"\n"
+"    Your abuse report for <code>%(onion)s</code> was successfully submitted. "
+"Thank\n"
+"    you for helping to keep Ahmia free of child abuse material. A moderator "
+"will remove\n"
+"    this from the index shortly.\n"
+"    "
+msgstr ""
+
+#: templates/blacklist_report.html:26
+#, python-format
+msgid ""
+"\n"
+"    Your abuse report for <code>%(onion)s</code> did not go through "
+"successfully. Please\n"
+"    email <a href=\"mailto:hostmaster@ahmia.fi\">hostmaster at ahmia.fi</a> "
+"the URL of this\n"
+"    hidden service if you continue to receive this message.\n"
+"    "
+msgstr ""
+
+#: templates/blacklist_report.html:33
+msgid "Go back"
+msgstr ""
+
+#: templates/core.html:8
+msgid "Search Tor Hidden Services"
+msgstr ""
+
+#: templates/core.html:9
+msgid "A search engine for services accessible on the Tor network."
+msgstr ""
+
+#: templates/index.html:17 templates/partial/nav.html:11
+msgid "Search"
+msgstr ""
+
+#: templates/index.html:22
+msgid "Tor browser bundle"
+msgstr ""
+
+#: templates/index.html:23
+msgid "report abuse material"
+msgstr ""
+
+#: templates/index.html:24
+msgid "service blacklist"
+msgstr ""
+
+#: templates/index.html:26
+#, python-format
+msgid ""
+"\n"
+"      Ahmia searches hidden services on the Tor network. To access these "
+"hidden services, you need\n"
+"      the <a href=\"https://www.torproject.org/projects/torbrowser.html\">"
+"%(tor_browser_bundle)s</a>.\n"
+"      Abuse material is not allowed on Ahmia. See our <a href=\"/blacklist\">"
+"%(service_blacklist)s</a> and\n"
+"      report abuse material if you find it in the index. It will be removed "
+"as soon as possible.\n"
+"    "
+msgstr ""
+
+#: templates/index.html:34
+msgid "indexing information"
+msgstr ""
+
+#: templates/index.html:35
+msgid "contribute to the source code"
+msgstr ""
+
+#: templates/index.html:36
+msgid "donate Bitcoin to the Ahmia project"
+msgstr ""
+
+#: templates/index.html:38
+#, python-format
+msgid ""
+"\n"
+"      For more about Ahmia, see <a href=\"/documentation/indexing\">"
+"%(indexing_info)s</a>,\n"
+"      <a href=\"//github.com/juhanurmi/ahmia\">%(contribute_to_source)s, \n"
+"      <a href=\"//twitter.com/AhmiaNews\">@AhmiaNews</a> on Twitter, or "
+"maybe\n"
+"      <a href=\"bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s\">"
+"%(donate_bitcoin)s</a>.\n"
+"    "
+msgstr ""
+
+#: templates/partial/nav.html:4
+msgid "It appears that you are not using the Tor Browser."
+msgstr ""
+
+#: templates/partial/nav.html:10
+msgid "Search Ahmia"
+msgstr ""
+
+#: templates/partial/nav.html:17
+msgid "Learn more about Ahmia and its team."
+msgstr ""
+
+#: templates/partial/nav.html:17 templates/static/about.html:9
+msgid "About Ahmia"
+msgstr ""
+
+#: templates/partial/nav.html:18
+msgid "A directory of .onion services."
+msgstr ""
+
+#: templates/partial/nav.html:18
+msgid "Directory"
+msgstr ""
+
+#: templates/partial/nav.html:19
+msgid "Statistics about the Ahmia engine."
+msgstr ""
+
+#: templates/partial/nav.html:19
+msgid "Statistics"
+msgstr ""
+
+#: templates/partial/nav.html:20
+msgid "Add a hidden service to our index."
+msgstr ""
+
+#: templates/partial/nav.html:20
+msgid "Add Service"
+msgstr ""
+
+#: templates/partial/nav.html:24
+msgid "Blacklist of banned .onion services."
+msgstr ""
+
+#: templates/partial/nav.html:24
+msgid "Blacklist"
+msgstr ""
+
+#: templates/partial/nav.html:25
+msgid "Legal notices."
+msgstr ""
+
+#: templates/partial/nav.html:25
+msgid "Disclaimer"
+msgstr ""
+
+#: templates/partial/nav.html:26
+msgid "Contact"
+msgstr ""
+
+#: templates/partial/no_results.html:3
+#, python-format
+msgid ""
+"\n"
+"  Sorry, but Ahmia couldn't find results for <code>%(query_string)s</code>."
+"<br>\n"
+"  Please try a different search or try again later.\n"
+"  "
+msgstr ""
+
+#: templates/partial/search_result.html:8
+msgid "ago"
+msgstr ""
+
+#: templates/partial/search_result.html:11
+msgid "Report this link to us"
+msgstr ""
+
+#: templates/partial/search_result.html:11
+msgid "Report Abuse"
+msgstr ""
+
+#: templates/partial/search_result.html:12
+msgid "Abuse report sent."
+msgstr ""
+
+#: templates/partial/search_result.html:13
+msgid "Abuse report error."
+msgstr ""
+
+#: templates/results.html:4
+#, python-format
+msgid "Search results for %(query_string)s"
+msgstr ""
+
+#: templates/results.html:13
+#, python-format
+msgid ""
+"\n"
+"        Found <span class=\"resultNumber\" id=\"totalResults\">"
+"%(total_search_results)s</span> matches in <span class=\"resultNumber\" id="
+"\"searchTime\">%(search_time)s</span> seconds.\n"
+"        Displaying page <span class=\"resultNumber\" id=\"pageResultBegin\">"
+"%(page)s</span> of <span class=\"resultNumber\" id=\"pageResultEnd\">"
+"%(max_pages)s</span>.\n"
+"        "
+msgstr ""
+
+#: templates/static/about.html:4
+msgid "About Us"
+msgstr ""
+
+#: templates/static/about.html:11
+msgid ""
+"\n"
+"  Ahmia's mission is to create the premier search engine for services "
+"residing on the Tor\n"
+"  anonymity network. In doing so, we hope to share meaningful statistics, "
+"insights, and news\n"
+"  about the Tor network and the Tor project.\n"
+"  "
+msgstr ""
+
+#: templates/static/about.html:18
+msgid ""
+"\n"
+"  Contributors to Ahmia believe that the Tor network is an important and "
+"resilient\n"
+"  distributed platform for anonymity and privacy worldwide. By providing a "
+"search engine for\n"
+"  what many call the \"deep web\" or \"dark net\", Ahmia makes hidden "
+"services accessible to a wide\n"
+"  range of people, not just Tor network early adopters.\n"
+"  "
+msgstr ""
+
+#: templates/static/about.html:26
+msgid "Globaleaks project"
+msgstr ""
+
+#: templates/static/about.html:27
+msgid "Tor2Web"
+msgstr ""
+
+#: templates/static/about.html:28
+#, python-format
+msgid ""
+"\n"
+"  The Ahmia search system is also integrated with the open source <a href="
+"\"//globaleaks.org/\">%(globaleaks_project)s</a>\n"
+"  (to handle suggestions and feedback anonymously) and <a href=\"//wiki."
+"tor2web.org/index.php/Main_Page\">%(tor2web)s</a>, a service that helps\n"
+"  people not yet on the Tor network visit Tor hidden services.\n"
+"  "
+msgstr ""
+
+#: templates/static/about.html:35
+msgid "Hermes Center for Transparency and Digital Rights"
+msgstr ""
+
+#: templates/static/about.html:36
+#, python-format
+msgid ""
+"\n"
+"  Since September 2013, Ahmia has been affiliated with\n"
+"  <a href=\"//logioshermes.org\">%(hermes_center)s</a>, an organization "
+"devoted to\n"
+"  developing and promoting transparency and freedom-enabling technologies "
+"worldwide.\n"
+"  "
+msgstr ""
+
+#: templates/static/about.html:44
+msgid "About Juha Nurmi, Ahmia Project Leader"
+msgstr ""
+
+#: templates/static/about.html:45 templates/static/about.html.py:47
+msgid "Juha Nurmi"
+msgstr ""
+
+#: templates/static/about.html:48
+#, python-format
+msgid ""
+"\n"
+"  <strong>%(juha_nurmi)s</strong> (<a href=\"mailto:juha.nurmi@ahmia.fi"
+"\">juha.nurmi@ahmia.fi</a>) is the\n"
+"  founder and project leader of the Ahmia search engine project. He is the "
+"CEO of data mining and\n"
+"  security company Dignify, a security researcher, and has been involved in "
+"numerous projects funded\n"
+"  by both the commercial and government spheres. Juha is also a noted "
+"lecturer and public speaker. Juha's\n"
+"  work on Ahmia has been in part sponsored by the Google Summer of Code.\n"
+"  "
+msgstr ""
+
+#: templates/static/about.html:58
+msgid "More on Ahmia"
+msgstr ""
+
+#: templates/static/about.html:60
+msgid ""
+"\n"
+"  Ahmia is an active area of research, and is <a href=\"//github.com/"
+"juhanurmi/ahmia\">in development on GitHub</a>\n"
+"  as a free and open source project. If you would like to learn more about "
+"Ahmia, download our documentation or \n"
+"  presentations on the search engine:\n"
+"  "
+msgstr ""
+
+#: templates/static/about.html:67
+msgid "Documentation and Statistics"
+msgstr ""
+
+#: templates/static/about.html:68
+msgid "A presentation about Ahmia and the Tor Ecosystem"
+msgstr ""
+
+#: templates/static/about.html:73
+msgid "donate Bitcoin"
+msgstr ""
+
+#: templates/static/about.html:74
+#, python-format
+msgid ""
+"\n"
+"  We extend a thank you to Ahmia's supporters.\n"
+"  If you believe in Ahmia, please <a href="
+"\"bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s\">%(donate_bitcoin)s</a>.</p>\n"
+"  "
+msgstr ""
+
+#: templates/static/about.html:80
+msgid "Globaleaks Platform"
+msgstr ""
+
+#: templates/static/about.html:81
+msgid "Tor2Web Platform"
+msgstr ""
+
+#: templates/static/about.html:82
+msgid "HERMES Center for Transparency and Digital Rights"
+msgstr ""
+
+#: templates/static/about.html:83
+msgid "Tor Project"
+msgstr ""
+
+#: templates/static/legal.html:3
+msgid "Legal Disclaimer"
+msgstr ""
+
+#: templates/static/legal.html:9
+msgid "Ahmia content warning"
+msgstr ""
+
+#: templates/static/legal.html:10
+msgid ""
+"\n"
+"  The indexed sites are running inside the Tor network and ahmia.fi\n"
+"  is not responsible for them. The administrator of this site\n"
+"  (ahmia.fi) cannot be held responsible for what its users post,\n"
+"  edit, or any other actions of its users. You may not use this site\n"
+"  to edit or add any information when you do not have the legal\n"
+"  rights to do so. It is your own responsibility to adhere to these\n"
+"  terms and laws when you are using this site.\n"
+"  "
+msgstr ""
+
+#: templates/static/legal.html:21
+msgid ""
+"\n"
+"  This site is fully compliant with the Law of Finland. The\n"
+"  administrator is removing any illegal content and is working\n"
+"  according to the Finnish law. Please email us and provide exact\n"
+"  URL of the content you suspect to be illegal.\n"
+"  "
+msgstr ""
+
+#: templates/static/legal.html:29
+msgid "Beware of hidden service reviews and comments"
+msgstr ""
+
+#: templates/static/legal.html:31
+msgid ""
+"\n"
+"  We cannot guarantee the validity of the information found here.\n"
+"  The content of any editable field may recently have been changed\n"
+"  and vandalized by anyone.\n"
+"  "
+msgstr ""
+
+#: templates/static/legal.html:38
+msgid ""
+"\n"
+"  Our cache is automatically generated by our search crawler software:\n"
+"  we do not have anything to do with the actual Tor hidden services\n"
+"  content.\n"
+"  "
+msgstr ""
+
+#: templates/static/legal.html:45
+msgid "Log records and privacy policy"
+msgstr ""
+
+#: templates/static/legal.html:47
+msgid ""
+"\n"
+"  We take your privacy seriously: we absolutely do not maintain any IP "
+"address\n"
+"  logs. We have no information to share to any third parties regarding "
+"usage\n"
+"  of the Ahmia service.\n"
+"  "
+msgstr ""
+
+#: templates/static/legal.html:54
+msgid ""
+"\n"
+"  We do not allow backdoors into our services for access by authorities\n"
+"  or anyone else. Officials who want information for criminal "
+"investigations\n"
+"  must contact the Ahmia Project Leader with a warrant. If this happens,\n"
+"  we will publish the warrant and challenge it.\n"
+"  "
+msgstr ""
+
+#: templates/static/legal.html:62
+msgid "Administrative Contact"
+msgstr ""
+
+#: templates/static/legal.html:64
+msgid ""
+"\n"
+"  For administrative purposes, please contact Juha Nurmi, Ahmia Project\n"
+"  Leader, at <a href=\"mailto:juha.nurmi@ahmia.fi\">juha.nurmi@ahmia.fi</a>. "
+"A\n"
+"  GPG key with fingerprint 0x062FCBC0 is available\n"
+"  <a href=\"https://pgp.mit.edu/pks/lookup?"
+"op=get&search=0xB193B39E062FCBC0\">here</a>.\n"
+"  "
+msgstr ""
+
+#: views.py:38
+msgid "This onion is banned and cannot be added to this index."
+msgstr ""
+
+#: views.py:40 views.py:52
+msgid "You did not enter a valid .onion"
+msgstr ""
+
+#: views.py:50
+msgid "Your hidden service has been added."
+msgstr ""
