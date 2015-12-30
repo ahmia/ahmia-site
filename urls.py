@@ -32,7 +32,9 @@ urlpatterns = patterns('',
     (r'^oniondomains\.txt$', 'ahmia.views.onions_txt'),
     # Add domain form.
     (r'^add/', 'ahmia.views.add'), #domain:port/add
+    (r'^i2p/', 'ahmia.views_search.i2p_search'), # i2p search
     (r'^search/', 'ahmia.views_search.results'), # results
+    (r'^i2p_search/', 'ahmia.views_search.results'), # results
     (r'^$', 'ahmia.views_search.default') #domain:port
 )
 

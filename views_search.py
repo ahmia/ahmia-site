@@ -45,21 +45,25 @@ def default(request):
     return HttpResponse(template.render(content))
 
 @require_GET
+def i2p_search(request):
+    """The default page."""
+    template = loader.get_template('index_i2p.html')
+    content = Context()
+    return HttpResponse(template.render(content))
+
+@require_GET
 def results(request):
     """Search results page."""
     RESULTS_PER_PAGE = 20
     query_string = request.GET.get('q', '')
     page  = request.GET.get('page', '')
-
     search_time = ""
-    if '.onion' in request.get_host():
-        use_tor2web = False
-    else:
-        use_tor2web = True
-
     if query_string:
         start = time.time()
-        search_results = query_object_elasticsearch(query_string, use_tor2web)
+        if "i2p" in request.path:
+            search_results = query_object_elasticsearch(query_string, item_type="i2p")
+        else:
+            search_results = query_object_elasticsearch(query_string)
         end = time.time()
         search_time = end - start
         search_time = round(search_time, 2)
@@ -96,7 +100,6 @@ def results(request):
     onions = HiddenWebsite.objects.all()
     template = loader.get_template('results.html')
     content = Context({
-        'use_tor2web': use_tor2web,
         'page': page+1,
         'max_pages': max_pages,
         'result_begin': result_offset+1,
@@ -109,7 +112,7 @@ def results(request):
         })
     return HttpResponse(template.render(content))
 
-def query_object_elasticsearch(query_string, use_tor2web=False, item_type="tor"):
+def query_object_elasticsearch(query_string, item_type="tor"):
     """Return a dict of Elasticsearch results."""
     # make an http request to elasticsearch
     pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
@@ -125,17 +128,16 @@ def query_object_elasticsearch(query_string, use_tor2web=False, item_type="tor")
             'title': element['title'] or 'No title found',
             'description': element['text'] or 'No description found',
             'pub_date': element['timestamp'] or -1,
-            'onion_url': element['domain'] or ''
+            'domain': element['domain'] or ''
         }
         timestamp = time.strptime(element['timestamp'], '%Y-%m-%dT%H:%M:%S')
         res['date'] = date.fromtimestamp(time.mktime(timestamp))
         res['timestamp'] = int(time.mktime(timestamp))
         url = element['domain'] or ''
-        if use_tor2web:
-            res['url'] = url.replace('.onion', '.tor2web.org')
-        else:
-            res['url'] = url
-        results[res['onion_url']] = res
+        if '.onion' in url:
+            res['url_tor2web'] = url.replace('.onion', '.tor2web.org')
+        res['url'] = url
+        results[res['domain']] = res
     return results.values()
 
 def add_result(answer, host, results):

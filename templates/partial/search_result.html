@@ -1,17 +1,18 @@
 {% load i18n %}
 <li class="result" href="//{{ search_result.url }}" id="onion_key">
-<h4><a href="//{{ search_result.url }}">{{ search_result.title | escape }}</a></h4>
+<h4><a href="//{{ search_result.url }}">{{ search_result.title | escape }}</a>
+  {% if search_result.url_tor2web %} -- <a href="//{{ search_result.url_tor2web }}">Proxy</a> {% endif %}
+</h4>
   <p>{{ search_result.description | escape | truncatechars:300 }}</p>
   <p class="metadata">
-  <cite>{{ search_result.onion_url }}</cite> &mdash;
+  <cite>{{ search_result.domain }}</cite> &mdash;
   <span class="lastSeen" data-timestamp="{{ search_result.timestamp }}">
     {{ search_result.date|timesince:now }} {% trans "ago" %}
   </span> &mdash;
   <span class="abuseReportForm">
-    <a href="/blacklist/report?onion={{ search_result.onion_url|urlencode }}" data-href="{{ search_result.onion_url }}" title="{% trans "Report this link to us" %}" class="reportAbuse">{% trans "Report Abuse" %}</a>
+    <a href="/blacklist/report?onion={{ search_result.domain|urlencode }}" data-href="{{ search_result.domain }}" title="{% trans "Report this link to us" %}" class="reportAbuse">{% trans "Report Abuse" %}</a>
     <span class="abuseReportReceived hidden">{% trans "Abuse report sent." %}</span>
     <span class="abuseReportError hidden">{% trans "Abuse report error." %}</span>
   </span>
   </p>
 </li>
-

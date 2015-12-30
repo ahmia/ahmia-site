@@ -13,7 +13,7 @@
   <div id="ahmiaSearchArea">
     <h1>Ahmia - i2p network</h1>
     <h2>Testing to search it... because it's Friday! :)</h2>
-    <form id="searchForm" class="autocomplete" action="/search" method="get">
+    <form id="searchForm" class="autocomplete" action="/i2p_search" method="get">
       <input id="id_q" type="search" name="q">
       <input type="submit" value="{% trans "Search" %}" style="submitButton">
     </form>
@@ -29,7 +29,7 @@
     {% trans "donate Bitcoin to the Ahmia project" as donate_bitcoin %}
     <p>
     {% blocktrans %}
-      For more about Ahmia, see <a href="//github.com/juhanurmi/ahmia">{{contribute_to_source}}, 
+      For more about Ahmia, see <a href="//github.com/juhanurmi/ahmia">{{contribute_to_source}},
       <a href="//twitter.com/AhmiaNews">@AhmiaNews</a> on Twitter, or maybe
       <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.
     {% endblocktrans %}
