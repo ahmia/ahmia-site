@@ -6,17 +6,7 @@ import sys
 # This will be used to prepend to all file/directory paths.
 PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
 
-# Define DEBUG state dynamically:
-# If running server using manage.py => DEBUG = True else DEBUG = False
-if 'runserver' in sys.argv or 'test' in sys.argv:
-    DEBUG = True
-    # In demo environment use this YaCy address
-    YACY = "http://localhost:8888/"
-else:
-    # This is the YaCy address in the ahmia.fi
-    YACY = "http://10.8.0.10:8090/"
-    DEBUG = False
-
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [

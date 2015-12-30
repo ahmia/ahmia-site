@@ -179,10 +179,6 @@ msgstr ""
 msgid "contribute to the source code"
 msgstr ""
 
-#: templates/index.html:36
-msgid "donate Bitcoin to the Ahmia project"
-msgstr ""
-
 #: templates/index.html:38
 #, python-format
 msgid ""
