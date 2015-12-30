@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+
+{% block title %}Ahmia - About us{% endblock %}
+
+{% block content %}
+
+<h2>Google Summer of Code 2014: Ahmia.fi - Search Engine for Hidden Services</h2>
+<p>Juha Nurmi, 21.04.2014</p>
+<p>
+  <b>Organization:</b> The Tor Project and EFF
+  <br />
+  <b>Short description:</b> I would like to develop ahmia.fi - search engine for hidden services. It needs a lot love and care. I have founded, developed and maintained ahmia.fi and would like to continue doing so. I have published the source code of ahmia.fi.
+  <br
+  />
+  <b>Additional info:</b>  <a href="https://ahmia.fi/search">https://ahmia.fi/search</a>
+</p>
+
+<h3>1. What project would you like to work on? Use our ideas lists as a starting point or make up your own idea. Your proposal should include high-level descriptions of what you're going to do, with more details about the parts you expect to be tricky. Your proposal should also try to break down the project into tasks of a fairly fine granularity, and convince us you have a plan for finishing it. A timeline for what you will be doing throughout the summer is highly recommended.</h3>
+
+<p>I would like to work on the project Search Engine for Hidden Services.</p>
+<p>I would like to develop ahmia.fi as a free software (see a short presentation about ahmia.fi <a href="https://ahmia.fi/static/presentation/#(1)">https://ahmia.fi/static/presentation/#(1)</a>). I have been developing and maintaining ahmia.fi search engine.
+  It needs a lot love and care.</p>
+<p>Ahmia.fi is making the Tor network accessible in many different ways: listing hidden services, gathering their descriptions and providing a full text search.</p>
+<p>During my GSoC I have planned to the implement various new key features to ahmia.fi.</p>
+
+<h4>Search development</h4>
+<p><b>Full text search development</b>
+</p>
+
+<ul>
+  <li>
+    Popularity tracking (catch users clicks and tell YaCy the popular pages): development of a popularity tracking feature for ahmia.fi and integration with YaCy API (providing stats for popular pages and suggestions for relevant results)</li>
+  <li>
+    <ul>
+      <li>
+        Using JavaScript or directing URLs to detect what the user clicks
+      </li>
+      <li>
+        Search -&gt; detect click -&gt; send information to Django -&gt; Django send information to the YaCy nodes -&gt; gather popularity
+      </li>
+      <li>
+        Passing this information to the YaCy index
+      </li>
+      <li>
+        Better search results
+      </li>
+      <li>
+        Show TOP pages
+      </li>
+      <li>
+        2 workweek
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ul>
+  <li>
+    Use an another crawler to search .onion pages from the public Internet
+  </li>
+  <li>
+    <ul>
+      <li>
+        Search new .onion domains from different online sources
+      </li>
+      <li>
+        Ask help from organizations that are crawling
+      </li>
+      <li>
+        Checking out the backlinks from public WWW
+      </li>
+      <li>
+        This is an excellent case to test open source crawlers like Heritrix and Apache Nutch
+      </li>
+      <li>
+        Optionally, we can replace YaCy with another crawler if we find one of them better than YaCy
+      </li>
+      <li>
+        Better search results
+      </li>
+      <li>
+        2 workweeks
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<ul>
+  <li>Public open YaCy back-end for everyone</li>
+  <li>
+    <ul>
+      <li>Let's make our YaCy network open so anyone can join their YaCy nodes</li>
+      <li>This way we could get real P2P decentralization</li>
+      <li>ahmia.fi is a free software and the back-end YaCy network should be free to everyone; also, we will get voluntary YaCy nodes this way</li>
+      <li>Share installation configuration package that joins a YaCy node to ahmia.fi's nodes</li>
+      <li>1 workweek</li>
+    </ul>
+  </li>
+</ul>
+
+<p><b>Better edited HS descriptions</b>
+</p>
+<ul>
+  <li>
+    Design and development of a more useful and complete UI including more complete and exhaustive descriptions and details (e.g., show the whole history of descriptions and let the users edit it better)</li>
+  <li>
+    <ul>
+      <li>
+        Requires security conscious design
+      </li>
+      <li>
+        Show sites popularity
+      </li>
+      <li>
+        Commenting features
+      </li>
+      <li>
+        Authenticated hidden service information about the hidden service: what does it say about itself
+      </li>
+      <li>
+        Expose some of popularity/backlinks information to users, in case that lets them pick results more safely
+      </li>
+      <li>
+        2 workweek
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><b>Tor browser friendly version of ahmia.fi</b>
+</p>
+<ul>
+  <li>
+    Hidden service mirror for ahmia.fi
+  </li>
+  <li>
+    <ul>
+      <li>
+        Shared SQL database and YaCy back-end
+      </li>
+      <li>
+        Physical server in secure and unknown place
+      </li>
+      <li>
+        1 workweek
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><b>Information about hidden services and their content: Automated statistics and visualizations</b>
+</p>
+<ul>
+  <li>Development of an analytics features</li>
+  <li>
+    <ul>
+      <li>As the result of the indexing Tor network's content ahmia.fi can produce an authoritative and exact quantitative research data about what is published through the Tor network</li>
+      <li>Share information about each site found: Server type, how long it has been online/offline, when it was crawled, popularity and backlinks, keywords, language...</li>
+      <li>Number of different types of HSs</li>
+      <li>RESTful JSON API that provides the data</li>
+      <li>2 workweeks</li>
+    </ul>
+  </li>
+  <li>Automated visualizations</li>
+  <li>
+    <ul>
+      <li>It is very practical to visualize the data</li>
+      <li>What these hidden services are? number of web server, IRC servers, BitTorrent trackers etc.</li>
+      <li>Word clouds: we can even cluster which hidden services are close to each other and show some connections</li>
+      <li>Backlinking visualization</li>
+      <li>I already generated some SVG pictures of the backlinking between .onion sites</li>
+      <ul>
+        <li>ZOOM out to see these huge pictures:</li>
+        <li>
+          <a href="https://ahmia.fi/static/visuals/visualRDF.svg">https://ahmia.fi/static/visuals/gephi.svg</a>
+        </li>
+        <li>
+          <a href="https://ahmia.fi/static/visuals/visualRDF.svg">https://ahmia.fi/static/visuals/visualRDF.svg</a>
+        </li>
+      </ul>
+    </ul>
+  </li>
+  <li>1 workweeks</li>
+</ul>
+</li>
+<li>
+  Show cached text versions of the pages
+</li>
+<ul>
+  <li>
+    There has been cached text versions of the pages but I had to remove them
+  </li>
+  <li>
+    The problem is non-trivial: there are a lot of ways to inject pictures and harmful JavaScript to the text cache
+  </li>
+  <li>
+    when I found that someone even injected images using only URL schema I had to take down the text cache (data:[&lt;MIME-type&gt;][;charset=&lt;encoding&gt;][;base64],&lt;data&gt;)
+  </li>
+  <li>
+    2 workweek
+  </li>
+</ul>
+</ul>
+
+<h4>API development</h4>
+<p>
+  In addition, ahmia.fi provides RESTful API to integrate other services to use hidden service description information (see <a href=" https://ahmia.fi/documentation/">https://ahmia.fi/documentation/</a>). Hidden services can integrate their descriptions
+  directly to the hidden service list (see <a href="https://ahmia.fi/documentation/descriptionProposal/"> https://ahmia.fi/documentation/descriptionProposal/</a>). Ahmia.fi knows which hidden services are online and you can use the API to check hidden
+  service's online status. This API should be maintained to keep it general and simple. Furthermore, ahmia.fi uses this API internally.
+</p>
+
+<p><b>Integration with softwares that are using hidden services</b>
+</p>
+<ul>
+  <li>
+    Integration with Tor2web: find new .onion domains
+  </li>
+  <ul>
+    <li>
+      Thanks to our suggestion recently, Tor2web has implemented a feature that provides secure and anonymous statistics within a day. I want to implement an automatic fetch and handling of this data
+    </li>
+    <li>
+      Ahmia.fi should fetch these and add each new .onion page to its database
+    </li>
+    <li>
+      1 workweek
+    </li>
+  </ul>
+  <li>Integration with Tor2web: Child abuse detection</li>
+  <li>
+    Development of a Content Abuse Signaling feature in order to allow fast handling of abuse comments; I want to implement a Callback API in order to publish this data to Tor2web nodes in real-time</li>
+  <ul>
+    <li>
+      we would also like to get automated signal from the Tor2web nodes when they are banning some site so ahmia.fi can also ban that site if necessary
+    </li>
+    <li>
+      Development of a Content Abuse Signaling feature in order to allow fast handling of abuse comments; I want to implement a Callback API in order to publish this data to Tor2web nodes in real-time
+    </li>
+    <li>
+      A well designed and authoritative entity may be useful for provide some filtering lists. To this aim we are currently handling manually a filter list already integrated with Tor2web and in use on quite all the nodes of the Tor2web network (<a href="https://ahmia.fi/policy/">https://ahmia.fi/policy/</a>,
+      <a
+      href="https://github.com/globaleaks/Tor2web-3.0/issues/25">https://github.com/globaleaks/Tor2web-3.0/issues/25</a>). In collaboration with Tor2web I want to develop an efficient and automated system to handle and share a filtering information in a secure manner</span>
+    </li>
+    <li>
+      we are only sharing the MD5Sum of the banned domain
+    </li>
+    <li>
+      1 workweek
+    </li>
+  </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    Globaleaks integration
+  </li>
+  <li>
+    <ul>
+      <li>
+        Currently, GlobaLeaks informs ahmia.fi to index new hidden services
+      </li>
+      <li>
+        Globaleaks is good reputation to the Tor network
+      </li>
+      <li>
+        Ahmia.fi could extend the visibility of Globaleaks on the search results
+      </li>
+      <li>
+        Together with GlobaLeaks: RESTful API according to Globaleaks' needs and an UI to show information about Globaleaks nodes
+      </li>
+      <li>
+        1 workweek
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><b>What I have to show people at the end of the summer; a priority queue to the tasks:</b>
+</p>
+<p>The main features that will be done during the summer:</p>
+
+<ol>
+  <li>Integration with Tor2web to gather new .onion domains</li>
+  <li>Child abuse detection and filtering information sharing</li>
+  <li>Another crawler to search .onion links from the public Internet</li>
+  <li>Backlink checking</li>
+  <li>Popularity tracking</li>
+</ol>
+<p>workweeks: 7</p>
+
+<p><b>And most of these features:</b>
+</p>
+<ol start="6">
+  <li>Automated statistics and JSON API</li>
+  <li>Automated visualizations of the statistics</li>
+  <li>Hidden service mirror to ahmia.fi</li>
+  <li>Show text cache of the pages</li>
+</ol>
+<p>workweeks: 6</p>
+
+<p><b>Hopefully, some of these features:</b>
+</p>
+<ol start="10">
+  <li>Better UI to edited HS descriptions</li>
+  <li>Globaleaks integration</li>
+  <li>Public open YaCy back-end</li>
+</ol>
+<p>workweeks: 3</p>
+
+<p>
+  In case there is a task that is much slower to implement than forecast we will re-evaluate it or move to the next task on the queue.
+</p>
+
+<h3>2. Point us to a code sample: something good and clean to demonstrate that you know what you're doing, ideally from an existing project.</h3>
+
+<p>
+  My working search engine: <a href="https://ahmia.fi/search">https://ahmia.fi/search</a>
+  <br />The source code of the ahmia.fi: <a href="https://github.com/juhanurmi/ahmia">https://github.com/juhanurmi/ahmia</a>
+</p>
+
+<h3>3. Why do you want to work with The Tor Project in particular?</h3>
+
+<p>
+  I would love to support human rights. I believe that human rights are important because without them life would be controlled by somebody else and people could not make decisions themselves.
+</p>
+
+<p>
+  In practice, free software is one way to support human rights. In particular, Tor Project is providing this kind of free software I would love to support.
+</p>
+
+<p>
+  Anonymity is an important right in order to support freedom of speech and defend human rights. I have been actively contributing to the Tor Project since 2010 by implementing the first public search engine for hidden services, ahmia.fi, and by running
+  a very fast exit relay and by maintaining filtering list and tor2web.fi. I have significant hands-on competence with Tor and search engines.
+</p>
+
+<p>
+  Moreover, I am planning to join to torservers.net and launch several fast exit relays in Finland.
+</p>
+
+<h3>4. Tell us about your experiences in free software development environments. We especially want to hear examples of how you have collaborated with others rather than just working on a project by yourself.</h3>
+
+<p>
+  As a Linux user, I have been using and supporting free software over ten years.
+</p>
+
+<p>
+  I am a contributor to Callimachus open source project (a framework for data-driven applications based on Linked Data). Callimachus aims to make Semantic Web applications easier to create.
+</p>
+
+<p>
+  I am a Fellow member of Hermes Center for Transparency and Digital Human Rights; I have built a minimal integration API between my search engine and their software: GlobaLeaks (an open source project aimed at creating a worldwide, anonymous, censorship-resistant,
+  distributed whistleblowing platform) and Tor2web (an open source project aiming to allow transparent Internet exposure of websites running on Tor Hidden Services).
+</p>
+
+<p>
+  I was a volunteer and a lecturer in Observe, Hack, Make 2013: A five day international hacker festival in the Netherlands. There I presented ahmia.fi project to the other hackers.
+</p>
+
+<p>
+  Also, I am a member of the OKF Finland Open Science Work Group (OKF). The OKF is a hub for community-driven activities around open science to advocate standards of openness in Finnish academia and facilitate transfer of knowledge between academic institutions
+  and wider society. I am pushing researchers to publish their source codes with proper licensing.
+</p>
+
+<h3>5. Will you be working full-time on the project for the summer, or will you have other commitments too (a second job, classes, etc)? If you won't be available full-time, please explain, and list timing if you know them for other major deadlines (e.g. exams). Having other activities isn't a deal-breaker, but we don't want to be surprised.</h3>
+
+<p>Yes, full-time.</p>
+
+<h3>6. Will your project need more work and/or maintenance after the summer ends? What are the chances you will stick around and help out with that and other related projects?</h3>
+
+<p>I am already maintaining the ahmia.fi search engine and going to continue doing so.</p>
+
+<h3>7. What is your ideal approach to keeping everybody informed of your progress, problems, and questions over the course of the project? Said another way, how much of a "manager" will you need your mentor to be?</h3>
+
+<p>
+  Using familiar messaging systems, such as Email, IRC and Jabber. I am going to publish weekly updates to the tor-dev mailing list. Ahmia.fi will be updated weekly. Weekly online meeting with the mentor is sufficient.
+</p>
+
+<p>
+  I can travel to Italy to meet Globaleaks and Tor2web developers if it is necessary and helps to develop the API.
+</p>
+
+
+<h3>8. What school are you attending? What year are you, and what's your major/degree/focus? If you're part of a research group, which one?</h3>
+
+<p>
+  I am a Ph.D student at the Tampere University of Technology. My major is semantic computing. Since 07.2010, I have been working at the department of mathematics / Intelligent Information Systems Laboratory. First as a research assistant and then after
+  master's degree (1.7.2013) I have been working as a project researcher and a lecturer.
+</p>
+
+<h3>9. How can we contact you to ask you further questions? Google doesn't share your contact details with us automatically, so you should include that in your application. In addition, what's your IRC nickname? Interacting with us on IRC will help us get to know you, and help you get to know our community.</h3>
+
+<p>
+  <b>E-mail: </b>juha.nurmi@ahmia.fi
+  <br />
+  <b>Jabber: </b>elephant@jabber.fi
+  <br />
+  <b>IRC Channel: </b>OFTC/#ahmia
+  <br />
+  <b>Twitter: </b>@AhmiaNews
+  <br />
+  <b>OTR Fingerprint: </b>65FE90B9E3D7DCF29398516CC01DED21DD31256D
+</p>
+
+<h3>10. Are you applying to other projects for GSoC and, if so, what would be your preference if you're accepted to both? Having a stated preference helps with the deduplication process and will not impact if we accept your application or not.</h3>
+
+<p>This is the only project I am applying to.</p>
+
+<h3>11. Is there anything else that we should know that will make us like your project more?</h3>
+
+<p>This is what I would really like to do. I have spent a lot of time to help Tor. Building a search engine for the hidden services is relevant and useful for the whole community. I have a solid background in Web systems and virtual private networks. I am
+  a teacher at the university and a software engineer; I know what I am doing! :)
+</p>
+<p>
+  Finally, I propose a small, precisely targeted development project to ahmia.fi since I am already maintaining it and have independently worked with various organizations that use Tor and develop search engines. I am able to use this kind of “lean” approach
+  as it is the working model of the related developer communities, allowing us to align our development – and naturally interact with the talented individuals who effectively develop open-source systems like Tor, Tor2web, Globaleaks and YaCy. Futhermore,
+  I know the developer of Torsearch.es who offers technical insight to me.</p>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Ahmia - Policy{% endblock %}
+
+{% block content %}
+
+<h2>Content filtering policy</h2>
+<p>
+  We are removing each page which contains any child abuse from this search index.
+</p>
+<p>
+  You can check if a hidden service is banned by visiting ahmia.fi/address/hs_id/ where hs_id is the part of the url between http:// and .onion/ (for instance, http://something.onion/ => hs_id is something).
+</p>
+<p>
+  Also, here is a list of banned hidden services. The MD5 sum is calculated from the something.onion part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
+</p>
+<p>
+  If you think that a hidden service is banned wrongly, please contact us by email and tell us which hidden service is banned without a proper reason.
+</p>
+<h2>Banned hidden services</h2>
+
+<ul id='list' class='steps'>
+  {% for onion in onions %} {% if onion.banned and onion.online %}
+  <li class="hs_site">MD5: {{ onion.md5 }}</li>
+  {% endif %} {% endfor %}
+</ul>
+
+<p>
+  The text list of the MD5 sums is available <a href="/banned/">here</a>.
+</p>
+
+{% endblock %}

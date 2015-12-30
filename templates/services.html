@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Ahmia - Ports viewer{% endblock %}
+
+{% block content %}
+
+<noscript>
+  <p>Please enable JavaScript to view these statistics.</p>
+  <p>Or <a href="/static/log/nonweb_services.json">download port stats</a>.</p>
+</noscript>
+
+<script type="text/javascript" src="/static/js/showports.js"></script>
+
+<h2>Port Scanning Hidden Services, HTTP(S) not included</h2>
+
+<div style="width: 960px;">
+ <div id="ports_div1" style="float: left; width: 230px;"></div>
+ <div id="ports_div2" style="float: left; width: 230px;"></div>
+ <div id="ports_div3" style="float: left; width: 230px;"></div>
+ <div id="ports_div4" style="float: left; width: 230px;"></div>
+ <br style="clear: left;" />
+</div>
+
+{% endblock %}
