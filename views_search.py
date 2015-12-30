@@ -40,7 +40,7 @@ def proxy(request):
 @require_GET
 def default(request):
     """The default page."""
-    template = loader.get_template('index.html')
+    template = loader.get_template('index_tor.html')
     content = Context()
     return HttpResponse(template.render(content))
 
@@ -109,13 +109,13 @@ def results(request):
         })
     return HttpResponse(template.render(content))
 
-def query_object_elasticsearch(query_string, use_tor2web=False):
+def query_object_elasticsearch(query_string, use_tor2web=False, item_type="tor"):
     """Return a dict of Elasticsearch results."""
     # make an http request to elasticsearch
     pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
             settings.ELASTICSEARCH_PORT,
             assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
-    endpoint = '/elasticsearch/crawl/general/_search'
+    endpoint = '/elasticsearch/crawlings/' + item_type + '/_search'
     query_data = { 'q': str(query_string) }
     response = json.loads(pool.request('GET', endpoint, query_data).data)
     results = {}
