@@ -1,7 +1,7 @@
 {% load i18n %}
-<li class="result" href="//{{ search_result.url }}" id="onion_key">
-<h4><a href="//{{ search_result.url }}">{{ search_result.title | escape }}</a>
-  {% if search_result.url_tor2web %} -- <a href="//{{ search_result.url_tor2web }}">Proxy</a> {% endif %}
+<li class="result" href="http://{{ search_result.url }}" id="onion_key">
+<h4><a href="http://{{ search_result.url }}">{{ search_result.title | escape }}</a>
+  {% if search_result.url_tor2web %} -- <a href="https://{{ search_result.url_tor2web }}">Proxy</a> {% endif %}
 </h4>
   <p>{{ search_result.description | escape | truncatechars:300 }}</p>
   <p class="metadata">
