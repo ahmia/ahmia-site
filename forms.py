@@ -1,50 +1,9 @@
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
-
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
-from haystack.forms import SearchForm
-from haystack.query import SearchQuerySet
-from solr_grouping_backend import GroupedSearchQuerySet
 
 class AddOnionForm(forms.Form):
     onion = forms.CharField()
-
-class WordsSearchForm(SearchForm):
-    """Sort and return the search results."""
-    q = forms.CharField(required=False, label="",
-        widget=forms.TextInput(attrs={'type': 'search'}))
-
-    def search(self):
-
-        if not self.is_valid():
-            return self.no_query_found()
-
-        if not self.cleaned_data.get('q'):
-            return self.no_query_found()
-
-        user_query = self.cleaned_data['q'] # the query from the user
-        #sqs = self.searchqueryset.filter(content=user_query) # Solr query
-        sqs = GroupedSearchQuerySet().group_by("domain").filter(content=user_query) # Solr query
-
-        return sqs
-
-"""
-        #for item in sqs:
-        #    print item.domain + " : " + str(item.score)
-        results = []
-        answer = ""
-        for item in sqs:
-            host = item.domain
-            host = host.replace("http://", "").replace("https://", "")
-            host = host.replace(".onion/", ".onion")
-            add_result(item, host, results)
-            answer = sort_results(results)
-        print "-----------------------"
-        #for item in answer:
-        #    print item.domain + " : " + str(item.score)
-        return answer
-"""
-
 
 def add_result(answer, host, results):
     """Add new search result and get the stats about it."""

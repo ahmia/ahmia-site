@@ -3,16 +3,14 @@ import hashlib
 import re  # Regular expressions
 
 import simplejson
-from django.conf import settings  # For the SMTP settings
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.core.mail import send_mail
 from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseForbidden, HttpResponseNotFound,
                          StreamingHttpResponse, JsonResponse)
 from django.template import Context, loader
 from django.views.decorators.http import (require_GET, require_http_methods,
                                           require_POST)
-from django import forms
+
 from django.utils.translation import ugettext as _
 
 import ahmia.view_help_functions as helpers  # My view_help_functions.py
