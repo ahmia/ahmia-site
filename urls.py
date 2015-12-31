@@ -66,6 +66,8 @@ urlpatterns += patterns('',
 
 # From views_static
 urlpatterns += patterns('',
+    # Every onion domain. Including banned. Only for localhost.
+    (r'^alldomains', 'ahmia.views.all_onions_txt'),
     # Blacklist MD5
     (r'^blacklist/banned', 'ahmia.views.banned'),
     # Blacklist reporting
