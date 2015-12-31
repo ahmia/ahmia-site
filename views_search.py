@@ -117,7 +117,6 @@ def query_object_elasticsearch(query_string, item_type="tor"):
     #endpoint = '/elasticsearch/crawl/' + item_type + '/_search'
     query = urllib.quote_plus(query_string.encode('utf-8'))
     endpoint = '/crawl/' + item_type + '/_search/?size=100&q=' + query
-    print endpoint
     http_res = pool.request('GET', endpoint)
     res_json = http_res.data
     response = json.loads(res_json)
