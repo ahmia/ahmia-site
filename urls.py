@@ -1,9 +1,7 @@
 """The URL patterns of the ahmia."""
 from django.conf import settings
-from django.conf.urls import include, patterns, url
+from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
-
-from ahmia.forms import WordsSearchForm
 
 urlpatterns = patterns('',
     # Check is domain up.

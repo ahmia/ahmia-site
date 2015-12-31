@@ -8,21 +8,17 @@ YaCy back-end connections.
 import math
 import time
 from datetime import date
-import urllib2  # URL encode
 
 import simplejson as json
 import urllib3  # HTTP conncetions
 from django.conf import settings  # For the back-end connection settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import Context, loader
 from django.views.decorators.http import require_GET, require_http_methods
-from lxml import etree  # To handle the XML answers from the YaCy
 
-import ahmia.view_help_functions as helpers  # My view_help_functions.py
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
-from haystack.query import SearchQuerySet
 
 @require_http_methods(["GET", "POST"])
 def proxy(request):
@@ -97,7 +93,6 @@ def results(request):
     # truncate results
     search_results = search_results[result_offset:result_final]
 
-    onions = HiddenWebsite.objects.all()
     template = loader.get_template('results.html')
     content = Context({
         'page': page+1,
@@ -115,13 +110,14 @@ def results(request):
 def query_object_elasticsearch(query_string, item_type="tor"):
     """Return a dict of Elasticsearch results."""
     # make an http request to elasticsearch
-    pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
-            settings.ELASTICSEARCH_PORT,
-            assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
+    #pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
+    #        settings.ELASTICSEARCH_PORT,
+    #        assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
+    pool = urllib3.HTTPSConnectionPool('127.0.0.1', '9200')
     endpoint = '/elasticsearch/crawl/' + item_type + '/_search'
     query_data = { 'q': str(query_string) }
     response = json.loads(pool.request('GET', endpoint, query_data).data)
-    results = {}
+    results_obj = {}
     for element in response['hits']['hits']:
         element = element['_source']
         res = {
@@ -137,8 +133,8 @@ def query_object_elasticsearch(query_string, item_type="tor"):
         if '.onion' in url:
             res['url_tor2web'] = url.replace('.onion', '.tor2web.org')
         res['url'] = url
-        results[res['domain']] = res
-    return results.values()
+        results_obj[res['domain']] = res
+    return results_obj.values()
 
 def add_result(answer, host, results):
     """Add new search result and get the stats about it."""

@@ -52,17 +52,7 @@ ELASTICSEARCH_TLS_FPRINT = "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E
 ELASTICSEARCH_HOST = "ahmia.fi"
 ELASTICSEARCH_PORT = 443 
 
-SOLR_ADDRESS = "http://127.0.0.1:33433/solr"
 PROXY_BASE_URL = 'http://localhost:9200/'
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        #'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'ENGINE': 'ahmia.solr_grouping_backend.GroupedSolrEngine',
-        'URL': SOLR_ADDRESS,
-        'INCLUDE_SPELLING': True,
-    },
-}
 
 # Email settings
 EMAIL_USE_TLS = True
@@ -131,5 +121,4 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     #'debug_toolbar',
     'ahmia',
-    'haystack',
 )
