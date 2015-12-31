@@ -11,6 +11,7 @@ from datetime import date
 
 import simplejson as json
 import urllib3  # HTTP conncetions
+import urllib # URL encoding
 from django.conf import settings  # For the back-end connection settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -114,18 +115,24 @@ def query_object_elasticsearch(query_string, item_type="tor"):
     #        assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
     pool = urllib3.HTTPConnectionPool('127.0.0.1', '9200')
     #endpoint = '/elasticsearch/crawl/' + item_type + '/_search'
-    endpoint = '/crawl/' + item_type + '/_search'
-    query_data = { 'q': query_string.encode('utf-8') }
-    http_res = pool.request('GET', endpoint, query_data)
+    query = urllib.quote_plus(query_string.encode('utf-8'))
+    endpoint = '/crawl/' + item_type + '/_search/?size=100&q=' + query
+    print endpoint
+    http_res = pool.request('GET', endpoint)
     res_json = http_res.data
     response = json.loads(res_json)
     results_obj = {}
     for element in response['hits']['hits']:
         element = element['_source']
+        # Skip if there already is the most possible front page in the results
+        if results_obj.has_key(element['domain']):
+            if results_obj[element['domain']]['url'] == element['domain']:
+                continue
         res = {
             'title': element['title'] or 'No title found',
             'description': element['text'] or 'No description found',
             'pub_date': element['timestamp'] or -1,
+            'url': element['url'] or '',
             'domain': element['domain'] or ''
         }
         timestamp = time.strptime(element['timestamp'], '%Y-%m-%dT%H:%M:%S')
