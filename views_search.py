@@ -115,8 +115,10 @@ def query_object_elasticsearch(query_string, item_type="tor"):
     pool = urllib3.HTTPConnectionPool('127.0.0.1', '9200')
     #endpoint = '/elasticsearch/crawl/' + item_type + '/_search'
     endpoint = '/crawl/' + item_type + '/_search'
-    query_data = { 'q': str(query_string) }
-    response = json.loads(pool.request('GET', endpoint, query_data).data)
+    query_data = { 'q': query_string.encode('utf-8') }
+    http_res = pool.request('GET', endpoint, query_data)
+    res_json = http_res.data
+    response = json.loads(res_json)
     results_obj = {}
     for element in response['hits']['hits']:
         element = element['_source']
