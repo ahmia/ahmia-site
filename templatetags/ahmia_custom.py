@@ -5,7 +5,8 @@ register = template.Library()
 
 @register.assignment_tag
 def is_development_environment():
-    return settings.DEBUG == True
+    #return settings.DEBUG == True
+    return settings.DEBUG != True
 
 @register.simple_tag
 def get_environment():
