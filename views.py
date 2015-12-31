@@ -41,10 +41,10 @@ def add(request):
                 # we dont need anything other than the service for now
                 hs, creat = HiddenWebsite.objects.get_or_create(id=id_str, url=url, md5=md5)
                 if creat:
-                  hs.online = False
-                  hs.banned = False
-                  hs.full_clean()
-                  hs.save()
+                    hs.online = False
+                    hs.banned = False
+                    hs.full_clean()
+                    hs.save()
                 info_msg = _('Your hidden service has been added.')
         else:
             err_msg = _('You did not enter a valid .onion')
@@ -58,6 +58,17 @@ def add(request):
     return HttpResponse(template.render(content))
 
 @require_GET
+def old_add(request):
+    """Add form for a new .onion address."""
+    template = loader.get_template("old_add.html")
+    onions = HiddenWebsite.objects.all()
+    count_online = onions.filter(banned=False, online=True).count()
+    count_banned = onions.filter(banned=True, online=True).count()
+    content = Context({'count_banned': count_banned,
+    'count_online': count_online})
+    return HttpResponse(template.render(content))
+
+@require_GET
 def banned(request):
     """Return the plain text MD5 sums of the banned onions."""
     return banned_txt(request)
@@ -66,9 +77,9 @@ def banned(request):
 def blacklist(request):
     """Return a blacklist page with MD5 sums of banned content."""
     try:
-      banned_onions = HiddenWebsite.objects.all().filter(banned=True)
+        banned_onions = HiddenWebsite.objects.all().filter(banned=True)
     except HiddenWebsite.DoesNotExist:
-      banned_onions = []
+        banned_onions = []
     content = Context({ 'banned_onions': banned_onions })
     template = loader.get_template('blacklist.html')
     return HttpResponse(template.render(content))
@@ -76,24 +87,24 @@ def blacklist(request):
 @require_http_methods(['GET', 'POST'])
 def blacklist_report(request):
     if request.method == 'POST':
-      if 'onion' in request.POST and helpers.is_valid_onion(request.POST['onion']):
-          helpers.send_abuse_report(request.POST['onion'])
-          return JsonResponse({'success': True})
-      else:
-          return JsonResponse({'success': False})
+        if 'onion' in request.POST and helpers.is_valid_onion(request.POST['onion']):
+            helpers.send_abuse_report(request.POST['onion'])
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False})
     else:
-      if 'onion' in request.GET and helpers.is_valid_onion(request.GET['onion']):
-          helpers.send_abuse_report(request.GET['onion'])
-          onion = request.GET['onion']
-          success = True
-      else:
-          onion = ''
-          success = False
-      content = Context({
+        if 'onion' in request.GET and helpers.is_valid_onion(request.GET['onion']):
+            helpers.send_abuse_report(request.GET['onion'])
+            onion = request.GET['onion']
+            success = True
+        else:
+            onion = ''
+            success = False
+        content = Context({
           'success': success,
           'onion': onion })
-      template = loader.get_template('blacklist_report.html')
-      return HttpResponse(template.render(content))
+        template = loader.get_template('blacklist_report.html')
+        return HttpResponse(template.render(content))
 
 @require_http_methods(["GET", "POST"])
 def onion_list(request):
@@ -341,7 +352,7 @@ def add_hs(json):
         answer = "Invalid URL! URL must be exactly like http://something.onion/"
         return HttpResponseBadRequest(answer)
     try:
-        vhs, creat = HiddenWebsite.objects.get_or_create(id=id_str, url=url, md5=md5)
+        hs, creat = HiddenWebsite.objects.get_or_create(id=id_str, url=url, md5=md5)
         if creat:
             hs.online = False
             hs.banned = False
@@ -362,6 +373,7 @@ def add_description(json, hs):
     relation = json.get('relation')
     subject = json.get('subject')
     type_str = json.get('type')
+    print hs
     try:
         descriptions = HiddenWebsiteDescription.objects.filter(about=hs)
         old_descr = descriptions.latest('updated')
