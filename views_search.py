@@ -51,7 +51,7 @@ def i2p_search(request):
 @require_GET
 def results(request):
     """Search results page."""
-    RESULTS_PER_PAGE = 20
+    RESULTS_PER_PAGE = 50
     query_string = request.GET.get('q', '')
     page  = request.GET.get('page', '')
     search_time = ""
