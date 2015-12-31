@@ -3,13 +3,8 @@
 {% load ahmia_custom %}
 {% block title %}{% trans "Hidden Service Blacklist" %} &mdash; Ahmia{% endblock %}
 {% block extra_js %}
-  {% is_development_environment as is_dev %}
-  {% if is_dev %}
     <script src="/static/js/blacklist.js"></script>
     <script src="/static/js/md5.js"></script>
-  {% else %}
-    <script src="/static/blacklist.signed.js"></script>
-  {% endif %}
 {% endblock %}
 {% block body %}
 {% include 'partial/nav.html' with nav_type='maxi' %}
@@ -25,7 +20,7 @@
   <h3>{% trans "Blacklist information" %}</h3>
   <p>
     {% blocktrans %}
-    Hidden service names are masked by creating an MD5 sum of the onion name plus a new line. 
+    Hidden service names are masked by creating an MD5 sum of the onion name plus a new line.
     For example, if
     the onion is <code>abcdefghijk.onion</code>, the resulting hash would be
     <code>e271dc47fa80ddc9e6590042ad9ed2b7</code>.
