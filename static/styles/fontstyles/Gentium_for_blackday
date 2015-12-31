@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Gentium Book Basic';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Gentium Book Basic'), local('GentiumBookBasic'), url(https://themes.googleusercontent.com/static/fonts/gentiumbookbasic/v3/IRFxB2matTxrjZt6a3FUnsiUQA3_wO-qQTJfqhvSKS0.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Open Sans Extrabold'), local('OpenSans-Extrabold'), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/EInbV5DfGHOiMmvb1Xr-hnhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
