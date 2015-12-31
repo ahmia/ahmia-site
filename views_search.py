@@ -65,8 +65,7 @@ def results(request):
         search_time = round(search_time, 2)
     else:
         # don't query anything
-        redirect('/')
-        return
+        return redirect('/')
 
     # fake paginate results
     if page:
