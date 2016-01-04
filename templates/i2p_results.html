@@ -3,7 +3,7 @@
 {% load ahmia_custom %}
 {% block title %}{% blocktrans %}Search results for {{query_string}}{% endblocktrans %} &mdash; Ahmia{% endblock %}
 {% block body %}
-{% include 'partial/nav.html' with nav_type='maxi' %}
+{% include 'partial/nav_i2p.html' with nav_type='maxi' %}
 <div id="ahmiaResultsPage">
   {% if total_search_results == 0 %}
     {% include 'partial/no_results.html' %}

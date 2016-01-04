@@ -93,7 +93,11 @@ def results(request):
     # truncate results
     search_results = search_results[result_offset:result_final]
 
-    template = loader.get_template('results.html')
+    if "i2p" in request.path:
+        template = loader.get_template('i2p_results.html')
+    else:
+        template = loader.get_template('tor_results.html')
+
     content = Context({
         'page': page+1,
         'max_pages': max_pages,
