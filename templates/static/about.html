@@ -3,7 +3,7 @@
 
 {% block title %}{% trans "About Us" %} &mdash; Ahmia{% endblock %}
 {% block body %}
-{% include 'partial/nav.html' with nav_type='maxi' %}
+{% include 'partial/nav_tor.html' with nav_type='maxi' %}
 <div id="ahmiaAboutPage">
   <div class="aboutAhmia">
   <h2 class="sr">{% trans "About Ahmia" %}</h2>
@@ -59,7 +59,7 @@
   <p>
   {% blocktrans %}
   Ahmia is an active area of research, and is <a href="//github.com/juhanurmi/ahmia">in development on GitHub</a>
-  as a free and open source project. If you would like to learn more about Ahmia, download our documentation or 
+  as a free and open source project. If you would like to learn more about Ahmia, download our documentation or
   presentations on the search engine:
   {% endblocktrans %}
   </p>
