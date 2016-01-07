@@ -21,6 +21,8 @@ from django.views.decorators.http import require_GET, require_http_methods
 
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 
+import re
+
 @require_http_methods(["GET", "POST"])
 def proxy(request):
     """Proxy connection to Elasticsearch"""
@@ -119,6 +121,7 @@ def query_object_elasticsearch(query_string, item_type="tor"):
     #        assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
     pool = urllib3.HTTPConnectionPool('127.0.0.1', '9200')
     #endpoint = '/elasticsearch/crawl/' + item_type + '/_search'
+    query_string = re.escape(query_string)
     query = urllib.quote_plus(query_string.encode('utf-8'))
     endpoint = '/crawl/' + item_type + '/_search/?size=100&q=' + query
     http_res = pool.request('GET', endpoint)
