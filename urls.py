@@ -90,6 +90,8 @@ urlpatterns += patterns('',
     (r'^about/', 'ahmia.views_static.about'),
     # Show visitor's IP address.
     (r'^IP/', 'ahmia.views_static.show_ip'),
+    # Summer of Code 2014
+    (r'^gsoc/', 'ahmia.views_static.gsoc'),
 )
 
 # robots.txt file
