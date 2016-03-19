@@ -8,12 +8,13 @@
       <title>{% block title %}Ahmia &mdash; {% trans "Search Tor Hidden Services" %}{% endblock %}</title>
       <meta name="description" content="{% trans "A search engine for services accessible on the Tor network." %}">
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="/static/js/jquery.min.js"></script>
       <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" href="/static/css/normalize.css">
-        <link rel="stylesheet/less" href="/static/less/style.less">
-        <script src="/static/js/less.min.js"></script>
-        <script src="/static/js/modernizr.js"></script>
-	<link rel="stylesheet" href="data:text/css;base64,QC1tb3otZG9jdW1lbnQgcmVnZXhwKCcoPyFodHRwcz86Ly9haG1pYVxcLmZpfGh0dHBzPzovL2xvY2FsaG9zdHxodHRwcz86Ly8xMjdcXC4wXFwuMFxcLjF8aHR0cDovL21zeWRxc3QuKjJremVyZGdcXC5vbmlvbikuKicpIHsNCiAgICAgICAgYm9keTpiZWZvcmUgew0KICAgICAgICAgICAgICAgIG1hcmdpbi1sZWZ0OiAxMCU7DQogICAgICAgICAgICAgICAgbWFyZ2luLXRvcDogMjAlOw0KICAgICAgICAgICAgICAgIG1hcmdpbi1yaWdodDogMTAlOw0KICAgICAgICAgICAgICAgIGNvbG9yOiAjRkYwMDAwOw0KICAgICAgICAgICAgICAgIGZvbnQtc2l6ZTogMjAwJTsNCiAgICAgICAgICAgICAgICBjb250ZW50OiAiV2FybmluZzogWW91IGFyZSB1c2luZyBhIG1hbi1pbi10aGUtbWlkZGxlIGZha2UgY2xvbmUgc2l0ZSAtLSBWaXNpdCBodHRwczovL2FobWlhLmZpLyB0byBmaW5kIHJpZ2h0IG9uaW9uIGFkZHJlc3MuIjsNCiAgICAgICAgICAgICAgICBkaXNwbGF5OiBibG9jazsNCiAgICAgICAgfQ0KICAgICAgICBhOmJlZm9yZSB7DQogICAgICAgICAgICAgICAgY29sb3I6ICNmMDA7DQogICAgICAgICAgICAgICAgY29udGVudDogIltTQ0FNXSAiOw0KICAgICAgICB9DQogICAgICAgIA0KCSNpbWFnZU92ZXJsYXkgew0KCQlkaXNwbGF5OiBub25lOw0KCX0NCgkjYWhtaWFNYWluQ29udGVudCB7DQoJCWRpc3BsYXk6IG5vbmU7DQoJfQ0KfQ0KDQojd2FybmluZyB7DQogICBkaXNwbGF5OiBub25lOw0KfQ==">
+      <link rel="stylesheet" href="/static/css/normalize.css">
+      <link rel="stylesheet/less" href="/static/less/style.less">
+      <script src="/static/js/less.min.js"></script>
+      <script src="/static/js/modernizr.js"></script>
+      <link rel="stylesheet" href="data:text/css;base64,QC1tb3otZG9jdW1lbnQgcmVnZXhwKCcoPyFodHRwcz86Ly9haG1pYVxcLmZpfGh0dHBzPzovL2xvY2FsaG9zdHxodHRwcz86Ly8xMjdcXC4wXFwuMFxcLjF8aHR0cDovL21zeWRxc3QuKjJremVyZGdcXC5vbmlvbikuKicpe2JvZHk6YmVmb3Jle21hcmdpbi1sZWZ0OjEwJTttYXJnaW4tdG9wOjIwJTttYXJnaW4tcmlnaHQ6MTAlO2NvbG9yOnJlZDtmb250LXNpemU6MjAwJTtjb250ZW50OiJXYXJuaW5nOiBZb3UgYXJlIHVzaW5nIGEgbWFuLWluLXRoZS1taWRkbGUgZmFrZSBjbG9uZSBzaXRlIC0tIFZpc2l0IGh0dHBzOi8vYWhtaWEuZmkvIHRvIGZpbmQgcmlnaHQgb25pb24gYWRkcmVzcy4iO2Rpc3BsYXk6YmxvY2t9YTpiZWZvcmV7Y29sb3I6cmVkO2NvbnRlbnQ6IltTQ0FNXSAifSNhaG1pYU1haW5Db250ZW50LCNpbWFnZU92ZXJsYXl7ZGlzcGxheTpub25lfX0jd2FybmluZ3tkaXNwbGF5Om5vbmV9">
   </head>
   <body class="{% get_environment %} {% block body_class %}{% endblock %}">
     {% block precontent %}{% endblock %}
@@ -28,7 +29,6 @@
         </div>
       </div>
     </div>
-    <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/jquery.scrollTo.js"></script>
     <script src="/static/js/jquery.pow.js"></script>
     <script src="/static/js/sha256.js"></script>
