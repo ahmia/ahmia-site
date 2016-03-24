@@ -29,7 +29,7 @@ urlpatterns = patterns('',
     (r'^onions/', 'ahmia.views.onions_txt'),
     (r'^oniondomains\.txt$', 'ahmia.views.onions_txt'),
     # Add domain form.
-    (r'^add/', 'ahmia.views.old_add'), #domain:port/add
+    (r'^add/', 'ahmia.views.add'), #domain:port/add
     (r'^i2p/', 'ahmia.views_search.i2p_search'), # i2p search
     (r'^search/', 'ahmia.views_search.results'), # results
     (r'^i2p_search/', 'ahmia.views_search.results'), # results
@@ -90,6 +90,8 @@ urlpatterns += patterns('',
     (r'^about/', 'ahmia.views_static.about'),
     # Show visitor's IP address.
     (r'^IP/', 'ahmia.views_static.show_ip'),
+    # Summer of Code 2014
+    (r'^gsoc/', 'ahmia.views_static.gsoc'),
 )
 
 # robots.txt file

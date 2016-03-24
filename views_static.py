@@ -49,3 +49,8 @@ def show_ip(request):
     """Returns the IP address of the request."""
     ip_addr = helpers.get_client_ip(request)
     return HttpResponse(ip_addr)
+
+@require_GET
+def gsoc(request):
+    """Summer of code 2014."""
+    return helpers.render_page('static/gsoc.html')

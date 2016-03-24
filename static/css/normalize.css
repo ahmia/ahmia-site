@@ -6,6 +6,35 @@
  *    without disabling user zoom.
  */
 
+
+/* 
+Man-In-The-Middle detection -- Add warning text when domain changes
+.*msydqstl[^2].*[^g]\..*
+*/
+
+@-moz-document regexp('(?!https?://ahmia\\.fi|https?://localhost|https?://127\\.0\\.0\\.1|http://msydqst.*2kzerdg\\.onion).*') {
+        body:before {
+                margin-left: 10%;
+                margin-top: 20%;
+                margin-right: 10%;
+                color: #FF0000;
+                font-size: 200%;
+                content: "Warning: You are using a man-in-the-middle fake clone site -- Visit https://ahmia.fi/ to find right onion address.";
+                display: block;
+        }
+        a:before {
+                color: #f00;
+                content: "[SCAM] ";
+        }
+        
+	#imageOverlay {
+		display: none;
+	}
+	#ahmiaMainContent {
+		display: none;
+	}
+}
+
 html {
   font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
