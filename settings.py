@@ -6,7 +6,7 @@ import sys
 # This will be used to prepend to all file/directory paths.
 PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
