@@ -119,14 +119,14 @@ def query_object_elasticsearch(query_string, item_type="tor"):
     #pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
     #        settings.ELASTICSEARCH_PORT,
     #        assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
-    pool = urllib3.HTTPConnectionPool('127.0.0.1', '9200')
+    #pool = urllib3.HTTPConnectionPool('127.0.0.1', '9200')
     # For testing, external Elasticsearch end-point
-    #pool = urllib3.HTTPSConnectionPool('ahmia.fi', '443')
+    pool = urllib3.HTTPSConnectionPool('ahmia.fi', '443')
     query_string = re.escape(query_string)
     query = urllib.quote_plus(query_string.encode('utf-8'))
-    endpoint = '/crawl/' + item_type + '/_search/?size=100&q=' + query
+    #endpoint = '/crawl/' + item_type + '/_search/?size=100&q=' + query
     # For testing, external Elasticsearch end-point
-    #endpoint = '/elasticsearch/crawl/' + item_type + '/_search'
+    endpoint = '/elasticsearch/crawl/' + item_type + '/_search'
     http_res = pool.request('GET', endpoint)
     res_json = http_res.data
     response = json.loads(res_json)
