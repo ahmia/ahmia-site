@@ -1,0 +1,7 @@
+*.pyc
+*.bak
+templates_old/
+venv/
+ahmia_db
+onionbot/*.json
+.idea/
