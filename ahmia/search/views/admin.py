@@ -12,8 +12,8 @@ from django.http import (HttpResponse, HttpResponseBadRequest,
 from django.shortcuts import redirect, render_to_response
 from django.views.decorators.http import require_GET, require_http_methods
 
-import ahmia.view_help_functions as helpers  # My view_help_functions.py
-from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+from search.views import helpers
+from search.models import HiddenWebsite, HiddenWebsitePopularity
 
 
 @require_http_methods(["GET", "POST"])

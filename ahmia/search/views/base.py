@@ -13,10 +13,10 @@ from django.views.decorators.http import (require_GET, require_http_methods,
 
 from django.utils.translation import ugettext as _
 
-import ahmia.view_help_functions as helpers  # My view_help_functions.py
-import ahmia.views_admin as admin  # My views_admin.py
-from ahmia.forms import AddOnionForm
-from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
+from search.views import helpers
+from search.views import admin
+from search.forms import AddOnionForm
+from search.models import (HiddenWebsite, HiddenWebsiteDescription,
                           HiddenWebsitePopularity)
 
 @require_http_methods(['GET', 'POST'])

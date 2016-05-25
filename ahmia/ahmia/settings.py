@@ -4,9 +4,9 @@ import sys
 
 # Set the PROJECT_HOME variable.
 # This will be used to prepend to all file/directory paths.
-PROJECT_HOME = os.path.join(os.getcwd(), 'ahmia')
+PROJECT_HOME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
@@ -90,7 +90,7 @@ STATIC_URL = '/media/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-STATIC_ROOT = PROJECT_HOME+'/static/'
+STATIC_ROOT = os.path.join(PROJECT_HOME, 'static/')
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -111,8 +111,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'ahmia.urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_HOME, 'templates'),
-    )
+    os.path.join(PROJECT_HOME, 'search/templates'),
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -120,5 +120,5 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     #'debug_toolbar',
-    'ahmia',
+    'search'
 )

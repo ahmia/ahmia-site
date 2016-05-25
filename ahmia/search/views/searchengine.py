@@ -19,7 +19,7 @@ from django.shortcuts import redirect
 from django.template import Context, loader
 from django.views.decorators.http import require_GET, require_http_methods
 
-from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+from search.models import HiddenWebsite, HiddenWebsitePopularity
 
 import re
 

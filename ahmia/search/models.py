@@ -35,9 +35,9 @@ class HiddenWebsite(models.Model):
     md5 = models.CharField(max_length=32,
     validators=[MinLengthValidator(32), MaxLengthValidator(32)], unique=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=True)
-    class Meta:
+    '''class Meta:
         """Meta class."""
-        app_label = 'ahmia'
+        app_label = 'search'''
     def __unicode__(self):
         return self.url
 
@@ -69,9 +69,9 @@ class HiddenWebsiteDescription(models.Model):
     language = models.TextField(null=True, blank=True)
     contactInformation = models.TextField(null=True, blank=True)
     officialInfo = models.BooleanField(default=False)
-    class Meta:
+    '''class Meta:
         """Meta class."""
-        app_label = 'ahmia'
+        app_label = 'ahmia'''
     def __unicode__(self):
         return self.about.url
 
@@ -82,9 +82,9 @@ class HiddenWebsitePopularity(models.Model):
     public_backlinks = models.PositiveIntegerField(default=0, blank=True,
     null=True)
     tor2web = models.PositiveIntegerField(default=0, blank=True, null=True)
-    class Meta:
+    '''class Meta:
         """Meta class."""
-        app_label = 'ahmia'
+        app_label = 'ahmia'''
     def __unicode__(self):
         return self.about.url
 
