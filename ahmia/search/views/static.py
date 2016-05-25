@@ -9,8 +9,8 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.template import Context, loader
 from django.views.decorators.http import require_GET
 
-import view_help_functions as helpers  # My view_help_functions.py
-from ahmia.models import HiddenWebsite
+from search.views import helpers
+from search.models import HiddenWebsite
 
 
 @require_GET

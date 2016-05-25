@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from django.core.mail import send_mail
 
-from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
+from search.models import HiddenWebsite, HiddenWebsiteDescription
 
 def send_abuse_report(onion_url=None):
     if onion_url is None: return
