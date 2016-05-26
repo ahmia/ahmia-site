@@ -1,0 +1,96 @@
+<VirtualHost *:80>
+        ServerName www.ahmia.fi
+        ServerAdmin hostmaster@ahmia.fi
+
+        # Do not track IP addresses!
+        LogFormat "0.0.0.0 - - %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %T %V" noip
+
+        ErrorLog /usr/local/lib/ahmia/error/error.log
+        # Possible values include: debug, info, notice,
+        # warn, error, crit, alert, emerg.
+        LogLevel warn
+        CustomLog /usr/local/lib/ahmia/error/access.log noip
+
+        # redirections as follow, order is critical!
+        RewriteEngine On
+        RewriteLog /var/log/apache2/rewrite.log
+
+        RewriteCond %{HTTPS} off
+        RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+</VirtualHost>
+
+<VirtualHost *:443>
+        ServerName www.ahmia.fi
+        ServerAdmin hostmaster@ahmia.fi
+
+        # Do not track IP addresses!
+        LogFormat "0.0.0.0 - - %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %T %V" noip
+
+        # the world is evil so ssl'd it shall be
+        SSLEngine On
+        SSLProtocol all -SSLv2 -SSLv3
+        SSLHonorCipherOrder On
+        SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS"
+        SSLCertificateFile /etc/apache2/ssl/crt/ahmia.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/key/ahmia.key
+        SSLCertificateChainFile /etc/apache2/ssl/ca/sub.class2.server.sha1.ca.pem
+        SSLCACertificateFile /etc/apache2/ssl/ca/ca.pem
+
+        <Directory "/usr/local/lib/python2.6/dist-packages/django/contrib/admin/static">
+                Options FollowSymLinks MultiViews +Indexes
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+        <Directory "/usr/local/lib/ahmia/ahmia/static">
+                Options FollowSymLinks MultiViews +Indexes
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+        Alias /static/ "/usr/local/lib/ahmia/ahmia/static/"
+        Alias /media/ "/usr/local/lib/python2.6/dist-packages/django/contrib/admin/static/"
+
+	ErrorLog "| /usr/local/lib/ahmia/apache2/error-log-cleanah.pl /usr/local/lib/ahmia/error/error.log"
+        # Possible values include: debug, info, notice,
+        # warn, error, crit, alert, emerg.
+        LogLevel warn
+        CustomLog /usr/local/lib/ahmia/error/access.log noip
+
+        WSGIScriptAlias / /usr/local/lib/ahmia/wsgi.py
+        WSGIProcessGroup ahmia-site
+        WSGIDaemonProcess ahmia-site processes=2 threads=16 display-name=apache-ahmia-wsgi
+</VirtualHost>
+
+<VirtualHost 127.0.0.1:56789>
+	ServerName msydqstlz2kzerdg.onion
+
+        # Do not track IP addresses!
+        LogFormat "0.0.0.0 - - %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %T %V" noip
+
+        <Directory "/usr/local/lib/python2.6/dist-packages/django/contrib/admin/static">
+                Options FollowSymLinks MultiViews +Indexes
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+        <Directory "/usr/local/lib/ahmia/ahmia/static">
+                Options FollowSymLinks MultiViews +Indexes
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+        Alias /static/ "/usr/local/lib/ahmia/ahmia/static/"
+        Alias /media/ "/usr/local/lib/python2.6/dist-packages/django/contrib/admin/static/"
+        Alias /description.json "/usr/local/lib/ahmia/ahmia/static/description.json"
+
+        ErrorLog "| /usr/local/lib/ahmia/apache2/error-log-cleanah.pl /usr/local/lib/ahmia/error/hs_error.log"
+        # Possible values include: debug, info, notice,
+        # warn, error, crit, alert, emerg.
+        LogLevel warn
+        CustomLog /usr/local/lib/ahmia/error/hs_access.log noip
+
+        WSGIScriptAlias / /usr/local/lib/ahmia/wsgi.py
+        WSGIProcessGroup ahmia-hs-site
+        WSGIDaemonProcess ahmia-hs-site processes=1 threads=16 display-name=apache-hs-ahmia-wsgi
+</VirtualHost>

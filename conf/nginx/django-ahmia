@@ -1,0 +1,108 @@
+upstream django {
+    server unix:///usr/local/lib/search/socket/ahmia.sock;
+}
+
+server {
+   listen 80;
+   return 301 https://$host$request_uri;
+}
+
+server {
+         server_name "~^www\.(.*)$" ;
+         return 301 $scheme://$1$request_uri ;
+}
+
+server {
+    listen      443 ssl;
+    server_name ahmia.fi;
+
+    charset     utf-8;
+    client_max_body_size 75M;   # adjust to taste
+
+    ssl on;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    ssl_certificate         /etc/nginx/cert.crt;
+    ssl_certificate_key     /etc/nginx/cert.key;
+
+    access_log  /usr/local/lib/search/error/access.log;
+    error_log  /usr/local/lib/search/error/error.log;
+
+    # Django media
+    location /media  {
+        alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
+    }
+
+    location /static {
+        alias /usr/local/lib/search/ahmia/static;
+    }
+
+    # Django WSGI Server
+    location / {
+        uwsgi_pass  django;
+        include     uwsgi_params;
+    }
+}
+
+server {
+    listen      127.0.0.1:56789;
+    server_name msydqstlz2kzerdg.onion;
+
+    charset     utf-8;
+    client_max_body_size 75M;   # adjust to taste
+
+    #log_format   main '0.0.0.0 - $remote_user [$time_local]  $status '
+    #'"$request" $body_bytes_sent "$http_referer" '
+    #'"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  /usr/local/lib/search/error/hs_access.log;
+    error_log  /usr/local/lib/search/error/hs_error.log;
+
+    # Django media
+    location /media  {
+        alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
+    }
+
+    location /static {
+        alias /usr/local/lib/search/ahmia/static;
+    }
+
+    location =/description.json {
+        alias /usr/local/lib/search/ahmia/static/description.json;
+    }
+
+    # Django WSGI Server
+    location / {
+        uwsgi_pass  django;
+        include     uwsgi_params;
+    }
+}
+
+server {
+    listen      127.0.0.1:12345;
+    server_name ahmia.i2p xg4a4v2bhxvubnjah2ywojvnxlzfca62tj66n3tde2jk7mjse5yq.b32.i2p;
+
+    charset     utf-8;
+    client_max_body_size 75M;   # adjust to taste
+
+    #log_format   main '0.0.0.0 - $remote_user [$time_local]  $status '
+    #'"$request" $body_bytes_sent "$http_referer" '
+    #'"$http_user_agent" "$http_x_forwarded_for"';
+    access_log  /usr/local/lib/search/error/i2p_access.log;
+    error_log  /usr/local/lib/search/error/i2p_error.log;
+
+
+    # Django media
+    location /media  {
+        alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
+    }
+
+    location /static {
+        alias /usr/local/lib/search/ahmia/static;
+    }
+
+    # Django WSGI Server
+    location / {
+        uwsgi_pass  django;
+        include     uwsgi_params;
+    }
+}
