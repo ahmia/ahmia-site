@@ -5,15 +5,13 @@
 
 Ahmia is the search engine for `.onion` domains on the Tor anonymity
 network. It is led by [Juha Nurmi](//github.com/juhanurmi) and is based
-in Finland.
-
+in Finland. This repository contains ahmia.fi source code.
 
 # Compatibility
 
 The newest version of Ahmia is built with Python 2.7, Django and
 Elasticsearch. You will need to know these technologies to create a
 working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/iriahi/ahmia-crawler).
-
 
 # Installation guide
 
@@ -39,19 +37,30 @@ $ source /path/to/venv/bin/activate
 (venv)$ pip install -r requirements/dev.txt
 ```
 
-# Run the site
+# Run site in dev mode
 
 ## Migrate db
 ```sh
-$ python manage.py migrate
+$ python ahmia/manage.py migrate
 ```
 
 ## Start development server
 ```sh
-$ python manage.py runserver
+$ python ahmia/manage.py runserver
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
+
+# FAQ 
+
+## How can I get/populate an index to do searches ?
+You should install [OnionBot](https://github.com/iriahi/ahmia-crawler) and run it to populate your index.
+
+## Why can't my browser load django statics ?
+The django settings.py is configured in a way that it only serve statics if DEBUG is True. Please verify [here](https://github.com/iriahi/ahmia-site/blob/master/ahmia/ahmia/settings.py#L9) if it's the case. You can change this behaviour [here](https://github.com/iriahi/ahmia-site/blob/master/ahmia/ahmia/urls.py#L18).
+
+## What should I use to host ahmia in a production environment ?
+Config samples are in [config/](https://github.com/iriahi/ahmia-site/tree/master/conf). We suggest Apache2 or Nginx with Uwsgi
 
 # Support
 
