@@ -7,18 +7,12 @@ Ahmia is the search engine for `.onion` domains on the Tor anonymity
 network. It is led by [Juha Nurmi](//github.com/juhanurmi) and is based
 in Finland.
 
-# Development warning
-
-Ahmia is currently under active development and may require a different
-stack shortly. **These directions may become outdated. Please check with
-Juha if they are still accurate if you have problems.**
-
 
 # Compatibility
 
 The newest version of Ahmia is built with Python 2.7, Django and
 Elasticsearch. You will need to know these technologies to create a
-working Ahmia installation. Ahmia crawls using OnionBot.
+working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/iriahi/ahmia-crawler).
 
 
 # Installation guide
@@ -27,35 +21,42 @@ working Ahmia installation. Ahmia crawls using OnionBot.
 
 ### Ubuntu 16.04
 ```sh
-# apt-get install build-essential python-pip
+# apt-get install build-essential python-pip python-virtualenv
 # apt-get install libxml2-dev libxslt1-dev python-dev libpq-dev libffi-dev libssl-dev
 ```
 
 ### Fedora 23
 ```sh
-# dnf install @development-tools redhat-rpm-config python-pip
+# dnf install @development-tools redhat-rpm-config python-pip python-virtualenv
 # dnf install libxml-devel libxslt-devel python-devel postgresql-devel libffi-devel openssl-devel
 ```
 
-## Install requirements
+## Install requirements in a virtual environment
 
 ```sh
-$ pip install -r requirements.txt
+$ virtualenv /path/to/venv
+$ source /path/to/venv/bin/activate
+(venv)$ pip install -r requirements/dev.txt
 ```
 
-## Verify django settings
-If using django dev server (manage.py runserver), you will not get static files if DEBUG is False.
+# Run the site
 
 ## Migrate db
 ```sh
 $ python manage.py migrate
 ```
 
+## Start development server
+```sh
+$ python manage.py runserver
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+```
+
 # Support
 
 No support is currently provided. It is up to you for now. This will
 change as Ahmia stabilizes.
-
 
 # License
 
