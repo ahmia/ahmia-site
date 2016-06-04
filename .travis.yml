@@ -6,6 +6,6 @@ python:
 install:
   - pip install -r requirements.txt
 before_script:
-  - python manage.py migrate
+  - python ahmia/manage.py migrate
 script:
-  - python manage.py test
+  - python ahmia/manage.py test
