@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/iriahi/ahmia-site.svg?branch=master)](https://travis-ci.org/iriahi/ahmia-site)
+[![Requirements Status](https://requires.io/github/iriahi/ahmia-site/requirements.svg?branch=master)](https://requires.io/github/iriahi/ahmia-site/requirements/?branch=master)
 
 ![https://ahmia.fi/](https://raw.githubusercontent.com/razorfinger/ahmia/ahmia-redesign/ahmia-logotype.png)
 
