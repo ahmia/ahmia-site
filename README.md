@@ -20,16 +20,18 @@ working Ahmia installation. Ahmia crawls using OnionBot.
 
 # Installation guide
 
-## Install dependencies: 
+## Install dependencies:
 
 ### Ubuntu 16.04
 ```sh
-# apt-get install libxml2-dev libxslt1-dev python-dev libpq-dev libffi-dev
+# apt-get install build-essential python-pip
+# apt-get install libxml2-dev libxslt1-dev python-dev libpq-dev libffi-dev libssl-dev
 ```
 
 ### Fedora 23
 ```sh
-# dnf install libxml-devel libxslt-devel python-devel postgresql-devel libffi-devel
+# dnf install @development-tools redhat-rpm-config python-pip
+# dnf install libxml-devel libxslt-devel python-devel postgresql-devel libffi-devel openssl-devel
 ```
 
 ## Install requirements
