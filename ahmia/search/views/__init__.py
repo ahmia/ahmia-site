@@ -1,1 +1,1 @@
-from base import *
+from search.views.base import *

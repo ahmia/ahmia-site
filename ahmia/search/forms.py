@@ -1,8 +1,10 @@
+"""Forms used in Ahmia."""
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from search.models import HiddenWebsite, HiddenWebsitePopularity
 
 class AddOnionForm(forms.Form):
+    """Request to add an onion domain."""
     onion = forms.CharField()
 
 def add_result(answer, host, results):
@@ -35,18 +37,26 @@ def get_popularity(onion):
 def sort_results(p_tuples):
     """Sort the results according to stats."""
     # Scaling the number of backlinks
-    p_by_backlinks = sorted(p_tuples, key=lambda popularity: popularity.backlinks, reverse=True)
+    p_by_backlinks = sorted(p_tuples,
+                            key=lambda popularity: popularity.backlinks,
+                            reverse=True)
     for index, p_info in enumerate(p_by_backlinks):
         p_info.backlinks = 1 / (float(index) + 1)
     # Scaling the number of clicks
-    p_by_clicks = sorted(p_by_backlinks, key=lambda popularity: popularity.clicks, reverse=True)
+    p_by_clicks = sorted(p_by_backlinks,
+                         key=lambda popularity: popularity.clicks,
+                         reverse=True)
     for index, p_info in enumerate(p_by_clicks):
         p_info.clicks = 1 / (float(index) + 1)
     # Scaling the number of Tor2web
-    p_by_tor2web = sorted(p_by_clicks, key=lambda popularity: popularity.tor2web, reverse=True)
+    p_by_tor2web = sorted(p_by_clicks,
+                          key=lambda popularity: popularity.tor2web,
+                          reverse=True)
     for index, p_info in enumerate(p_by_tor2web):
         p_info.tor2web = 1 / (float(index) + 1)
-    p_by_sum = sorted(p_by_tor2web, key=lambda popularity: popularity.sum(), reverse=True)
+    p_by_sum = sorted(p_by_tor2web,
+                      key=lambda popularity: popularity.sum(),
+                      reverse=True)
     answer = []
     for p_info in p_by_sum:
         answer.append(p_info.content)
@@ -63,16 +73,19 @@ class Popularity(object):
         self.clicks = float(clicks)
     def func(self):
         """Print the sum function."""
-        print "1.5*%f * 1.5*%f * 1.0*%f + %f" % self.tor2web, self.backlinks, self.clicks, self.score
+        print "1.5*%f * 1.5*%f * 1.0*%f + %f" % \
+            self.tor2web, self.backlinks, self.clicks, self.score
     def sum(self):
         """Calculate the popularity."""
         #The model can be very simple (sum)
         #What are the proper coefficients?
-        sum_function = 2.0*self.tor2web * 3.0*self.backlinks * 1.0*self.clicks + self.score
+        sum_function = 2.0*self.tor2web * 3.0*self.backlinks * 1.0*self.clicks \
+                       + self.score
         print "\n"
         print "content.score =    " + str(self.score)
         print "sum_function  =    " + str(sum_function)
         print "\n"
         return sum_function
     def __repr__(self):
-        return repr((self.url, self.tor2web, self.backlinks, self.clicks, self.sum))
+        return repr((self.url, self.tor2web,
+                     self.backlinks, self.clicks, self.sum))
