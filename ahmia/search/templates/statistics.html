@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends 'core.html' %}
+{% load i18n %}
 
-{% block title %}Ahmia - Statistics viewer{% endblock %}
-
-{% block content %}
-
+{% block title %}Ahmia - Statistics{% endblock %}
+{% block body %}
+{% include 'partial/nav_tor.html' with nav_type='maxi' %}
+<div id="ahmiaAboutPage">
 <noscript>
   <p>Please enable JavaScript to view these statistics.</p>
 </noscript>
@@ -13,6 +14,7 @@
 <script type="text/javascript" src="/static/js/statsviewer.js"></script>
 
 <h2>The most popular hidden services</h2>
+<div class="aboutAhmia">
 
 <div style="width: 100%;">
   <div style="float: left; width: 33.3%; text-align: justify;">
@@ -29,6 +31,7 @@
   </div>
   <br style="clear: left;" />
 </div>
+<div class="aboutAhmia">
 
 <div id="chartContainer" style="height: 400px; width: 100%;"></div>
 
@@ -42,7 +45,36 @@
 <p>The <span style="color: #FF9900;">backlinks</span> counter tells the total number of public WWW backlinks.</p>
 
 <p>
-  Security measure: obfuscate real-time stats. The <span style="color: #6699FF;">clicks</span> are rounded to the next multiple of 8. This simple way prevents leaking too accurate real-time statistics.
+  Security measure: Obfuscate real-time stats. The <span style="color: #6699FF;">clicks</span> are rounded to the next multiple of 8. This simple way prevents leaking too accurate real-time statistics.
+</p>
+</div>
+<div class="aboutAhmia">
+
+<h3>For hidden service operators</h3>
+
+<p>
+  You can check <a href="/documentation/indexing/">how our hidden service indexing</a> works.
 </p>
 
+<p>
+  Please deliver your hidden service's official information: <a href="/documentation/descriptionProposal/">Proposal to hidden service operators.</a>
+</p> 
+</div>
+  <div class="credits">
+  <p>
+  {% trans "donate Bitcoin" as donate_bitcoin %}
+  {% blocktrans %}
+  We extend a thank you to Ahmia's supporters.
+  If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+  {% endblocktrans %}
+  </p>
+  <ul>
+    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+  </ul>
+  </div>
+  </div>
+</div>
 {% endblock %}
