@@ -15,7 +15,7 @@ Elasticsearch. You will need to know these technologies to create a
 working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
 
 # Prerequisites
-[Ahmia-index](https://github.com/iriahi/ahmia-index) should be installed and running
+[Ahmia-index](https://github.com/ahmia/ahmia-index) should be installed and running
 
 # Installation guide
 
