@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/ahmia/ahmia-site.svg?branch=master)](https://travis-ci.org/ahmia/ahmia-site)
-[![Requirements Status](https://requires.io/github/ahmia/ahmia-site/requirements.svg?branch=master)](https://requires.io/github/ahmia/ahmia-site/requirements/?branch=master)
+[![Build Status](https://travis-ci.org/ahmia/ahmia-site.svg?branch=master)](https://travis-ci.org/iriahi/ahmia-site)
+[![Code Health](https://landscape.io/github/ahmia/ahmia-site/master/landscape.svg?style=flat)](https://landscape.io/github/iriahi/ahmia-site/master)
+[![Requirements Status](https://requires.io/github/ahmia/ahmia-site/requirements.svg?branch=master)](https://requires.io/github/iriahi/ahmia-site/requirements/?branch=master)
 
 ![https://ahmia.fi/](https://raw.githubusercontent.com/razorfinger/ahmia/ahmia-redesign/ahmia-logotype.png)
 
@@ -12,6 +13,9 @@ in Finland. This repository contains ahmia.fi source code.
 The newest version of Ahmia is built with Python 2.7, Django and
 Elasticsearch. You will need to know these technologies to create a
 working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
+
+# Prerequisites
+[Ahmia-index](https://github.com/iriahi/ahmia-index) should be installed and running
 
 # Installation guide
 
@@ -53,8 +57,8 @@ Quit the server with CONTROL-C.
 
 # FAQ 
 
-## How can I get/populate an index to do searches ?
-You should install [OnionBot](https://github.com/ahmia/ahmia-crawler) and run it to populate your index.
+## How can populate my index to do searches ?
+You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/master/onionElasticBot) to populate your index.
 
 ## Why can't my browser load django statics ?
 The django settings.py is configured in a way that it only serve statics if DEBUG is True. Please verify [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/settings.py#L9) if it's the case. You can change this behaviour [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/urls.py#L18).
