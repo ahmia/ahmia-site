@@ -5,12 +5,10 @@ Static HTML pages.
 These pages does not require database connection.
 
 """
-from django.http import HttpResponse, HttpResponseNotAllowed
-from django.template import Context, loader
+from django.http import HttpResponse
 from django.views.decorators.http import require_GET
 
 from search.views import helpers
-from search.models import HiddenWebsite
 
 
 @require_GET
@@ -32,7 +30,7 @@ def description_proposal(request):
 def create_description(request):
     """Page to create hidden website description."""
     return helpers.render_page('createHsDescription.html')
-    return HttpResponseNotAllowed("Only GET request is allowed.")
+    # return HttpResponseNotAllowed("Only GET request is allowed.")
 
 @require_GET
 def documentation(request):

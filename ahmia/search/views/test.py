@@ -6,7 +6,7 @@ Or just show the online status.
 Use local socks proxy that is the Tor connection.
 
 """
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import simplejson
 from django.core.exceptions import ObjectDoesNotExist
@@ -28,7 +28,7 @@ def onion_up(request, onion):
         return HttpResponseNotFound(answer)
     if request.method == 'PUT': # and request.user.is_authenticated():
         ip_addr = helpers.get_client_ip(request)
-        if not str(ip_addr) in "127.0.0.1":
+        if str(ip_addr) not in "127.0.0.1":
             answer = "Only allowed form the localhost."
             return HttpResponseForbidden(answer)
         else:
@@ -119,7 +119,7 @@ def add_info(json_data, onion):
     not_official = json.get('not_official')
     if not_official:
         fill_description(onion, json.get("title"),
-        json.get("keywords"), json.get("description"))
+                         json.get("keywords"), json.get("description"))
         message = "Description updated from " + onion + ".onion's HTML."
         return HttpResponse(message)
     else:
