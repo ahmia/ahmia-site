@@ -27,10 +27,10 @@ def build_stats(offset, limit, order_by):
         offset = int(offset)
         limit = int(limit)
         order_by = str(order_by)
-        if limit > 100 or limit < 1:
-            return HttpResponse('Set limit between 1-100.')
-        if offset > 100 or limit < 0:
-            return HttpResponse('Set offset between 0-100.')
+        if limit > 1000 or limit < 1:
+            return HttpResponse('Set limit between 1-1000.')
+        if offset > 1000 or limit < 0:
+            return HttpResponse('Set offset between 0-1000.')
         if limit < offset:
             return HttpResponse('Set offset < limit.')
         sort_options = ['public_backlinks', 'clicks', 'tor2web']
