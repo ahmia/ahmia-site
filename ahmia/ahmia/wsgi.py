@@ -2,7 +2,7 @@
 import os
 import sys
 
-sys.path.append('/usr/local/lib/search')
+sys.path.append('/usr/local/lib/ahmia-site/ahmia/')
 
 # Path to the settings.py file
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ahmia.settings")
