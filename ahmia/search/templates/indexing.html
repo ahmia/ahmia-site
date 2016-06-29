@@ -1,9 +1,11 @@
-{% extends "base.html" %}
+{% extends 'core.html' %}
+{% load i18n %}
 
-{% block title %}Ahmia - Documentation{% endblock %}
-
-{% block content %}
-
+{% block title %}Ahmia - Statistics{% endblock %}
+{% block body %}
+{% include 'partial/nav_tor.html' with nav_type='maxi' %}
+<div id="ahmiaAboutPage">
+ <div class="aboutAhmia">
 <h2>Indexing and crawling</h2>
 
 <p>We are using OnionBot crawler software to build the full text search.</p>
@@ -23,5 +25,21 @@
   We are honouring robots.txt files. This means that you can prevent our crawler from indexing your page by using robots.txt rules. This way your page is not shown in the search results. On the other hand, your page still shows in the list of all known
   hidden services that are online.
 </p>
-
+</div>
+<div class="credits">
+    <p>
+      {% trans "donate Bitcoin" as donate_bitcoin %}
+      {% blocktrans %}
+      We extend a thank you to Ahmia's supporters.
+      If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+      {% endblocktrans %}
+    </p>
+    <ul>
+      <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+      <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+      <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+      <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+    </ul>
+  </div>
+</div>
 {% endblock %}
