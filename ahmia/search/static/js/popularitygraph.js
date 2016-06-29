@@ -11,7 +11,7 @@ function include(file)
 
 }
 
-include('canvasjs.min.js');
+include('/static/js/canvasjs.min.js');
 $(function () {
   var info=new Array();
   $.ajax({
