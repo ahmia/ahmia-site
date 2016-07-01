@@ -34,19 +34,6 @@ def proxy(request):
     r_status = response.status
     return HttpResponse(content=r_data, content_type=r_type, status=r_status)
 
-@require_GET
-def default(request):
-    """The default page."""
-    template = loader.get_template('index_tor.html')
-    content = Context()
-    return HttpResponse(template.render(content))
-
-@require_GET
-def i2p_search(request):
-    """The default page."""
-    template = loader.get_template('index_i2p.html')
-    content = Context()
-    return HttpResponse(template.render(content))
 
 @require_GET
 def results(request):
