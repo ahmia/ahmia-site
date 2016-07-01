@@ -88,11 +88,11 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-STATIC_URL = '/media/'
+STATIC_URL = '/static/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-STATIC_ROOT = os.path.join(PROJECT_HOME, 'search/static/')
+STATIC_ROOT = os.path.join(PROJECT_HOME, 'static/')
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -113,7 +113,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'ahmia.urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_HOME, 'search/templates'),
+    os.path.join(PROJECT_HOME, 'ahmia/templates'),
 )
 
 INSTALLED_APPS = (
@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'ahmia',
     #'debug_toolbar',
-    'search'
+    #'search'
 )
