@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load ahmia_custom %}
+{#% load ahmia_custom %#}
 <!doctype html>
 <html class="no-js" lang="en">
   <head>
@@ -16,7 +16,7 @@
       <script src="/static/js/modernizr.js"></script>
       <link rel="stylesheet" href="data:text/css;base64,QC1tb3otZG9jdW1lbnQgcmVnZXhwKCcoPyFodHRwcz86Ly9haG1pYVxcLmZpfGh0dHBzPzovL2xvY2FsaG9zdHxodHRwcz86Ly8xMjdcXC4wXFwuMFxcLjF8aHR0cDovL21zeWRxc3QuKjJremVyZGdcXC5vbmlvbikuKicpe2JvZHk6YmVmb3Jle21hcmdpbi1sZWZ0OjEwJTttYXJnaW4tdG9wOjIwJTttYXJnaW4tcmlnaHQ6MTAlO2NvbG9yOnJlZDtmb250LXNpemU6MjAwJTtjb250ZW50OiJXYXJuaW5nOiBZb3UgYXJlIHVzaW5nIGEgbWFuLWluLXRoZS1taWRkbGUgZmFrZSBjbG9uZSBzaXRlIC0tIFZpc2l0IGh0dHBzOi8vYWhtaWEuZmkvIHRvIGZpbmQgcmlnaHQgb25pb24gYWRkcmVzcy4iO2Rpc3BsYXk6YmxvY2t9YTpiZWZvcmV7Y29sb3I6cmVkO2NvbnRlbnQ6IltTQ0FNXSAifSNhaG1pYU1haW5Db250ZW50LCNpbWFnZU92ZXJsYXl7ZGlzcGxheTpub25lfX0jd2FybmluZ3tkaXNwbGF5Om5vbmV9">
   </head>
-  <body class="{% get_environment %} {% block body_class %}{% endblock %}">
+  <body> {#class="{% get_environment %} {% block body_class %}{% endblock %}">#}
     {% block precontent %}{% endblock %}
     <div class="outer">
       <div id="content" class="inner">

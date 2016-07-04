@@ -9,9 +9,10 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import Context, loader
 from django.views.decorators.http import require_GET
 
-from search.views import helpers  # My view_help_functions.py
-from search.models import HiddenWebsite, HiddenWebsitePopularity
+from ahmia.helpers import render_page
+from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 
+from stats.helpers import round_to_next_multiple_of
 
 @require_GET
 def stats(request):
@@ -51,7 +52,7 @@ def calculate_stats(offset, limit, order_by):
     # This simple way prevents leaking too accurate stats
     # Round the clicks to the next multiple of 8
     for result in query_result:
-        result.clicks = helpers.round_to_next_multiple_of(result.clicks, 8)
+        result.clicks = round_to_next_multiple_of(result.clicks, 8)
     response_data = serializers.serialize(
         'json', query_result, indent=2,
         fields=('about', 'tor2web', 'public_backlinks', 'clicks')
@@ -61,17 +62,17 @@ def calculate_stats(offset, limit, order_by):
 @require_GET
 def statsviewer(request):
     """Opens JavaScript based stats viewer."""
-    return helpers.render_page('statistics.html')
+    return render_page('statistics.html')
 
 @require_GET
 def onionsovertime(request):
     """Opens JavaScript based stats viewer."""
-    return helpers.render_page('onions_over_time.html')
+    return render_page('onions_over_time.html')
 
 @require_GET
 def services(request):
     """Opens JavaScript based port viewer."""
-    return helpers.render_page('services.html')
+    return render_page('services.html')
 
 @require_GET
 def history(request):
@@ -88,9 +89,9 @@ def history(request):
 @require_GET
 def trafficviewer(request):
     """Opens JavaScript based traffic viewer."""
-    return helpers.render_page('traffic.html')
+    return render_page('traffic.html')
 
 @require_GET
 def tor2web(request):
     """Opens JavaScript based traffic viewer."""
-    return helpers.render_page('tor2web.html')
+    return render_page('tor2web.html')

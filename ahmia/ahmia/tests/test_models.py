@@ -3,7 +3,7 @@ import hashlib
 
 from django.test import TestCase
 
-from search.models import (HiddenWebsite, HiddenWebsiteDescription,
+from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
                            HiddenWebsitePopularity)
 
 

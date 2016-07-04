@@ -5,19 +5,21 @@ Static HTML pages.
 These pages does not require database connection.
 
 """
+from textwrap import dedent
 
 from django.contrib import auth
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import (HttpResponse, HttpResponseBadRequest,
-                         HttpResponseNotFound)
+                         HttpResponseNotFound, JsonResponse)
 from django.shortcuts import redirect, render_to_response
 from django.views.decorators.http import require_GET, require_http_methods
 from django.template import Context, loader
+from django.utils.translation import ugettext as _
 
-from models import HiddenWebsite, HiddenWebsitePopularity
-
-from helpers import (render_page, get_client_ip, is_valid_onion,
-                    send_abuse_report)
+from ahmia.models import (HiddenWebsite, HiddenWebsitePopularity,
+                          validate_onion_url)
+from ahmia.forms import AddOnionForm
+from ahmia.helpers import render_page, is_valid_onion, send_abuse_report
 
 # Root page views
 
@@ -133,23 +135,6 @@ def old_add(request):
                        'count_online': count_online})
     return HttpResponse(template.render(content))
 
-## TODO: MOVE TO API
-@require_GET
-def banned(request):
-    """Return the plain text MD5 sums of the banned onions."""
-    return banned_txt(request)
-
-@require_GET
-def blacklist(request):
-    """Return a blacklist page with MD5 sums of banned content."""
-    try:
-        banned_onions = HiddenWebsite.objects.all().filter(banned=True)
-    except HiddenWebsite.DoesNotExist:
-        banned_onions = []
-    content = Context({'banned_onions': banned_onions})
-    template = loader.get_template('blacklist.html')
-    return HttpResponse(template.render(content))
-
 @require_http_methods(['GET', 'POST'])
 def blacklist_report(request):
     """Return a request page to blacklist a site."""
@@ -192,14 +177,14 @@ def login(request):
                     {'error': 'Invalid password', 'username': username})
             else:
                 auth.login(request, user)
-                return redirect('ahmia.views_admin.rule')
+                return redirect('ahmia.views.rule')
         except KeyError:
             return HttpResponseBadRequest()
 
 def logout(request):
     """Administration logout."""
     auth.logout(request)
-    return redirect('ahmia.views_admin.rule')
+    return redirect('ahmia.views.rule')
 
 @require_GET
 def rule(request):
@@ -207,29 +192,4 @@ def rule(request):
     if request.user.is_authenticated():
         return render_page('rule.html', show_descriptions=True)
     else:
-        return redirect('ahmia.views_admin.login')
-
-def ban(request, onion):
-    """Bans an onion site."""
-    if not request.user.is_authenticated():
-        return HttpResponse('Unauthorized', status=401)
-    hs_list = HiddenWebsite.objects.filter(id=onion)
-    if hs_list:
-        hs = hs_list.latest('updated')
-    else:
-        answer = "There is no "+onion+" indexed. Please add it if it exists."
-        return HttpResponseNotFound(answer)
-    hs.banned = True
-    hs.full_clean()
-    hs.save()
-    try:
-        popularity = HiddenWebsitePopularity.objects.get(about=hs)
-        popularity.clicks = 0
-        popularity.public_backlinks = 0
-        popularity.tor2web = 0
-        popularity.save()
-    except ObjectDoesNotExist:
-        print "No popularity for this banned onion."
-    # Send notification to Tor2web nodes
-    # noteTor2webNodes()
-    return HttpResponse("banned")
+        return redirect('ahmia.views.login')

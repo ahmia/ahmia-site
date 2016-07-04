@@ -18,7 +18,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
-demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
+DEMO_ENV = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
             'migrate', 'dumpdata', 'rebuild_index']
 
 if 'test' in sys.argv:
@@ -28,7 +28,7 @@ if 'test' in sys.argv:
             'NAME': os.getcwd() + '/ahmia_db_test', # Database name
         }
     }
-elif [cmd for cmd in demo_env if cmd in sys.argv]:
+elif [cmd for cmd in DEMO_ENV if cmd in sys.argv]:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3', # Database engine
@@ -123,5 +123,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'ahmia',
     #'debug_toolbar',
-    #'search'
+    'search',
+    'stats',
+    'api'
 )
