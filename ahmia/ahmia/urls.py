@@ -44,16 +44,6 @@ urlpatterns += patterns(
     (r'^blacklist/report', 'ahmia.views.blacklist_report'),
 )
 
-# Rule views
-urlpatterns += patterns(
-    '',
-    # Login and logout.
-    (r'^rule/login/', 'ahmia.views.login'),
-    (r'^rule/logout/', 'ahmia.views.logout'),
-    # Rule content.
-    (r'^rule/$', 'ahmia.views.rule'),
-)
-
 # include app urls
 urlpatterns += patterns('',
                        url(r'^', include('search.urls')),

@@ -160,36 +160,3 @@ def blacklist_report(request):
         })
         template = loader.get_template('blacklist_report.html')
         return HttpResponse(template.render(content))
-
-@require_http_methods(["GET", "POST"])
-def login(request):
-    """Administration login."""
-    if request.method == 'GET':
-        return render_to_response('login.html')
-    elif request.method == 'POST':
-        try:
-            user = auth.authenticate(username=request.POST['username'],
-                                     password=request.POST['password'])
-            if user is None:
-                username = request.POST['username']
-                return render_to_response(
-                    'login.html',
-                    {'error': 'Invalid password', 'username': username})
-            else:
-                auth.login(request, user)
-                return redirect('ahmia.views.rule')
-        except KeyError:
-            return HttpResponseBadRequest()
-
-def logout(request):
-    """Administration logout."""
-    auth.logout(request)
-    return redirect('ahmia.views.rule')
-
-@require_GET
-def rule(request):
-    """Administration rule content"""
-    if request.user.is_authenticated():
-        return render_page('rule.html', show_descriptions=True)
-    else:
-        return redirect('ahmia.views.login')
