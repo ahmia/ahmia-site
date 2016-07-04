@@ -1,8 +1,11 @@
-{% extends "base.html" %}
+{% extends 'core.html' %}
+{% load i18n %}
 
-{% block title %}Ahmia - Description Linked Data Proposal{% endblock %}
-
-{% block content %}
+{% block title %}Ahmia - Statistics{% endblock %}
+{% block body %}
+{% include 'partial/nav_tor.html' with nav_type='maxi' %}
+<div id="ahmiaAboutPage">
+ <div class="aboutAhmia">
 
 <h2>Description Linked Data Proposal to WWW Servers Inside Tor</h2>
 <p>
@@ -44,9 +47,27 @@
 <p>
   You can download and study the example <a href="/static/3g2upl4pq6kufc4m.json">JSON file</a>.
 </p>
-<strong>Help us:</strong>
+</div>
+ <div class="aboutAhmia">
+<strong>Help us</strong>
 <p>
-  Please tell us your opinion about this. We are considering this as a simple method for getting official description information from the hidden services. We will show these in our page. <a href="/address/#/search=Description%20downloaded%20directly%20from%20the%20hidden%20service.">See here.</a>
+  Please tell us your opinion about this. We are considering this as a simple method for getting official description information from the hidden services. We will show these in our page. <a href="/address">See here.</a>
 </p>
-
+</div>
+<div class="credits">
+    <p>
+      {% trans "donate Bitcoin" as donate_bitcoin %}
+      {% blocktrans %}
+      We extend a thank you to Ahmia's supporters.
+      If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+      {% endblocktrans %}
+    </p>
+    <ul>
+      <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+      <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+      <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+      <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+    </ul>
+  </div>
+</div>
 {% endblock %}
