@@ -6,7 +6,6 @@ import sys
 
 from django.test import TestCase
 
-
 def read_file(filename):
     """Read a file and return the text content."""
     inputfile = codecs.open(filename, "r", "utf-8")

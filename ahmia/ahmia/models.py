@@ -1,4 +1,6 @@
 """Models for the database of ahmia."""
+import re
+
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator, MinLengthValidator

@@ -14,8 +14,8 @@ from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseForbidden, HttpResponseNotFound)
 from django.views.decorators.http import require_http_methods
 
-from search.views import helpers
-from search.models import HiddenWebsite, HiddenWebsiteDescription
+from ahmia.views import helpers
+from ahmia.models import HiddenWebsite, HiddenWebsiteDescription
 
 
 @require_http_methods(["GET", "PUT"])

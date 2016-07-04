@@ -16,10 +16,10 @@ urlpatterns = patterns(
     (r'^IP/', 'ahmia.views.show_ip'),
     # Summer of Code 2014
     (r'^gsoc/', 'ahmia.views.gsoc'),
-    # Banned services
-    (r'^blacklist', 'ahmia.views.blacklist'),
     # Documentation page.
     (r'^documentation/', 'ahmia.views.documentation'),
+    # Banned services
+    (r'^blacklist', 'ahmia.views.blacklist'),
 )
 
 # Documentation content
@@ -55,10 +55,10 @@ urlpatterns += patterns(
 )
 
 # include app urls
-'''urlpatterns += patterns('',
+urlpatterns += patterns('',
                        url(r'^', include('search.urls')),
-                       url(r'^', include('stats.url')),
-                       url(r'^', include('api.url')))
+                       url(r'^', include('stats.urls')),
+                       url(r'^', include('api.urls'))
 )
 
 # DEPRECATED ROUTES
@@ -68,7 +68,7 @@ urlpatterns += patterns(
     (r'^disclaimer/', 'search.views.legacy.disclaimer'), # /legal
     (r'^banned/', 'search.views.legacy.banned'), # /blacklist/banned
     (r'^bannedMD5\.txt$', 'search.views.legacy.banned') # /blacklist/banned
-)'''
+)
 
 # robots.txt file
 urlpatterns += patterns(

@@ -1,24 +1,36 @@
 """Basic views."""
 import hashlib
 import re  # Regular expressions
-from textwrap import dedent
 
 import simplejson
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseForbidden, HttpResponseNotFound,
-                         StreamingHttpResponse, JsonResponse)
+                         StreamingHttpResponse)
 from django.template import Context, loader
 from django.views.decorators.http import (require_GET, require_http_methods,
                                           require_POST)
 
-from django.utils.translation import ugettext as _
+from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
+                          HiddenWebsitePopularity)
+from ahmia.helpers import render_page, validate_onion_url
+from api.helpers import redirect_page, get_client_ip, latest_descriptions
 
-from search.views import helpers
-from search.views import admin
-from search.forms import AddOnionForm
-from search.models import (HiddenWebsite, HiddenWebsiteDescription,
-                           HiddenWebsitePopularity)
+@require_GET
+def banned(request):
+    """Return the plain text MD5 sums of the banned onions."""
+    return banned_txt(request)
+
+@require_GET
+def blacklist(request):
+    """Return a blacklist page with MD5 sums of banned content."""
+    try:
+        banned_onions = HiddenWebsite.objects.all().filter(banned=True)
+    except HiddenWebsite.DoesNotExist:
+        banned_onions = []
+    content = Context({'banned_onions': banned_onions})
+    template = loader.get_template('blacklist.html')
+    return HttpResponse(template.render(content))
 
 @require_http_methods(["GET", "POST"])
 def onion_list(request):
@@ -31,7 +43,7 @@ def onion_list(request):
             return onions_rdf(request)
         else: #default return is human readable HTML page
             show_descriptions = True
-            return helpers.render_page('hs_list_view.html', show_descriptions)
+            return render_page('hs_list_view.html', show_descriptions)
     elif request.method == 'POST':
         return post_add_hs(request)
 
@@ -74,7 +86,7 @@ def single_onion(request, onion):
         return put_data_to_onion(request, onion)
     elif request.method == 'DELETE':
         # Delete means ban
-        return admin.ban(request, onion)
+        return ban(request, onion)
 
 @require_GET
 def onion_redirect(request):
@@ -92,7 +104,7 @@ def onion_redirect(request):
     try:
         md5 = hashlib.md5(onion+".onion").hexdigest()
         url = "http://" + onion + ".onion/"
-        helpers.validate_onion_url(url)
+        validate_onion_url(url)
         hs, hs_creat = HiddenWebsite.objects.get_or_create(id=onion,
                                                            url=url,
                                                            md5=md5)
@@ -111,7 +123,7 @@ def onion_redirect(request):
         print "Error with redirect URL: " + redirect_url
         print error
     message = "Redirecting to hidden service."
-    return helpers.redirect_page(message, 0, redirect_url)
+    return redirect_page(message, 0, redirect_url)
 
 @require_http_methods(['GET', 'PUT'])
 def onion_popularity(request, onion):
@@ -135,7 +147,7 @@ def onion_popularity(request, onion):
         return HttpResponse(template.render(content), content_type=type_str)
     elif request.method == 'PUT':
         # Allow PUT data only from the localhost
-        ip_addr = helpers.get_client_ip(request)
+        ip_addr = get_client_ip(request)
         if str(ip_addr) not in "127.0.0.1" \
            or "127.0.0.1" not in str(request.get_host()):
             return HttpResponseForbidden(answer)
@@ -269,7 +281,7 @@ def add_hs(json):
         if not regex.match(relation):
             json['relation'] = ""
     try:
-        helpers.validate_onion_url(url)
+        validate_onion_url(url)
     except ValidationError:
         print "Invalid onion domain"
         answer = "Invalid URL! URL must be exactly like http://something.onion/"
@@ -289,7 +301,7 @@ def add_hs(json):
         return HttpResponseBadRequest("Invalid data.")
     message = 'Hidden service added.'
     redirect_url = '/address/'+id_str
-    return helpers.redirect_page(message, 3, redirect_url)
+    return redirect_page(message, 3, redirect_url)
 
 def add_description(json, hs):
     """Add description JSON data."""
@@ -368,7 +380,7 @@ def onion_rdf(request, onion):
 def onions_json(request):
     """All onion information as a JSON file."""
     onions = HiddenWebsite.objects.all()
-    hs_list = helpers.latest_descriptions(onions)
+    hs_list = latest_descriptions(onions)
     template = loader.get_template('onions.json')
     content = Context({'hs_list': hs_list})
     type_str = "application/json"
@@ -378,7 +390,7 @@ def onions_json(request):
 def onions_rdf(request):
     """All onion information as a RDF file."""
     onions = HiddenWebsite.objects.all()
-    hs_list = helpers.latest_descriptions(onions)
+    hs_list = latest_descriptions(onions)
     template = loader.get_template('onions.rdf')
     content = Context({'hs_list': hs_list})
     type_str = "application/rdf+xml"
@@ -416,7 +428,7 @@ def banned_txt(request):
 def all_onions_txt(request):
     """Return a plain text list of onions including the banned ones."""
     # Allow requests only from the localhost
-    ip_addr = helpers.get_client_ip(request)
+    ip_addr = get_client_ip(request)
     if str(ip_addr) not in "127.0.0.1" \
        or "127.0.0.1" not in str(request.get_host()):
         answer = "Only allowed form the localhost."
@@ -426,3 +438,28 @@ def all_onions_txt(request):
     for site in sites:
         site_list.append(site.url+"\n")
     return StreamingHttpResponse(site_list, content_type="text/plain")
+
+def ban(request, onion):
+    """Bans an onion site."""
+    if not request.user.is_authenticated():
+        return HttpResponse('Unauthorized', status=401)
+    hs_list = HiddenWebsite.objects.filter(id=onion)
+    if hs_list:
+        hs = hs_list.latest('updated')
+    else:
+        answer = "There is no "+onion+" indexed. Please add it if it exists."
+        return HttpResponseNotFound(answer)
+    hs.banned = True
+    hs.full_clean()
+    hs.save()
+    try:
+        popularity = HiddenWebsitePopularity.objects.get(about=hs)
+        popularity.clicks = 0
+        popularity.public_backlinks = 0
+        popularity.tor2web = 0
+        popularity.save()
+    except ObjectDoesNotExist:
+        print "No popularity for this banned onion."
+    # Send notification to Tor2web nodes
+    # noteTor2webNodes()
+    return HttpResponse("banned")
