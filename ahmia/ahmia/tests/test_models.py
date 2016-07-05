@@ -4,7 +4,7 @@ import hashlib
 from django.test import TestCase
 
 from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
-                           HiddenWebsitePopularity)
+                          HiddenWebsitePopularity)
 
 
 class HiddenWebsiteTest(TestCase):

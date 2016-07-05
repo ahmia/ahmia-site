@@ -10,27 +10,17 @@ from django.http import (HttpResponse, HttpResponseBadRequest,
 from django.template import Context, loader
 from django.views.decorators.http import (require_GET, require_http_methods,
                                           require_POST)
+from django.core.mail import send_mail
 
 from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
                           HiddenWebsitePopularity)
-from ahmia.helpers import render_page, validate_onion_url
-from api.helpers import redirect_page, get_client_ip, latest_descriptions
+from ahmia.helpers import (render_page, validate_onion_url, latest_descriptions,
+                           redirect_page, get_client_ip)
 
 @require_GET
 def banned(request):
     """Return the plain text MD5 sums of the banned onions."""
     return banned_txt(request)
-
-@require_GET
-def blacklist(request):
-    """Return a blacklist page with MD5 sums of banned content."""
-    try:
-        banned_onions = HiddenWebsite.objects.all().filter(banned=True)
-    except HiddenWebsite.DoesNotExist:
-        banned_onions = []
-    content = Context({'banned_onions': banned_onions})
-    template = loader.get_template('blacklist.html')
-    return HttpResponse(template.render(content))
 
 @require_http_methods(["GET", "POST"])
 def onion_list(request):
@@ -87,6 +77,23 @@ def single_onion(request, onion):
     elif request.method == 'DELETE':
         # Delete means ban
         return ban(request, onion)
+
+@require_http_methods(['PUT'])
+def put_data_to_onion(request, onion):
+    """Add data to hidden service."""
+    try:
+        json_obj = simplejson.loads(request.body)
+        abuse_note = json_obj.get("abuse_note")
+        url = json_obj.get("url")
+        message = "User sended abuse notice: \n\n URL: " + url
+        message = message + "\n\n User message: " + abuse_note
+        send_mail('Abuse notice', message, settings.DEFAULT_FROM_EMAIL,
+                  settings.RECIPIENT_LIST, fail_silently=False)
+        return HttpResponse('Abuse notice sended.')
+    except Exception as error:
+        print "Error: %s" % onion
+        print "Error: %s" % error
+        return HttpResponseBadRequest(error)
 
 @require_GET
 def onion_redirect(request):

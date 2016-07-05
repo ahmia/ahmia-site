@@ -36,7 +36,8 @@ class HiddenWebsite(models.Model):
                            validators=[MinLengthValidator(32),
                                        MaxLengthValidator(32)],
                            unique=True)
-    updated = models.DateTimeField(auto_now=True, auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     '''class Meta:
         """Meta class."""
         app_label = 'search'''
@@ -68,7 +69,8 @@ class HiddenWebsiteDescription(models.Model):
     relation = models.URLField(blank=True, null=True)
     subject = models.TextField(blank=True, null=True)
     type = models.TextField(blank=True, null=True)
-    updated = models.DateTimeField(auto_now=True, auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     language = models.TextField(null=True, blank=True)
     contactInformation = models.TextField(null=True, blank=True)
     officialInfo = models.BooleanField(default=False)

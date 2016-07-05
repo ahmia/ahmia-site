@@ -1,77 +1,68 @@
 """The URL patterns of the ahmia."""
 from django.conf import settings
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.views.generic import TemplateView
+from django.views.static import serve
+
+from . import views
 
 # Root level views
-urlpatterns = patterns(
-    '',
-    (r'^$', 'ahmia.views.default'), # search
-    (r'^i2p/', 'ahmia.views.i2p_search'), # i2p search
+urlpatterns = [
+    url(r'^$', views.default), # search
+    url(r'^i2p/', views.i2p_search), # i2p search
     # legalese
-    (r'^legal', 'ahmia.views.legal'),
+    url(r'^legal', views.legal),
     # Information about ahmia.
-    (r'^about/', 'ahmia.views.about'),
+    url(r'^about/', views.about),
     # Show visitor's IP address.
-    (r'^IP/', 'ahmia.views.show_ip'),
+    url(r'^IP/', views.show_ip),
     # Summer of Code 2014
-    (r'^gsoc/', 'ahmia.views.gsoc'),
+    url(r'^gsoc/', views.gsoc),
     # Documentation page.
-    (r'^documentation/', 'ahmia.views.documentation'),
+    url(r'^documentation/', views.documentation),
     # Banned services
-    (r'^blacklist', 'ahmia.views.blacklist'),
-)
+    url(r'^blacklist', views.blacklist),
+]
 
 # Documentation content
-urlpatterns += patterns(
-    '',
+urlpatterns += [
     # documentation/indexing
-    (r'^documentation/indexing/', 'ahmia.views.indexing'),
+    url(r'^documentation/indexing/', views.indexing),
     # Documentation - create hidden service description to hidden services.
-    (r'^documentation/createHsDescription/',
-     'ahmia.views.create_description'),
+    url(r'^documentation/createHsDescription/',
+        views.create_description),
     # Documentation - description proposal to hidden services.
-    (r'^documentation/descriptionProposal/',
-     'ahmia.views.description_proposal'),
-)
+    url(r'^documentation/descriptionProposal/',
+        views.description_proposal),
+]
 
 # Forms
-urlpatterns += patterns(
-    '',
+urlpatterns += [
     # Add domain form.
-    (r'^add/', 'ahmia.views.add'), #domain:port/add
+    url(r'^add/', views.add), #domain:port/add
     # Blacklist reporting
-    (r'^blacklist/report', 'ahmia.views.blacklist_report'),
-)
+    url(r'^blacklist/report', views.blacklist_report),
+]
 
 # include app urls
-urlpatterns += patterns('',
-                       url(r'^', include('search.urls')),
-                       url(r'^', include('stats.urls')),
-                       url(r'^', include('api.urls'))
-)
-
-# DEPRECATED ROUTES
-urlpatterns += patterns(
-    '',
-    (r'^policy/', 'search.views.legacy.policy'),  # /blacklist
-    (r'^disclaimer/', 'search.views.legacy.disclaimer'), # /legal
-    (r'^banned/', 'search.views.legacy.banned'), # /blacklist/banned
-    (r'^bannedMD5\.txt$', 'search.views.legacy.banned') # /blacklist/banned
-)
+urlpatterns += [
+    url(r'^', include('search.urls')),
+    url(r'^', include('stats.urls')),
+    url(r'^', include('api.urls'))
+]
 
 # robots.txt file
-urlpatterns += patterns(
-    '',
+urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt',
                                                content_type='text/plain')),
-)
+]
 
 # media files: CSS, JavaScript, images
 if settings.DEBUG:
-    urlpatterns += patterns(
-        '',
-        (r'^static/(?P<path>.*)$',
-         'django.views.static.serve',
-         {'document_root': settings.STATIC_ROOT}),
-    )
+    urlpatterns += [
+        url(
+            r'^static/(?P<path>.*)$',
+            serve,
+            {'document_root': settings.STATIC_ROOT}
+        ),
+    ]

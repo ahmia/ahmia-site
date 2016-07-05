@@ -7,19 +7,16 @@ These pages does not require database connection.
 """
 from textwrap import dedent
 
-from django.contrib import auth
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.http import (HttpResponse, HttpResponseBadRequest,
-                         HttpResponseNotFound, JsonResponse)
-from django.shortcuts import redirect, render_to_response
+from django.http import (HttpResponse, JsonResponse)
 from django.views.decorators.http import require_GET, require_http_methods
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
-from ahmia.models import (HiddenWebsite, HiddenWebsitePopularity,
-                          validate_onion_url)
-from ahmia.forms import AddOnionForm
-from ahmia.helpers import render_page, is_valid_onion, send_abuse_report
+from .models import HiddenWebsite, validate_onion_url
+from .forms import AddOnionForm
+from .helpers import (render_page, is_valid_onion, send_abuse_report,
+                      get_client_ip)
 
 # Root page views
 
@@ -94,7 +91,8 @@ def add(request):
         form = AddOnionForm(request.POST)
         if form.is_valid():
             try:
-                onion_name = validate_onion_url(form.cleaned_data['onion'])
+                onion_name = form.cleaned_data['onion']
+                validate_onion_url(onion_name)
                 onion = HiddenWebsite.objects.get(id=onion_name)
                 if onion.banned:
                     err_msg = _(dedent('''\
@@ -160,3 +158,14 @@ def blacklist_report(request):
         })
         template = loader.get_template('blacklist_report.html')
         return HttpResponse(template.render(content))
+
+@require_GET
+def blacklist(request):
+    """Return a blacklist page with MD5 sums of banned content."""
+    try:
+        banned_onions = HiddenWebsite.objects.all().filter(banned=True)
+    except HiddenWebsite.DoesNotExist:
+        banned_onions = []
+    content = Context({'banned_onions': banned_onions})
+    template = loader.get_template('blacklist.html')
+    return HttpResponse(template.render(content))

@@ -1,14 +1,15 @@
 """The URL patterns of the ahmia stats app."""
-from django.conf.urls import patterns
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    '',
+from . import views
+
+urlpatterns = [
     # Stats
-    (r'^stats/viewer', 'stats.views.statsviewer'),
-    (r'^stats/popularity', 'stats.views.stats'),
-    (r'^stats/tor2web', 'stats.views.tor2web'),
-    (r'^stats/history', 'stats.views.history'),
-    (r'^stats/traffic', 'stats.views.trafficviewer'),
-    (r'^stats/services', 'stats.views.services'),
-    (r'^stats/onionsovertime', 'stats.views.onionsovertime'),
-)
+    url(r'^stats/viewer', views.statsviewer),
+    url(r'^stats/popularity', views.stats),
+    url(r'^stats/tor2web', views.tor2web),
+    url(r'^stats/history', views.history),
+    url(r'^stats/traffic', views.trafficviewer),
+    url(r'^stats/services', views.services),
+    url(r'^stats/onionsovertime', views.onionsovertime),
+]
