@@ -2,7 +2,7 @@
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 
-from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
+from .models import HiddenWebsite, HiddenWebsitePopularity
 
 class AddOnionForm(forms.Form):
     """Request to add an onion domain."""

@@ -7,7 +7,6 @@ import sys
 PROJECT_HOME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
     '.ahmia.fi', # Allow domain and subdomains
@@ -112,9 +111,12 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'ahmia.urls'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_HOME, 'ahmia/templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',

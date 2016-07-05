@@ -12,7 +12,7 @@ from django.views.decorators.http import require_GET
 from ahmia.helpers import render_page
 from ahmia.models import HiddenWebsite, HiddenWebsitePopularity
 
-from stats.helpers import round_to_next_multiple_of
+from .helpers import round_to_next_multiple_of
 
 @require_GET
 def stats(request):

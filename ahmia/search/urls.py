@@ -1,14 +1,14 @@
 """The URL patterns of the ahmia search app."""
-from django.conf.urls import patterns
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    '',
-    (r'^search/', 'search.views.results'), # results
-    (r'^i2p_search/', 'search.views.results'), # results
-)
+from . import views
+
+urlpatterns = [
+    url(r'^search/', views.results), # results
+    url(r'^i2p_search/', views.results), # results
+]
 
 # Elasticsearch API
-urlpatterns += patterns(
-    '',
-    (r'^elasticsearch/', 'search.views.proxy'),
-)
+urlpatterns += [
+    url(r'^elasticsearch/', views.proxy),
+]
