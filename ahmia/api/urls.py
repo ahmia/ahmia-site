@@ -22,8 +22,6 @@ urlpatterns = [
     # GET lists every known HS and POST adds a new HS.
     # domain:port/address/
     url(r'^address/', views.onion_list),
-    # Redirect link to hidden service
-    url(r'^redirect', views.onion_redirect),
     # Banned hidden services (MD5).
     # The plain texts list of onion URL.
     url(r'^onions/', views.onions_txt),
@@ -32,4 +30,6 @@ urlpatterns = [
     url(r'^alldomains', views.all_onions_txt),
     # Blacklist MD5
     url(r'^blacklist/banned', views.banned),
+    # Show visitor's IP address.
+    url(r'^ip/', views.show_ip),
 ]

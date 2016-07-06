@@ -1,5 +1,11 @@
 {% extends 'core.html' %}
 {% load i18n %}
+{% load static %}
+
+{% block navtype %}mini{% endblock %}
+
+{% block searchbar %}
+{% endblock %}
 
 {% block body_class %}main{% endblock %}
 
@@ -8,12 +14,11 @@
 {% endblock %}
 
 {% block body %}
-{% include 'partial/nav_tor.html' with nav_type='mini' %}
 <div id="ahmiaMainContent">
   <div id="ahmiaSearchArea">
-    <img src="/static/images/ahmiafi_black.png" alt="Ahmia" style="opacity: 0.2;">
+    <img src="{% static 'images/ahmiafi_black.png' %}" alt="Ahmia" style="opacity: 0.2;">
     <h1>Ahmia</h1>
-    <form id="searchForm" class="autocomplete" action="/search" method="get">
+    <form id="searchForm" class="autocomplete" action="" method="get">
       <input id="id_q" type="search" name="q">
       <input type="submit" value="{% trans "Search" %}" style="submitButton">
     </form>
@@ -28,7 +33,7 @@
     {% blocktrans %}
       Ahmia searches hidden services on the Tor network. To access these hidden services, you need
       the <a href="https://www.torproject.org/projects/torbrowser.html">{{ tor_browser_bundle }}</a>.
-      Abuse material is not allowed on Ahmia. See our <a href="/blacklist">{{ service_blacklist }}</a> and
+      Abuse material is not allowed on Ahmia. See our <a href="{% endblocktrans %}{% url 'blacklist' %}{% blocktrans %}">{{ service_blacklist }}</a> and
       report abuse material if you find it in the index. It will be removed as soon as possible.
     {% endblocktrans %}
     </p>
@@ -38,7 +43,7 @@
     {% trans "donate Bitcoin to the Ahmia project" as donate_bitcoin %}
     <p>
     {% blocktrans %}
-      For more about Ahmia, see <a href="/documentation/indexing">{{ indexing_info }}</a>,
+      For more about Ahmia, see <a href="{% endblocktrans %}{% url 'doc-indexing' %}{% blocktrans %}">{{ indexing_info }}</a>,
       <a href="https://github.com/ahmia/search">{{contribute_to_source}}</a>,
       <a href="https://twitter.com/AhmiaNews">@AhmiaNews</a> on Twitter,
       <br /> Bitcoin address: 3CMc52oegWqorFsBRcakUGHkZEQMfLP43s
@@ -49,7 +54,7 @@
     <!-- Advertisement -->
     <div id="advertisement">
       <a href="http://6axcig5jgptnkaj2.onion/#/?banner=ahmia">
-        <img src="/static/images/ccblackengtop.jpg" alt="Sponsor ads" style="height: 100%; max-height: 60px; width: 100%; max-width: 400px;">
+        <img src="{% static 'images/ccblackengtop.jpg' %}" alt="Sponsor ads" style="height: 100%; max-height: 60px; width: 100%; max-width: 400px;">
       </a>
     </div>
 

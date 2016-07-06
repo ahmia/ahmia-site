@@ -4,8 +4,10 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^search/', views.results), # results
-    url(r'^i2p_search/', views.results), # results
+    url(r'^', views.results), # results
+    url(r'^i2p/', views.results), # results
+    # Redirect link to hidden service
+    url(r'^redirect/', views.onion_redirect),
 ]
 
 # Elasticsearch API

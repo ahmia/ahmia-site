@@ -1,14 +1,14 @@
 {% extends 'core.html' %}
 {% load i18n %}
 {% load ahmia_custom %}
+{% load static %}
+
 {% block title %}{% trans "Hidden Service Blacklist" %} &mdash; Ahmia{% endblock %}
 {% block extra_js %}
-    <script src="/static/js/blacklist.js"></script>
-    <script src="/static/js/md5.js"></script>
+    <script src="{% static 'js/blacklist.js' %}"></script>
+    <script src="{% static 'js/md5.js' %}"></script>
 {% endblock %}
 {% block body %}
-{% include 'partial/nav_tor.html' with nav_type='maxi' %}
-
 <div id="ahmiaBlacklist">
   <p class="end">
     {% blocktrans %}

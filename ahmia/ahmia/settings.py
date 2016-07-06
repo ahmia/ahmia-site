@@ -125,7 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'ahmia',
     #'debug_toolbar',
-    'search',
-    'stats',
-    'api'
+    #'search',
+    #'stats',
+    #'api'
 )

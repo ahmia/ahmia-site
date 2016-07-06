@@ -20,6 +20,43 @@ from django.shortcuts import redirect
 from django.template import Context, loader
 from django.views.decorators.http import require_GET, require_http_methods
 
+@require_GET
+def onion_redirect(request):
+    """Add clicked information and redirect to .onion address."""
+    redirect_url = request.GET.get('redirect_url', '')
+    if not redirect_url:
+        answer = "Bad request: no GET parameter URL."
+        return HttpResponseBadRequest(answer)
+    onion = redirect_url.split("://")[1]
+    onion_parts = onion.split(".")
+    for part in onion_parts:
+        if len(part) == 16:
+            onion = part
+            break
+    try:
+        md5 = hashlib.md5(onion+".onion").hexdigest()
+        url = "http://" + onion + ".onion/"
+        validate_onion_url(url)
+        hs, hs_creat = HiddenWebsite.objects.get_or_create(id=onion,
+                                                           url=url,
+                                                           md5=md5)
+        pop, creat = HiddenWebsitePopularity.objects.get_or_create(about=hs)
+        if creat or hs.banned:
+            pop.clicks = 0
+            pop.public_backlinks = 0
+            pop.tor2web = 0
+        pop.clicks = pop.clicks + 1
+        pop.full_clean()
+        pop.save()
+        if hs_creat:
+            hs.full_clean()
+            hs.save()
+    except Exception as error:
+        print "Error with redirect URL: " + redirect_url
+        print error
+    message = "Redirecting to hidden service."
+    return redirect_page(message, 0, redirect_url)
+
 @require_http_methods(["GET", "POST"])
 def proxy(request):
     """Proxy connection to Elasticsearch"""

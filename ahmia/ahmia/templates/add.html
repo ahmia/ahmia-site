@@ -1,17 +1,18 @@
 {% extends 'core.html' %}
 {% load i18n %}
 {% load ahmia_custom %}
+{% load static %}
+
 {% block title %}{% trans "Add a hidden service" %} &mdash; Ahmia{% endblock %}
 {% block extra_js %}
   {% is_development_environment as is_dev %}
   {% if is_dev %}
-    <script src="/static/js/add.js"></script>
+    <script src="{% static 'js/add.js' %}"></script>
   {% else %}
-    <script src="/static/add.signed.js"></script>
+    <script src="{% static 'add.signed.js' %}"></script>
   {% endif %}
 {% endblock %}
 {% block body %}
-{% include 'partial/nav_tor.html' with nav_type='maxi' %}
 
 <div id="ahmiaAddService">
   <p class="end">
