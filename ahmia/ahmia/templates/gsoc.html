@@ -1,8 +1,10 @@
-{% extends "base.html" %}
+{% extends 'core.html' %}
+{% load i18n %}
 
-{% block title %}Ahmia - About us{% endblock %}
-
-{% block content %}
+{% block title %}{% trans "About Us" %} &mdash; Ahmia{% endblock %}
+{% block body %}
+<div id="ahmiaAboutPage">
+  <div class="aboutAhmia">
 
 <h2>Google Summer of Code 2014: Ahmia.fi - Search Engine for Hidden Services</h2>
 <p>Juha Nurmi, 21.04.2014</p>
@@ -84,6 +86,7 @@
     </ul>
   </li>
 </ul>
+
 
 <ul>
   <li>Public open YaCy back-end for everyone</li>
@@ -311,6 +314,7 @@
   In case there is a task that is much slower to implement than forecast we will re-evaluate it or move to the next task on the queue.
 </p>
 
+
 <h3>2. Point us to a code sample: something good and clean to demonstrate that you know what you're doing, ideally from an existing project.</h3>
 
 <p>
@@ -360,6 +364,7 @@
   Also, I am a member of the OKF Finland Open Science Work Group (OKF). The OKF is a hub for community-driven activities around open science to advocate standards of openness in Finnish academia and facilitate transfer of knowledge between academic institutions
   and wider society. I am pushing researchers to publish their source codes with proper licensing.
 </p>
+
 
 <h3>5. Will you be working full-time on the project for the summer, or will you have other commitments too (a second job, classes, etc)? If you won't be available full-time, please explain, and list timing if you know them for other major deadlines (e.g. exams). Having other activities isn't a deal-breaker, but we don't want to be surprised.</h3>
 
@@ -413,6 +418,11 @@
 <p>
   Finally, I propose a small, precisely targeted development project to ahmia.fi since I am already maintaining it and have independently worked with various organizations that use Tor and develop search engines. I am able to use this kind of “lean” approach
   as it is the working model of the related developer communities, allowing us to align our development – and naturally interact with the talented individuals who effectively develop open-source systems like Tor, Tor2web, Globaleaks and YaCy. Futhermore,
-  I know the developer of Torsearch.es who offers technical insight to me.</p>
+  I know the developer of Torsearch.es who offers technical insight to me.
+</p>
+
+  </div>
+</div>
+
 
 {% endblock %}

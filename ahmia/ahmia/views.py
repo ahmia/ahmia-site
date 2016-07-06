@@ -5,135 +5,114 @@ Static HTML pages.
 These pages does not require database connection.
 
 """
-from textwrap import dedent
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
 
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.http import (HttpResponse, JsonResponse)
-from django.views.decorators.http import require_GET, require_http_methods
-from django.template import Context, loader
-from django.utils.translation import ugettext as _
-
-from .models import HiddenWebsite, validate_onion_url
+from .models import HiddenWebsite, HiddenWebsiteDescription
 from .forms import AddOnionForm
-from .helpers import (render_page, is_valid_onion, send_abuse_report,
-                      get_client_ip)
 
-# Root page views
+class HomepageView(TemplateView):
+    """The homepage."""
+    http_method_names = ['get']
+    template_name = "index_tor.html"
 
-@require_GET
-def default(request):
-    """The default page."""
-    template = loader.get_template('index_tor.html')
-    content = Context()
-    return HttpResponse(template.render(content))
+class IipView(TemplateView):
+    """The main i2p search page."""
+    http_method_names = ['get']
+    template_name = "index_i2p.html"
 
-@require_GET
-def i2p_search(request):
-    """The default page."""
-    template = loader.get_template('index_i2p.html')
-    content = Context()
-    return HttpResponse(template.render(content))
+class AhmiaPage(TemplateView):
+    """Core page of the website."""
+    http_method_names = ['get']
 
-@require_GET
-def indexing(request):
-    """Static page about the indexing and crawling."""
-    return render_page('indexing.html')
+    def latest_descriptions(self, onions):
+        """Return the latest descriptions to these onion objects."""
+        #The old implementatation was working only with PostgreSQL database
+        #desc = HiddenWebsiteDescription.objects.order_by('about', '-updated')
+        #desc = desc.distinct('about')
+        # Select the onions related to the descriptions
+        descriptions = HiddenWebsiteDescription.objects.select_related("about")
+        # Select only the onions, online ones
+        descriptions = descriptions.filter(about__in=onions)
+        # Order the results
+        descriptions = descriptions.order_by('about', '-updated')
+        descs = []
+        last_onion = "" # The latest onion selected
+        # Select the first (the latest) from each onion group
+        for desc in descriptions:
+            if last_onion != desc.about.id:
+                last_onion = desc.about.id
+                desc.url = desc.about.url
+                desc.hs_id = desc.about.id
+                desc.banned = desc.about.banned
+                descs.append(desc)
+        return descs
 
-@require_GET
-def legal(request):
+    def get_context_data(self, **kwargs):
+        onions = HiddenWebsite.objects.filter(online=True)
+        return {
+            "count_banned": onions.filter(banned=True).count(),
+            "count_online": onions.filter(banned=False).count()
+        }
+
+class LegalView(AhmiaPage):
     """Static legal page."""
-    return render_page('static/legal.html')
+    template_name = "legal.html"
 
-@require_GET
-def documentation(request):
+class DocumentationView(AhmiaPage):
     """Static documentation page."""
-    return render_page('documentation.html')
+    template_name = "documentation.html"
 
-@require_GET
-def about(request):
-    """Static about page of ahmia."""
-    return render_page('static/about.html')
+class IndexingDocumentationView(AhmiaPage):
+    """Static page about the indexing and crawling."""
+    template_name = "indexing.html"
 
-@require_GET
-def show_ip(request):
-    """Returns the IP address of the request."""
-    ip_addr = get_client_ip(request)
-    return HttpResponse(ip_addr)
-
-@require_GET
-def gsoc(request):
-    """Summer of code 2014."""
-    return render_page('static/gsoc.html')
-
-# Documentation content
-
-@require_GET
-def description_proposal(request):
+class DescPropDocumentationView(AhmiaPage):
     """Static description proposal."""
-    return render_page('descriptionProposal.html')
+    template_name = "descriptionProposal.html"
 
-@require_GET
-def create_description(request):
+class CreateDescDocumentationView(AhmiaPage):
     """Page to create hidden website description."""
-    return render_page('createHsDescription.html')
-    # return HttpResponseNotAllowed("Only GET request is allowed.")
+    template_name = "createHsDescription.html"
 
-# Forms
+class AboutView(AhmiaPage):
+    """Static about page."""
+    template_name = "about.html"
 
-@require_http_methods(['GET', 'POST'])
-def add(request):
+class GsocView(AhmiaPage):
+    """Summer of code 2014."""
+    template_name = "gsoc.html"
+
+class AddView(FormView):
     """Add form for a new .onion address."""
-    err_msg = None
-    info_msg = None
+    form_class = AddOnionForm
+    template_name = "add.html"
 
-    template_vars = {}
-    if request.method == 'POST':
-        form = AddOnionForm(request.POST)
-        if form.is_valid():
-            try:
-                onion_name = form.cleaned_data['onion']
-                validate_onion_url(onion_name)
-                onion = HiddenWebsite.objects.get(id=onion_name)
-                if onion.banned:
-                    err_msg = _(dedent('''\
-                    This onion is banned and cannot be added to this index.'''))
-            except ValidationError:
-                err_msg = _('You did not enter a valid .onion')
-            except ObjectDoesNotExist:
-                # ok, add a new onion
-                # we dont need anything other than the service for now
-                hs, creat = HiddenWebsite.objects.get_or_create(id=id_str,
-                                                                url=url,
-                                                                md5=md5)
-                if creat:
-                    hs.online = False
-                    hs.banned = False
-                    hs.full_clean()
-                    hs.save()
-                info_msg = _('Your hidden service has been added.')
-        else:
-            err_msg = _('You did not enter a valid .onion')
+    def form_valid(self, form):
+        form.add_onion()
+        return super(AddView, self).form_valid(form)
 
-    if err_msg:
-        template_vars['flash_message'] = {'error': err_msg}
-    if info_msg:
-        template_vars['flash_message'] = {'info': info_msg}
-    template = loader.get_template("add.html")
-    content = Context(template_vars)
-    return HttpResponse(template.render(content))
 
-@require_GET
-def old_add(request):
-    """Add form for a new .onion address."""
-    template = loader.get_template("old_add.html")
-    onions = HiddenWebsite.objects.all()
-    count_online = onions.filter(banned=False, online=True).count()
-    count_banned = onions.filter(banned=True, online=True).count()
-    content = Context({'count_banned': count_banned,
-                       'count_online': count_online})
-    return HttpResponse(template.render(content))
+class ReportView(FormView):
+    """Return a request page to blacklist a site."""
+    form_class = AddOnionForm
+    template_name = "blacklist_report.html"
 
-@require_http_methods(['GET', 'POST'])
+    def form_valid(self, form):
+        return super(ReportView, self).form_valid(form)
+
+
+class BlacklistView(FormView):
+    """Return a blacklist page with MD5 sums of banned content."""
+    form_class = AddOnionForm
+    template_name = "blacklist.html"
+
+    def form_valid(self, form):
+        return super(BlacklistView, self).form_valid(form)
+
+
+
+'''@require_http_methods(['GET', 'POST'])
 def blacklist_report(request):
     """Return a request page to blacklist a site."""
     if request.method == 'POST':
@@ -168,4 +147,4 @@ def blacklist(request):
         banned_onions = []
     content = Context({'banned_onions': banned_onions})
     template = loader.get_template('blacklist.html')
-    return HttpResponse(template.render(content))
+    return HttpResponse(template.render(content))'''

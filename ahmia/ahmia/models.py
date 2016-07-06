@@ -1,26 +1,11 @@
 """Models for the database of ahmia."""
-import re
-
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator, MinLengthValidator
-
-def validate_onion_url(url):
-    """ Test is url correct onion URL."""
-    #Must be like http://3g2upl4pq6kufc4m.onion/
-    if len(url) != 30:
-        raise ValidationError(u'%s length is not 30' % url)
-    if url[0:7] != 'http://':
-        raise ValidationError(u'%s is not beginning with http://' % url)
-    if url[-7:] != '.onion/':
-        raise ValidationError(u'%s is not ending with .onion/' % url)
-    if not re.match("[a-z2-7]{16}", url[7:-7]):
-        raise ValidationError(u'%s is not valid onion domain' % url)
 
 class HiddenWebsite(models.Model):
     """Hidden service website."""
     #for instance: http://3g2upl4pq6kufc4m.onion/
-    url = models.URLField(validators=[validate_onion_url], unique=True)
+    url = models.URLField(unique=True)
     #hidden service
     id = models.CharField(primary_key=True, max_length=16,
                           validators=[MinLengthValidator(16),
@@ -100,19 +85,3 @@ class HiddenWebsiteStatus(models.Model):
     online = models.BooleanField(default=True)
     def __unicode__(self):
         return self.about.url
-
-class WebsiteIndex(models.Model):
-    """Model for an indexed website."""
-    domain = models.TextField()
-    url = models.URLField(unique=True)
-    tor2web_url = models.URLField(unique=True)
-    text = models.TextField()
-    title = models.TextField()
-    h1 = models.TextField()
-    h2 = models.TextField()
-    crawling_session = models.TextField()
-    server_header = models.TextField()
-    date_inserted = models.DateTimeField()
-
-    def __unicode__(self):
-        return self.url

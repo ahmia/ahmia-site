@@ -1,19 +1,12 @@
-{% extends 'core.html' %}
+{% extends 'index_tor.html' %}
 {% load i18n %}
 
-{% block body_class %}main{% endblock %}
-
-{% block precontent %}
-  <div id="imageOverlay">&nbsp;</div>
-{% endblock %}
-
 {% block body %}
-{% include 'partial/nav_i2p.html' with nav_type='mini' %}
 <div id="ahmiaMainContent">
   <div id="ahmiaSearchArea">
     <h1>Ahmia - i2p network</h1>
     <h2>Happy new year 2016! :)</h2>
-    <form id="searchForm" class="autocomplete" action="/i2p_search" method="get">
+    <form id="searchForm" class="autocomplete" action="" method="get">
       <input id="id_q" type="search" name="q">
       <input type="submit" value="{% trans "Search" %}" style="submitButton">
     </form>
@@ -29,7 +22,7 @@
     {% trans "donate Bitcoin to the Ahmia project" as donate_bitcoin %}
     <p>
       {% blocktrans %}
-        For more about Ahmia, see <a href="/documentation/indexing">{{ indexing_info }}</a>,
+        For more about Ahmia, see <a href="{% endblocktrans %}{% url 'doc-indexing' %}{% blocktrans %}">{{ indexing_info }}</a>,
         <a href="https://github.com/ahmia/search">{{contribute_to_source}},
         <a href="https://twitter.com/AhmiaNews">@AhmiaNews</a> on Twitter,
         <br /> Bitcoin address: 3CMc52oegWqorFsBRcakUGHkZEQMfLP43s
@@ -38,12 +31,4 @@
     </p>
   </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-  $(document).ready(function() {
-    $('#id_q').focus();
-  });
-</script>
 {% endblock %}

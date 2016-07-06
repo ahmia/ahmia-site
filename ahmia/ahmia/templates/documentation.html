@@ -1,9 +1,9 @@
 {% extends 'core.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}Ahmia - Documentation{% endblock %}
 {% block body %}
-{% include 'partial/nav_tor.html' with nav_type='maxi' %}
 <div id="ahmiaAboutPage">
 <h1>Documentation</h1>
 <div class="aboutAhmia">
@@ -47,7 +47,7 @@
 <h3>Onion information</h3>
 
 <p>
-  All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br> 
+  All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br>
   These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
 </p>
 
@@ -87,12 +87,12 @@ curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/addre
 <h3>For hidden service operators</h3>
 
 <p>
-  You can check <a href="/documentation/indexing/">how our hidden service indexing</a> works.
+  You can check <a href="{% url 'doc-indexing' %}">how our hidden service indexing</a> works.
 </p>
 
 <p>
-  Please deliver your hidden service's official information: <a href="/documentation/descriptionProposal/">Proposal to hidden service operators.</a>
-</p> 
+  Please deliver your hidden service's official information: <a href="{% url 'doc-create-desc' %}">Proposal to hidden service operators.</a>
+</p>
 </div>
 <div class="credits">
   <p>
@@ -103,10 +103,10 @@ curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/addre
   {% endblocktrans %}
   </p>
   <ul>
-    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
-    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
-    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
-    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+    <li><img src="{% static 'images/logos/globaleaks.png' %}" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="{% static '/static/images/logos/tor2web.png' %}" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="{% static '/static/images/logos/hermes.png' %}" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="{% static '/static/images/logos/torproject.png' %}" alt="{% trans "Tor Project" %}"></li>
   </ul>
   </div>
 </div>

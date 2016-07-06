@@ -1,58 +1,88 @@
-{% extends "base.html" %} {% block title %}Ahmia - About us{% endblock %}
+{% extends 'core.html' %}
+{% load i18n %}
 
-{% block content %}
-
-<h2>About us</h2>
-
-<p>
-  Our mission is to create a working search engine for indexing, searching and cataloguing content present on the <a href="https://www.torproject.org/">Tor network</a>. Furthermore, we are creating an environment to share meaningful statistics, insights
-  and news about the Tor network itself. Striving to support the Tor project, we are running exit nodes and tor2web nodes (tor2web.fi).
-</p>
-
-<p>
-  We believe that the Tor network is an important, anonymous, resilient, censorship-resistant and distributed platform that can provide easy-to-implement anonymity to websites and other web services. Servers configured to receive inbound connections through
-  Tor are called hidden services: rather than revealing a server's real IP address, an hidden service is accessed through the Tor network by mean of a peculiar anonymous identifier that is called "onion address". Ahmia group believes that developing a
-  functional search engine for indexing these hidden services, otherwise not available to users, is very important to the entire Tor network, enabling the diffusion and use of anonymous resources.
-</p>
-
-<p>
-  In a costant effort to better integrate with the Tor ecosystem, we have integrated our search engine core technology with <a href="https://globaleaks.org/">GlobaLeaks</a> (to handle submissions and suggestions) and with <a href="http://wiki.tor2web.org/index.php/Main_Page">Tor2web</a> (for
-  hidden services discovery).
-</p>
-
-<p>
-  Since September 2013 our group has joined the <a href="http://logioshermes.org/">Hermes Center for Transparency and Digital Human Rights</a>, an organizations devoted to develop and promote Transparency and Freedom-Enabling Technologies.
-</p>
-
-<h3>Further reading</h3>
-
-<ul>
-  <li><a href="/documentation">APIs and documentation</a>
-  </li>
-  <li><a href="https://github.com/ahmia/search">The free source code of Ahmia</a>
-  </li>
-  <li><a href="/static/presentation/Tor_Ecosystem2.pdf">Presentation about Ahmia</a>
-  </li>
-</ul>
-
-<div id="syndicate">
-
-  <a href="https://globaleaks.org/">
-    <img class="logos" src="/static/images/globaleaks.png" alt="Globaleaks" />
-  </a>
-
-  <a href="http://wiki.tor2web.org/index.php/Main_Page">
-    <img class="logos" src="/static/images/tor2web.png" alt="Tor2web" />
-  </a>
-
-  <a href="http://logioshermes.org/">
-    <img class="logos" src="/static/images/hermes.png" alt="Hermes" />
-  </a>
-
-  <a href="https://www.torproject.org/">
-    <img class="logos" src="/static/images/tor-logo.png" alt="Tor project" />
-  </a>
-
+{% block title %}{% trans "About Us" %} &mdash; Ahmia{% endblock %}
+{% block body %}
+<div id="ahmiaAboutPage">
+  <div class="aboutAhmia">
+  <h2 class="sr">{% trans "About Ahmia" %}</h2>
+  <p>
+  {% blocktrans %}
+  Ahmia's mission is to create the premier search engine for services residing on the Tor
+  anonymity network. In doing so, we hope to share meaningful statistics, insights, and news
+  about the Tor network and the Tor project.
+  {% endblocktrans %}
+  </p>
+  <p>
+  {% blocktrans %}
+  Contributors to Ahmia believe that the Tor network is an important and resilient
+  distributed platform for anonymity and privacy worldwide. By providing a search engine for
+  what many call the "deep web" or "dark net", Ahmia makes hidden services accessible to a wide
+  range of people, not just Tor network early adopters.
+  {% endblocktrans %}
+  </p>
+  <p>
+  {% trans "Globaleaks project" as globaleaks_project %}
+  {% trans "Tor2Web" as tor2web %}
+  {% blocktrans %}
+  The Ahmia search system is also integrated with the open source <a href="//globaleaks.org/">{{ globaleaks_project }}</a>
+  (to handle suggestions and feedback anonymously) and <a href="//wiki.tor2web.org/index.php/Main_Page">{{ tor2web }}</a>, a service that helps
+  people not yet on the Tor network visit Tor hidden services.
+  {% endblocktrans %}
+  </p>
+  <p>
+  {% trans "Hermes Center for Transparency and Digital Rights" as hermes_center %}
+  {% blocktrans %}
+  Since September 2013, Ahmia has been affiliated with
+  <a href="//logioshermes.org">{{ hermes_center }}</a>, an organization devoted to
+  developing and promoting transparency and freedom-enabling technologies worldwide.
+  {% endblocktrans %}
+  </p>
+  </div>
+  <div class="aboutTeam">
+  <h3>{% trans "About Juha Nurmi, Ahmia Project Leader" %}</h3>
+  <img src="/static/images/juha_nurmi.png" alt="{% trans "Juha Nurmi" %}" class="teamPhoto">
+  <p>
+  {% trans "Juha Nurmi" as juha_nurmi %}
+  {% blocktrans %}
+  <strong>{{ juha_nurmi }}</strong> (<a href="mailto:juha.nurmi@ahmia.fi">juha.nurmi@ahmia.fi</a>) is the
+  founder and project leader of the Ahmia search engine project. He is the CEO of data mining and
+  security company Dignify, a security researcher, and has been involved in numerous projects funded
+  by both the commercial and government spheres. Juha is also a noted lecturer and public speaker. Juha's
+  work on Ahmia has been in part sponsored by the Google Summer of Code.
+  {% endblocktrans %}
+  </p>
+  </div>
+  <div class="moreOnAhmia">
+  <h3>{% trans "More on Ahmia" %}</h3>
+  <p>
+  {% blocktrans %}
+  Ahmia is an active area of research, and is <a href="//github.com/juhanurmi/ahmia">in development on GitHub</a>
+  as a free and open source project. If you would like to learn more about Ahmia, download our documentation or
+  presentations on the search engine:
+  {% endblocktrans %}
+  </p>
+  <ul>
+    <li><a href="/documentation/">{% trans "Documentation and Statistics" %}</a></li>
+    <li><a href="/static/presentation/Tor_Ecosystem2.pdf">{% trans "A presentation about Ahmia and the Tor Ecosystem" %}</a></li>
+  </ul>
+  </div>
+  <div class="credits">
+  <p>
+  {% trans "donate Bitcoin" as donate_bitcoin %}
+  {% blocktrans %}
+  We extend a thank you to Ahmia's supporters.
+  If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+  {% endblocktrans %}
+  </p>
+  <ul>
+    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+  </ul>
+  </div>
 </div>
+
 
 {% endblock %}

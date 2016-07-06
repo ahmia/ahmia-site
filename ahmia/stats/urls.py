@@ -5,11 +5,11 @@ from . import views
 
 urlpatterns = [
     # Stats
-    url(r'^stats/viewer', views.statsviewer),
-    url(r'^stats/popularity', views.stats),
-    url(r'^stats/tor2web', views.tor2web),
-    url(r'^stats/history', views.history),
-    url(r'^stats/traffic', views.trafficviewer),
-    url(r'^stats/services', views.services),
-    url(r'^stats/onionsovertime', views.onionsovertime),
+    url(r'^viewer', views.statsviewer),
+    url(r'^popularity', views.stats),
+    url(r'^tor2web', views.tor2web),
+    url(r'^history', views.history),
+    url(r'^traffic', views.trafficviewer),
+    url(r'^services', views.services),
+    url(r'^onionsovertime', views.onionsovertime),
 ]

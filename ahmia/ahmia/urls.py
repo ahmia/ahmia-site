@@ -8,61 +8,46 @@ from . import views
 
 # Root level views
 urlpatterns = [
-    url(r'^$', views.default), # search
-    url(r'^i2p/', views.i2p_search), # i2p search
-    # legalese
-    url(r'^legal', views.legal),
-    # Information about ahmia.
-    url(r'^about/', views.about),
-    # Show visitor's IP address.
-    url(r'^IP/', views.show_ip),
+    url(r'^$', views.HomepageView.as_view(), name="home"),
+    url(r'^i2p/', views.IipView.as_view(), name="i2p"),
+    url(r'^legal/', views.LegalView.as_view(), name="legal"),
+    url(r'^about/', views.AboutView.as_view(), name="about"),
     # Summer of Code 2014
-    url(r'^gsoc/', views.gsoc),
+    url(r'^gsoc/', views.GsocView.as_view(), name="gsoc"),
     # Documentation page.
-    url(r'^documentation/', views.documentation),
-    # Banned services
-    url(r'^blacklist', views.blacklist),
-]
-
-# Documentation content
-urlpatterns += [
+    url(r'^documentation/$', views.DocumentationView.as_view(), name="doc"),
     # documentation/indexing
-    url(r'^documentation/indexing/', views.indexing),
+    url(r'^documentation/indexing/',
+        views.IndexingDocumentationView.as_view(), name="doc-indexing"),
     # Documentation - create hidden service description to hidden services.
     url(r'^documentation/createHsDescription/',
-        views.create_description),
+        views.CreateDescDocumentationView.as_view(), name="doc-create-desc"),
     # Documentation - description proposal to hidden services.
     url(r'^documentation/descriptionProposal/',
-        views.description_proposal),
-]
-
-# Forms
-urlpatterns += [
+        views.DescPropDocumentationView.as_view(), name="doc-desc-proposal"),
+    # Banned services
+    url(r'^blacklist/', views.BlacklistView.as_view(), name="blacklist"),
     # Add domain form.
-    url(r'^add/', views.add), #domain:port/add
-    # Blacklist reporting
-    url(r'^blacklist/report', views.blacklist_report),
+    url(r'^add/', views.AddView.as_view(), name="add"), #domain:port/add
+    # Blacklist reporting form
+    url(r'^report/', views.ReportView.as_view(), name="report")
 ]
 
 # include app urls
-urlpatterns += [
-    url(r'^', include('search.urls')),
-    url(r'^', include('stats.urls')),
-    url(r'^', include('api.urls'))
-]
+'''urlpatterns += [
+    url(r'^search/', include('search.urls')),
+    url(r'^stats/', include('stats.urls')),
+    url(r'^api/', include('api.urls'))
+]'''
 
-# robots.txt file
+# static files: CSS, JavaScript, images
+
 urlpatterns += [
+    url(
+        r'^static/(?P<path>.*)$',
+        serve,
+        {'document_root': settings.STATIC_ROOT}
+    ),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt',
                                                content_type='text/plain')),
 ]
-
-# media files: CSS, JavaScript, images
-if settings.DEBUG:
-    urlpatterns += [
-        url(
-            r'^static/(?P<path>.*)$',
-            serve,
-            {'document_root': settings.STATIC_ROOT}
-        ),
-    ]
