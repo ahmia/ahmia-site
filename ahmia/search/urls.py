@@ -1,8 +1,8 @@
 """The URL patterns of the ahmia."""
-from django.conf import settings
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # Check is domain up.
     # domain:port/address/3g2upl4pq6kufc4m/up
     (r'^address/([a-z2-7]{16})/status', 'search.views.test.onion_up'),
@@ -36,12 +36,14 @@ urlpatterns = patterns('',
 )
 
 # Elasticsearch API
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     (r'^elasticsearch/', 'search.views.searchengine.proxy'),
 )
 
 # Stats views
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     # Stats
     (r'^stats/viewer', 'search.views.stats.statsviewer'),
     (r'^stats/popularity', 'search.views.stats.stats'),
@@ -53,7 +55,8 @@ urlpatterns += patterns('',
 )
 
 # Rule views
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     # Login and logout.
     (r'^rule/login/', 'search.views.admin.login'),
     (r'^rule/logout/', 'search.views.admin.logout'),
@@ -63,7 +66,8 @@ urlpatterns += patterns('',
 
 
 # From views_static
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     # Every onion domain. Including banned. Only for localhost.
     (r'^alldomains', 'search.views.all_onions_txt'),
     # Blacklist MD5
@@ -78,10 +82,10 @@ urlpatterns += patterns('',
     (r'^documentation/indexing/', 'search.views.static.indexing'),
     # Documentation - create hidden service description to hidden services.
     (r'^documentation/createHsDescription/',
-    'search.views.static.create_description'),
+     'search.views.static.create_description'),
     # Documentation - description proposal to hidden services.
     (r'^documentation/descriptionProposal/',
-    'search.views.static.description_proposal'),
+     'search.views.static.description_proposal'),
     # Documentation page.
     (r'^documentation/', 'search.views.static.documentation'),
     # Information about ahmia.
@@ -93,7 +97,8 @@ urlpatterns += patterns('',
 )
 
 # DEPRECATED ROUTES
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     (r'^policy/', 'search.views.legacy.policy'),
     (r'^disclaimer/', 'search.views.legacy.disclaimer'),
     (r'^banned/', 'search.views.legacy.banned'),

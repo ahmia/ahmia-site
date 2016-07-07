@@ -3,8 +3,8 @@ import hashlib
 
 from django.test import TestCase
 
-from ahmia.models import (HiddenWebsite, HiddenWebsiteDescription,
-                          HiddenWebsitePopularity)
+from search.models import (HiddenWebsite, HiddenWebsiteDescription,
+                           HiddenWebsitePopularity)
 
 
 class HiddenWebsiteTest(TestCase):
@@ -74,10 +74,7 @@ class HiddenWebsiteDescriptionTest(TestCase):
             descr.relation = "http://example.com/" + str(index)
             descr.subject = "This, is, the, subject" + str(index)
             descr.type = "This is the type" + str(index)
-            if index % 2 == 0:
-                descr.officialInfo = True
-            else:
-                descr.officialInfo = False
+            descr.officialInfo = bool(index % 2 == 0)
             descr.full_clean()
             descr.save()
             index = index + 1
@@ -88,8 +85,9 @@ class HiddenWebsiteDescriptionTest(TestCase):
         index = 0
         onions = HiddenWebsite.objects.all()
         while index < 10:
-            descr = HiddenWebsiteDescription.objects.get(about=onions[index],
-            type="This is the type" + str(index))
+            descr = HiddenWebsiteDescription.objects.get(
+                about=onions[index],
+                type="This is the type" + str(index))
             text = "This is the description" + str(index)
             self.assertEqual(descr.description, text)
             descr.description = ""

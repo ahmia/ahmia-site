@@ -10,26 +10,30 @@ from django.core.mail import send_mail
 from search.models import HiddenWebsite, HiddenWebsiteDescription
 
 def send_abuse_report(onion_url=None):
-    if onion_url is None: return
-    if settings.DEBUG: return
+    """Send an abuse report by email."""
+    if onion_url is None:
+        return
+    if settings.DEBUG:
+        return
     subject = "Hidden service abuse notice"
     message = "User sent abuse notice for onion url %s" % (onion_url)
     send_mail(subject, message,
-            settings.DEFAULT_FROM_EMAIL, settings.RECIPIENT_LIST,
-            fail_silently=False)
+              settings.DEFAULT_FROM_EMAIL, settings.RECIPIENT_LIST,
+              fail_silently=False)
 
 def html_escape(text):
     """Produce entities within text."""
     html_escape_table = {
-    "&": "&amp;",
-    '"': "&quot;",
-    "'": "&apos;",
-    ">": "&gt;",
-    "<": "&lt;"
+        "&": "&amp;",
+        '"': "&quot;",
+        "'": "&apos;",
+        ">": "&gt;",
+        "<": "&lt;"
     }
     return "".join(html_escape_table.get(c, c) for c in text)
 
 def is_valid_onion(url):
+    """Test if an url is a valid hiddenservice url"""
     return re.match("^[a-z2-7]{16}(\.onion)?", url.strip())
 
 def validate_onion_url(url):
@@ -73,12 +77,14 @@ def render_page(page, show_descriptions=False):
     template = loader.get_template(page)
     if show_descriptions:
         descs = latest_descriptions(onions)
-        content = Context({'description_list': descs,
-        'count_banned': onions.filter(banned=True).count(),
-        'count_online': onions.filter(banned=False).count()})
+        content = Context({
+            'description_list': descs,
+            'count_banned': onions.filter(banned=True).count(),
+            'count_online': onions.filter(banned=False).count()
+        })
     else:
         content = Context({'count_banned': onions.filter(banned=True).count(),
-        'count_online': onions.filter(banned=False).count()})
+                           'count_online': onions.filter(banned=False).count()})
     return HttpResponse(template.render(content))
 
 def get_client_ip(request):
@@ -93,9 +99,11 @@ def get_client_ip(request):
 def redirect_page(message, time, url):
     """Build and return redirect page."""
     template = loader.get_template('redirect.html')
-    content = Context({'message': message,
-    'time': time,
-    'redirect': url})
+    content = Context({
+        'message': message,
+        'time': time,
+        'redirect': url
+    })
     return HttpResponse(template.render(content))
 
 def round_to_next_multiple_of(number, divisor):

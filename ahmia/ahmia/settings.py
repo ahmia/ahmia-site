@@ -19,40 +19,42 @@ ALLOWED_HOSTS = [
 ]
 
 demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
-'migrate', 'dumpdata', 'rebuild_index']
+            'migrate', 'dumpdata', 'rebuild_index']
 
 if 'test' in sys.argv:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Database engine
-        'NAME': os.getcwd() + '/ahmia_db_test', # Database name
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3', # Database engine
+            'NAME': os.getcwd() + '/ahmia_db_test', # Database name
         }
     }
 elif [cmd for cmd in demo_env if cmd in sys.argv]:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Database engine
-        'NAME': os.getcwd() + '/ahmia_db', # Database name
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3', # Database engine
+            'NAME': os.getcwd() + '/ahmia_db', # Database name
         }
     }
 else:
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Database engine
-        'NAME': 'ahmia_db',              # Database name
-        'USER': 'ahmia_login',           # Not used with sqlite3.
-        'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost.
-        'PORT': '6432', # pbbouncer port
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'ahmia_db',              # Database name
+            'USER': 'ahmia_login',           # Not used with sqlite3.
+            'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
+            'HOST': '',                      # Set to empty string for localhost
+            'PORT': '6432', # pbbouncer port
         }
     }
 
 # ELASTICSEARCH STUFF
-ELASTICSEARCH_TLS_FPRINT = "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
+ELASTICSEARCH_TLS_FPRINT = \
+    "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
 ELASTICSEARCH_HOST = "ahmia.fi"
 ELASTICSEARCH_PORT = 443
 
-PROXY_BASE_URL = 'http://localhost:9200/'# For external access 'https://ahmia.fi/elasticsearch/'
+PROXY_BASE_URL = 'http://localhost:9200/'
+# For external access 'https://ahmia.fi/elasticsearch/'
 
 # Email settings
 EMAIL_USE_TLS = True
