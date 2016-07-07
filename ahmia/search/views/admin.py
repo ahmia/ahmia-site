@@ -24,10 +24,11 @@ def login(request):
     elif request.method == 'POST':
         try:
             user = auth.authenticate(username=request.POST['username'],
-                            password=request.POST['password'])
+                                     password=request.POST['password'])
             if user is None:
                 username = request.POST['username']
-                return render_to_response('login.html',
+                return render_to_response(
+                    'login.html',
                     {'error': 'Invalid password', 'username': username})
             else:
                 auth.login(request, user)

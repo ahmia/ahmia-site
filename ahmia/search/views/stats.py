@@ -27,14 +27,14 @@ def build_stats(offset, limit, order_by):
         offset = int(offset)
         limit = int(limit)
         order_by = str(order_by)
-        if limit > 100 or limit < 1:
-            return HttpResponse('Set limit between 1-100.')
-        if offset > 100 or limit < 0:
-            return HttpResponse('Set offset between 0-100.')
+        if limit > 1000 or limit < 1:
+            return HttpResponse('Set limit between 1-1000.')
+        if offset > 1000 or limit < 0:
+            return HttpResponse('Set offset between 0-1000.')
         if limit < offset:
             return HttpResponse('Set offset < limit.')
         sort_options = ['public_backlinks', 'clicks', 'tor2web']
-        if not order_by in sort_options:
+        if order_by not in sort_options:
             sort_options = ', '.join(sort_options)
             return HttpResponse("Sort options are: " + sort_options)
         return calculate_stats(offset, limit, order_by)
@@ -52,8 +52,10 @@ def calculate_stats(offset, limit, order_by):
     # Round the clicks to the next multiple of 8
     for result in query_result:
         result.clicks = helpers.round_to_next_multiple_of(result.clicks, 8)
-    response_data = serializers.serialize('json', query_result, indent=2,
-    fields=('about', 'tor2web', 'public_backlinks', 'clicks'))
+    response_data = serializers.serialize(
+        'json', query_result, indent=2,
+        fields=('about', 'tor2web', 'public_backlinks', 'clicks')
+    )
     return HttpResponse(response_data, content_type="application/json")
 
 @require_GET
@@ -76,9 +78,11 @@ def history(request):
     """Opens JavaScript based stats viewer."""
     onions = HiddenWebsite.objects.all()
     template = loader.get_template('history.html')
-    content = Context({'onions': onions.filter(banned=False),
-    'count_banned': onions.filter(banned=True, online=True).count(),
-    'count_online': onions.filter(banned=False, online=True).count()})
+    content = Context({
+        'onions': onions.filter(banned=False),
+        'count_banned': onions.filter(banned=True, online=True).count(),
+        'count_online': onions.filter(banned=False, online=True).count()
+    })
     return HttpResponse(template.render(content))
 
 @require_GET
