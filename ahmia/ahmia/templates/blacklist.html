@@ -5,8 +5,13 @@
 
 {% block title %}{% trans "Hidden Service Blacklist" %} &mdash; Ahmia{% endblock %}
 {% block extra_js %}
-    <script src="{% static 'js/blacklist.js' %}"></script>
-    <script src="{% static 'js/md5.js' %}"></script>
+{% is_development_environment as is_dev %}
+{% if is_dev %}
+  <script src="{% static 'js/blacklist.js' %}"></script>
+  <script src="{% static 'js/md5.js' %}"></script>
+{% else %}
+  <script src="{% static 'blacklist.signed.js' %}"></script>
+{% endif %}
 {% endblock %}
 {% block body %}
 <div id="ahmiaBlacklist">
@@ -37,15 +42,15 @@
   <div id="checkForBannedService" class="hidden">
   <h3 class="checkForm">{% trans "Check For a Banned Service" %}</h3>
   <div id="ahmiaFormContainer">
-    <form id="checkBlacklist" method="post" action="#">
-      <input type="text" id="blacklistInput" placeholder="{% trans "Enter your .onion address here" %}">
+    <form id="checkBlacklist" method="post" action="">
+      {{ form.onion }}
       <input type="submit" value="{% trans "Check" %}">
     </form>
-    <div id="flashMessage">
-      <p class="info">info</p>
-      <p class="warn">warn</p>
-      <p class="error">error</p>
-    </div>
+    {% if form.errors %}
+      <div id="flashMessage" class="{% if flash_message %}server{% endif %}">
+      {{ form.onion.errors }}
+      </div>
+    {% endif %}
   </div>
   </div>
   <div id="bannedHiddenServices">
