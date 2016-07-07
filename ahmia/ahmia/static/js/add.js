@@ -41,7 +41,7 @@
   var addService = function(evt) {
     hideMessages();
     evt.preventDefault();
-    var onion = normalizeInput($('#onionInput').val());
+    var onion = normalizeInput($('#addOnion input[name=onion]').val());
     $.post(
       $('#addOnion').attr('action'),
       { onion: onion })
@@ -51,7 +51,7 @@
 
   $(document).ready(function() {
     flashMessageContainer = $('#flashMessage');
-    $('#addOnion').on('submit', addService);
+    //$('#addOnion').on('submit', addService);
     // don't hide if the server has a message
     if (!flashMessageContainer.hasClass('server')) {
       hideMessages();

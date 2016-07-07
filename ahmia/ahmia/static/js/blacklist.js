@@ -43,7 +43,7 @@
     hideMessages();
     evt.preventDefault();
     getBlacklist();
-    var plaintext = normalizeInput($('#blacklistInput').val()) + ".onion";
+    var plaintext = normalizeInput($('#checkBlacklist input[name=onion]').val()) + ".onion";
     if (plaintext.length !== 22) {
       showMessage('warn', "This doesn't appear to be a valid onion.");
       return;
@@ -74,7 +74,7 @@
     } else {
       return;
     }
-    $('#checkBlacklist').on('submit', checkAddress);
+    //$('#checkBlacklist').on('submit', checkAddress);
   });
 
 })(window.jQuery);

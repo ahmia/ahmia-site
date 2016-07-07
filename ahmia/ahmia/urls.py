@@ -26,11 +26,12 @@ urlpatterns = [
     url(r'^documentation/descriptionProposal/',
         views.DescPropDocumentationView.as_view(), name="doc-desc-proposal"),
     # Banned services
-    url(r'^blacklist/', views.BlacklistView.as_view(), name="blacklist"),
+    url(r'^blacklist/$', views.BlacklistView.as_view(), name="blacklist"),
+    url(r'^blacklist/success/', views.BlacklistSuccessView.as_view(),
+        name="blacklist-success"),
     # Add domain form.
-    url(r'^add/', views.AddView.as_view(), name="add"), #domain:port/add
-    # Blacklist reporting form
-    url(r'^report/', views.ReportView.as_view(), name="report")
+    url(r'^add/$', views.AddView.as_view(), name="add"), #domain:port/add
+    url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
 ]
 
 # include app urls

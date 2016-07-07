@@ -1,0 +1,16 @@
+{% extends 'add.html' %}
+{% load i18n %}
+
+{% block body %}
+<div id="ahmiaAddService">
+  <p>
+    {% blocktrans %}
+    Your request to add a service was successfully submitted. Thank
+    you for improving Ahmia content. A moderator will add it to the index shortly.
+    {% endblocktrans %}
+  </p>
+  <br>
+  <a href="javascript:history.back();">{% trans "Go back" %}</a>
+  </p>
+</div>
+{% endblock %}
