@@ -1,12 +1,15 @@
 {% extends 'core.html' %}
 {% load i18n %}
-{% load ahmia_custom %}
 {% block title %}{% blocktrans %}Search results for {{query_string}}{% endblocktrans %} &mdash; Ahmia{% endblock %}
 {% block body %}
-{% include 'partial/nav_tor.html' with nav_type='maxi' %}
 <div id="ahmiaResultsPage">
   {% if total_search_results == 0 %}
-    {% include 'partial/no_results.html' %}
+    <p id="noResults">
+      {% blocktrans %}
+      Sorry, but Ahmia couldn't find results for <code>{{ query_string }}</code>.<br>
+      Please try a different search or try again later.
+      {% endblocktrans %}
+    </p>
   {% else %}
     <div class="resultsSubheader">
       <p>
@@ -18,17 +21,34 @@
     </div>
     <ol class="searchResults">
       {% for result in search_results %}
-        {% include 'partial/search_result.html' with search_result=result %}
+      <li class="result" href="http://{{ search_result.url }}" id="onion_key">
+      <h4><a href="http://{{ search_result.url }}">{{ search_result.title | escape }}</a>
+        {% if search_result.url_tor2web %} -- <a href="https://{{ search_result.url_tor2web }}">Proxy</a> {% endif %}
+      </h4>
+        <p>{{ search_result.description | escape | truncatechars:300 }}</p>
+        <p class="metadata">
+        <cite>{{ search_result.domain }}</cite> &mdash;
+        <span class="lastSeen" data-timestamp="{{ search_result.timestamp }}">
+          {{ search_result.date|timesince:now }} {% trans "ago" %}
+        </span> &mdash;
+        <span class="abuseReportForm">
+          <a href="/blacklist/report?onion={{ search_result.domain|urlencode }}" data-href="{{ search_result.domain }}" title="{% trans "Report this link to us" %}" class="reportAbuse">{% trans "Report Abuse" %}</a>
+          <span class="abuseReportReceived hidden">{% trans "Abuse report sent." %}</span>
+          <span class="abuseReportError hidden">{% trans "Abuse report error." %}</span>
+        </span>
+        </p>
+      </li>
       {% endfor %}
     </ol>
   {% endif %}
 
-  <!-- Advertisement -->
+  {% block advertisement %}
   <div id="advertisement">
     <a href="http://6axcig5jgptnkaj2.onion/#/?banner=ahmia">
       <img src="/static/images/ccblackengtop.jpg" alt="Sponsor ads" style="height: 100%; max-height: 60px; width: 100%; max-width: 400px;">
     </a>
   </div>
+  {% endblock %}
 
 </div>
 {% endblock %}
