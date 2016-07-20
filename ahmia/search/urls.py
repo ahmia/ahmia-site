@@ -20,7 +20,7 @@ urlpatterns = patterns(
     (r'^address/(.+)', 'search.views.onion_error'),
     # GET lists every known HS and POST adds a new HS.
     # domain:port/address/
-    (r'^address/', 'search.views.onion_list'),
+    (r'^address/$', 'search.views.onion_list'),
     # Redirect link to hidden service
     (r'^redirect', 'search.views.onion_redirect'),
     # Banned hidden services (MD5).
@@ -75,7 +75,7 @@ urlpatterns += patterns(
     # Blacklist reporting
     (r'^blacklist/report', 'search.views.blacklist_report'),
     # Banned services
-    (r'^blacklist', 'search.views.blacklist'),
+    (r'^blacklist$', 'search.views.blacklist'),
     # legalese
     (r'^legal', 'search.views.static.legal'),
     # documentation/indexing
@@ -87,7 +87,7 @@ urlpatterns += patterns(
     (r'^documentation/descriptionProposal/',
      'search.views.static.description_proposal'),
     # Documentation page.
-    (r'^documentation/', 'search.views.static.documentation'),
+    (r'^documentation/$', 'search.views.static.documentation'),
     # Information about ahmia.
     (r'^about/', 'search.views.static.about'),
     # Show visitor's IP address.
