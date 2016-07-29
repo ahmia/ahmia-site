@@ -35,11 +35,11 @@ urlpatterns = [
 ]
 
 # include app urls
-'''urlpatterns += [
-    url(r'^search/', include('search.urls')),
-    url(r'^stats/', include('stats.urls')),
-    url(r'^api/', include('api.urls'))
-]'''
+urlpatterns += [
+    url(r'^search/', include('search.urls', namespace='search')),
+    #url(r'^stats/', include('stats.urls')),
+    #url(r'^api/', include('api.urls'))
+]
 
 # static files: CSS, JavaScript, images
 

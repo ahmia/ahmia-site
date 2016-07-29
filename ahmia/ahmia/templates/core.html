@@ -28,7 +28,7 @@
           {% block searchbar %}
           <div class="maxiContent">
             <h1><a href="{% url 'home' %}">Ahmia</a></h1>
-            <form id="searchForm" class="searchForm autocomplete" action="" method="get">
+            <form id="searchForm" class="searchForm autocomplete" action="{% url 'search:results' %}" method="get">
               <input id="id_q" type="search" name="q" placeholder="{% trans "Search Ahmia" %}" value="{{ query_string }}">
               <input type="submit" value="{% trans "Search" %}" style="submitButton">
             </form>
