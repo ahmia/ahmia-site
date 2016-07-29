@@ -9,7 +9,7 @@ from . import views
 # Root level views
 urlpatterns = [
     url(r'^$', views.HomepageView.as_view(), name="home"),
-    url(r'^i2p/', views.IipView.as_view(), name="i2p"),
+    url(r'^i2p/', views.InvisibleInternetView.as_view(), name="i2p"),
     url(r'^legal/', views.LegalView.as_view(), name="legal"),
     url(r'^about/', views.AboutView.as_view(), name="about"),
     # Summer of Code 2014
