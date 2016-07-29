@@ -12,14 +12,21 @@ import simplejson as json
 from django.views.generic.base import TemplateView, RedirectView
 
 class OnionRedirectView(RedirectView):
+    """
+    This view redirects to a .onion url after incrementing the stat counter
+    """
     permanent = False
     query_string = False
     http_method_names = ['get']
 
     def update_stat_counter(self):
+        """ Increase the stat counter """
         pass
 
     def get(self, request, *args, **kwargs):
+        """
+        This method is override to add parameters to the get_context_data call
+        """
         kwargs['redirect_url'] = request.GET.get('redirect_url', '')
         return super(OnionRedirectView, self).get(*args, **kwargs)
 
@@ -32,11 +39,13 @@ class OnionRedirectView(RedirectView):
         return redirect_url
 
 class TorResultsView(TemplateView):
+    """ Search results view """
     http_method_names = ['get']
     template_name = "tor_results.html"
     RESULTS_PER_PAGE = 5
 
     def get_pool(self):
+        """ Get pool of HTTP connections """
         #pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
         #        settings.ELASTICSEARCH_PORT,
         #        assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
@@ -46,6 +55,7 @@ class TorResultsView(TemplateView):
         return pool
 
     def get_endpoint(self, query, page):
+        """ Get Elasticsearch endpoint url """
         # For testing, external Elasticsearch end-point
         # endpoint =
         #    '/elasticsearch/crawl/' + item_type + '/_search/?size=100&q=' + q
@@ -53,6 +63,7 @@ class TorResultsView(TemplateView):
         return '/crawl/tor/_search/'
 
     def get_data(self, query, page):
+        """ Get data for a search request """
         return json.dumps({
             "query": {
                 "function_score": {
@@ -108,7 +119,7 @@ class TorResultsView(TemplateView):
         })
 
     def request_elasticsearch(self, query, page):
-        """Return a dict of Elasticsearch results."""
+        """Get dict of Elasticsearch results."""
         return self.get_pool().request(
             'GET',
             self.get_endpoint(query, page),
@@ -116,6 +127,10 @@ class TorResultsView(TemplateView):
         )
 
     def format_response(self, response):
+        """
+        Transform ES response into a list of results.
+        Returns (total number of results, results)
+        """
         res_dict = json.loads(response.data)
         total = res_dict['hits']['total']
         results = [h['_source'] for h in res_dict['hits']['hits']]
@@ -125,12 +140,18 @@ class TorResultsView(TemplateView):
         return total, results
 
     def get(self, request, *args, **kwargs):
+        """
+        This method is override to add parameters to the get_context_data call
+        """
         kwargs['q'] = request.GET.get('q', '')
         kwargs['page'] = request.GET.get('page', 0)
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
+        """
+        Get the context data to render the result page.
+        """
         query_string = kwargs['q']
         page = kwargs['page']
         search_time = ""
@@ -159,5 +180,6 @@ class TorResultsView(TemplateView):
         }
 
 class IipResultsView(TorResultsView):
+    """ I2P Search results view """
     def get_endpoint(self, query, page):
         return '/crawl/i2p/_search/?size=100&q=' + query

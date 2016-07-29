@@ -18,7 +18,7 @@ class HomepageView(CoreView):
     """The homepage."""
     template_name = "index_tor.html"
 
-class IipView(CoreView):
+class InvisibleInternetView(CoreView):
     """The main i2p search page."""
     template_name = "index_i2p.html"
 
