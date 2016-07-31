@@ -133,6 +133,8 @@ def query_object_elasticsearch(query_string, item_type="tor"):
     results_obj = {}
     for element in response['hits']['hits']:
         element = element['_source']
+        if not element.get('domain', ''):
+            continue
         # Skip if there already is the most possible front page in the results
         if results_obj.has_key(element['domain']):
             if results_obj[element['domain']]['url'] == element['domain']:
