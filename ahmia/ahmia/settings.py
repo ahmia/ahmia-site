@@ -124,8 +124,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'ahmia',
-    #'debug_toolbar',
     'search',
-    #'stats',
-    #'api'
+    'stats'
 )

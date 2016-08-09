@@ -1,17 +1,18 @@
-{% extends "base.html" %}
+{% extends "core.html" %}
+{% load ahmia_custom %}
+{% load static %}
 
 {% block title %}Ahmia - Onion Websites Over Time{% endblock %}
 
-{% block content %}
-
+{% block extra_js %}
 <noscript>
   <p>Please enable JavaScript to view these statistics.</p>
 </noscript>
+<script type="text/javascript" src="{% static 'canvasjs.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'onions_overtime.js' %}"></script>
+{% endblock %}
 
-<script type="text/javascript" src="/static/js/canvasjs.min.js"></script>
-
-<script type="text/javascript" src="/static/js/onions_overtime.js"></script>
-
+{% block body %}
 <h2>Tor2web stats Over Time</h2>
 
 <p>

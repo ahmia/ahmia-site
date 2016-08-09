@@ -5,8 +5,13 @@ Static HTML pages.
 These pages does not require database connection.
 
 """
+import hashlib
+
+from elasticsearch import Elasticsearch
+
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 
 from .forms import AddOnionForm, ReportOnionForm
 
@@ -77,3 +82,99 @@ class BlacklistView(FormView):
 class BlacklistSuccessView(CoreView):
     """Onion successfully reported."""
     template_name = "blacklist_success.html"
+
+class ElasticsearchBaseListView(ListView):
+    """ Base view to display lists of items coming from ES """
+    object_list = None
+    es_obj = None
+
+    def get_es_context(self, **kwargs):
+        """ Get parameters list to use with Elasticsearch.search() """
+        raise NotImplementedError
+
+    def format_hits(self, hits):
+        """ Format dict returned by Elasticsearch.search() """
+        return hits
+
+    def get_queryset(self, **kwargs):
+        if self.es_obj is None:
+            es_obj = Elasticsearch()
+        hits = es_obj.search(**self.get_es_context(**kwargs))
+        return self.format_hits(hits)
+
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset(**kwargs)
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+class OnionListView(ElasticsearchBaseListView):
+    """ Displays a list of .onion domains as a plain text page """
+    template_name = "onions.html"
+
+    def format_hits(self, hits):
+        """
+        Transform ES response into a list of results.
+        Returns (total number of results, results)
+        """
+        return [{'domain': hit['key'], 'pages': hit['doc_count']}
+                for hit in hits['aggregations']['domains']['buckets']]
+
+    def get_context_data(self, **kwargs):
+        return {
+            "domains": self.object_list
+        }
+
+    def get_es_context(self, **kwargs):
+        return {
+            "index": "crawl",
+            "doc_type": "tor",
+            "size": 0,
+            "body": {
+                "aggs" : {
+                    "domains" : {
+                        "terms" : {"field" : "domain",
+                                   "size": 1000}
+                    }
+                }
+            },
+            "_source_include": ["title", "url", "meta", "updated_on", "domain"],
+            "filter_path": ['aggregations.domains.buckets.*',]
+        }
+
+class AddressListView(OnionListView):
+    """ Displays a list of .onion domains as a web page """
+    template_name = "address.html"
+
+class BannedDomainListView(OnionListView):
+    """ Displays a list banned .onion domain's md5 as a plain text page """
+    def format_hits(self, hits):
+        """
+        Transform ES response into a list of results.
+        Returns (total number of results, results)
+        """
+        return [hashlib.md5.hexdigest(hit['key']) for hit in hits]
+
+    def get_es_context(self, **kwargs):
+        return {
+            "index": "crawl",
+            "doc_type": "tor",
+            "size": 0,
+            "body": {
+                "query": {
+                    "constant_score" : {
+                        "filter" : {
+                            "term" : {
+                                "is_banned" : 1
+                            }
+                        }
+                    }
+                },
+                "aggs" : {
+                    "domains" : {
+                        "terms" : {"field" : "domain",
+                                   "size": 1000}
+                    }
+                }
+            },
+            "_source_include": ["title", "url", "meta", "updated_on", "domain"]
+        }
