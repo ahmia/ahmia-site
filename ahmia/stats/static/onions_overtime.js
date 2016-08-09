@@ -2,7 +2,7 @@ var data = [];
 
 // downloads JSON over time stats
 function getOverTimeData( onion ){
-    var url = "/static/log/onion_site_history/" + onion + ".json"
+    var url = "/static/onion_site_history/" + onion + ".json"
     var dataPoints = [];
     var dataSeries = {
         visible: true,
@@ -87,7 +87,7 @@ var onion_check = function() {
 }
 
 function createOnionOptionMenu(){
-    var url = "/static/log/onion_site_history/onions.json";
+    var url = "/static/onion_site_history/onions.json";
     $.getJSON( url, function( json ) {
       $.each(json, function (index, result) {
           var content = '<input type="checkbox" value="' + result + '" />' + result + '.onion<br />';

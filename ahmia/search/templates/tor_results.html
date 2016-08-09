@@ -43,7 +43,13 @@ Search results for {{query_string}}
     <ol class="searchResults">
       {% for result in search_results %}
       <li class="result" href="{{ result.url }}" id="onion_key">
-      <h4><a href="{{ result.url }}">{{ result.title | escape }}</a>
+      <h4><a href="{{ result.url }}">
+        {% if result.title %}
+        {{ result.title | escape }}
+        {% elif result.anchors %}
+        {{ result.anchors | escape }}
+        {% endif %}
+      </a>
         {% if result.url_tor2web %}
          -- <a href="{{ result.url_tor2web }}">Proxy</a>
          {% endif %}

@@ -1,6 +1,0 @@
-{
-    "about": "{{ popularity.about }}",
-    "clicks": {{ popularity.clicks }},
-    "public_backlinks": {{ popularity.public_backlinks }},
-    "tor2web": {{ popularity.tor2web }}
-}

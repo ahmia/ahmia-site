@@ -5,11 +5,11 @@ Full text search views.
 import math
 import time
 from datetime import date, datetime
+from operator import itemgetter
 
-import urllib3
-import simplejson as json
+from django.views.generic.base import RedirectView
 
-from django.views.generic.base import TemplateView, RedirectView
+from ahmia.views import ElasticsearchBaseListView
 
 class OnionRedirectView(RedirectView):
     """
@@ -38,103 +38,88 @@ class OnionRedirectView(RedirectView):
         self.update_stat_counter()
         return redirect_url
 
-class TorResultsView(TemplateView):
+class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
     http_method_names = ['get']
     template_name = "tor_results.html"
-    RESULTS_PER_PAGE = 5
+    RESULTS_PER_PAGE = 20
+    object_list = None
 
-    def get_pool(self):
-        """ Get pool of HTTP connections """
-        #pool = urllib3.HTTPSConnectionPool(settings.ELASTICSEARCH_HOST,
-        #        settings.ELASTICSEARCH_PORT,
-        #        assert_fingerprint=settings.ELASTICSEARCH_TLS_FPRINT)
-        pool = urllib3.HTTPConnectionPool('127.0.0.1', '9200')
-        # For testing, external Elasticsearch end-point
-        #pool = urllib3.HTTPSConnectionPool('ahmia.fi', '443')
-        return pool
-
-    def get_endpoint(self, query, page):
-        """ Get Elasticsearch endpoint url """
-        # For testing, external Elasticsearch end-point
-        # endpoint =
-        #    '/elasticsearch/crawl/' + item_type + '/_search/?size=100&q=' + q
-        #query = urllib.quote_plus(re.escape(query).encode('utf-8'))
-        return '/crawl/tor/_search/'
-
-    def get_data(self, query, page):
-        """ Get data for a search request """
-        return json.dumps({
-            "query": {
-                "function_score": {
-                    "functions": [
-                        {
-                            "field_value_factor": {
-                                "field": "authority",
-                                "modifier": "log1p",
-                                "factor": 100000
+    def get_es_context(self, **kwargs):
+        query = kwargs['q']
+        return {
+            "index": "crawl",
+            "doc_type": "tor",
+            "body": {
+                "query": {
+                    "bool": {
+                        "must": [
+                            {
+                                "multi_match": {
+                                    "query": query,
+                                    "type":   "most_fields",
+                                    "fields": [
+                                        "fancy",
+                                        "fancy.stemmed",
+                                        "fancy.shingles"
+                                    ],
+                                    "minimum_should_match": "75%",
+                                    "cutoff_frequency": 0.01
+                                }}
+                        ]
+                    }
+                },
+                "aggregations" : {
+                    "domains" : {
+                        "terms" : {
+                            "size" : 1000,
+                            "field" : "domain"
+                        },
+                        "aggregations": {
+                            "score": {
+                                "top_hits": {
+                                    "size" : 1,
+                                    "sort": [
+                                        {
+                                            "authority": {
+                                                "order": "desc"
+                                            }
+                                        },
+                                        {
+                                            "_score": {
+                                                "order": "desc"
+                                            }
+                                        }
+                                    ],
+                                    "_source": {
+                                        "include": ["title", "url", "meta",
+                                                    "updated_on", "domain",
+                                                    "authority", "anchors"]
+                                    }
+                                }
                             }
-                        }
-                    ],
-                    "query": {
-                        "bool": {
-                            "should": [
-                                {
-                                    "multi_match": {
-                                        "query": query,
-                                        "type":   "most_fields",
-                                        "fields": [
-                                            "fancy",
-                                            "fancy.stemmed",
-                                            "fancy.shingles"
-                                        ],
-                                        "boost": 2,
-                                        "minimum_should_match": "75%",
-                                        "cutoff_frequency": 0.01
-                                    }}
-                            ],
-                            "must": [
-                                {
-                                    "multi_match": {
-                                        "query":  query,
-                                        "type":   "most_fields",
-                                        "fields": [
-                                            "content",
-                                            "content.stemmed",
-                                            "content.shingles"
-                                        ],
-                                        "minimum_should_match": "75%",
-                                        "cutoff_frequency": 0.01
-                                    }}
-                            ]
                         }
                     }
                 }
             },
-            "size": self.RESULTS_PER_PAGE,
-            "from": self.RESULTS_PER_PAGE * page,
-            "_source": {
-                "include": ["title", "url", "meta", "updated_on", "domain"]
-            }
-        })
+            "size": 0
+        }
 
-    def request_elasticsearch(self, query, page):
-        """Get dict of Elasticsearch results."""
-        return self.get_pool().request(
-            'GET',
-            self.get_endpoint(query, page),
-            body=self.get_data(query, page)
-        )
-
-    def format_response(self, response):
+    def format_hits(self, hits):
         """
         Transform ES response into a list of results.
         Returns (total number of results, results)
         """
-        res_dict = json.loads(response.data)
-        total = res_dict['hits']['total']
-        results = [h['_source'] for h in res_dict['hits']['hits']]
+        hits = hits['aggregations']['domains']
+        total = len(hits['buckets']) + hits['sum_other_doc_count']
+        results = [h['score']['hits']['hits'][0]['_source']
+                   for h in hits['buckets']]
+        results = sorted(results, key=itemgetter('authority'), reverse=True)
         for res in results:
+            try:
+                res['anchors'] = res['anchors'][0]
+            except KeyError:
+                pass
             res['updated_on'] = datetime.strptime(res['updated_on'],
                                                   '%Y-%m-%dT%H:%M:%S')
         return total, results
@@ -143,8 +128,14 @@ class TorResultsView(TemplateView):
         """
         This method is override to add parameters to the get_context_data call
         """
+        start = time.time()
         kwargs['q'] = request.GET.get('q', '')
         kwargs['page'] = request.GET.get('page', 0)
+
+        self.object_list = self.get_queryset(**kwargs)
+
+        kwargs['time'] = round(time.time() - start, 2)
+
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
@@ -152,19 +143,8 @@ class TorResultsView(TemplateView):
         """
         Get the context data to render the result page.
         """
-        query_string = kwargs['q']
         page = kwargs['page']
-        search_time = ""
-        # assert query_string not None
-        start = time.time()
-
-        response = self.request_elasticsearch(query_string, page)
-        length, results = self.format_response(response)
-
-        end = time.time()
-        search_time = end - start
-        search_time = round(search_time, 2)
-
+        length, results = self.object_list
         max_pages = int(math.ceil(float(length) / self.RESULTS_PER_PAGE))
 
         return {
@@ -173,13 +153,16 @@ class TorResultsView(TemplateView):
             'result_begin': self.RESULTS_PER_PAGE * page,
             'result_end': self.RESULTS_PER_PAGE * (page + 1),
             'total_search_results': length,
-            'query_string': query_string,
+            'query_string': kwargs['q'],
             'search_results': results,
-            'search_time': search_time,
+            'search_time': kwargs['time'],
             'now': date.fromtimestamp(time.time())
         }
 
 class IipResultsView(TorResultsView):
     """ I2P Search results view """
-    def get_endpoint(self, query, page):
-        return '/crawl/i2p/_search/?size=100&q=' + query
+    def get_es_context(self, **kwargs):
+        context = super(IipResultsView, self).get_es_context(kwargs['q'],
+                                                             kwargs['page'])
+        context['type'] = "i2p"
+        return context

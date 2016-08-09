@@ -29,20 +29,24 @@ urlpatterns = [
     url(r'^blacklist/$', views.BlacklistView.as_view(), name="blacklist"),
     url(r'^blacklist/success/', views.BlacklistSuccessView.as_view(),
         name="blacklist-success"),
+    url(r'^blacklist/banned', views.BannedDomainListView.as_view(),
+        name="domains-banned"),
     # Add domain form.
     url(r'^add/$', views.AddView.as_view(), name="add"), #domain:port/add
     url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
+    # The plain texts list of onion URL.
+    url(r'^onions/', views.OnionListView.as_view(), name="onions"),
+    # GET lists every known HS
+    url(r'^address/', views.AddressListView.as_view(), name="address"),
 ]
 
 # include app urls
 urlpatterns += [
     url(r'^search/', include('search.urls', namespace='search')),
-    #url(r'^stats/', include('stats.urls')),
-    #url(r'^api/', include('api.urls'))
+    url(r'^stats/', include('stats.urls', namespace="api"))
 ]
 
 # static files: CSS, JavaScript, images
-
 urlpatterns += [
     url(
         r'^static/(?P<path>.*)$',
