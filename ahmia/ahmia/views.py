@@ -5,6 +5,7 @@ Static HTML pages.
 These pages does not require database connection.
 
 """
+from operator import itemgetter
 import hashlib
 
 from elasticsearch import Elasticsearch
@@ -116,8 +117,10 @@ class OnionListView(ElasticsearchBaseListView):
         Transform ES response into a list of results.
         Returns (total number of results, results)
         """
-        return [{'domain': hit['key'], 'pages': hit['doc_count']}
+        hits = [{'domain': hit['key'], 'pages': hit['doc_count']}
                 for hit in hits['aggregations']['domains']['buckets']]
+        hits = sorted(hits, key=itemgetter('domain'))
+        return hits
 
     def get_context_data(self, **kwargs):
         return {
@@ -137,8 +140,7 @@ class OnionListView(ElasticsearchBaseListView):
                     }
                 }
             },
-            "_source_include": ["title", "url", "meta", "updated_on", "domain"],
-            "filter_path": ['aggregations.domains.buckets.*',]
+            "_source_include": ["title", "url", "meta", "updated_on", "domain"]
         }
 
 class AddressListView(OnionListView):
@@ -147,12 +149,16 @@ class AddressListView(OnionListView):
 
 class BannedDomainListView(OnionListView):
     """ Displays a list banned .onion domain's md5 as a plain text page """
+    template_name = "banned.html"
+
     def format_hits(self, hits):
         """
         Transform ES response into a list of results.
         Returns (total number of results, results)
         """
-        return [hashlib.md5.hexdigest(hit['key']) for hit in hits]
+        hits = super(BannedDomainListView, self).format_hits(hits)
+        hits = [hashlib.md5(hit['domain']).hexdigest() for hit in hits]
+        return sorted(hits)
 
     def get_es_context(self, **kwargs):
         return {
