@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends "core.html" %}
+{% load static %}
 
 {% block title %}Ahmia - Description Linked Data Proposal{% endblock %}
 
-{% block content %}
-
+{% block body %}
+<div id="ahmiaAboutPage">
 <h2>Description Linked Data Proposal to WWW Servers Inside Tor</h2>
 <p>
   This proposal is to all HTTP servers inside Tor network.
@@ -48,5 +49,5 @@
 <p>
   Please tell us your opinion about this. We are considering this as a simple method for getting official description information from the hidden services. We will show these in our page. <a href="/address/#/search=Description%20downloaded%20directly%20from%20the%20hidden%20service.">See here.</a>
 </p>
-
+</div>
 {% endblock %}
