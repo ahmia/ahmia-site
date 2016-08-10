@@ -1,7 +1,7 @@
 """The URL patterns of the ahmia."""
 from django.conf import settings
 from django.conf.urls import url, include
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from django.views.static import serve
 
 from . import views
@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^blacklist/$', views.BlacklistView.as_view(), name="blacklist"),
     url(r'^blacklist/success/', views.BlacklistSuccessView.as_view(),
         name="blacklist-success"),
-    url(r'^blacklist/banned', views.BannedDomainListView.as_view(),
+    url(r'^blacklist/banned/', views.BannedDomainListView.as_view(),
         name="domains-banned"),
     # Add domain form.
     url(r'^add/$', views.AddView.as_view(), name="add"), #domain:port/add
@@ -38,6 +38,22 @@ urlpatterns = [
     url(r'^onions/', views.OnionListView.as_view(), name="onions"),
     # GET lists every known HS
     url(r'^address/', views.AddressListView.as_view(), name="address"),
+]
+
+# deprecated urls
+urlpatterns += [
+    url(r'^disclaimer/',
+        RedirectView.as_view(url="/legal/", permanent=True),
+        name="disclaimer"),
+    url(r'^banned/',
+        RedirectView.as_view(url="/blacklist/banned/", permanent=True),
+        name="banned"),
+    url(r'^policy/',
+        RedirectView.as_view(url="/blacklist/", permanent=True),
+        name="policy"),
+    url(r'^i2p_search/',
+        RedirectView.as_view(url="/search/i2p/", permanent=True),
+        name="i2p-old")
 ]
 
 # include app urls
