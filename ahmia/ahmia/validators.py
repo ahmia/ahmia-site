@@ -2,17 +2,37 @@
 
 import re
 
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
+
+from .utils import get_elasticsearch_object
 
 def validate_status(value):
     """Test if an onion domain is not banned."""
-    try:
+
+    res = get_elasticsearch_object().count(
+        index=settings.ELASTICSEARCH_INDEX,
+        doc_type=settings.ELASTICSEARCH_TYPE,
+        body={
+            "query": {
+                "constant_score" : {
+                    "filter" : {
+                        "bool": {
+                            "must": [
+                                {"term": {"domain": value}},
+                                {"term": {"banned": 1}}
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    )
+    if res['count'] > 0:
         raise ValidationError(
             _("This onion is banned and cannot be added to this index.")
         )
-    except ObjectDoesNotExist:
-        pass
 
 def validate_onion_url(url):
     """ Test is url correct onion URL."""
