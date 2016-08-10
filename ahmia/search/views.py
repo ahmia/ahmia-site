@@ -10,6 +10,7 @@ from operator import itemgetter
 from django.views.generic.base import RedirectView
 
 from ahmia.views import ElasticsearchBaseListView
+from ahmia import utils
 
 class OnionRedirectView(RedirectView):
     """
@@ -48,8 +49,8 @@ class TorResultsView(ElasticsearchBaseListView):
     def get_es_context(self, **kwargs):
         query = kwargs['q']
         return {
-            "index": "crawl",
-            "doc_type": "tor",
+            "index": utils.get_elasticsearch_index(),
+            "doc_type": utils.get_elasticsearch_type(),
             "body": {
                 "query": {
                     "bool": {

@@ -8,12 +8,11 @@ These pages does not require database connection.
 from operator import itemgetter
 import hashlib
 
-from elasticsearch import Elasticsearch
-
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
+from ahmia import utils
 from .forms import AddOnionForm, ReportOnionForm
 
 class CoreView(TemplateView):
@@ -99,7 +98,7 @@ class ElasticsearchBaseListView(ListView):
 
     def get_queryset(self, **kwargs):
         if self.es_obj is None:
-            es_obj = Elasticsearch()
+            es_obj = utils.get_elasticsearch_object()
         hits = es_obj.search(**self.get_es_context(**kwargs))
         return self.format_hits(hits)
 
@@ -129,8 +128,8 @@ class OnionListView(ElasticsearchBaseListView):
 
     def get_es_context(self, **kwargs):
         return {
-            "index": "crawl",
-            "doc_type": "tor",
+            "index": utils.get_elasticsearch_index(),
+            "doc_type": utils.get_elasticsearch_type(),
             "size": 0,
             "body": {
                 "aggs" : {
@@ -162,8 +161,8 @@ class BannedDomainListView(OnionListView):
 
     def get_es_context(self, **kwargs):
         return {
-            "index": "crawl",
-            "doc_type": "tor",
+            "index": utils.get_elasticsearch_index(),
+            "doc_type": utils.get_elasticsearch_type(),
             "size": 0,
             "body": {
                 "query": {
