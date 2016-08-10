@@ -65,6 +65,10 @@ class TorResultsView(ElasticsearchBaseListView):
                                     ],
                                     "minimum_should_match": "75%",
                                     "cutoff_frequency": 0.01
+                                }},
+                            {
+                                "exists": {
+                                    "field": "authority"
                                 }}
                         ]
                     }
