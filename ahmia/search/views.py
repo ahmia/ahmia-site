@@ -53,25 +53,16 @@ class TorResultsView(ElasticsearchBaseListView):
             "doc_type": utils.get_elasticsearch_type(),
             "body": {
                 "query": {
-                    "bool": {
-                        "must": [
-                            {
-                                "multi_match": {
-                                    "query": query,
-                                    "type":   "most_fields",
-                                    "fields": [
-                                        "fancy",
-                                        "fancy.stemmed",
-                                        "fancy.shingles"
-                                    ],
-                                    "minimum_should_match": "75%",
-                                    "cutoff_frequency": 0.01
-                                }},
-                            {
-                                "exists": {
-                                    "field": "authority"
-                                }}
-                        ]
+                    "multi_match": {
+                        "query": query,
+                        "type":   "most_fields",
+                        "fields": [
+                            "fancy",
+                            "fancy.stemmed",
+                            "fancy.shingles"
+                        ],
+                        "minimum_should_match": "75%",
+                        "cutoff_frequency": 0.01
                     }
                 },
                 "aggregations" : {
@@ -87,7 +78,8 @@ class TorResultsView(ElasticsearchBaseListView):
                                     "sort": [
                                         {
                                             "authority": {
-                                                "order": "desc"
+                                                "order": "desc",
+                                                "missing": 0.0000000001
                                             }
                                         },
                                         {
