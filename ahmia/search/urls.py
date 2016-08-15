@@ -36,10 +36,10 @@ urlpatterns = patterns(
 )
 
 # Elasticsearch API
-#urlpatterns += patterns(
-#    '',
-#    (r'^elasticsearch/', 'search.views.searchengine.proxy'),
-#)
+urlpatterns += patterns(
+    '',
+    (r'^elasticsearch/', 'search.views.searchengine.proxy'),
+)
 
 # Stats views
 urlpatterns += patterns(
