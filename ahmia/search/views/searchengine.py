@@ -20,7 +20,7 @@ from django.shortcuts import redirect
 from django.template import Context, loader
 from django.views.decorators.http import require_GET, require_http_methods
 
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["GET"])
 def proxy(request):
     """Proxy connection to Elasticsearch"""
     full_url = request.get_full_path()
