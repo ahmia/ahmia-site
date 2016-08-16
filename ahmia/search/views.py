@@ -43,7 +43,7 @@ class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
     http_method_names = ['get']
     template_name = "tor_results.html"
-    RESULTS_PER_PAGE = 20
+    RESULTS_PER_PAGE = 100
     object_list = None
 
     def get_es_context(self, **kwargs):
