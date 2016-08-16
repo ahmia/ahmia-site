@@ -117,6 +117,8 @@ class TorResultsView(ElasticsearchBaseListView):
                 res['anchors'] = res['anchors'][0]
             except KeyError:
                 pass
+            except TypeError:
+                pass
             res['updated_on'] = datetime.strptime(res['updated_on'],
                                                   '%Y-%m-%dT%H:%M:%S')
         return total, results
