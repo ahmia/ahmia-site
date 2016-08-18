@@ -5,39 +5,9 @@ Full text search views.
 import math
 import time
 from datetime import date, datetime
-from operator import itemgetter
-
-from django.views.generic.base import RedirectView
 
 from ahmia.views import ElasticsearchBaseListView
 from ahmia import utils
-
-class OnionRedirectView(RedirectView):
-    """
-    This view redirects to a .onion url after incrementing the stat counter
-    """
-    permanent = False
-    query_string = False
-    http_method_names = ['get']
-
-    def update_stat_counter(self):
-        """ Increase the stat counter """
-        pass
-
-    def get(self, request, *args, **kwargs):
-        """
-        This method is override to add parameters to the get_context_data call
-        """
-        kwargs['redirect_url'] = request.GET.get('redirect_url', '')
-        return super(OnionRedirectView, self).get(*args, **kwargs)
-
-    def get_redirect_url(self, *args, **kwargs):
-        redirect_url = kwargs['redirect_url']
-        if not redirect_url:
-            #answer = "Bad request: no GET parameter URL."
-            return None
-        self.update_stat_counter()
-        return redirect_url
 
 class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
@@ -53,23 +23,43 @@ class TorResultsView(ElasticsearchBaseListView):
             "doc_type": utils.get_elasticsearch_type(),
             "body": {
                 "query": {
-                    "multi_match": {
-                        "query": query,
-                        "type":   "most_fields",
-                        "fields": [
-                            "fancy",
-                            "fancy.stemmed",
-                            "fancy.shingles"
+                    "bool": {
+                        "must": [
+                            {
+                                "multi_match": {
+                                    "query": query,
+                                    "type":   "most_fields",
+                                    "fields": [
+                                        "fancy",
+                                        "fancy.stemmed",
+                                        "fancy.shingles"
+                                    ],
+                                    "minimum_should_match": "75%",
+                                    "cutoff_frequency": 0.01
+                                }
+                            }
                         ],
-                        "minimum_should_match": "75%",
-                        "cutoff_frequency": 0.01
+                        "filter": [
+                            {
+                                "missing": {
+                                    "field": "is_fake"
+                                }
+                            },
+                            {
+                                "missing": {
+                                    "field": "is_banned"
+                                }
+                            }
+                        ]
                     }
+
                 },
                 "aggregations" : {
                     "domains" : {
                         "terms" : {
                             "size" : 1000,
-                            "field" : "domain"
+                            "field" : "domain",
+                            "order": {"max_score": "desc"}
                         },
                         "aggregations": {
                             "score": {
@@ -94,6 +84,11 @@ class TorResultsView(ElasticsearchBaseListView):
                                                     "authority", "anchors"]
                                     }
                                 }
+                            },
+                            "max_score": {
+                                "max": {
+                                    "script": "_score"
+                                }
                             }
                         }
                     }
@@ -111,7 +106,6 @@ class TorResultsView(ElasticsearchBaseListView):
         total = len(hits['buckets']) + hits['sum_other_doc_count']
         results = [h['score']['hits']['hits'][0]['_source']
                    for h in hits['buckets']]
-        results = sorted(results, key=itemgetter('authority'), reverse=True)
         for res in results:
             try:
                 res['anchors'] = res['anchors'][0]

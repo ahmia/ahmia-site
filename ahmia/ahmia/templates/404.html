@@ -1,11 +1,27 @@
 {% extends "core.html" %}
+{% load i18n %}
 
-{% block title %}Ahmia - 404{% endblock %}
+{% block title %}Ahmia - Documentation{% endblock %}
 
 {% block body %}
+<div id="ahmiaAboutPage">
+<h1 align="center">Not Found</h1>
+<h3 align="center">Error 404 :( Sorry! </h3>
 
-<h2>Not Found</h2>
-
-Not Found :( Sorry!
-
+<div class="credits">
+  <p>
+  {% trans "donate Bitcoin" as donate_bitcoin %}
+  {% blocktrans %}
+  We extend a thank you to Ahmia's supporters.
+  If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+  {% endblocktrans %}
+  </p>
+  <ul>
+    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+  </ul>
+  </div>
+</div>
 {% endblock %}

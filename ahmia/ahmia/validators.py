@@ -3,7 +3,7 @@
 import re
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils.translation import ugettext as _
 
 from .utils import get_elasticsearch_object
@@ -13,7 +13,7 @@ def validate_status(value):
 
     res = get_elasticsearch_object().count(
         index=settings.ELASTICSEARCH_INDEX,
-        doc_type=settings.ELASTICSEARCH_TYPE,
+        doc_type=settings.ELASTICSEARCH_INDEX,
         body={
             "query": {
                 "constant_score" : {

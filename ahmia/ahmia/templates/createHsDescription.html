@@ -4,6 +4,7 @@
 
 {% block body %}
 <div id="ahmiaAboutPage">
+  <div class="aboutAhmia">
 <script type="text/javascript">
   function generate() {
     var json = document.getElementById("json");
@@ -48,67 +49,38 @@
     <fieldset>
       <p>
         <label>Title</label>
-        <input type='text' name='title' id='title' value='' class='input-text' />
+        <input type='text' name='title' id='title' value='' class='input-text' placeholder='eg. Wikileaks' size='40'/>
       </p>
       <p>
         <label>Description</label>
-        <textarea name='description' id='description' rows='5' class='input-text'></textarea>
+        <textarea name='description' id='description' rows='3' cols='39' class='input-text' placeholder='description of the website'></textarea>
         <p>
           <label>Relation (if there is a same page in different domain)</label>
-          <input type='text' name='relation' id='relation' value='' class='input-text' />
+          <input type='text' name='relation' id='relation' value='' class='input-text' placeholder='eg. http://wikileaks.org/' size='40'/>
         </p>
         <p>
           <label>Keywords</label>
-          <input type='text' name='subject' id='subject' value='' class='input-text' />
+          <input type='text' name='subject' id='subject' value='' class='input-text' placeholder='eg. classified documents, international organizations etc' size='40'/>
         </p>
         <p>
           <label>Type (example: wiki/forum/news/blog/upload)</label>
-          <input type='text' name='type' id='type' value='' class='input-text' />
+          <input type='text' name='type' id='type' value='' class='input-text' placeholder='eg. document archive and disclosure, wiki' size='40'/>
         </p>
         <p>
           <label>Language (en/de/fr/fi/sv/es/pl/ru...)</label>
-          <input type='text' name='language' id='language' value='' class='input-text' />
+          <input type='text' name='language' id='language' value='' class='input-text' placeholder='eg. en' size='40'/>
         </p>
         <p>
-          <label>Contact Information (email etc.)</label>
-          <input type='text' name='contactInformation' id='contactInformation' value='' class='input-text' />
+          <label>Contact Information</label>
+          <input type='text' name='contactInformation' id='contactInformation' value='' class='input-text' placeholder='email etc' size='40'/>
         </p>
-        <input type='button' name='button' value='Generate' class='input-add' onClick="generate();" />
+        <input type='button' style="float: right;" name='button' value='Generate' class='input-add' onClick="generate();" size='40'/>
 
     </fieldset>
   </form>
 </div>
-
-<div class="editor">
-  <h3>Example how to fill the form </h3>
-  <p><b>Title:</b> Wikileaks</p>
-  <br />
-  <br />
-  <br />
-  <p><b>Description:</b> WikiLeaks is an international self-described not-for-profit organisation that publishes submissions of private, secret, and classified media from anonymous news sources, news leaks, and whistleblowers.</p>
-  <br />
-  <br />
-  <br />
-  <br />
-  <p><b>Relation:</b> http://wikileaks.org/</p>
-  <br />
-  <br />
-  <p><b>Keywords:</b> classified documents, international organizations, freedom of speech, whistleblowing, national security, online archives, mediawiki, wikileaks</p>
-  <br />
-  <p><b>Type:</b> document archive and disclosure, wiki</p>
-  <br />
-  <br />
-  <p><b>Language: </b>en</p>
-  <br />
-  <br />
-  <br />
-  <p><b>Contact Information: </b>contact form at the website</p>
-</div>
-
-
+<div class="aboutTeam">
 <br style="clear: left;" />
-
-
 <strong>JSON:</strong>
 <pre class="precode">
 <code id="json" style="display: none;">
@@ -126,8 +98,26 @@
 
 <p>
   Copy paste the JSON text to your hidden service so it is available under
-  <strong class="color9">http://something.onion/description.json</strong> and our robot will find and use this as an official information about your site. Please make sure that your JSON description is valid JSON. Use exactly the file name description.json
+  <b>http://something.onion/description.json</b> and our robot will find and use this as an official information about your site. Please make sure that your JSON description is valid JSON. Use exactly the file name description.json
   and be sure that it is accessible under your hidden service /.
 </p>
+</div>
+</div>
+
+<div class="credits">
+  <p>
+  {% trans "donate Bitcoin" as donate_bitcoin %}
+  {% blocktrans %}
+  We extend a thank you to Ahmia's supporters.
+  If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+  {% endblocktrans %}
+  </p>
+  <ul>
+    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+  </ul>
+  </div>
 </div>
 {% endblock %}
