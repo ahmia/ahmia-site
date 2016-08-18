@@ -46,7 +46,7 @@
 <div id="ahmiaAboutPage">
 <div id="ahmiaAddService">
 <div class="aboutAhmia">
-<h2>Onion domain list</h2>
+<h1>Onion domain list</h1>
 <div id="search">
 <form action="#" class="filterform"><input autofocus="autofocus" placeholder="search term" id="torsearch" class="filterinput" type="text"></form>
 </div>
@@ -71,5 +71,21 @@
 </div>
 <strong id="totalresults" class="color12" style="text-align:center;"></strong> sites matches to the search
 </div>
+</div>
+<div class="credits">
+  <p>
+  {% trans "donate Bitcoin" as donate_bitcoin %}
+  {% blocktrans %}
+  We extend a thank you to Ahmia's supporters.
+  If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+  {% endblocktrans %}
+  </p>
+  <ul>
+    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+  </ul>
+  </div>
 </div>
 {% endblock %}

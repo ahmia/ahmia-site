@@ -1,5 +1,5 @@
 upstream django {
-    server unix:///usr/local/lib/search/socket/ahmia.sock;
+    server unix:///tmp/ahmia.sock;
 }
 
 server {
@@ -34,7 +34,7 @@ server {
     }
 
     location /static {
-        alias /usr/local/lib/search/ahmia/static;
+        alias /usr/local/lib/ahmia-site/ahmia/search/static;
     }
 
     # Django WSGI Server
@@ -63,11 +63,11 @@ server {
     }
 
     location /static {
-        alias /usr/local/lib/search/ahmia/static;
+        alias /usr/local/lib/ahmia-site/ahmia/search/static;
     }
 
     location =/description.json {
-        alias /usr/local/lib/search/ahmia/static/description.json;
+        alias /usr/local/lib/ahmia-site/ahmia/search/static/description.json;
     }
 
     # Django WSGI Server
@@ -97,7 +97,7 @@ server {
     }
 
     location /static {
-        alias /usr/local/lib/search/ahmia/static;
+        alias /usr/local/lib/ahmia-site/ahmia/search/static;
     }
 
     # Django WSGI Server

@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/ahmia/ahmia-site.svg?branch=master)](https://travis-ci.org/iriahi/ahmia-site)
-[![Code Health](https://landscape.io/github/iriahi/ahmia-site/master/landscape.svg?style=flat)](https://landscape.io/github/iriahi/ahmia-site/master)
-[![Requirements Status](https://requires.io/github/iriahi/ahmia-site/requirements.svg?branch=master)](https://requires.io/github/iriahi/ahmia-site/requirements/?branch=master)
+[![Build Status](https://travis-ci.org/ahmia/ahmia-site.svg?branch=master)](https://travis-ci.org/ahmia/ahmia-site)
+[![Code Health](https://landscape.io/github/ahmia/ahmia-site/master/landscape.svg?style=flat)](https://landscape.io/github/ahmia/ahmia-site/master)
+[![Requirements Status](https://requires.io/github/ahmia/ahmia-site/requirements.svg?branch=master)](https://requires.io/github/ahmia/ahmia-site/requirements/?branch=master)
 
 ![https://ahmia.fi/](https://raw.githubusercontent.com/razorfinger/ahmia/ahmia-redesign/ahmia-logotype.png)
 
@@ -15,7 +15,7 @@ Elasticsearch. You will need to know these technologies to create a
 working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
 
 # Prerequisites
-[Ahmia-index](https://github.com/iriahi/ahmia-index) should be installed and running
+[Ahmia-index](https://github.com/ahmia/ahmia-index) should be installed and running
 
 # Installation guide
 
@@ -55,7 +55,7 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-# FAQ 
+# FAQ
 
 ## How can populate my index to do searches ?
 You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/master/onionElasticBot) to populate your index.
@@ -65,6 +65,11 @@ The django settings.py is configured in a way that it only serve statics if DEBU
 
 ## What should I use to host ahmia in a production environment ?
 Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf). We suggest Apache2 or Nginx with Uwsgi
+
+```sh
+cp conf/uwsgi/django-ahmia.ini /etc/uwsgi/apps-enabled/ahmia.ini
+cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
+```
 
 # Support
 

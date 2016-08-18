@@ -27,7 +27,9 @@
     onion = onion.replace('.onion', '');
     onion = onion.replace('http:', '');
     onion = onion.replace('https:', '');
-    return onion.replace('//', '').trim();
+    onion = onion.replace('//', '');
+    onion = onion.replace('/', '');
+    return onion.trim();
   };
 
   var showError = function() {
