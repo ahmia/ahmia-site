@@ -1,0 +1,795 @@
+/*
+  Ahmia styles
+*/
+/* color schemes */
+/*
+  Interesting colors to try:
+  #c7ff70
+  #ff707d
+  #70d5ff
+*/
+/*
+@accent-color: #70d5ff;
+@accent-color-alpha: rgba(112, 213, 255, 0.2);
+@accent-color: #ff707d;
+@accent-color-alpha: rgba(255, 112, 125, 0.2);
+*/
+/*
+  LINK COLORS
+
+  Links in search results are different than others.
+  This is for consistency -- nearly all search engines
+  look like this, there is no need to change that here
+*/
+/* fonts */
+@font-face {
+  font-family: 'alfphabetiv';
+  src: url('/static/fonts/alfphabet/alfphabet-iv-webfont.eot');
+  src: url('/static/fonts/alfphabet/alfphabet-iv-webfont.eot?#iefix') format('embedded-opentype'), url('/static/fonts/alfphabet/alfphabet-iv-webfont.woff2') format('woff2'), url('/static/fonts/alfphabet/alfphabet-iv-webfont.woff') format('woff'), url('/static/fonts/alfphabet/alfphabet-iv-webfont.ttf') format('truetype'), url('/static/fonts/alfphabet/alfphabet-iv-webfont.svg#alfphabetiv') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'robotoregular';
+  src: url('/static/fonts/roboto/roboto_regular_macroman/Roboto-Regular-webfont.eot');
+  src: url('/static/fonts/roboto/roboto_regular_macroman/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('/static/fonts/roboto/roboto_regular_macroman/Roboto-Regular-webfont.woff') format('woff'), url('/static/fonts/roboto/roboto_regular_macroman/Roboto-Regular-webfont.ttf') format('truetype'), url('/static/fonts/roboto/roboto_regular_macroman/Roboto-Regular-webfont.svg#robotoregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'robotolight';
+  src: url('/static/fonts/roboto/roboto_light_macroman/Roboto-Light-webfont.eot');
+  src: url('/static/fonts/roboto/roboto_light_macroman/Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'), url('/static/fonts/roboto/roboto_light_macroman/Roboto-Light-webfont.woff') format('woff'), url('/static/fonts/roboto/roboto_light_macroman/Roboto-Light-webfont.ttf') format('truetype'), url('/static/fonts/roboto/roboto_light_macroman/Roboto-Light-webfont.svg#robotolight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* dumb mixins */
+.responsive {
+  box-sizing: border-box;
+}
+.sr {
+  position: absolute;
+  display: block;
+  top: -1000px;
+  left: -1000px;
+  width: 5px;
+  height: 5px;
+  color: transparent;
+  background-color: transparent;
+}
+.hidden {
+  display: none;
+}
+/* core controls */
+.searchForm input[type=search],
+.searchForm input[type=text] {
+  box-sizing: border-box;
+  color: #000;
+  /* color: @text-on-light-bg-placeholder; */
+  font-size: 1.6em;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  line-height: 1.8em;
+  padding-left: 0.5em;
+  text-align: left;
+  min-width: 20em;
+  border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
+}
+.searchForm input[type=submit] {
+  box-sizing: border-box;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  display: inline-block;
+  background-color: #c7ff70;
+  color: #000;
+  border: 1px solid #c7ff70;
+  border-top-width: 2px;
+  font-size: 1.6em;
+  line-height: 1.8em;
+  text-align: center;
+  padding: 0 0.8em;
+}
+.searchForm input[type=submit]:hover {
+  color: #294957;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+}
+div#flashMessage,
+div.flashMessage {
+  margin: 0 auto 1em;
+}
+div#flashMessage p,
+div.flashMessage p {
+  text-align: center;
+  border-bottom: none;
+  padding: 1em;
+  margin: 0 0 1em 0;
+}
+div#flashMessage p.info,
+div.flashMessage p.info {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.4);
+}
+div#flashMessage p.warn,
+div.flashMessage p.warn {
+  background-color: #c7ff70;
+  color: rgba(0, 0, 0, 0.9);
+}
+div#flashMessage p.error,
+div.flashMessage p.error {
+  background-color: #ff707d;
+  color: rgba(0, 0, 0, 0.9);
+}
+/*
+  "main"/desktop search styles
+  TODO: move to media query
+*/
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #fafafa;
+  font-family: 'robotoregular', 'Roboto', 'Helvetica', sans-serif;
+  font-weight: light;
+  font-size: 12px;
+}
+body.main {
+  background-color: #000;
+  overflow: hidden;
+}
+body a:link {
+  color: #19749b;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+body a:visited {
+  color: #294957;
+  text-decoration: underline;
+}
+body a:hover {
+  color: #294957;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+body code {
+  font-family: monospace;
+}
+#imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  background-color: #000;
+  background-image: url('/static/images/metro.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+}
+div.elastic.outer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+div.elastic.inner {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+}
+#notTorBrowserWarning {
+  display: none;
+}
+#ahmiaHeader {
+  overflow: hidden;
+  color: #fff;
+  box-sizing: border-box;
+  background-color: #303030;
+}
+#ahmiaHeader.mini {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+#ahmiaHeader.mini h1 {
+  display: none;
+}
+#ahmiaHeader.mini #searchForm {
+  display: none;
+}
+#ahmiaHeader.maxi .maxiContent {
+  margin: 0 1.0em 0;
+  padding-bottom: 1.0em;
+}
+#ahmiaHeader.maxi .maxiContent h1 {
+  font-family: 'alfphabetiv', 'Alfphabet IV', 'Alfphabet', 'Helvetica', sans-serif;
+  font-size: 2.0em;
+  margin: 0.5em 0;
+  padding: 0;
+  display: block;
+  float: left;
+}
+#ahmiaHeader.maxi .maxiContent h1 a {
+  color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
+  text-decoration: none;
+  transition: 0.3s all;
+}
+#ahmiaHeader.maxi .maxiContent h1 a:hover {
+  text-decoration: none;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  transition: 0.3s all;
+}
+#ahmiaHeader.maxi .maxiContent .searchForm {
+  display: block;
+  float: left;
+  margin-left: 2.0em;
+}
+#ahmiaHeader.maxi .maxiContent .searchForm input {
+  font-size: 1.3em;
+  line-height: 2.0em;
+  margin: 0.5em 0;
+}
+#ahmiaHeader.maxi .maxiContent .searchForm input[type="search"] {
+  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
+}
+#ahmiaHeader.maxi .maxiContent .searchForm input[type="submit"] {
+  background-color: #c7ff70;
+  border: 1px solid #c7ff70;
+  margin-left: 0.5em;
+  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
+}
+#ahmiaHeader.maxi .maxiContent nav {
+  vertical-align: bottom;
+}
+#ahmiaHeader #collapseIfResponsive {
+  display: none;
+}
+#ahmiaHeader nav {
+  margin: 0;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.4);
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 0 1em;
+}
+#ahmiaHeader ul {
+  margin: 0;
+  padding: 0;
+}
+#ahmiaHeader ul.primary,
+#ahmiaHeader ul.primary li {
+  float: left;
+}
+#ahmiaHeader ul.secondary,
+#ahmiaHeader ul.secondary li {
+  float: right;
+}
+#ahmiaHeader ul.primary li:first-child {
+  margin-left: 0;
+}
+#ahmiaHeader ul.secondary li:first-child {
+  margin-right: 2em;
+}
+#ahmiaHeader ul li {
+  margin: 0.4em 0 0.4em 1em;
+  display: inline-block;
+  float: left;
+  list-style-type: none;
+}
+#ahmiaHeader ul li a {
+  color: #bbb;
+  text-decoration: none;
+}
+#ahmiaHeader ul li a:hover {
+  text-decoration: underline;
+  transition: all 0.2s;
+}
+#ahmiaMainContent {
+  color: #fff;
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  width: 60%;
+  transform: translate(0%, -50%);
+  -webkit-transform: translate(0%, -50%);
+  -moz-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+}
+#ahmiaMainContent h1 {
+  font-family: 'alfphabetiv', 'Alfphabet IV', 'Alfphabet', 'Helvetica', sans-serif;
+  font-size: 3.2em;
+  color: #fff;
+  text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.4);
+}
+#ahmiaMainContent #ahmiaSearchArea input[type=search],
+#ahmiaMainContent #ahmiaSearchArea input[type=text] {
+  box-sizing: border-box;
+  color: #000;
+  /* color: @text-on-light-bg-placeholder; */
+  font-size: 1.6em;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  line-height: 1.8em;
+  padding-left: 0.5em;
+  text-align: left;
+  min-width: 20em;
+  border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
+}
+#ahmiaMainContent #ahmiaSearchArea input[type=submit] {
+  box-sizing: border-box;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  display: inline-block;
+  background-color: #c7ff70;
+  color: #000;
+  border: 1px solid #c7ff70;
+  border-top-width: 2px;
+  font-size: 1.6em;
+  line-height: 1.8em;
+  text-align: center;
+  padding: 0 0.8em;
+}
+#ahmiaMainContent #ahmiaSearchArea input[type=submit]:hover {
+  color: #294957;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+}
+#ahmiaMainContent #ahmiaDescriptionArea {
+  margin-top: 2.5em;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  padding-top: 2.3em;
+}
+#ahmiaMainContent #ahmiaDescriptionArea a:link {
+  color: #c7ff70;
+  text-decoration: none;
+}
+#ahmiaMainContent #ahmiaDescriptionArea a:hover {
+  text-decoration: underline;
+  transition: all 0.2s;
+}
+#ahmiaMainContent #ahmiaDescriptionArea a:visited {
+  text-decoration: underline;
+  transition: all 0.2s;
+}
+#ahmiaMainContent #ahmiaDescriptionArea p {
+  font-size: 1.1em;
+  margin-top: 0;
+  margin-bottom: 1em;
+  line-height: 1.7em;
+  text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
+}
+#ahmiaResultsPage {
+  margin: 1.0em;
+}
+#ahmiaResultsPage div.resultsSubheader {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+}
+#ahmiaResultsPage div.resultsSubheader p {
+  color: rgba(0, 0, 0, 0.4);
+  margin: 0;
+  padding: 0;
+}
+#ahmiaResultsPage p {
+  font-size: 1.1em;
+  color: #000;
+  margin: 1em 0;
+  line-height: 1.7em;
+}
+#ahmiaResultsPage ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 -1em;
+}
+#ahmiaResultsPage ol li {
+  box-sizing: border-box;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  padding: 1em;
+  transition: background-color 0.3s;
+}
+#ahmiaResultsPage ol li.selected {
+  border-top-color: rgba(127, 127, 127, 0.2);
+  border-bottom-color: rgba(127, 127, 127, 0.2);
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: background-color 0.3s;
+}
+#ahmiaResultsPage ol li.selected h4 a:link {
+  /* mimic li h4 a:hover */
+  text-decoration: none;
+}
+#ahmiaResultsPage ol li p,
+#ahmiaResultsPage ol li h4 {
+  /* restrict width for legibility */
+  max-width: 70%;
+}
+#ahmiaResultsPage ol li h4 {
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  font-size: 1.6em;
+  line-height: 1em;
+}
+#ahmiaResultsPage ol li h4 a:link {
+  color: #19749b;
+  text-decoration: underline;
+}
+#ahmiaResultsPage ol li h4 a:hover {
+  color: #294957;
+  text-decoration: none;
+}
+#ahmiaResultsPage ol li h4 a:visited {
+  color: #52f;
+  text-decoration: underline;
+}
+#ahmiaResultsPage ol li p {
+  color: rgba(0, 0, 0, 0.9);
+  margin: 0.7em 0 0;
+}
+#ahmiaResultsPage ol li p.metadata {
+  margin: 0.5em 0;
+  color: rgba(0, 0, 0, 0.4);
+}
+#ahmiaResultsPage ol li p.metadata a:link {
+  color: rgba(0, 0, 0, 0.4);
+  text-decoration: underline;
+}
+#ahmiaResultsPage ol li p.metadata a:visited {
+  color: rgba(0, 0, 0, 0.4);
+}
+#ahmiaResultsPage ol li p.metadata a:hover {
+  color: rgba(0, 0, 0, 0.4);
+  text-decoration: none;
+}
+#ahmiaResultsPage ol li p.metadata span.hidden {
+  display: none;
+}
+#ahmiaResultsPage div.pager {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  padding-top: 1em;
+  padding-bottom: 5em;
+  overflow: hidden;
+}
+#ahmiaResultsPage div.pager a:link {
+  color: #19749b;
+  text-decoration: none;
+}
+#ahmiaResultsPage div.pager a:hover {
+  color: #294957;
+  text-decoration: underline;
+}
+#ahmiaResultsPage div.pager a:visited {
+  color: #52f;
+}
+#ahmiaResultsPage div.pager ul {
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+#ahmiaResultsPage div.pager ul li {
+  font-size: 1.1em;
+  margin: 0 1em 0 0;
+  padding: 0;
+  list-style-type: none;
+  display: inline-block;
+}
+#ahmiaResultsPage div.pager ul li:first-child {
+  margin-right: 2em;
+}
+#ahmiaResultsPage div.pager ul li:last-child {
+  margin-left: 2em;
+}
+#ahmiaResultsPage div.pager ul li.active a:link,
+#ahmiaResultsPage div.pager ul li.active a:hover,
+#ahmiaResultsPage div.pager ul li.active a:visited {
+  color: #000;
+  text-decoration: none;
+}
+#ahmiaResultsPage div.pager ul li.endcap a:link,
+#ahmiaResultsPage div.pager ul li.endcap a:hover,
+#ahmiaResultsPage div.pager ul li.endcap a:visited {
+  text-decoration: underline;
+}
+#ahmiaResultsPage div.pager ul li.limited a:link,
+#ahmiaResultsPage div.pager ul li.limited a:hover,
+#ahmiaResultsPage div.pager ul li.limited a:visited {
+  color: rgba(0, 0, 0, 0.4);
+  text-decoration: none;
+}
+#ahmiaResultsPage div.pager p.footer {
+  margin: 0;
+  padding: 0;
+  font-size: 1.1em;
+  float: right;
+}
+#ahmiaDisclaimer {
+  width: 70%;
+  max-width: 960px;
+  margin: 0 auto 3em;
+  padding-top: 1em;
+}
+#ahmiaDisclaimer h2,
+#ahmiaDisclaimer h3,
+#ahmiaDisclaimer h4 {
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+}
+#ahmiaDisclaimer h2 {
+  font-size: 1.8em;
+}
+#ahmiaDisclaimer h3 {
+  font-size: 1.5em;
+}
+#ahmiaDisclaimer h4 {
+  font-size: 1.3em;
+}
+#ahmiaDisclaimer p {
+  font-size: 1.3em;
+  line-height: 1.8em;
+  text-align: left;
+  margin-bottom: 1em;
+  padding: 0;
+}
+#ahmiaDisclaimer p.end {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+}
+#ahmiaAddOnion {
+  width: 70%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+#ahmiaAddOnion p {
+  font-size: 1.3em;
+  line-height: 1.8em;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 2em;
+  margin-bottom: 2em;
+}
+#ahmiaAddOnion input[type=search],
+#ahmiaAddOnion input[type=text] {
+  box-sizing: border-box;
+  color: #000;
+  /* color: @text-on-light-bg-placeholder; */
+  font-size: 1.6em;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  line-height: 1.8em;
+  padding-left: 0.5em;
+  text-align: left;
+  min-width: 20em;
+  border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
+}
+#ahmiaAddOnion input[type=submit] {
+  box-sizing: border-box;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  display: inline-block;
+  background-color: #c7ff70;
+  color: #000;
+  border: 1px solid #c7ff70;
+  border-top-width: 2px;
+  font-size: 1.6em;
+  line-height: 1.8em;
+  text-align: center;
+  padding: 0 0.8em;
+}
+#ahmiaAddOnion input[type=submit]:hover {
+  color: #294957;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+}
+#ahmiaAddOnion div#ahmiaFormContainer {
+  display: block;
+  width: 70%;
+  overflow: visible;
+  margin: -1em auto;
+}
+#ahmiaAddOnion form {
+  display: flex;
+  justify-content: center;
+}
+#ahmiaAddOnion input[type="text"] {
+  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
+  margin-right: 0.5em;
+}
+#ahmiaBlacklist,
+#ahmiaAddService {
+  width: 70%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+#ahmiaBlacklist p,
+#ahmiaAddService p {
+  font-size: 1.3em;
+  line-height: 1.8em;
+  text-align: left;
+}
+#ahmiaBlacklist p.end,
+#ahmiaAddService p.end {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+}
+#ahmiaBlacklist input[type=search],
+#ahmiaAddService input[type=search],
+#ahmiaBlacklist input[type=text],
+#ahmiaAddService input[type=text] {
+  box-sizing: border-box;
+  color: #000;
+  /* color: @text-on-light-bg-placeholder; */
+  font-size: 1.6em;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  line-height: 1.8em;
+  padding-left: 0.5em;
+  text-align: left;
+  min-width: 20em;
+  border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
+}
+#ahmiaBlacklist input[type=submit],
+#ahmiaAddService input[type=submit] {
+  box-sizing: border-box;
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+  display: inline-block;
+  background-color: #c7ff70;
+  color: #000;
+  border: 1px solid #c7ff70;
+  border-top-width: 2px;
+  font-size: 1.6em;
+  line-height: 1.8em;
+  text-align: center;
+  padding: 0 0.8em;
+}
+#ahmiaBlacklist input[type=submit]:hover,
+#ahmiaAddService input[type=submit]:hover {
+  color: #294957;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+}
+#ahmiaBlacklist div#ahmiaFormContainer,
+#ahmiaAddService div#ahmiaFormContainer {
+  display: block;
+  width: 70%;
+  overflow: visible;
+  margin: 1em auto 7em;
+}
+#ahmiaBlacklist div#ahmiaFormContainer div#flashMessage,
+#ahmiaAddService div#ahmiaFormContainer div#flashMessage {
+  margin-top: 1em;
+}
+#ahmiaBlacklist form,
+#ahmiaAddService form {
+  display: flex;
+  justify-content: center;
+}
+#ahmiaBlacklist input[type="text"],
+#ahmiaAddService input[type="text"] {
+  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
+  margin-right: 0.5em;
+}
+#ahmiaBlacklist h2,
+#ahmiaAddService h2,
+#ahmiaBlacklist h3,
+#ahmiaAddService h3,
+#ahmiaBlacklist h4,
+#ahmiaAddService h4 {
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+}
+#ahmiaBlacklist h2,
+#ahmiaAddService h2 {
+  font-size: 1.8em;
+}
+#ahmiaBlacklist h3,
+#ahmiaAddService h3 {
+  font-size: 1.5em;
+}
+#ahmiaBlacklist h3.checkForm,
+#ahmiaAddService h3.checkForm {
+  text-align: center;
+}
+#ahmiaBlacklist h4,
+#ahmiaAddService h4 {
+  font-size: 1.3em;
+}
+#ahmiaAboutPage {
+  /* elasticize this for legibility */
+  width: 70%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+#ahmiaAboutPage h2,
+#ahmiaAboutPage h3,
+#ahmiaAboutPage h4 {
+  font-family: 'robotolight', Roboto, Helvetica, sans-serif;
+}
+#ahmiaAboutPage h2 {
+  font-size: 1.8em;
+}
+#ahmiaAboutPage h3 {
+  font-size: 1.5em;
+}
+#ahmiaAboutPage h4 {
+  font-size: 1.3em;
+}
+#ahmiaAboutPage p,
+#ahmiaAboutPage li {
+  font-size: 1.3em;
+  line-height: 1.8em;
+}
+#ahmiaAboutPage div.aboutAhmia,
+#ahmiaAboutPage div.aboutTeam,
+#ahmiaAboutPage div.moreOnAhmia,
+#ahmiaAboutPage div.credits {
+  margin: 1em 0;
+  padding: 1em 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+#ahmiaAboutPage div.aboutAhmia h3,
+#ahmiaAboutPage div.aboutTeam h3,
+#ahmiaAboutPage div.moreOnAhmia h3,
+#ahmiaAboutPage div.credits h3 {
+  color: rgba(0, 0, 0, 0.9);
+  margin-top: 0;
+  padding-top: 0;
+}
+#ahmiaAboutPage div.aboutTeam p {
+  margin-top: 1.6em;
+}
+#ahmiaAboutPage div.aboutTeam img.teamPhoto {
+  padding-bottom: 1em;
+  padding-right: 3em;
+  float: left;
+  width: 160px;
+  height: 160px;
+}
+#ahmiaAboutPage div.credits {
+  border-bottom-color: transparent;
+  margin-bottom: 3em;
+}
+#ahmiaAboutPage div.credits p {
+  color: rgba(0, 0, 0, 0.4);
+  margin-top: 0;
+  text-align: center;
+}
+#ahmiaAboutPage div.credits p a:link,
+#ahmiaAboutPage div.credits p a:visited,
+#ahmiaAboutPage div.credits p a:hover {
+  color: rgba(0, 0, 0, 0.4);
+}
+#ahmiaAboutPage div.credits p a:hover {
+  text-decoration: none;
+}
+#ahmiaAboutPage div.credits ul {
+  list-style-type: none;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+}
+#ahmiaAboutPage div.credits ul li {
+  display: inline-block;
+  margin-right: 1em;
+}
+#ahmiaAboutPage div.credits ul li img {
+  border: 0;
+  height: 50px;
+  opacity: 0.9;
+}

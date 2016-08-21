@@ -1,0 +1,91 @@
+{% extends "core.html" %}
+{% load ahmia_custom %}
+{% load static %}
+
+{% block title %}Ahmia - Hidden service list{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  function abuse_notice(id) {
+    var question = "Have you really checked that there are pictures of child abuse hosted in this " + id + ".onion domain? If you have, please answer to the security question: How much is 2+3?"
+    var answer = prompt(question, "answer the number here");
+    if (parseInt(answer) != 5) {
+      return false;
+    }
+
+    var url = "/address/" + id;
+    var note_id = "#note_" + id;
+    var button_id = "#button_" + id;
+    var question = "Please enter the reason for this notice."
+    var example = "e.g. there are abusive pictures."
+    var reason = prompt(question, example);
+    if (!reason) {
+      return false;
+    }
+
+    var json_data = '{ "url": "http://' + id + '.onion/", "abuse_note": "' + reason + '"}'
+    $.ajax({
+      url: url,
+      type: 'PUT',
+      contentType: 'application/json',
+      data: json_data,
+      success: function(result) {
+        $(button_id).hide();
+        $(note_id).show();
+      }
+    });
+  }
+</script>
+<noscript>
+  <p>ENABLE JAVASCRIPT (CLIENT SIDE).</p>
+</noscript>
+<script type="text/javascript" src="{% static 'search:search.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div id="ahmiaAboutPage">
+<div id="ahmiaAddService">
+<div class="aboutAhmia">
+<h1>Onion domain list</h1>
+<div id="search">
+<form action="#" class="filterform"><input autofocus="autofocus" placeholder="search term" id="torsearch" class="filterinput" type="text"></form>
+</div>
+<div id='wrap'>
+  <ul id='list' class='steps'>
+    {% for site in domains %} {% if not site.banned %}
+    <li class="hs_site clickable_pointer">
+      <div onclick="window.location='/address/{{ site.hs_id  }}'">
+        <h3><a href="{{ site.domain }}">{{ site.domain }}</a></h3>
+        <p class='links'>
+          Proxy link:
+          <a href='https://{{ site.hs_id }}.tor2web.fi'>https://{{ site.domain }}.tor2web.fi</a>
+        </p>
+        <div class='infotext'>
+          <b>Pages indexed: </b>{{ site.pages }}
+        </div>
+      </div>
+      <button id="button_{{ site.hs_id }}" type="button" onclick="abuse_notice('{{ site.hs_id }}');">Send a note that this site should be filtered.</button>
+    </li>
+    {% endif %} {% endfor %}
+  </ul>
+</div>
+<strong id="totalresults" class="color12" style="text-align:center;"></strong> sites matches to the search
+</div>
+</div>
+<div class="credits">
+  <p>
+  {% trans "donate Bitcoin" as donate_bitcoin %}
+  {% blocktrans %}
+  We extend a thank you to Ahmia's supporters.
+  If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+  {% endblocktrans %}
+  </p>
+  <ul>
+    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+  </ul>
+  </div>
+</div>
+{% endblock %}
