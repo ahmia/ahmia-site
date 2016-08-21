@@ -1,37 +1,100 @@
 {% extends 'core.html' %}
 {% load i18n %}
-{% load ahmia_custom %}
-{% block title %}{% blocktrans %}Search results for {{query_string}}{% endblocktrans %} &mdash; Ahmia{% endblock %}
+{% load static %}
+
+{% block title %}
+{% blocktrans %}
+Search results for {{query_string}}
+{% endblocktrans %} &mdash; Ahmia
+{% endblock %}
+
 {% block body %}
-{% include 'partial/nav_tor.html' with nav_type='maxi' %}
 <div id="ahmiaResultsPage">
   {% if total_search_results == 0 %}
-    {% include 'partial/no_results.html' %}
+    <p id="noResults">
+      {% blocktrans %}
+      Sorry, but Ahmia couldn't find results for
+      <code>{{ query_string }}</code>.<br>
+      Please try a different search or try again later.
+      {% endblocktrans %}
+    </p>
   {% else %}
     <div class="resultsSubheader">
       <p>
         {% blocktrans %}
-        Omitted very similar entries. Displaying <span class="resultNumber" id="totalResults">{{ total_search_results }}</span> matches in <span class="resultNumber" id="searchTime">{{ search_time }}</span> seconds.
-        Page <span class="resultNumber" id="pageResultBegin">{{ page }}</span> of <span class="resultNumber" id="pageResultEnd">{{ max_pages }}</span>.
+        Omitted very similar entries. Displaying
+        <span class="resultNumber" id="totalResults">
+          {{ total_search_results }}
+        </span>
+        matches in
+        <span class="resultNumber" id="searchTime">
+          {{ search_time }}
+        </span> seconds. Page
+        <span class="resultNumber" id="pageResultBegin">
+          {{ page }}
+        </span>
+        of
+        <span class="resultNumber" id="pageResultEnd">
+          {{ max_pages }}
+        </span>.
         {% endblocktrans %}
       </p>
     </div>
     <ol class="searchResults">
       {% for result in search_results %}
-        {% include 'partial/search_result.html' with search_result=result %}
+      <li class="result" href="{{ result.url }}" id="onion_key">
+      <h4><a href="{{ result.url }}">
+        {% if result.title %}
+        {{ result.title | escape }}
+        {% elif result.anchors %}
+        {{ result.anchors | escape }}
+        {% endif %}
+      </a>
+        {% if result.url_tor2web %}
+         -- <a href="{{ result.url_tor2web }}">Proxy</a>
+         {% endif %}
+      </h4>
+        {% if result.meta %}
+        <p>{{ result.meta | escape | truncatechars:300 }}</p>
+        {% else %}
+        <p>{% trans "No description provided" %}</p>
+        {% endif %}
+        <cite>{{ result.domain }}</cite> &mdash;
+        <span class="lastSeen" data-timestamp="{{ result.updated_on }}">
+          {{ result.updated_on|timesince:now }} {% trans "ago" %}
+        </span> &mdash;
+        <span class="abuseReportForm">
+          <a href="/blacklist/report?onion={{ result.domain|urlencode }}"
+            data-href="{{ result.domain }}"
+            title="{% trans 'Report this link to us' %}"
+            class="reportAbuse">
+            {% trans "Report Abuse" %}
+          </a>
+          <span class="abuseReportReceived hidden">
+            {% trans "Abuse report sent." %}
+          </span>
+          <span class="abuseReportError hidden">
+            {% trans "Abuse report error." %}
+          </span>
+        </span>
+        </p>
+      </li>
       {% endfor %}
     </ol>
   {% endif %}
 
-  <!-- Advertisement -->
+  {% block advertisement %}
   <div id="advertisement">
     <a href="http://6axcig5jgptnkaj2.onion/#/?banner=ahmia">
-      <img src="/static/images/ccblackengtop.jpg" alt="Sponsor ads" style="height: 100%; max-height: 60px; width: 100%; max-width: 400px;">
+      <img src="{% static 'images/ccblackengtop.jpg' %}"
+        alt="Sponsor ads"
+        style="height: 100%; max-height: 60px; width: 100%; max-width: 400px;">
     </a>
   </div>
+  {% endblock %}
 
 </div>
 {% endblock %}
 {% block extra_js %}
-<script src="/static/js/results.js"></script>
+<script src="{% static 'results.js' %}"></script>
 {% endblock %}

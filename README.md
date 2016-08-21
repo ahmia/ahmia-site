@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/ahmia/ahmia-site.svg?branch=master)](https://travis-ci.org/ahmia/ahmia-site)
-[![Code Health](https://landscape.io/github/ahmia/ahmia-site/master/landscape.svg?style=flat)](https://landscape.io/github/ahmia/ahmia-site/master)
-[![Requirements Status](https://requires.io/github/ahmia/ahmia-site/requirements.svg?branch=master)](https://requires.io/github/ahmia/ahmia-site/requirements/?branch=master)
+[![Build Status](https://travis-ci.org/iriahi/ahmia-site.svg?branch=master)](https://travis-ci.org/iriahi/ahmia-site)
+[![Code Health](https://landscape.io/github/iriahi/ahmia-site/master/landscape.svg?style=flat)](https://landscape.io/github/iriahi/ahmia-site/master)
+[![Requirements Status](https://requires.io/github/iriahi/ahmia-site/requirements.svg?branch=master)](https://requires.io/github/iriahi/ahmia-site/requirements/?branch=master)
 
 ![https://ahmia.fi/](https://raw.githubusercontent.com/razorfinger/ahmia/ahmia-redesign/ahmia-logotype.png)
 
@@ -55,7 +55,7 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-# FAQ 
+# FAQ
 
 ## How can populate my index to do searches ?
 You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/master/onionElasticBot) to populate your index.

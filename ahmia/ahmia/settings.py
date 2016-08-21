@@ -7,7 +7,6 @@ import sys
 PROJECT_HOME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
     '.ahmia.fi', # Allow domain and subdomains
@@ -18,7 +17,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
-demo_env = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
+DEMO_ENV = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
             'migrate', 'dumpdata', 'rebuild_index']
 
 if 'test' in sys.argv:
@@ -28,7 +27,7 @@ if 'test' in sys.argv:
             'NAME': os.getcwd() + '/ahmia_db_test', # Database name
         }
     }
-elif [cmd for cmd in demo_env if cmd in sys.argv]:
+elif [cmd for cmd in DEMO_ENV if cmd in sys.argv]:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3', # Database engine
@@ -50,11 +49,9 @@ else:
 # ELASTICSEARCH STUFF
 ELASTICSEARCH_TLS_FPRINT = \
     "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
-ELASTICSEARCH_HOST = "ahmia.fi"
-ELASTICSEARCH_PORT = 443
-
-PROXY_BASE_URL = 'http://localhost:9200/'
-# For external access 'https://ahmia.fi/elasticsearch/'
+ELASTICSEARCH_SERVERS = 'http://localhost:9200'
+ELASTICSEARCH_INDEX = 'crawl'
+ELASTICSEARCH_TYPE = 'tor'
 
 # Email settings
 EMAIL_USE_TLS = True
@@ -88,11 +85,11 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-STATIC_URL = '/media/'
+STATIC_URL = '/static/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-STATIC_ROOT = os.path.join(PROJECT_HOME, 'search/static/')
+STATIC_ROOT = os.path.join(PROJECT_HOME, 'static/')
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -112,15 +109,19 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'ahmia.urls'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_HOME, 'search/templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-    #'debug_toolbar',
-    'search'
+    'ahmia',
+    'search',
+    'stats'
 )
