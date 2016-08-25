@@ -89,7 +89,7 @@ STATIC_URL = '/static/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-STATIC_ROOT = os.path.join(PROJECT_HOME, 'static/')
+STATIC_ROOT = os.path.join(PROJECT_HOME, 'ahmia/static/')
 
 # List of finder classes that know how to find static files in
 # various locations.
