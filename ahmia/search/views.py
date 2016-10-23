@@ -154,8 +154,8 @@ class TorResultsView(ElasticsearchBaseListView):
 
 class IipResultsView(TorResultsView):
     """ I2P Search results view """
+    template_name = "i2p_results.html"
     def get_es_context(self, **kwargs):
-        context = super(IipResultsView, self).get_es_context(kwargs['q'],
-                                                             kwargs['page'])
-        context['type'] = "i2p"
+        context = super(IipResultsView, self).get_es_context(**kwargs)
+        context['doc_type'] = "i2p"
         return context
