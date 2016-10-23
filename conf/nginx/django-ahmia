@@ -33,9 +33,9 @@ server {
         alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
     }
 
-    location /static {
-        alias /usr/local/lib/ahmia-site/ahmia/search/static;
-    }
+    #location /static {
+    #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
+    #}
 
     # Django WSGI Server
     location / {
@@ -62,9 +62,9 @@ server {
         alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
     }
 
-    location /static {
-        alias /usr/local/lib/ahmia-site/ahmia/search/static;
-    }
+    #location /static {
+    #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
+    #}
 
     location =/description.json {
         alias /usr/local/lib/ahmia-site/ahmia/search/static/description.json;
@@ -96,9 +96,9 @@ server {
         alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
     }
 
-    location /static {
-        alias /usr/local/lib/ahmia-site/ahmia/search/static;
-    }
+    #location /static {
+    #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
+    #}
 
     # Django WSGI Server
     location / {
