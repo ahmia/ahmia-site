@@ -135,7 +135,7 @@ class OnionListView(ElasticsearchBaseListView):
                 "aggs" : {
                     "domains" : {
                         "terms" : {"field" : "domain",
-                                   "size": 1000}
+                                   "size": 10000}
                     }
                 }
             },
