@@ -2,6 +2,10 @@ upstream django {
     server unix:///tmp/ahmia.sock;
 }
 
+upstream django-onion {
+    server unix:///tmp/msydqstlz2kzerdg.sock;
+}
+
 server {
    listen 80;
    return 301 https://$host$request_uri;
@@ -12,18 +16,39 @@ server {
          return 301 $scheme://$1$request_uri ;
 }
 
+# Sets the path and other parameters of a cache. Cache data are stored in files.
+# Max size is 5 GigaByte.
+# Inactive specifies how long an item can remain in the cache without being accessed.
+# In this setting, a file that has not been requested for 1440 minutes (24h)
+# is automatically deleted from the cache by the cache manager process,
+# regardless of whether or not it has expired.
+proxy_cache_path /var/cache/nginx/ levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=1440m;
+
 server {
+    ssl on;
     listen      443 ssl;
     server_name ahmia.fi;
+
+    limit_conn conn_limit_per_ip 50;
+    limit_req zone=req_limit_per_ip burst=100 nodelay;
 
     charset     utf-8;
     client_max_body_size 75M;   # adjust to taste
 
-    ssl on;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
-    ssl_certificate         /etc/nginx/cert.crt;
-    ssl_certificate_key     /etc/nginx/cert.key;
+    #Startcom
+    #ssl on;
+    #ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    #ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+    #ssl_certificate         /etc/nginx/cert_2016.crt;
+    #ssl_certificate_key     /etc/nginx/cert_2016.key;
+
+    #ssl_stapling_verify on
+    #ssl_stapling on;
+    ssl_trusted_certificate /etc/letsencrypt/live/ahmia.fi/chain.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_certificate_key /etc/letsencrypt/live/ahmia.fi/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/ahmia.fi/fullchain.pem;
+
 
     access_log  /usr/local/lib/search/error/access.log;
     error_log  /usr/local/lib/search/error/error.log;
@@ -41,6 +66,19 @@ server {
     location / {
         uwsgi_pass  django;
         include     uwsgi_params;
+
+        ################## CACHE SETTINGS ##################
+
+        # Sets the number of requests after which the response will be cached.
+        proxy_cache_min_uses 1;
+
+        # Cache GET, HEAD and POST methods
+        proxy_cache_methods GET HEAD;
+
+        # Sets caching time for different response codes.
+        proxy_cache_valid 200 301 302 1440m; # 0s, 24h, 1440m = 24h
+        proxy_cache_valid 404 500 60m; # 60m
+        proxy_cache_valid any 30m; # 30m
     }
 }
 
@@ -66,43 +104,31 @@ server {
     #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
     #}
 
+    location /address/ {
+        return 404;
+    }
+
     location =/description.json {
         alias /usr/local/lib/ahmia-site/ahmia/search/static/description.json;
     }
 
     # Django WSGI Server
     location / {
-        uwsgi_pass  django;
+        uwsgi_pass  django-onion;
         include     uwsgi_params;
+
+        ################## CACHE SETTINGS ##################
+
+        # Sets the number of requests after which the response will be cached.
+        proxy_cache_min_uses 1;
+
+        # Cache GET, HEAD and POST methods
+        proxy_cache_methods GET HEAD;
+
+        # Sets caching time for different response codes.
+        proxy_cache_valid 200 301 302 1440m; # 0s, 24h, 1440m = 24h
+        proxy_cache_valid 404 500 60m; # 60m
+        proxy_cache_valid any 30m; # 30m
     }
 }
 
-server {
-    listen      127.0.0.1:12345;
-    server_name ahmia.i2p xg4a4v2bhxvubnjah2ywojvnxlzfca62tj66n3tde2jk7mjse5yq.b32.i2p;
-
-    charset     utf-8;
-    client_max_body_size 75M;   # adjust to taste
-
-    #log_format   main '0.0.0.0 - $remote_user [$time_local]  $status '
-    #'"$request" $body_bytes_sent "$http_referer" '
-    #'"$http_user_agent" "$http_x_forwarded_for"';
-    access_log  /usr/local/lib/search/error/i2p_access.log;
-    error_log  /usr/local/lib/search/error/i2p_error.log;
-
-
-    # Django media
-    location /media  {
-        alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
-    }
-
-    #location /static {
-    #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
-    #}
-
-    # Django WSGI Server
-    location / {
-        uwsgi_pass  django;
-        include     uwsgi_params;
-    }
-}

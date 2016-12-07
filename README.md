@@ -67,7 +67,7 @@ The django settings.py is configured in a way that it only serve statics if DEBU
 Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf). We suggest Apache2 or Nginx with Uwsgi
 
 ```sh
-cp conf/uwsgi/django-ahmia.ini /etc/uwsgi/apps-enabled/ahmia.ini
+cp conf/uwsgi/vassals/*.ini /etc/uwsgi/vassals/
 cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
 ```
 
