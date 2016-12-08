@@ -68,11 +68,12 @@ server {
         include     uwsgi_params;
 
         ################## CACHE SETTINGS ##################
+	proxy_cache my_cache;
 
         # Sets the number of requests after which the response will be cached.
         proxy_cache_min_uses 1;
 
-        # Cache GET, HEAD and POST methods
+        # Cache GET and HEAD methods
         proxy_cache_methods GET HEAD;
 
         # Sets caching time for different response codes.
@@ -104,10 +105,6 @@ server {
     #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
     #}
 
-    location /address/ {
-        return 404;
-    }
-
     location =/description.json {
         alias /usr/local/lib/ahmia-site/ahmia/search/static/description.json;
     }
@@ -118,11 +115,12 @@ server {
         include     uwsgi_params;
 
         ################## CACHE SETTINGS ##################
+	proxy_cache my_cache;
 
         # Sets the number of requests after which the response will be cached.
         proxy_cache_min_uses 1;
 
-        # Cache GET, HEAD and POST methods
+        # Cache GET and HEAD methods
         proxy_cache_methods GET HEAD;
 
         # Sets caching time for different response codes.
