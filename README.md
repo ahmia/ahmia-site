@@ -69,6 +69,8 @@ Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/
 ```sh
 cp conf/uwsgi/vassals/*.ini /etc/uwsgi/vassals/
 cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
+uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data --daemonize /var/log/uwsgi-emperor.log
+service nginx start
 ```
 
 # Support

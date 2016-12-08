@@ -35,9 +35,9 @@ urlpatterns = [
     url(r'^add/$', views.AddView.as_view(), name="add"), #domain:port/add
     url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
     # The plain texts list of onion URL.
-    url(r'^onions/', views.OnionListView.as_view(), name="onions"),
+    url(r'^onions/$', views.OnionListView.as_view(), name="onions"),
     # GET lists every known HS
-    url(r'^address/', views.AddressListView.as_view(), name="address"),
+    url(r'^address/$', views.AddressListView.as_view(), name="address"),
 ]
 
 # deprecated urls
