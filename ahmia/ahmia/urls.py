@@ -30,13 +30,13 @@ urlpatterns = [
     url(r'^blacklist/$', views.BlacklistView.as_view(), name="blacklist"),
     url(r'^blacklist/success/', views.BlacklistSuccessView.as_view(),
         name="blacklist-success"),
-    url(r'^blacklist/banned/', views.BannedDomainListView.as_view(),
+    url(r'^blacklist/banned/', cache_page(60 * 60)(views.BannedDomainListView.as_view()),
         name="domains-banned"),
     # Add domain form.
     url(r'^add/$', views.AddView.as_view(), name="add"), #domain:port/add
     url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
     # The plain texts list of onion URL.
-    url(r'^onions/$', views.OnionListView.as_view(), name="onions"),
+    url(r'^onions/$', cache_page(60 * 60)(views.OnionListView.as_view()), name="onions"),
     # GET lists every known HS
     url(r'^address/$', cache_page(60 * 60)(views.AddressListView.as_view()), name="address"),
 ]
