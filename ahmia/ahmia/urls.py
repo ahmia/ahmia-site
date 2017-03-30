@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.views.generic import TemplateView, RedirectView
 from django.views.static import serve
+from django.views.decorators.cache import cache_page
 
 from . import views
 
@@ -37,7 +38,7 @@ urlpatterns = [
     # The plain texts list of onion URL.
     url(r'^onions/$', views.OnionListView.as_view(), name="onions"),
     # GET lists every known HS
-    url(r'^address/$', views.AddressListView.as_view(), name="address"),
+    url(r'^address/$', cache_page(60 * 60)(views.AddressListView.as_view()), name="address"),
 ]
 
 # deprecated urls
