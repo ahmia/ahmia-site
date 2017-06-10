@@ -18,7 +18,7 @@ ALLOWED_HOSTS = [
 ]
 
 DEMO_ENV = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
-            'migrate', 'dumpdata', 'rebuild_index']
+            'migrate', 'dumpdata', 'rebuild_index', 'makemigrations']
 
 if 'test' in sys.argv:
     DATABASES = {
