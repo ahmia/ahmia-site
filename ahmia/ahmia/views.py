@@ -7,13 +7,16 @@ These pages does not require database connection.
 """
 from operator import itemgetter
 import hashlib
-
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-
+from ahmia.models import HiddenWebsite
 from ahmia import utils
 from .forms import AddOnionForm, ReportOnionForm
+from django.shortcuts import render, redirect
+
+
 
 class CoreView(TemplateView):
     """Core page of the website."""
@@ -55,15 +58,34 @@ class GsocView(CoreView):
     """Summer of code 2014."""
     template_name = "gsoc.html"
 
-class AddView(FormView):
+class AddView(TemplateView):
     """Add form for a new .onion address."""
     form_class = AddOnionForm
     success_url = "/add/success/"
     template_name = "add.html"
+    # if request.POST:
+    #     onion = AddOnionForm(request.POST)
+    # try:
+    #     hs, creat = HiddenWebsite.objects.get_or_create(id=onion)
+    #     if creat:
+    #         hs.full_clean()
+    #         hs.save()
+    # except ValidationError as error:
+    #     print "Invalid data: %s" % error
+    def post(self, request):
+        domain = AddOnionForm(request.POST)
+        if domain.is_valid():
+            domain.save()
+            #text=domain.cleaned_data('')
+            #domain=AddOnionForm()
+            return redirect('/add/success')
 
-    def form_valid(self, form):
-        form.send_new_onion()
-        return super(AddView, self).form_valid(form)
+        #args = {'domain':domain, 'text':text}
+        return render(request,self.template_name)
+    # def form_valid(self, form):
+    #     form.send_new_onion()
+    #     return super(AddView, self).form_valid(form)
+
 
 class AddSuccessView(CoreView):
     """Onion successfully added."""
