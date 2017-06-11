@@ -18,17 +18,17 @@ class AddOnionForm(forms.ModelForm):
         model = HiddenWebsite
         fields = ('onion',)
 
-    def send_new_onion(self):
-        """Send a new onion request by email."""
-        if settings.DEBUG:
-            return
-        subject = "Hidden service add onion request"
-        message = "User requests to add the following onion url {0}".format(
-            self.cleaned_data['onion']
-        )
-        send_mail(subject, message,
-                  settings.DEFAULT_FROM_EMAIL, settings.RECIPIENT_LIST,
-                  fail_silently=False)
+    # def send_new_onion(self):
+    #     """Send a new onion request by email."""
+    #     if settings.DEBUG:
+    #         return
+    #     subject = "Hidden service add onion request"
+    #     message = "User requests to add the following onion url {0}".format(
+    #         self.cleaned_data['onion']
+    #     )
+    #     send_mail(subject, message,
+    #               settings.DEFAULT_FROM_EMAIL, settings.RECIPIENT_LIST,
+    #               fail_silently=False)
 
 class ReportOnionForm(forms.Form):
     """Request to add an onion domain."""
