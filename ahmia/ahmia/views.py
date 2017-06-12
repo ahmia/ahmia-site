@@ -62,28 +62,28 @@ class AddView(TemplateView):
     """Add form for a new .onion address."""
     form_class = AddOnionForm
     template_name = "add.html"
+    failpage = "add_fail.html"
+    successpage = "add_success.html"
 
     def post(self, request):
         domain = AddOnionForm()
         if request.method == "POST":
             domain = AddOnionForm(request.POST)
-            print domain
             if domain.is_valid():
                 onion = request.POST.get('onion','')
                 onion = HiddenWebsite(onion = onion)
                 onion.save() 
-                return redirect('/add/success')
-
-        return render(request,self.template_name)
+                return render(request,self.successpage)#redirect('/add/success')
+        return render(request,self.failpage)
 
     def form_valid(self, form):
         form.send_new_onion()
         return super(AddView, self).form_valid(form)
 
 
-class AddSuccessView(CoreView):
-    """Onion successfully added."""
-    template_name = "add_success.html"
+# class AddSuccessView(CoreView):
+#     """Onion successfully added."""
+#     template_name = "add_success.html"
 
 class AddListView(TemplateView):
     """List of onions added"""
