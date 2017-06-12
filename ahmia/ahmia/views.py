@@ -61,40 +61,37 @@ class GsocView(CoreView):
 class AddView(TemplateView):
     """Add form for a new .onion address."""
     form_class = AddOnionForm
-    success_url = "/add/success/"
-    success_template = "add_success.html"
     template_name = "add.html"
-    # if request.POST:
-    #     onion = AddOnionForm(request.POST)
-    # try:
-    #     hs, creat = HiddenWebsite.objects.get_or_create(id=onion)
-    #     if creat:
-    #         hs.full_clean()
-    #         hs.save()
-    # except ValidationError as error:
-    #     print "Invalid data: %s" % error
+
     def post(self, request):
         domain = AddOnionForm()
-        if request.method=="POST":
+        if request.method == "POST":
             domain = AddOnionForm(request.POST)
             print domain
             if domain.is_valid():
                 onion = request.POST.get('onion','')
-                onion_add = HiddenWebsite(onion = onion)
-                print onion_add.onion
-                onion_add.save() 
+                onion = HiddenWebsite(onion = onion)
+                onion.save() 
                 return redirect('/add/success')
 
-        #args = {'domain':domain, 'text':text}
         return render(request,self.template_name)
-    # def form_valid(self, form):
-    #     form.send_new_onion()
-    #     return super(AddView, self).form_valid(form)
+
+    def form_valid(self, form):
+        form.send_new_onion()
+        return super(AddView, self).form_valid(form)
 
 
 class AddSuccessView(CoreView):
     """Onion successfully added."""
     template_name = "add_success.html"
+
+class AddListView(TemplateView):
+    """List of onions added"""
+    template_name = "add_list.html"
+    def new_onion(self, sites):
+        sites = HiddenWebsite.objects.all()
+        sites = [address.onion for address in sites]
+        return sorted(sites)
 
 class BlacklistView(FormView):
     """Return a blacklist page with MD5 sums of banned content."""

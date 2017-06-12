@@ -1,0 +1,10 @@
+{% extends 'add.html' %}
+{% load i18n %}
+
+{% block body %}
+
+{% for address in sites %}
+{{ address }}<br>
+{% endfor %}
+
+{% endblock %}
