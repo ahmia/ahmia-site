@@ -4,16 +4,16 @@
 {% block body %}
 <div id="ahmiaAboutPage">
   <div id="ahmiaAddService">
-  	  <h3>{% trans "Successfull!!" %}</h3>
+	  <h3 >{% trans "Failure!!" %}</h3>
 	  <p>
 	    {% blocktrans %}
-	    Your request to add a service was successfully submitted. Thank
-	    you for improving Ahmia content. A moderator will add it to the index shortly.
+	    Your request to add a service was either invalid or already exists in our database.<br>
+	    <i>Note: Valid request is of type "http://msydqstlz2kzerdg.onion/"</i>
 	    {% endblocktrans %}
 	  </p>
 	  <br>
 	  <a href="javascript:history.back();">{% trans "Go back" %}</a>
 	  </p>
-  </div>
+	  </div>
 </div>
 {% endblock %}
