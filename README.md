@@ -54,6 +54,10 @@ $ python ahmia/manage.py runserver
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
+## Crontab to remove '/onionsadded' weekly
+```sh
+0 22 * * * cd /your/ahmia/folder/ && ./manage.py shell < remove_onionsadded.py
+```
 
 # FAQ
 
