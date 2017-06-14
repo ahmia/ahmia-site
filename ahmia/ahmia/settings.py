@@ -49,7 +49,7 @@ else:
 # ELASTICSEARCH STUFF
 ELASTICSEARCH_TLS_FPRINT = \
     "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
-ELASTICSEARCH_SERVERS = 'https://ahmia.fi/esconnection/' #'http://localhost:9200'
+ELASTICSEARCH_SERVERS = 'http://localhost:9200'#'https://ahmia.fi/esconnection/'
 ELASTICSEARCH_INDEX = 'crawl'
 ELASTICSEARCH_TYPE = 'tor'
 
