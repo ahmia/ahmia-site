@@ -25,7 +25,7 @@
   <h3 class="checkForm">{% trans "Add your hidden service" %}</h3>
   <div id="ahmiaFormContainer">
     <form id="addOnion" method="post" action="">
-      {{ form.onion }}
+      {{ form.onion }}<input type="url" name="onion">
       <input type="submit" value="{% trans "Add" %}">
     </form>
     {% if form.errors %}
@@ -33,6 +33,7 @@
       {{ form.onion.errors }}
       </div>
     {% endif %}
+  <h3 class="checkForm">{% trans "Example : http://msydqstlz2kzerdg.onion/ " %}</h3>
   </div>
 </div>
 

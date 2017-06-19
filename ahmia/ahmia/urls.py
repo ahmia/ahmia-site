@@ -34,7 +34,8 @@ urlpatterns = [
         name="domains-banned"),
     # Add domain form.
     url(r'^add/$', views.AddView.as_view(), name="add"), #domain:port/add
-    url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
+    #url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
+    url(r'^add/onionsadded/', views.AddListView),
     # The plain texts list of onion URL.
     url(r'^onions/$', cache_page(60 * 60)(views.OnionListView.as_view()), name="onions"),
     # GET lists every known HS

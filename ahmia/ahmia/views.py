@@ -7,13 +7,18 @@ These pages does not require database connection.
 """
 from operator import itemgetter
 import hashlib
-
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-
+from ahmia.models import HiddenWebsite
 from ahmia import utils
 from .forms import AddOnionForm, ReportOnionForm
+from django.shortcuts import render, redirect
+from django.template import Context, loader
+from django.http import HttpResponse
+
+
 
 class CoreView(TemplateView):
     """Core page of the website."""
@@ -55,19 +60,40 @@ class GsocView(CoreView):
     """Summer of code 2014."""
     template_name = "gsoc.html"
 
-class AddView(FormView):
+class AddView(TemplateView):
     """Add form for a new .onion address."""
     form_class = AddOnionForm
-    success_url = "/add/success/"
     template_name = "add.html"
+    failpage = "add_fail.html"
+    successpage = "add_success.html"
+
+    def post(self, request):
+        domain = AddOnionForm()
+        if request.method == "POST":
+            domain = AddOnionForm(request.POST)
+            if domain.is_valid():
+                onion = request.POST.get('onion','')
+                onion = HiddenWebsite(onion = onion)
+                onion.save()
+                return render(request,self.successpage)#redirect('/add/success')
+        return render(request,self.failpage)
 
     def form_valid(self, form):
         form.send_new_onion()
         return super(AddView, self).form_valid(form)
 
-class AddSuccessView(CoreView):
-    """Onion successfully added."""
-    template_name = "add_success.html"
+
+# class AddSuccessView(CoreView):
+#     """Onion successfully added."""
+#     template_name = "add_success.html"
+
+def AddListView(request):
+    """List of onions added"""
+    template = loader.get_template('add_list.html')
+    sites = HiddenWebsite.objects.all()
+    sites = [address.onion for address in sites]
+    content = Context({'sites': sites})
+    return HttpResponse(template.render(content))
 
 class BlacklistView(FormView):
     """Return a blacklist page with MD5 sums of banned content."""
