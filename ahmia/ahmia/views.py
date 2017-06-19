@@ -15,6 +15,8 @@ from ahmia.models import HiddenWebsite
 from ahmia import utils
 from .forms import AddOnionForm, ReportOnionForm
 from django.shortcuts import render, redirect
+from django.template import Context, loader
+from django.http import HttpResponse
 
 
 
@@ -72,7 +74,7 @@ class AddView(TemplateView):
             if domain.is_valid():
                 onion = request.POST.get('onion','')
                 onion = HiddenWebsite(onion = onion)
-                onion.save() 
+                onion.save()
                 return render(request,self.successpage)#redirect('/add/success')
         return render(request,self.failpage)
 
@@ -85,13 +87,13 @@ class AddView(TemplateView):
 #     """Onion successfully added."""
 #     template_name = "add_success.html"
 
-class AddListView(TemplateView):
+def AddListView(request):
     """List of onions added"""
-    template_name = "add_list.html"
-    def new_onion(self, sites):
-        sites = HiddenWebsite.objects.all()
-        sites = [address.onion for address in sites]
-        return sorted(sites)
+    template = loader.get_template('add_list.html')
+    sites = HiddenWebsite.objects.all()
+    sites = [address.onion for address in sites]
+    content = Context({'sites': sites})
+    return HttpResponse(template.render(content))
 
 class BlacklistView(FormView):
     """Return a blacklist page with MD5 sums of banned content."""

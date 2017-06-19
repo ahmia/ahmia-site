@@ -45,6 +45,8 @@ $ source /path/to/venv/bin/activate
 
 ## Migrate db
 ```sh
+$ python ahmia/manage.py makemigrations ahmia
+$ python ahmia/manage.py makemigrations search
 $ python ahmia/manage.py migrate
 ```
 
