@@ -10,7 +10,7 @@ def get_elasticsearch_object():
         es_servers = es_servers if isinstance(es_servers, list) \
             else [es_servers]
     except AttributeError:
-        es_servers = ["http://localhost:9200"]
+        es_servers = ["http://localhost:9200"]#["https://ahmia.fi/esconnection/"]
 
     try:
         timeout = settings.ELASTICSEARCH_TIMEOUT
