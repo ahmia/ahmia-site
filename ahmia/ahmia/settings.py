@@ -38,11 +38,11 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'ahmia_db',              # Database name
+            'NAME': 'ahmiasite',             # Database name
             'USER': 'ahmia_login',           # Not used with sqlite3.
             'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
             'HOST': '',                      # Set to empty string for localhost
-            'PORT': '6432', # pbbouncer port
+            'PORT': '5432',                  # pbbouncer port
         }
     }
 
