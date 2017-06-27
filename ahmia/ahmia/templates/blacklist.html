@@ -30,7 +30,9 @@
     the onion is <code>abcdefghijklmnop.onion</code>, the resulting hash would be
     <code>c50b9578b6357a561909ff29331ad7ad</code>.
     This way it is possible for researchers and administrators to check if a site has been
-    blacklisted from the index without making the .onion hostnames easily accessible.
+    blacklisted from the index without making the .onion hostnames easily accessible. <br>
+    To calculate MD5 of onions run the following command : <br>
+    <code> echo -e "abcdefghijklmnop.onion\c" | md5sum </code>
     {% endblocktrans %}
   </p>
   <p class="end">
@@ -65,7 +67,13 @@
     {% endfor %}
   </ul>
   </div>
+  <div id="bannedDomainsMD5">
+  <p class="end">
+    <h3>Banned Hidden Services MD5 checksums</h3>
+    {% for hash in domains %}
+    {{ hash }}<br>
+    {% endfor %}
+  </p>
+  </div>
 </div>
-
-
 {% endblock %}

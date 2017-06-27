@@ -101,6 +101,31 @@ class BlacklistView(FormView):
     success_url = "/blacklist/success/"
     template_name = "blacklist.html"
 
+    def get_es_context(self, **kwargs):
+        return {
+            "index": utils.get_elasticsearch_index(),
+            "doc_type": utils.get_elasticsearch_type(),
+            "size": 0,
+            "body": {
+                "query": {
+                    "constant_score" : {
+                        "filter" : {
+                            "term" : {
+                                "is_banned" : 1
+                            }
+                        }
+                    }
+                },
+                "aggs" : {
+                    "domains" : {
+                        "terms" : {"field" : "domain",
+                                   "size": 1000}
+                    }
+                }
+            },
+            "_source_include": ["title", "url", "meta", "updated_on", "domain"]
+        }
+
     def form_valid(self, form):
         form.send_abuse_report()
         return super(BlacklistView, self).form_valid(form)

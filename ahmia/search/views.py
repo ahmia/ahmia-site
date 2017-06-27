@@ -39,18 +39,26 @@ class TorResultsView(ElasticsearchBaseListView):
                                 }
                             }
                         ],
-                        "filter": [
+                        "must_not": [
                             {
-                                "missing": {
-                                    "field": "is_fake"
-                                }
-                            },
-                            {
-                                "missing": {
+                                "exists": {
+                                    "field": "is_fake",
                                     "field": "is_banned"
                                 }
                             }
                         ]
+                        # "filter": [
+                        #     {
+                        #         "missing": {
+                        #             "field": "is_fake"
+                        #         }
+                        #     },
+                        #     {
+                        #         "missing": {
+                        #             "field": "is_banned"
+                        #         }
+                        #     }
+                        # ]
                     }
 
                 },
