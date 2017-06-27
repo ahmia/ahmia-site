@@ -70,9 +70,11 @@
   <div id="bannedDomainsMD5">
   <p class="end">
     <h3>Banned Hidden Services MD5 checksums</h3>
-    {% for hash in domains %}
-    {{ hash }}<br>
-    {% endfor %}
+    <ul id='list'>
+      {% for site in domains %}
+      <li>{{ site }}</li>
+      {% endfor %}
+    </ul>
   </p>
   </div>
 </div>
