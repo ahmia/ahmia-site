@@ -48,26 +48,12 @@
 <div id="ahmiaAddService">
 <div class="aboutAhmia">
 <h1>Onion domain list</h1>
-<div id="search">
-<form action="#" class="filterform"><input autofocus="autofocus" placeholder="search term" id="torsearch" class="filterinput" type="text"></form>
-</div>
 <div id='wrap'>
   <ul id='list' class='steps'>
     {% for site in domains %} {% if not site.banned %}
     <li class="hs_site clickable_pointer">
-      <div onclick="window.location='/address/{{ site.hs_id  }}'">
-        <h3><a href="{{ site.domain }}">{{ site.domain }}</a></h3>
-        <!--
-        <p class='links'>
-          Proxy link:
-          <a href='https://{{ site.id }}.tor2web.org'>https://{{ site.id }}.tor2web.org</a>
-        </p>
-        -->
-        <div class='infotext'>
-          <b>Pages indexed: </b>{{ site.pages }}
-        </div>
-      </div>
-      <button id="button_{{ site.hs_id }}" type="button" onclick="abuse_notice('{{ site.hs_id }}');">Send a note that this site should be filtered.</button>
+        <h3><a href="http://{{ site.domain }}/">{{ site.domain }}</a></h3>
+        <button id="button_{{ site.hs_id }}" type="button" onclick="abuse_notice('{{ site.hs_id }}');">Send a note that this site should be filtered.</button>
     </li>
     {% endif %} {% endfor %}
   </ul>

@@ -6,12 +6,8 @@
 {% block title %}{% trans "Hidden Service Blacklist" %} &mdash; Ahmia{% endblock %}
 {% block extra_js %}
 {% is_development_environment as is_dev %}
-{% if is_dev %}
   <script src="{% static 'js/blacklist.js' %}"></script>
   <script src="{% static 'js/md5.js' %}"></script>
-{% else %}
-  <script src="{% static 'blacklist.signed.js' %}"></script>
-{% endif %}
 {% endblock %}
 {% block body %}
 <div id="ahmiaBlacklist">
