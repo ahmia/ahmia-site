@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load static %}
+
+{% block title %}Link Graph of onions{% endblock %}
+
+{% block body %}
+
+<!-- This graph was designed using sigma.js library of Gephi-->
+
+
+<script src="{% static 'js/jquery/jquery.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/sigma/sigma.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/sigma/sigma.parseJson.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/fancybox/jquery.fancybox.pack.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+
+<link rel="stylesheet" href="{% static 'js/fancybox/jquery.fancybox.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen" />
+<link rel="stylesheet" href="{% static 'css/tablet.css' %}" media="screen and (max-height: 770px)" />
+
+<div class="sigma-parent">
+  <div class="sigma-expand" id="sigma-canvas"></div>
+</div>
+<div id="mainpanel">
+  <div class="b1">
+    <form>
+      <div id="search" class="cf">
+        <h2>Search:</h2>
+        <input type="text" name="search" value="Search by name" class="empty" />
+        <div class="state"></div>
+        <div class="results"></div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<div id="zoom">
+  <div class="z" rel="in"></div>
+  <div class="z" rel="out"></div>
+  <div class="z" rel="center"></div>
+</div>
+<div id="copyright">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="{% static 'images/CC.png' %}" /></a></div>
+</div>
+<div id="attributepane">
+  <div class="text">
+    <div title="Close" class="left-close returntext">
+      <div class="c cf"><span>Return to the full network</span></div>
+    </div>
+    <div class="headertext">
+      <span>Information Pane</span>
+    </div>
+    <div class="nodeattributes">
+      <div class="name"></div>
+      <div class="data"></div>
+      <div class="p">Connections:</div>
+      <div class="link">
+        <ul>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
