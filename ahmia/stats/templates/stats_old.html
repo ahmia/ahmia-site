@@ -1,0 +1,52 @@
+{% extends "core.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Ahmia - Statistics{% endblock %}
+{% block body %}
+<div id="ahmiaAboutPage">
+
+  <noscript>
+    <p>Please enable JavaScript to view these statistics.</p>
+  </noscript>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'canvasjs.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'jquery.canvasjs.min.js' %}"></script>
+
+
+  <br>
+  <h2 class="sr">{% trans "Statistics" %}</h2>
+  <div id="chartContainer" style="height:500px; width:95%;">
+  </div>
+  <div class="aboutAhmia">
+
+    <h3>For hidden service operators</h3>
+
+    <p>
+      You can check <a href="/documentation/indexing/">how our hidden service indexing</a> works.
+    </p>
+
+    <p>
+      Please deliver your hidden service's official information: <a href="/documentation/descriptionProposal/">Proposal to hidden service operators.</a>
+    </p>
+  </div>
+  <div class="credits">
+    <p>
+      {% trans "donate Bitcoin" as donate_bitcoin %}
+      {% blocktrans %}
+      We extend a thank you to Ahmia's supporters.
+      If you believe in Ahmia, please <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ donate_bitcoin }}</a>.</p>
+      {% endblocktrans %}
+    </p>
+    <ul>
+      <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
+      <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
+      <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+      <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
+    </ul>
+  </div>
+</div>
+</div>
+<script src="/static/popularitygraph.js"</script>
+{% endblock %}
