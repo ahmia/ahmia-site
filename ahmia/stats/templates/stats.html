@@ -5,22 +5,13 @@
 {% block title %}Ahmia - Statistics{% endblock %}
 {% block body %}
 <div id="ahmiaAboutPage">
-
-  <noscript>
-    <p>Please enable JavaScript to view these statistics.</p>
-  </noscript>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-  <script type="text/javascript" src="{% static 'canvasjs.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'jquery.canvasjs.min.js' %}"></script>
-
-
-  <br>
-  <h2 class="sr">{% trans "Statistics" %}</h2>
-  <div id="chartContainer" style="height:500px; width:95%;">
-  </div>
   <div class="aboutAhmia">
+    <h3>Linking graph of onions in our database</h3>
 
+    <p>
+      <a href="/stats/link_graph">Click here to visualize</a>
+    </p>
+    <br>
     <h3>For hidden service operators</h3>
 
     <p>
@@ -48,5 +39,4 @@
   </div>
 </div>
 </div>
-<script src="/static/popularitygraph.js"</script>
 {% endblock %}
