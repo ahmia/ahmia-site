@@ -61,7 +61,7 @@ urlpatterns += [
 # include app urls
 urlpatterns += [
     url(r'^search/', include('search.urls', namespace='search')),
-    url(r'^stats/', include('stats.urls', namespace="api"))
+    url(r'^stats/', include('stats.urls', namespace='stats'))
 ]
 
 # static files: CSS, JavaScript, images
