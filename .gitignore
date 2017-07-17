@@ -5,3 +5,4 @@ venv/
 ahmia_db
 onionbot/*.json
 .idea/
+.DS_Store
