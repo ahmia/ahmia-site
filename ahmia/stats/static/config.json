@@ -1,7 +1,7 @@
 {
   "type": "network",
   "version": "1.0",
-  "data": "/static/data.json",
+  "data": "/stats/static/data.json",
   "logo": {
     "file": "",
     "link": "",
