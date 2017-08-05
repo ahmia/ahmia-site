@@ -45,7 +45,7 @@ def validate_onion_url(url):
         raise ValidationError(
             _(u'%(url)s is not ending with .onion/') % {'url': url}
         )
-    main_dom = url.find('.');
+    main_dom = url.find('.')
     if main_dom == 23:
         main_dom = 6
     if not validate_onion(url[main_dom+1:-7]):

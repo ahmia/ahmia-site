@@ -758,9 +758,19 @@ div.elastic.inner {
   padding-bottom: 1em;
   padding-right: 3em;
   float: left;
-  width: 160px;
-  height: 160px;
+  width: 140px;
+  height: 140px;
 }
+#ahmiaAboutPage div.moreOnAhmia img.github {
+  height: 1.3em;
+  width: 1.3em;
+}
+#ahmiaAboutPage div.moreOnAhmia ul li {
+  display:inline-block;
+  width: 300px;
+  font-size: 1.3em;
+}
+
 #ahmiaAboutPage div.credits {
   border-bottom-color: transparent;
   margin-bottom: 3em;
@@ -792,4 +802,10 @@ div.elastic.inner {
   border: 0;
   height: 50px;
   opacity: 0.9;
+}
+#ahmiaAboutPage div.aboutAhmia img.github_doc {
+  height: 2.3em;
+  width: 2.3em;
+  padding-left: 1em;
+
 }
