@@ -1,0 +1,111 @@
+{% extends 'core.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Ahmia - Documentation{% endblock %}
+{% block body %}
+<div id="ahmiaAboutPage">
+<h1>Documentation</h1>
+<div class="aboutAhmia">
+<ul>
+  <li>The number of searches per hour </li><a href="/stats/traffic">https://ahmia.fi/stats/traffic</a>
+  <li>Tor2web nodes </li> <a href="/stats/tor2web">https://ahmia.fi/stats/tor2web</a>
+  <li>History of the hidden websites </li><a href="/stats/history">https://ahmia.fi/stats/history</a>
+  <li>JSON popularity data </li><a href="/stats/popularity">https://ahmia.fi/stats/popularity</a>
+  <li>Hidden Service port scanning </li><a href="/stats/services">https://ahmia.fi/stats/services</a>
+  <li>Onion sites popularities over time </li><a href="/stats/onionsovertime">https://ahmia.fi/stats/onionsovertime</a>
+</ul>
+
+<p>
+  Security measure: Obfuscate real-time stats. The clicks are rounded to the next multiple of 8. This simple way prevents leaking too accurate real-time statistics.
+</p>
+
+<h4>Examples:</h4>
+<p>
+<ul>
+  <li>TOP 5 ordered by Tor2web visit count:</li>
+  <a href="https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web">https://ahmia.fi/stats/popularity?limit=5&amp;offset=0&amp;order_by=tor2web</a>
+  <br />
+  <li>The 10th from ordered by public WWW backlinks:</li>
+  <a href="https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks">https://ahmia.fi/stats/popularity?limit=9&amp;offset=8&amp;order_by=public_backlinks</a>
+  <br />
+  <li>The first from ordered by number of search result clicks:</li>
+  <a href="https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks">https://ahmia.fi/stats/popularity?limit=1&amp;offset=0&amp;order_by=clicks</a>
+</ul>
+</p>
+</div>
+<div class="aboutAhmia">
+<h3>Visualizations</h3>
+
+<p>
+  Visualizations of the statistics : <a href="/stats/viewer">https://ahmia.fi/stats/viewer</a>
+</p>
+</div>
+<div class="aboutAhmia">
+<h3>Onion information</h3>
+
+<p>
+  All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br>
+  These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
+</p>
+
+<p>
+  All known non-banned onion domains: <a href="/onions/">https://ahmia.fi/onions/</a>
+</p>
+
+<p>
+  See if a hidden service has been online (Down/Up) within a week: <a href="https://ahmia.fi/address/jntlesnev5o7zysa/status">https://ahmia.fi/address/jntlesnev5o7zysa/status</a>
+</p>
+
+<p>
+  Ask a hidden service's information:
+  <br />
+  <code>
+curl -i --insecure -H "Content-Type: application/json" https://ahmia.fi/address/jntlesnev5o7zysa/
+</code>
+  <br />
+  <code>
+curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/jntlesnev5o7zysa/
+</code>
+</p>
+
+<p>
+  Ask all hidden services' information:
+  <br />
+  <code>
+curl -i --insecure -H "Content-Type: application/json" https://ahmia.fi/address/
+</code>
+  <br />
+  <code>
+curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/
+</code>
+</p>
+</div>
+<div class="aboutAhmia">
+<h3>For hidden service operators</h3>
+
+<p>
+  You can check <a href="{% url 'doc-indexing' %}">how our hidden service indexing</a> works.
+</p>
+
+<p>
+  Please deliver your hidden service's official information: <a href="{% url 'doc-create-desc' %}">Proposal to hidden service operators.</a>
+</p>
+</div>
+<div class="credits">
+  <p>
+    {% trans "3CMc52oegWqorFsBRcakUGHkZEQMfLP43s" as bitcoin_address %}
+    {% blocktrans %}
+    We extend a thank you to Ahmia's supporters.
+    Bitcoin address: <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ bitcoin_address }}</a>.</p>
+    {% endblocktrans %}
+  </p>
+  <ul>
+    <li><img src="{% static 'images/logos/globaleaks.png' %}" alt="{% trans "Globaleaks Platform" %}"></li>
+    <li><img src="{% static '/static/images/logos/tor2web.png' %}" alt="{% trans "Tor2Web Platform" %}"></li>
+    <li><img src="{% static '/static/images/logos/hermes.png' %}" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+    <li><img src="{% static '/static/images/logos/torproject.png' %}" alt="{% trans "Tor Project" %}"></li>
+  </ul>
+  </div>
+</div>
+{% endblock %}
