@@ -1,30 +1,42 @@
 {% extends "core.html" %}
+{% load i18n %}
 
 {% block title %}Ahmia - Documentation{% endblock %}
-
 {% block body %}
 <div id="ahmiaAboutPage">
-  <h1>Documentation</h1>
-  <h2>Indexing and crawling</h2>
+  <div class="aboutAhmia">
+    <h1>Documentation</h1>
+    <h2>Indexing and crawling</h2>
+    <p>Ahmia is mainly divided into three parts:
+      <p>
+        <ul>
+          <li>Index : It refers to the data that Ahmia has collected. We use <a href="https://www.elastic.co/products/elasticsearch"> Elascticsearch </a> to maintain this data.</li>
+          <li>Crawler : It is the part that crawls onions on the Tor network and feed it to the index. <a href="https://scrapy.org/"> Scrapy </a> is one of the crawlers that we use.</li>
+          <li>Site : It is the backbone of Ahmia that includes the design of the website and makes the search engine work.</li>
+        </ul>
 
-  <p>We are using OnionBot crawler software to build the full text search.</p>
+        <p>Ahmia collects a list of known .onion sites, information about these sites and saves it to its database. Collected data is filtered to remove child abuse content (Refer :<a href="/blacklist"> {% trans "Blacklist" %} </a>).</p>
+        <p>Once data is filtered, it is available for search at Ahmia. </p>
+  </div>
+  <div class="aboutAhmia">
+    <h2>Robots.txt</h2>
 
-  <p>Furthermore, we are gathering a list of known .onion sites and information about the sites. We try in the following order fill as much as much information about the sites:</p>
-
-  <ol>
-    <li>Downloading <a href="{% url 'doc-indexing' %}">the official /description.json</a>
-    </li>
-    <li>Parse information from the HTML of the site</li>
-    <li>Let the users wrote the information</li>
-  </ol>
-
-  <h3>Robots.txt</h3>
-
-  <p>
-    We are honouring robots.txt files.
-    This means that you can prevent our crawler from indexing your page by using robots.txt rules.
-    This way your page is not shown in the search results.
-    On the other hand, your page still shows in the list of all known hidden services that are online.
-  </p>
+    <p>
+      We are honouring robots.txt files. This means that you can prevent our crawler from indexing your page by using robots.txt rules. This way your page is not shown in the search results. On the other hand, your page still shows in the list of all known
+      hidden services that are online.
+    </p>
+  </div>
+  <div class="credits">
+    <p>
+      {% trans "3CMc52oegWqorFsBRcakUGHkZEQMfLP43s" as bitcoin_address %} {% blocktrans %} We extend a thank you to Ahmia's supporters. Bitcoin address: <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ bitcoin_address }}</a>.</p>
+    {% endblocktrans %}
+    </p>
+    <ul>
+      <li><img src="/static/images/logos/globaleaks.png" alt="{% trans " Globaleaks Platform " %}"></li>
+      <li><img src="/static/images/logos/tor2web.png" alt="{% trans " Tor2Web Platform " %}"></li>
+      <li><img src="/static/images/logos/hermes.png" alt="{% trans " HERMES Center for Transparency and Digital Rights " %}"></li>
+      <li><img src="/static/images/logos/torproject.png" alt="{% trans " Tor Project " %}"></li>
+    </ul>
+  </div>
 </div>
 {% endblock %}
