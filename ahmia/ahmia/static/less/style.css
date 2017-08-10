@@ -739,7 +739,7 @@ div.elastic.inner {
 #ahmiaAboutPage div.moreOnAhmia,
 #ahmiaAboutPage div.credits {
   margin: 1em 0;
-  padding: 1em 0;
+  padding: 2em 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
@@ -764,6 +764,10 @@ div.elastic.inner {
 #ahmiaAboutPage div.moreOnAhmia img.github {
   height: 1.3em;
   width: 1.3em;
+}
+#ahmiaAboutPage div.moreOnAhmia img.github_doc {
+  height: 2.3em;
+  width: 2.3em;
 }
 #ahmiaAboutPage div.moreOnAhmia ul li {
   display:inline-block;

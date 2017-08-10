@@ -6,11 +6,22 @@
 {% block body %}
 <div id="ahmiaAboutPage">
   <h1>Documentation</h1>
-  <div class="aboutAhmia">
+  <div class="moreOnAhmia">
     <p>
       Source code of Ahmia is open source and available on Github <a href="//github.com/ahmia">
   <img src="/static/images/logos/github.png" alt="Github link" class="github_doc"></a>
     </p>
+    <p>
+      One can setup a working version of Ahmia on a local machine with its own crawlers and index.
+    </p>
+    <p>
+      Source code is mainly divided into three parts :
+    </p>
+    <ul>
+      <li><a href="//github.com/ahmia/ahmia-index">{% trans "ahmia-index" %}</a><br>Index containing onions crawled by your crawlers</li>
+      <li><a href="//github.com/ahmia/ahmia-crawler">{% trans "ahmia-crawler" %}</a><br>Crawls onions on the Tor network and feeds it to the index</li>
+      <li><a href="//github.com/ahmia/ahmia-site">{% trans "ahmia-site" %}</a><br>Contains the code of the website including search results</li>
+    </ul>
   </div>
   <div class="aboutAhmia">
     <h3>Visualizations</h3>
@@ -22,7 +33,7 @@
     <h3>Onion information</h3>
 
     <p>
-      All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br> These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
+      All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br> These are MD5 sums calculated from youronionaddress.onion\c part (echo -e "youronionaddress.onion\c" | md5sum).
     </p>
 
     <p>
@@ -33,39 +44,12 @@
       For filter requests of onions: <a href="https://ahmia.fi/address/">https://ahmia.fi/address/</a>
     </p>
 
-    <p>
-      Ask a hidden service's information:
-      <br />
-      <code>
-curl -i --insecure -H "Content-Type: application/json" https://ahmia.fi/address/jntlesnev5o7zysa/
-</code>
-      <br />
-      <code>
-curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/jntlesnev5o7zysa/
-</code>
-    </p>
-
-    <p>
-      Ask all hidden services' information:
-      <br />
-      <code>
-curl -i --insecure -H "Content-Type: application/json" https://ahmia.fi/address/
-</code>
-      <br />
-      <code>
-curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/
-</code>
-    </p>
   </div>
   <div class="aboutAhmia">
     <h3>For hidden service operators</h3>
 
     <p>
       You can add your domains and sub-domains on Ahmia add page : <a href="/add/">Add</a>
-    </p>
-
-    <p>
-      Description of your hidden service : <a href="/documentation/descriptionProposal/">Description template</a>
     </p>
 
     <p>
