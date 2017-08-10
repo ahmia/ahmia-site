@@ -1,85 +1,93 @@
 {% extends 'core.html' %}
 {% load i18n %}
-{% load static %}
 
-{% block title %}Ahmia - Documentation{% endblock %}
+{% load static %}
+{% block title %}Ahmia - Documentation {% endblock %}
 {% block body %}
 <div id="ahmiaAboutPage">
-<h1>Documentation</h1>
-<div class="aboutAhmia">
-<p>
-Source code of Ahmia is open source and available on Github <a href="//github.com/ahmia">
+  <h1>Documentation</h1>
+  <div class="aboutAhmia">
+    <p>
+      Source code of Ahmia is open source and available on Github <a href="//github.com/ahmia">
   <img src="/static/images/logos/github.png" alt="Github link" class="github_doc"></a>
-</p>
-</div>
-<div class="aboutAhmia">
-<h3>Visualizations</h3>
-<p>
-  Linking structure : <a href="/stats/link_graph">https://ahmia.fi/stats/link_graph/</a>
-</p>
-</div>
-<div class="aboutAhmia">
-<h3>Onion information</h3>
+    </p>
+  </div>
+  <div class="aboutAhmia">
+    <h3>Visualizations</h3>
+    <p>
+      Linking structure : <a href="/stats/link_graph">https://ahmia.fi/stats/link_graph/</a>
+    </p>
+  </div>
+  <div class="aboutAhmia">
+    <h3>Onion information</h3>
 
-<p>
-  All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br>
-  These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
-</p>
+    <p>
+      All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br> These are MD5 sums calculated from something.onion\c part (echo -e "BLAHBLAHBLAH.onion\c" | md5sum).
+    </p>
 
-<p>
-  All known non-banned onion domains: <a href="/onions/">https://ahmia.fi/onions/</a>
-</p>
+    <p>
+      All known non-banned onion domains: <a href="/onions/">https://ahmia.fi/onions/</a>
+    </p>
 
-<p>
-  For filter requests of onions: <a href="https://ahmia.fi/address/">https://ahmia.fi/address/</a>
-</p>
+    <p>
+      For filter requests of onions: <a href="https://ahmia.fi/address/">https://ahmia.fi/address/</a>
+    </p>
 
-<p>
-  Ask a hidden service's information:
-  <br />
-  <code>
+    <p>
+      Ask a hidden service's information:
+      <br />
+      <code>
 curl -i --insecure -H "Content-Type: application/json" https://ahmia.fi/address/jntlesnev5o7zysa/
 </code>
-  <br />
-  <code>
+      <br />
+      <code>
 curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/jntlesnev5o7zysa/
 </code>
-</p>
+    </p>
 
-<p>
-  Ask all hidden services' information:
-  <br />
-  <code>
+    <p>
+      Ask all hidden services' information:
+      <br />
+      <code>
 curl -i --insecure -H "Content-Type: application/json" https://ahmia.fi/address/
 </code>
-  <br />
-  <code>
+      <br />
+      <code>
 curl -i --insecure -H "Content-Type: application/rdf+xml" https://ahmia.fi/address/
 </code>
-</p>
-</div>
-<div class="aboutAhmia">
-<h3>For hidden service operators</h3>
+    </p>
+  </div>
+  <div class="aboutAhmia">
+    <h3>For hidden service operators</h3>
 
-<p>
-  You can add your domains and sub-domains on Ahmia add page: <a href="/add/">https://ahmia.fi/add/</a>
-</p>
+    <p>
+      You can add your domains and sub-domains on Ahmia add page : <a href="/add/">Add</a>
+    </p>
 
-</div>
-<div class="credits">
-  <p>
-    {% trans "3CMc52oegWqorFsBRcakUGHkZEQMfLP43s" as bitcoin_address %}
-    {% blocktrans %}
-    We extend a thank you to Ahmia's supporters.
-    Bitcoin address: <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ bitcoin_address }}</a>.</p>
+    <p>
+      Description of your hidden service : <a href="/documentation/descriptionProposal/">Description template</a>
+    </p>
+
+    <p>
+      Info about hidden service indexing and crawling : <a href="/documentation/indexing/">Indexing</a>
+    </p>
+
+    <p>
+      Ahmia blacklists child abuse content : <a href="/blacklist/">Blacklist</a>
+    </p>
+
+  </div>
+  <div class="credits">
+    <p>
+      {% trans "3CMc52oegWqorFsBRcakUGHkZEQMfLP43s" as bitcoin_address %} {% blocktrans %} We extend a thank you to Ahmia's supporters. Bitcoin address: <a href="bitcoin:3CMc52oegWqorFsBRcakUGHkZEQMfLP43s">{{ bitcoin_address }}</a>.</p>
     {% endblocktrans %}
-  </p>
-  <ul>
-    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
-    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
-    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
-    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
-  </ul>
+    </p>
+    <ul>
+      <li><img src="/static/images/logos/globaleaks.png" alt="{% trans " Globaleaks Platform " %}"></li>
+      <li><img src="/static/images/logos/tor2web.png" alt="{% trans " Tor2Web Platform " %}"></li>
+      <li><img src="/static/images/logos/hermes.png" alt="{% trans " HERMES Center for Transparency and Digital Rights " %}"></li>
+      <li><img src="/static/images/logos/torproject.png" alt="{% trans " Tor Project " %}"></li>
+    </ul>
   </div>
 </div>
 {% endblock %}
