@@ -7,12 +7,12 @@
   <div class="aboutAhmia">
     <h1>Documentation</h1>
     <h2>Indexing and crawling</h2>
-    <p>Ahmia is mainly divided into three parts:
+    <p>Ahmia is mainly divided into three parts. Codes for these parts are open source and available on Github. You can click on respective links to access them.
       <p>
         <ul>
-          <li>Index : It refers to the data that Ahmia has collected. We use <a href="https://www.elastic.co/products/elasticsearch"> Elascticsearch </a> to maintain this data.</li>
-          <li>Crawler : It is the part that crawls onions on the Tor network and feed it to the index. <a href="https://scrapy.org/"> Scrapy </a> is one of the crawlers that we use.</li>
-          <li>Site : It is the backbone of Ahmia that includes the design of the website and makes the search engine work.</li>
+          <li><a href="//github.com/ahmia/ahmia-index">Index</a> : It refers to the data that Ahmia has collected. We use <a href="https://www.elastic.co/products/elasticsearch"> Elascticsearch </a> to maintain this data.</li>
+          <li><a href="//github.com/ahmia/ahmia-crawler">Crawler</a> : It is the part that crawls onions on the Tor network and feed it to the index. <a href="https://scrapy.org/"> Scrapy </a> is one of the crawlers that we use.</li>
+          <li><a href="//github.com/ahmia/ahmia-site">Site</a> : It is the backbone of Ahmia that includes the design of the website and makes the search engine work.</li>
         </ul>
 
         <p>Ahmia collects a list of known .onion sites, information about these sites and saves it to its database. Collected data is filtered to remove child abuse content (Refer :<a href="/blacklist"> {% trans "Blacklist" %} </a>).</p>
@@ -24,6 +24,9 @@
     <p>
       We are honouring robots.txt files. This means that you can prevent our crawler from indexing your page by using robots.txt rules. This way your page is not shown in the search results. On the other hand, your page still shows in the list of all known
       hidden services that are online.
+    </p>
+    <p>
+      Check <a href="//www.robotstxt.org/robotstxt.html">robotstxt.org</a> for details to create robots.txt.
     </p>
   </div>
   <div class="credits">
