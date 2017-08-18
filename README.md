@@ -58,7 +58,7 @@ Quit the server with CONTROL-C.
 ```
 ## Crontab to remove '/onionsadded' weekly
 ```sh
-0 22 * * * cd /your/ahmia/folder/ && ./manage.py shell < remove_onionsadded.py
+0 22 * * * cd ahmia/ && ./manage.py shell < remove_onionsadded.py
 ```
 
 # FAQ
