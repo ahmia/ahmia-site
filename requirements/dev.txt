@@ -4,7 +4,7 @@ cffi==1.7.0
 colorama==0.3.7
 configparser==3.5.0
 cryptography==1.4
-Django==1.10
+Django==1.11
 elasticsearch==5.4.0
 enum34==1.1.6
 idna==2.1
