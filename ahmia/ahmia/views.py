@@ -15,7 +15,7 @@ from ahmia.models import HiddenWebsite
 from ahmia import utils
 from .forms import AddOnionForm, ReportOnionForm
 from django.shortcuts import render, redirect
-from django.template import Context, loader
+from django.template import loader
 from django.http import HttpResponse
 
 
@@ -92,7 +92,7 @@ def AddListView(request):
     template = loader.get_template('add_list.html')
     sites = HiddenWebsite.objects.all()
     sites = [address.onion for address in sites]
-    content = Context({'sites': sites})
+    content = {'sites': sites}
     return HttpResponse(template.render(content))
 
 class BlacklistView(FormView):
