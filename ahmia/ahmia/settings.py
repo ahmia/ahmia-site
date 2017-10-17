@@ -6,7 +6,7 @@ import sys
 # This will be used to prepend to all file/directory paths.
 PROJECT_HOME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '.ahmia.fi', # Allow domain and subdomains
@@ -50,7 +50,7 @@ else:
 ELASTICSEARCH_TLS_FPRINT = \
     "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
 ELASTICSEARCH_SERVERS = 'http://localhost:9200'#'https://ahmia.fi/esconnection/'
-ELASTICSEARCH_INDEX = 'crawl'
+ELASTICSEARCH_INDEX = 'latest-crawl'
 ELASTICSEARCH_TYPE = 'tor'
 
 # Email settings
