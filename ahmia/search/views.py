@@ -24,7 +24,8 @@ def onion_redirect(request):
         if len(onion) != 16:
             raise ValueError('Invalid onion value = %s' % onion)
         onion = "http://" + onion + ".onion/"
-        #clicks, created = SearchResultsClicks.objects.get_or_create(onionDomain=onion, clicked=redirect_url, searchTerm=search_term)
+        clicks, created = SearchResultsClicks.objects.get_or_create(
+            onionDomain=onion, clicked=redirect_url, searchTerm=search_term )
     except Exception as error:
         print( "Error with redirect URL: " + redirect_url )
         print( error )

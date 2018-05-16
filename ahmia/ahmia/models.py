@@ -14,4 +14,3 @@ class SearchResultsClicks(models.Model):
     onionDomain = models.URLField(validators=[validate_onion_url])
     clicked = models.URLField()
     searchTerm = models.CharField(max_length=64)
-    created = models.DateTimeField(auto_now_add=True)
