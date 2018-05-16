@@ -7,7 +7,35 @@ import time
 from datetime import date, datetime
 
 from ahmia.views import ElasticsearchBaseListView
+from django.http import HttpResponse
+from django.template import loader, Context
+from ahmia.models import SearchResultsClicks
 from ahmia import utils
+
+def onion_redirect(request):
+    """Add clicked information and redirect to .onion address."""
+    redirect_url = request.GET.get('redirect_url', '')
+    search_term = request.GET.get('search_term', '')
+    if not redirect_url or not search_term:
+        answer = "Bad request: no GET parameter URL."
+        return HttpResponseBadRequest(answer)
+    try:
+        onion = redirect_url.split("://")[1].split(".onion")[0]
+        if len(onion) != 16:
+            raise ValueError('Invalid onion value = %s' % onion)
+        onion = "http://" + onion + ".onion/"
+        #clicks, created = SearchResultsClicks.objects.get_or_create(onionDomain=onion, clicked=redirect_url, searchTerm=search_term)
+    except Exception as error:
+        print( "Error with redirect URL: " + redirect_url )
+        print( error )
+    message = "Redirecting to hidden service."
+    return redirect_page(message, 0, redirect_url)
+
+def redirect_page(message, time, url):
+    """Build and return redirect page."""
+    template = loader.get_template('redirect.html')
+    content = Context( {'message': message, 'time': time, 'redirect': url} )
+    return HttpResponse(template.render(content))
 
 class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
