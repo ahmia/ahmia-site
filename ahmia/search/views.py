@@ -8,7 +8,7 @@ from datetime import date, datetime
 
 from ahmia.views import ElasticsearchBaseListView
 from django.http import HttpResponse
-from django.template import loader, Context
+from django.template import loader
 from ahmia.models import SearchResultsClicks
 from ahmia import utils
 
@@ -35,7 +35,7 @@ def onion_redirect(request):
 def redirect_page(message, time, url):
     """Build and return redirect page."""
     template = loader.get_template('redirect.html')
-    content = Context( {'message': message, 'time': time, 'redirect': url} )
+    content = {'message': message, 'time': time, 'redirect': url}
     return HttpResponse(template.render(content))
 
 class TorResultsView(ElasticsearchBaseListView):
