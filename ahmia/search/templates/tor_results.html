@@ -42,8 +42,8 @@ Search results for {{query_string}}
     </div>
     <ol class="searchResults">
       {% for result in search_results %}
-      <li class="result" href="{{ result.url }}" id="onion_key">
-      <h4><a href="{{ result.url }}">
+      <li class="result" href="search/redirect?search_term={{ query_string }}&redirect_url={{ result.url }}" id="onion_key">
+      <h4><a href="search/redirect?search_term={{ query_string }}&redirect_url={{ result.url }}">
         {% if result.title %}
         {{ result.title | escape }}
         {% elif result.anchors %}
