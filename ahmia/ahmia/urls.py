@@ -1,9 +1,9 @@
 """The URL patterns of the ahmia."""
 from django.conf import settings
 from django.conf.urls import url, include
+from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView, RedirectView
 from django.views.static import serve
-from django.views.decorators.cache import cache_page
 
 from . import views
 
@@ -33,9 +33,9 @@ urlpatterns = [
     url(r'^blacklist/banned/', cache_page(60 * 60)(views.BannedDomainListView.as_view()),
         name="domains-banned"),
     # Add domain form.
-    url(r'^add/$', views.AddView.as_view(), name="add"), #domain:port/add
-    #url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
-    url(r'^add/onionsadded/', views.AddListView),
+    url(r'^add/$', views.AddView.as_view(), name="add"),  # domain:port/add
+    # url(r'^add/success/', views.AddSuccessView.as_view(), name="add-success"),
+    url(r'^add/onionsadded/', views.add_list_view),
     # The plain texts list of onion URL.
     url(r'^onions/$', cache_page(60 * 60)(views.OnionListView.as_view()), name="onions"),
     # GET lists every known HS

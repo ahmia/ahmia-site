@@ -1,7 +1,7 @@
 """ Utility fonctions """
+from django.conf import settings
 from elasticsearch import Elasticsearch
 
-from django.conf import settings
 
 def get_elasticsearch_object():
     """ Creating an elasticsearch object to query the index """
@@ -10,7 +10,8 @@ def get_elasticsearch_object():
         es_servers = es_servers if isinstance(es_servers, list) \
             else [es_servers]
     except AttributeError:
-        es_servers = ["http://localhost:9200"]#["https://ahmia.fi/esconnection/"]
+        # todo move the url to the settings or environment variables
+        es_servers = [settings.ELASTICSEARCH_SERVERS]
 
     try:
         timeout = settings.ELASTICSEARCH_TIMEOUT
@@ -20,9 +21,11 @@ def get_elasticsearch_object():
                            timeout=timeout)
     return es_obj
 
+
 def get_elasticsearch_index():
     """ Getting the name of the index """
     return settings.ELASTICSEARCH_INDEX
+
 
 def get_elasticsearch_type():
     """ Getting the name of the main type used """

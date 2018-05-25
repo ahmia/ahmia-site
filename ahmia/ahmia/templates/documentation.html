@@ -4,74 +4,74 @@
 {% load static %}
 {% block title %}Ahmia - Documentation {% endblock %}
 {% block body %}
-<div id="ahmiaAboutPage">
-  <h1>Documentation</h1>
-  <div class="moreOnAhmia">
-    <p>
-      Source code of Ahmia is open source and available on Github <a href="//github.com/ahmia">
-  <img src="/static/images/logos/github.png" alt="Github link" class="github_doc"></a>
-    </p>
-    <p>
-      One can setup a working version of Ahmia on a local machine with its own crawlers and index.
-    </p>
-    <p>
-      Source code is mainly divided into three parts :
-    </p>
-    <ul>
-      <li><a href="//github.com/ahmia/ahmia-index">{% trans "ahmia-index" %}</a><br>Index containing onions crawled by your crawlers</li>
-      <li><a href="//github.com/ahmia/ahmia-crawler">{% trans "ahmia-crawler" %}</a><br>Crawls onions on the Tor network and feeds it to the index</li>
-      <li><a href="//github.com/ahmia/ahmia-site">{% trans "ahmia-site" %}</a><br>Contains the code of the website including search results</li>
-    </ul>
-  </div>
-  <div class="aboutAhmia">
-    <h3>Visualizations</h3>
-    <p>
-      Linking structure : <a href="/stats/link_graph">https://ahmia.fi/stats/link_graph/</a>
-    </p>
-  </div>
-  <div class="aboutAhmia">
-    <h3>Onion information</h3>
+    <div id="ahmiaAboutPage">
+        <h1>Documentation</h1>
+        <div class="moreOnAhmia">
+            <p>
+                Source code of Ahmia is open source and available on Github <a href="//github.com/ahmia">
+                <img src="/static/images/logos/github.png" alt="Github link" class="github_doc"></a>
+            </p>
+            <p>
+                One can setup a working version of Ahmia on a local machine with its own crawlers and index.
+            </p>
+            <p>
+                Source code is mainly divided into three parts :
+            </p>
+            <ul>
+                <li><a href="//github.com/ahmia/ahmia-index">{% trans "ahmia-index" %}</a><br>Index containing onions crawled by your crawlers</li>
+                <li><a href="//github.com/ahmia/ahmia-crawler">{% trans "ahmia-crawler" %}</a><br>Crawls onions on the Tor network and feeds it to the index</li>
+                <li><a href="//github.com/ahmia/ahmia-site">{% trans "ahmia-site" %}</a><br>Contains the code of the website including search results</li>
+            </ul>
+        </div>
+        <div class="aboutAhmia">
+            <h3>Visualizations</h3>
+            <p>
+                Linking structure : <a href="/stats/link_graph">https://ahmia.fi/stats/link_graph/</a>
+            </p>
+        </div>
+        <div class="aboutAhmia">
+            <h3>Onion information</h3>
 
-    <p>
-      All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br> These are MD5 sums calculated from youronionaddress.onion\c part (echo -e "youronionaddress.onion\c" | md5sum).
-    </p>
+            <p>
+                All banned hidden services: <a href="/banned/">https://ahmia.fi/banned/</a> <br> These are MD5 sums calculated from youronionaddress.onion\c part (echo -e "youronionaddress.onion\c" | md5sum).
+            </p>
 
-    <p>
-      All known non-banned onion domains: <a href="/onions/">https://ahmia.fi/onions/</a>
-    </p>
+            <p>
+                All known non-banned onion domains: <a href="/onions/">https://ahmia.fi/onions/</a>
+            </p>
 
-    <p>
-      For filter requests of onions: <a href="https://ahmia.fi/address/">https://ahmia.fi/address/</a>
-    </p>
+            <p>
+                For filter requests of onions: <a href="https://ahmia.fi/address/">https://ahmia.fi/address/</a>
+            </p>
 
-  </div>
-  <div class="aboutAhmia">
-    <h3>For hidden service operators</h3>
+        </div>
+        <div class="aboutAhmia">
+            <h3>For hidden service operators</h3>
 
-    <p>
-      You can add your domains and sub-domains on Ahmia add page : <a href="/add/">Add</a>
-    </p>
+            <p>
+                You can add your domains and sub-domains on Ahmia add page : <a href="/add/">Add</a>
+            </p>
 
-    <p>
-      Info about hidden service indexing and crawling : <a href="/documentation/indexing/">Indexing</a>
-    </p>
+            <p>
+                Info about hidden service indexing and crawling : <a href="/documentation/indexing/">Indexing</a>
+            </p>
 
-    <p>
-      Ahmia blacklists child abuse content : <a href="/blacklist/">Blacklist</a>
-    </p>
+            <p>
+                Ahmia blacklists child abuse content : <a href="/blacklist/">Blacklist</a>
+            </p>
 
-  </div>
-  <div class="credits">
-    <p>
-      {% trans "3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY" as bitcoin_address %} {% blocktrans %} We extend a thank you to Ahmia's supporters. Bitcoin address: <a href="bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY">{{ bitcoin_address }}</a>.</p>
-    {% endblocktrans %}
-    </p>
-    <ul>
-      <li><img src="/static/images/logos/globaleaks.png" alt="{% trans " Globaleaks Platform " %}"></li>
-      <li><img src="/static/images/logos/tor2web.png" alt="{% trans " Tor2Web Platform " %}"></li>
-      <li><img src="/static/images/logos/hermes.png" alt="{% trans " HERMES Center for Transparency and Digital Rights " %}"></li>
-      <li><img src="/static/images/logos/torproject.png" alt="{% trans " Tor Project " %}"></li>
-    </ul>
-  </div>
-</div>
+        </div>
+        <div class="credits">
+            <p>
+                {% trans "3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY" as bitcoin_address %} {% blocktrans %} We extend a thank you to Ahmia's supporters. Bitcoin address: <a href="bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY">{{ bitcoin_address }}</a>.
+            {% endblocktrans %}
+            </p>
+            <ul>
+                <li><img src="/static/images/logos/globaleaks.png" alt="{% trans " Globaleaks Platform " %}"></li>
+                <li><img src="/static/images/logos/tor2web.png" alt="{% trans " Tor2Web Platform " %}"></li>
+                <li><img src="/static/images/logos/hermes.png" alt="{% trans " HERMES Center for Transparency and Digital Rights " %}"></li>
+                <li><img src="/static/images/logos/torproject.png" alt="{% trans " Tor Project " %}"></li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

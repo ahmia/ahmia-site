@@ -6,12 +6,14 @@ import sys
 
 from django.test import TestCase
 
+
 def read_file(filename):
     """Read a file and return the text content."""
     inputfile = codecs.open(filename, "r", "utf-8")
     data = inputfile.read()
     inputfile.close()
     return data
+
 
 class OnionAddressViewsTestCase(TestCase):
     """Test /address/ view."""
@@ -21,7 +23,7 @@ class OnionAddressViewsTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
         encoding = sys.getfilesystemencoding()
         this_path = os.path.dirname(unicode(__file__, encoding))
-        file_name = this_path + "/example_addresses.html"
+        file_name = "{}/example_addresses.html".format(this_path)
         raw_html = read_file(file_name)
         self.assertHTMLEqual(raw_html, resp.content)
 

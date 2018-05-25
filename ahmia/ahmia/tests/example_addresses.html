@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset=utf-8 /><meta name='description' content='Search onion web pages' /><meta name='keywords' content='onion domains, hidden services, deep web, search engine, onion pages, onion sites, list, cache, tor, tor2web, index, search, pages, show content' /><meta name='author' content='ahmia' /><title>Hidden service list</title><link rel='stylesheet' type='text/css' href='/static/styles/base_styles.css' /><script src='/static/js/jquery.min.js'></script><script src='/static/js/highlight.js'></script><link rel="shortcut icon" href="/static/images/favicon.ico" /><link href='/static/styles/fontstyles/Cagliostro.css' rel='stylesheet' /><link href='/static/styles/fontstyles/Bitter.css' rel='stylesheet' /><link href='/static/styles/fontstyles/OpenSans.css' rel='stylesheet' /></head><body><header class="pagetitle" role="banner"><a href="/" title="ahmia.fi home"><h1>- Tor Hidden Service (.onion) search -</h1><p class="ahmia">AHMIA.FI</p></a></header><div id="content"><script type="text/javascript">
   function abuse_notice(id) {
-    var question = "Have you really checked that there are pictures of child abuse hosted in this " + id + ".onion domain? If you have, please answer to the security question: How much is 2+3?"
-    var answer = prompt(question, "answer the number here");
+    var question1 = "Have you really checked that there are pictures of child abuse hosted in this " + id + ".onion domain? If you have, please answer to the security question: How much is 2+3?"
+    var answer = prompt(question1, "answer the number here");
     if (parseInt(answer) != 5) {
       return false;
     }
@@ -9,9 +9,9 @@
     var url = "/address/" + id;
     var note_id = "#note_" + id;
     var button_id = "#button_" + id;
-    var question = "Please enter the reason for this notice."
+    var question2 = "Please enter the reason for this notice."
     var example = "e.g. there are abusive pictures."
-    var reason = prompt(question, example);
+    var reason = prompt(question2, example);
     if (!reason) {
       return false;
     }
