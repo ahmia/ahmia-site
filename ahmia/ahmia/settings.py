@@ -9,8 +9,8 @@ PROJECT_HOME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '.ahmia.fi', # Allow domain and subdomains
-    '.ahmia.fi.', # Also allow FQDN and subdomains
+    '.ahmia.fi',   # Allow domain and subdomains
+    '.ahmia.fi.',  # Also allow FQDN and subdomains
     '.msydqstlz2kzerdg.onion',
     '.msydqstlz2kzerdg.onion.',
     'localhost',
@@ -23,15 +23,15 @@ DEMO_ENV = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
 if 'test' in sys.argv:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3', # Database engine
-            'NAME': os.getcwd() + '/ahmia_db_test', # Database name
+            'ENGINE': 'django.db.backends.sqlite3',  # Database engine
+            'NAME': os.getcwd() + '/ahmia_db_test',  # Database name
         }
     }
 elif [cmd for cmd in DEMO_ENV if cmd in sys.argv]:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3', # Database engine
-            'NAME': os.getcwd() + '/ahmia_db', # Database name
+            'ENGINE': 'django.db.backends.sqlite3',  # Database engine
+            'NAME': os.getcwd() + '/ahmia_db',  # Database name
         }
     }
 else:
@@ -49,7 +49,7 @@ else:
 # ELASTICSEARCH STUFF
 ELASTICSEARCH_TLS_FPRINT = \
     "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
-ELASTICSEARCH_SERVERS = 'http://localhost:9200'#'https://ahmia.fi/esconnection/'
+ELASTICSEARCH_SERVERS = 'http://localhost:9200'  # 'https://ahmia.fi/esconnection/'
 ELASTICSEARCH_INDEX = 'latest-crawl'
 ELASTICSEARCH_TYPE = 'tor'
 

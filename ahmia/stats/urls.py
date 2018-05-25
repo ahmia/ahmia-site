@@ -1,8 +1,10 @@
 """The URL patterns of the ahmia stats app."""
 import os
-from . import views
+
 from django.conf.urls import url
 from django.views.static import serve
+
+from . import views
 
 urlpatterns = [
     url(r'^$', views.Stats.as_view(), name="stats"),

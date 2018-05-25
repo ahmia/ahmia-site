@@ -12,34 +12,41 @@ from django.template import loader
 from ahmia.models import SearchResultsClicks
 from ahmia import utils
 
+
 def onion_redirect(request):
     """Add clicked information and redirect to .onion address."""
+
     redirect_url = request.GET.get('redirect_url', '')
     search_term = request.GET.get('search_term', '')
     if not redirect_url or not search_term:
         answer = "Bad request: no GET parameter URL."
+        # todo fix import
         return HttpResponseBadRequest(answer)
     try:
         onion = redirect_url.split("://")[1].split(".onion")[0]
         if len(onion) != 16:
             raise ValueError('Invalid onion value = %s' % onion)
-        onion = "http://" + onion + ".onion/"
-        clicks, created = SearchResultsClicks.objects.get_or_create(
-            onionDomain=onion, clicked=redirect_url, searchTerm=search_term )
+        onion = "http://{}.onion/".format(onion)
+        _, _ = SearchResultsClicks.objects.get_or_create(
+            onionDomain=onion, clicked=redirect_url, searchTerm=search_term)
     except Exception as error:
-        print( "Error with redirect URL: " + redirect_url )
-        print( error )
+        print("Error with redirect URL: {0}\n{1}".format(redirect_url, error))
+
     message = "Redirecting to hidden service."
     return redirect_page(message, 0, redirect_url)
 
-def redirect_page(message, time, url):
+
+def redirect_page(message, red_time, url):
     """Build and return redirect page."""
+
     template = loader.get_template('redirect.html')
-    content = {'message': message, 'time': time, 'redirect': url}
+    content = {'message': message, 'time': red_time, 'redirect': url}
     return HttpResponse(template.render(content))
+
 
 class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
+
     http_method_names = ['get']
     template_name = "tor_results.html"
     RESULTS_PER_PAGE = 100
@@ -71,6 +78,7 @@ class TorResultsView(ElasticsearchBaseListView):
                         "must_not": [
                             {
                                 "exists": {
+                                    # todo duplicate key since its defined as python dict
                                     "field": "is_fake",
                                     "field": "is_banned"
                                 }
@@ -91,17 +99,17 @@ class TorResultsView(ElasticsearchBaseListView):
                     }
 
                 },
-                "aggregations" : {
-                    "domains" : {
-                        "terms" : {
-                            "size" : 1000,
-                            "field" : "domain",
+                "aggregations": {
+                    "domains": {
+                        "terms": {
+                            "size": 1000,
+                            "field": "domain",
                             "order": {"max_score": "desc"}
                         },
                         "aggregations": {
                             "score": {
                                 "top_hits": {
-                                    "size" : 1,
+                                    "size": 1,
                                     "sort": [
                                         {
                                             "authority": {
@@ -189,9 +197,11 @@ class TorResultsView(ElasticsearchBaseListView):
             'now': date.fromtimestamp(time.time())
         }
 
+
 class IipResultsView(TorResultsView):
     """ I2P Search results view """
     template_name = "i2p_results.html"
+
     def get_es_context(self, **kwargs):
         context = super(IipResultsView, self).get_es_context(**kwargs)
         context['doc_type'] = "i2p"
