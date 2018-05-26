@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.utils.translation import ugettext as _
 
-from models import HiddenWebsite
+from .models import HiddenWebsite
 from .validators import validate_onion_url, validate_status
 
 

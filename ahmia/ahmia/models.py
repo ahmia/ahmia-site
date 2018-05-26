@@ -1,7 +1,7 @@
 """Models for the database of ahmia."""
 from django.db import models
 
-from validators import validate_onion_url, validate_status
+from .validators import validate_onion_url, validate_status
 
 
 class HiddenWebsite(models.Model):
