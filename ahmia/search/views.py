@@ -6,11 +6,12 @@ import math
 import time
 from datetime import date, datetime
 
-from ahmia.views import ElasticsearchBaseListView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from ahmia.models import SearchResultsClicks
+
 from ahmia import utils
+from ahmia.models import SearchResultsClicks
+from ahmia.views import ElasticsearchBaseListView
 
 
 def onion_redirect(request):
@@ -20,7 +21,6 @@ def onion_redirect(request):
     search_term = request.GET.get('search_term', '')
     if not redirect_url or not search_term:
         answer = "Bad request: no GET parameter URL."
-        # todo fix import
         return HttpResponseBadRequest(answer)
     try:
         onion = redirect_url.split("://")[1].split(".onion")[0]
