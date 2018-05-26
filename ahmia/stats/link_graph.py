@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 """Download data from Elasticsearch and convert it to Gexf/XML format."""
-import networkx as nx  # Network modeling library
-from elasticsearch import Elasticsearch  # Elasticsearch connection
-from urlparse import urlparse
 import time
 from random import randint
+
+import networkx as nx  # Network modeling library
+from elasticsearch import Elasticsearch  # Elasticsearch connection
+
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
 
 def query(graph, es, color):
@@ -53,7 +58,6 @@ def use_data(es):
     color = {'r': 0, 'g': 255, 'b': 0, 'a': 0.8}
     query(graph, es, color)
     print "The number of nodes %d" % len(graph.nodes())
-    print "The number of edges %d" % len(graph.edges())
     nx.write_gexf(graph, "onionlinks.gexf", encoding='utf-8', prettyprint=True, version='1.2draft')
 
 

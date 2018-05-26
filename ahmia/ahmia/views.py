@@ -187,8 +187,13 @@ class OnionListView(ElasticsearchBaseListView):
         Transform ES response into a list of results.
         Returns (total number of results, results)
         """
-        hits = [{'domain': hit['key'], 'pages': hit['doc_count']}
-                for hit in hits['aggregations']['domains']['buckets']]
+        hits = [
+            {
+                'domain': hit['key'],
+                'pages': hit['doc_count']
+            }
+            for hit in hits['aggregations']['domains']['buckets']
+        ]
 
         # todo check if itemgetter works properly for this case
         hits = sorted(hits, key=itemgetter('domain'))
