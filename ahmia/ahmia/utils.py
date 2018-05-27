@@ -10,7 +10,6 @@ def get_elasticsearch_object():
         es_servers = es_servers if isinstance(es_servers, list) \
             else [es_servers]
     except AttributeError:
-        # todo move the url to the settings or environment variables
         es_servers = [settings.ELASTICSEARCH_SERVERS]
 
     try:

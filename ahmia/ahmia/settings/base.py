@@ -1,50 +1,15 @@
 """Django project settings for ahmia."""
-import os
-import sys
+from os.path import dirname, join, abspath
+
 
 # Set the PROJECT_HOME variable.
 # This will be used to prepend to all file/directory paths.
-PROJECT_HOME = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-DEBUG = False
+PROJECT_HOME = abspath(join(dirname(__file__), '..', '..'))
 
 ALLOWED_HOSTS = [
-    '.ahmia.fi',   # Allow domain and subdomains
-    '.ahmia.fi.',  # Also allow FQDN and subdomains
-    '.msydqstlz2kzerdg.onion',
-    '.msydqstlz2kzerdg.onion.',
     'localhost',
     '127.0.0.1',
 ]
-
-DEMO_ENV = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
-            'migrate', 'dumpdata', 'rebuild_index', 'makemigrations']
-
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',  # Database engine
-            'NAME': os.getcwd() + '/ahmia_db_test',  # Database name
-        }
-    }
-elif [cmd for cmd in DEMO_ENV if cmd in sys.argv]:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',  # Database engine
-            'NAME': os.getcwd() + '/ahmia_db',  # Database name
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'ahmiasite',             # Database name
-            'USER': 'ahmia_login',           # Not used with sqlite3.
-            'PASSWORD': 'nakataP01Svaa',     # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost
-            'PORT': '5432',                  # pbbouncer port
-        }
-    }
 
 # ELASTICSEARCH STUFF
 ELASTICSEARCH_TLS_FPRINT = \
@@ -89,7 +54,8 @@ STATIC_URL = '/static/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-STATIC_ROOT = os.path.join(PROJECT_HOME, 'ahmia/static/')
+# todo STATIC_ROOT should be project-level, not app-level, or?
+STATIC_ROOT = join(PROJECT_HOME, 'ahmia/static/')
 
 # List of finder classes that know how to find static files in
 # various locations.
