@@ -1,6 +1,8 @@
 """Django project settings for ahmia."""
 from os.path import dirname, join, abspath
 
+from decouple import config, Csv
+
 
 # Set the PROJECT_HOME variable.
 # This will be used to prepend to all file/directory paths.
@@ -12,20 +14,22 @@ ALLOWED_HOSTS = [
 ]
 
 # ELASTICSEARCH STUFF
-ELASTICSEARCH_TLS_FPRINT = \
-    "8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E"
-ELASTICSEARCH_SERVERS = 'http://localhost:9200'  # 'https://ahmia.fi/esconnection/'
-ELASTICSEARCH_INDEX = 'latest-crawl'
-ELASTICSEARCH_TYPE = 'tor'
+ELASTICSEARCH_TLS_FPRINT = config(
+    'ELASTICSEARCH_TLS_FPRINT',
+    default="8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E")
+# 'https://ahmia.fi/esconnection/'
+ELASTICSEARCH_SERVERS = config('ELASTICSEARCH_SERVERS', default='http://localhost:9200')
+ELASTICSEARCH_INDEX = config('ELASTICSEARCH_INDEX', default='latest-crawl')
+ELASTICSEARCH_TYPE = config('ELASTICSEARCH_TYPE', default='tor')
 
 # Email settings
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'example@lol.fi'
-EMAIL_HOST_PASSWORD = 'well_I_am_not_pushing_it_to_git'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-RECIPIENT_LIST = [DEFAULT_FROM_EMAIL]
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
+RECIPIENT_LIST = config('RECIPIENT_LIST', cast=Csv(), default=[DEFAULT_FROM_EMAIL])
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -65,7 +69,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '%*ertqgmh3(t_d=i&ojuc!02wnech_nq#1*s7dbv3h=&ruf7*b'
+SECRET_KEY = config('SECRET_KEY', default='%*ertqgmh3(t_d=i&ojuc!02wnech_nq#1*s7dbv3h=&ruf7*b')
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',

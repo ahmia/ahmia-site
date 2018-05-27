@@ -2,7 +2,7 @@ import sys
 
 from .base import *
 
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=True)
 
 DEMO_ENV = ['runserver', 'sqlflush', 'syncdb', 'loaddata', 'shell', 'flush',
             'migrate', 'dumpdata', 'rebuild_index', 'makemigrations']
