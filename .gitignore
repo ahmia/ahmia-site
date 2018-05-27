@@ -7,3 +7,4 @@ onionbot/*.json
 .idea/
 .DS_Store
 ahmia/ahmia/migrations/
+.env

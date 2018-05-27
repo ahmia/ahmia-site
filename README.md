@@ -42,6 +42,17 @@ $ source /path/to/venv/bin/activate
 (venv)$ pip install -r requirements/dev.txt
 ```
 
+## Configuration
+
+Please copy `example.env` to `.env` and modify the values, to fit your needs.
+This is a common step, both for local (dev) and production environment.
+
+You can always override the environment values defined inside `.env` in command line, e.g:
+
+```
+DEBUG=False python manage.py test
+```
+
 # Run site in dev mode
 
 ## Migrate db
