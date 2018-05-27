@@ -10,9 +10,10 @@ in Finland. This repository contains ahmia.fi source code.
 
 # Compatibility
 
-The newest version of Ahmia is built with Python 2.7, Django and
-Elasticsearch. You will need to know these technologies to create a
-working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
+The newest version of Ahmia is built with Python 3.6, Django 1.11 and
+Elasticsearch 5. Python 2.7+ should be ok too, but preferably try Python 3 instead.
+You will need to know these technologies to create a working Ahmia installation.
+Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
 
 # Prerequisites
 [Ahmia-index](https://github.com/ahmia/ahmia-index) should be installed and running
@@ -51,11 +52,14 @@ $ python ahmia/manage.py migrate
 ```
 
 ## Start development server
+
+Development settings use sqlite as a database.
+Default settings should work out of the box.
+
 ```sh
 $ python ahmia/manage.py runserver
-Starting development server at http://127.0.0.1:8000/
-Quit the server with CONTROL-C.
 ```
+
 ## Crontab to remove '/onionsadded' weekly
 ```sh
 0 22 * * * cd ahmia/ && ./manage.py shell < remove_onionsadded.py
@@ -70,7 +74,12 @@ You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/mas
 The django settings.py is configured in a way that it only serve statics if DEBUG is True. Please verify [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/settings.py#L9) if it's the case. You can change this behaviour [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/urls.py#L18).
 
 ## What should I use to host ahmia in a production environment ?
-Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf). We suggest Apache2 or Nginx with Uwsgi
+
+You need to create a postgres database, and insert the database name, user and password
+information in `ahmia/settings/prod.py`.
+
+We suggest to deploy ahmia using Apache2 or Nginx with Uwsgi.
+Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf).
 
 ```sh
 cp conf/uwsgi/vassals/*.ini /etc/uwsgi/vassals/
@@ -78,6 +87,16 @@ cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
 uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data --daemonize /var/log/uwsgi-emperor.log
 service nginx start
 ```
+
+#### Using the development server
+
+However if you want to have a quick grasp of the production settings, using the development server,
+you can run:
+
+```sh
+$ python ahmia/manage.py runserver --settings ahmia.settings.prod
+```
+
 
 # Support
 
