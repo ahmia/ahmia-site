@@ -11,13 +11,13 @@ if 'test' in sys.argv:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',       # Database engine
-            'NAME': join(PROJECT_HOME, 'ahmia_db_test')  # Database name
+            'NAME': join(PROJECT_HOME, 'ahmia_db_test')   # Database name
         }
     }
 elif [cmd for cmd in DEMO_ENV if cmd in sys.argv]:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',  # Database engine
-            'NAME': join(PROJECT_HOME, 'ahmia_db')  # Database name
+            'NAME': join(PROJECT_HOME, 'ahmia_db')   # Database name
         }
     }

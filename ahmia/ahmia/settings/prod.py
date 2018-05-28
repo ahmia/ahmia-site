@@ -13,9 +13,9 @@ ALLOWED_HOSTS += [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),      # Database name
-        'USER': config('DB_USER'),      # Not used with sqlite3.
-        'PASSWORD': config('DB_PASS'),  # Not used with sqlite3.
+        'NAME': config('DB_NAME', default='postgres'),     # Database name
+        'USER': config('DB_USER', default='postgres'),     # User with permissions on that DB
+        'PASSWORD': config('DB_PASS', default=''),         # Password for the user specified above
         'HOST': config('DB_HOST', default="localhost"),    # Set to empty string for localhost
         'PORT': config('DB_PORT', default=5432, cast=int)  # pbbouncer port
     }
