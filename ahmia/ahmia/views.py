@@ -6,6 +6,7 @@ These pages does not require database connection.
 import hashlib
 from operator import itemgetter
 
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
@@ -70,27 +71,31 @@ class GsocView(CoreView):
 
 class AddView(TemplateView):
     """Add form for a new .onion address."""
+    # todo distinguish between failure and already exists case?
+
     form_class = AddOnionForm
     template_name = "add.html"
     failpage = "add_fail.html"
     successpage = "add_success.html"
 
     def post(self, request):
-        # todo domain is never used. Its redefined with inner scope.
-        # Do we need AddOnionForm() extra call?
-        domain = AddOnionForm()
-
         if request.method == "POST":
             domain = AddOnionForm(request.POST)
             if domain.is_valid():
-                onion = request.POST.get('onion', '')
+                onion = request.POST.get('onion', '').strip()
                 onion = HiddenWebsite(onion=onion)
-                onion.save()
-                return render(request, self. successpage)  # redirect('/add/success')
+                try:
+                    onion.save()
+                except IntegrityError:  # probably already exists
+                    pass
+                else:
+                    return render(request, self.successpage)  # redirect('/add/success')
+
         return render(request, self.failpage)
 
     def form_valid(self, form):
         # todo TemplateViews dont have form_valid(), consider using FormView instead
+
         form.send_new_onion()
         return super(AddView, self).form_valid(form)
 
@@ -195,7 +200,6 @@ class OnionListView(ElasticsearchBaseListView):
             for hit in hits['aggregations']['domains']['buckets']
         ]
 
-        # todo check if itemgetter works properly for this case
         hits = sorted(hits, key=itemgetter('domain'))
         return hits
 

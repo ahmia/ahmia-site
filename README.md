@@ -78,7 +78,7 @@ $ python3 ahmia/manage.py runserver
 
 ## Crontab to remove '/onionsadded' weekly
 ```sh
-0 22 * * * cd ahmia/ && ./manage.py shell < remove_onionsadded.py
+0 22 * * * python ahmia/manage.py remove_onions
 ```
 
 # FAQ
