@@ -12,7 +12,7 @@ ALLOWED_HOSTS += [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME', default='postgres'),     # Database name
         'USER': config('DB_USER', default='postgres'),     # User with permissions on that DB
         'PASSWORD': config('DB_PASS', default=''),         # Password for the user specified above
