@@ -97,7 +97,6 @@ class OnionAddressViewsTestCase(TestCase):
         resp = self.client.post('/add/', {'onion': a_valid_onion})
         self.assertContains(resp, failure_text)
 
-        # adding an invalid onion is currently handled by client-side js code, thus empty resp
-        resp = self.client.post('/add', {'onion': an_invalid_onion})
-        resp_content = resp.content.decode('utf-8')
-        self.assertEqual(resp_content, "")
+        # adding an invalid onion will also fail with the same message
+        resp = self.client.post('/add/', {'onion': an_invalid_onion})
+        self.assertContains(resp, failure_text)
