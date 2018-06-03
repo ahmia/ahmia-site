@@ -14,8 +14,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
-from ahmia import utils
-from ahmia.models import HiddenWebsite
+from . import utils
+from .models import HiddenWebsite
 from .forms import AddOnionForm, ReportOnionForm
 
 
