@@ -58,14 +58,21 @@ __NOTE__: You can always override the environment values defined inside `.env` i
 DEBUG=False python3 manage.py test
 ```
 
-# Run site in dev mode
+## Setup Website
 
-## Migrate db
+### Migrate db
 ```sh
 $ python3 ahmia/manage.py makemigrations ahmia
 $ python3 ahmia/manage.py makemigrations search
 $ python3 ahmia/manage.py migrate
 ```
+
+### Make the static files
+```sh
+$ python3 ahmia/manage.py collectstatic
+```
+
+# Run site in dev mode
 
 ## Start development server
 
