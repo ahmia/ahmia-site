@@ -8,6 +8,12 @@ from decouple import config, Csv
 # This will be used to prepend to all file/directory paths.
 PROJECT_HOME = abspath(join(dirname(__file__), '..', '..'))
 
+
+# Build paths inside the project like this: path("ahmia")
+def my_path(*x):
+    return join(PROJECT_HOME, *x)
+
+
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
@@ -54,19 +60,32 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+
+# STATIC
+# ------------------------------------------------------------------------------
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-# todo STATIC_ROOT should be project-level, not app-level, or?
-STATIC_ROOT = join(PROJECT_HOME, 'ahmia/static/')
+# Absolute path to the directory where collectstatic will collect static files for deployment.
+# https://docs.djangoproject.com/en/dev/ref/settings/#static-root
+STATIC_ROOT = my_path('staticfiles/')
 
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
+# Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled
+# https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-STATICFILES_DIRS
+# STATICFILES_DIRS = [
+#     my_path('ahmia/static/'),
+#     my_path('search/static/'),
+#     my_path('stats/static/')
+# ]
+
+# List of finder classes that know how to find static files in various locations.
+# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
+STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+]
+
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = config('SECRET_KEY', default='%*ertqgmh3(t_d=i&ojuc!02wnech_nq#1*s7dbv3h=&ruf7*b')
@@ -75,6 +94,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 ROOT_URLCONF = 'ahmia.urls'
@@ -83,6 +103,12 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ]
+        }
     },
 ]
 
@@ -90,7 +116,11 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sites',
+    'django.contrib.admin',
+    'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'ahmia',
     'search',
     'stats'
