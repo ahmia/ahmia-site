@@ -4,6 +4,7 @@ Static HTML pages.
 These pages does not require database connection.
 """
 import hashlib
+import logging
 from operator import itemgetter
 
 from django.db import IntegrityError
@@ -17,6 +18,8 @@ from django.views.generic.list import ListView
 from . import utils
 from .models import HiddenWebsite
 from .forms import AddOnionForm, ReportOnionForm
+
+logger = logging.getLogger(__name__)
 
 
 class CoreView(TemplateView):
@@ -71,7 +74,7 @@ class GsocView(CoreView):
 
 class AddView(TemplateView):
     """Add form for a new .onion address."""
-    # todo distinguish between failure and already exists case?
+    # todo distinguish between ORM failure (except) case and already exists (outer else) case
 
     form_class = AddOnionForm
     template_name = "add.html"
@@ -81,15 +84,17 @@ class AddView(TemplateView):
     def post(self, request):
         if request.method == "POST":
             domain = AddOnionForm(request.POST)
+            onion_url = request.POST.get('onion', '').strip()
             if domain.is_valid():
-                onion = request.POST.get('onion', '').strip()
-                onion = HiddenWebsite(onion=onion)
+                onion = HiddenWebsite(onion=onion_url)
                 try:
                     onion.save()
-                except IntegrityError:  # probably already exists
-                    pass
+                except IntegrityError as e:  # error saving to DB
+                    logger.exception(e)
                 else:
                     return render(request, self.successpage)  # redirect('/add/success')
+            else:
+                logger.info("Domain {} already exists or invalid".format(onion_url))
 
         return render(request, self.failpage)
 

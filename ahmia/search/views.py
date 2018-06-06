@@ -2,6 +2,7 @@
 Views
 Full text search views.
 """
+import logging
 import math
 import time
 from datetime import date, datetime
@@ -12,6 +13,8 @@ from django.template import loader
 from ahmia import utils
 from ahmia.models import SearchResultsClicks
 from ahmia.views import ElasticsearchBaseListView
+
+logger = logging.getLogger(__name__)
 
 
 def onion_redirect(request):
@@ -30,7 +33,7 @@ def onion_redirect(request):
         _, _ = SearchResultsClicks.objects.get_or_create(
             onionDomain=onion, clicked=redirect_url, searchTerm=search_term)
     except Exception as error:
-        print("Error with redirect URL: {0}\n{1}".format(redirect_url, error))
+        logger.error("Error with redirect URL: {0}\n{1}".format(redirect_url, error))
 
     message = "Redirecting to hidden service."
     return redirect_page(message, 0, redirect_url)
@@ -154,9 +157,7 @@ class TorResultsView(ElasticsearchBaseListView):
         for res in results:
             try:
                 res['anchors'] = res['anchors'][0]
-            except KeyError:
-                pass
-            except TypeError:
+            except (KeyError, TypeError):
                 pass
             res['updated_on'] = datetime.strptime(res['updated_on'],
                                                   '%Y-%m-%dT%H:%M:%S')

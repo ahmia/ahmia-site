@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Download data from Elasticsearch and convert it to Gexf/XML format."""
+import logging
 import time
 from random import randint
 
@@ -11,15 +12,17 @@ try:
 except ImportError:
     from urlparse import urlparse
 
+logger = logging.getLogger(__name__)
+
 
 def query(graph, es, color):
     """Make query and create a graph."""
     # Status of doc_type in the READ onion index
-    index = "crawl"
+    index = "latest-crawl"
     q = 'links.link:*'
     res = es.search(index=index, q=q)
     size = res['hits']['total']
-    print "READ Index onions size in this range is %d" % size
+    print("READ Index onions size in this range is %d" % size)
     start = 0
     limit = 1
     # added = 0
@@ -29,9 +32,10 @@ def query(graph, es, color):
         try:
             res = es.search(index=index, from_=start, size=limit, q=q)
         except Exception as e:
-            print e
+            logger.exception(e)
             continue
-        print "range=%d-%d, hits %d" % (start, start+limit, len(res['hits']['hits']))
+
+        print("range=%d-%d, hits %d" % (start, start+limit, len(res['hits']['hits'])))
         for hit in res['hits']['hits']:
             item = hit["_source"]
             graph.add_node(item["domain"])
@@ -57,7 +61,7 @@ def use_data(es):
     graph = nx.Graph()
     color = {'r': 0, 'g': 255, 'b': 0, 'a': 0.8}
     query(graph, es, color)
-    print "The number of nodes %d" % len(graph.nodes())
+    print("The number of nodes %d" % len(graph.nodes()))
     nx.write_gexf(graph, "onionlinks.gexf", encoding='utf-8', prettyprint=True, version='1.2draft')
 
 
