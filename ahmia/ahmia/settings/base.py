@@ -125,3 +125,33 @@ INSTALLED_APPS = (
     'search',
     'stats'
 )
+
+# Log everything to the logs directory at the top
+LOGFILE_ROOT = my_path('logs')
+print(LOGFILE_ROOT)
+
+# Disable automatic default configuration process to apply our own settings
+LOGGING_CONFIG = None
+
+# Logging
+LOG_LEVEL = config('LOG_LEVEL', default='INFO')   # Debug, Info, Warning, Error, Critical
+
+# Common settings ~ This dict is being updated inside dev.py / prod.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(filename)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        }
+    },
+}

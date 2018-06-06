@@ -5,6 +5,8 @@ from elasticsearch import Elasticsearch
 
 def get_elasticsearch_object():
     """ Creating an elasticsearch object to query the index """
+    # todo move the default values to settings instead of using exception handling
+
     try:
         es_servers = settings.ELASTICSEARCH_SERVERS
         es_servers = es_servers if isinstance(es_servers, list) \
