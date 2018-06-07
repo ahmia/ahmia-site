@@ -1,4 +1,5 @@
 """Django project settings for ahmia."""
+import os
 from os.path import dirname, join, abspath
 
 from decouple import config, Csv
@@ -128,7 +129,9 @@ INSTALLED_APPS = (
 
 # Log everything to the logs directory at the top
 LOGFILE_ROOT = my_path('logs')
-print(LOGFILE_ROOT)
+if not os.path.exists(LOGFILE_ROOT):
+    print("Creating logs empty folder %s" % LOGFILE_ROOT)
+    os.mkdir(LOGFILE_ROOT)
 
 # Disable automatic default configuration process to apply our own settings
 LOGGING_CONFIG = None
