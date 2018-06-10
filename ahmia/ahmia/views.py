@@ -127,7 +127,7 @@ class BlacklistView(FormView):
 
     def get_es_context(self, **kwargs):
         return {
-            "index": utils.get_elasticsearch_index(),
+            "index": utils.get_elasticsearch_tor_index(),
             "doc_type": utils.get_elasticsearch_type(),
             "size": 0,
             "body": {
@@ -215,7 +215,7 @@ class OnionListView(ElasticsearchBaseListView):
 
     def get_es_context(self, **kwargs):
         return {
-            "index": utils.get_elasticsearch_index(),
+            "index": utils.get_elasticsearch_tor_index(),
             "doc_type": utils.get_elasticsearch_type(),
             "size": 0,
             "body": {
@@ -252,7 +252,7 @@ class BannedDomainListView(OnionListView):
 
     def get_es_context(self, **kwargs):
         return {
-            "index": utils.get_elasticsearch_index(),
+            "index": utils.get_elasticsearch_tor_index(),
             "doc_type": utils.get_elasticsearch_type(),
             "size": 0,
             "body": {

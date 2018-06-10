@@ -10,8 +10,8 @@ in Finland. This repository contains ahmia.fi source code.
 
 # Compatibility
 
-The newest version of Ahmia is built with Python 3.6, Django 1.11 and
-Elasticsearch 5. Python 2.7+ should be ok too, but preferably try Python 3 instead.
+The newest version of Ahmia is built with Python 3.6, Django 1.11 and Elasticsearch 6.2 (5.6 is also compatible).
+Python 2.7+ should be ok too, but preferably try Python 3 instead.
 You will need to know these technologies to create a working Ahmia installation.
 Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
 

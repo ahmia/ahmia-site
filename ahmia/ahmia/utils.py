@@ -23,9 +23,19 @@ def get_elasticsearch_object():
     return es_obj
 
 
-def get_elasticsearch_index():
+def get_elasticsearch_both_index():
     """ Getting the name of the index """
-    return settings.ELASTICSEARCH_INDEX
+    return settings.ELASTICSEARCH_BOTH_INDEX
+
+
+def get_elasticsearch_tor_index():
+    """ Getting the name of the index """
+    return settings.ELASTICSEARCH_TOR_INDEX
+
+
+def get_elasticsearch_i2p_index():
+    """ Getting the name of the index """
+    return settings.ELASTICSEARCH_I2P_INDEX
 
 
 def get_elasticsearch_type():
