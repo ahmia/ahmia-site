@@ -13,8 +13,8 @@ def validate_status(value):
     """Test if an onion domain is not banned."""
 
     res = get_elasticsearch_object().count(
-        index=settings.ELASTICSEARCH_INDEX,
-        doc_type=settings.ELASTICSEARCH_INDEX,
+        index=settings.ELASTICSEARCH_TOR_INDEX,
+        doc_type=settings.ELASTICSEARCH_TYPE,
         body={
             "query": {
                 "constant_score": {

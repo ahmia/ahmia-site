@@ -26,8 +26,11 @@ ELASTICSEARCH_TLS_FPRINT = config(
     default="8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E")
 # 'https://ahmia.fi/esconnection/'
 ELASTICSEARCH_SERVERS = config('ELASTICSEARCH_SERVERS', default='http://localhost:9200')
-ELASTICSEARCH_INDEX = config('ELASTICSEARCH_INDEX', default='latest-crawl')
-ELASTICSEARCH_TYPE = config('ELASTICSEARCH_TYPE', default='tor')
+# BOTH-INDEX exists in case we want to look into both to onion and i2p addresses ~ currently unused
+# ELASTICSEARCH_BOTH_INDEX = config('ELASTICSEARCH_BOTH_INDEX', default='latest-crawl')
+ELASTICSEARCH_TOR_INDEX = config('ELASTICSEARCH_TOR_INDEX', default='latest-tor')
+ELASTICSEARCH_I2P_INDEX = config('ELASTICSEARCH_I2P_INDEX', default='latest-i2p')
+ELASTICSEARCH_TYPE = config('ELASTICSEARCH_TYPE', default='doc')  # todo change/rm when ES 7.x
 
 # Email settings
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)

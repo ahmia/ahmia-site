@@ -12,6 +12,7 @@ from django.template import loader
 
 from ahmia import utils
 from ahmia.models import SearchResultsClicks
+from ahmia.utils import get_elasticsearch_i2p_index
 from ahmia.views import ElasticsearchBaseListView
 
 logger = logging.getLogger(__name__)
@@ -58,7 +59,7 @@ class TorResultsView(ElasticsearchBaseListView):
     def get_es_context(self, **kwargs):
         query = kwargs['q']
         return {
-            "index": utils.get_elasticsearch_index(),
+            "index": utils.get_elasticsearch_tor_index(),
             "doc_type": utils.get_elasticsearch_type(),
             "body": {
                 "query": {
@@ -205,5 +206,5 @@ class IipResultsView(TorResultsView):
 
     def get_es_context(self, **kwargs):
         context = super(IipResultsView, self).get_es_context(**kwargs)
-        context['doc_type'] = "i2p"
+        context['index'] = get_elasticsearch_i2p_index()
         return context
