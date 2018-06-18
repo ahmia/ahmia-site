@@ -186,6 +186,9 @@ div.elastic.inner {
 #notTorBrowserWarning {
   display: none;
 }
+
+/* Header */
+
 #ahmiaHeader {
   overflow: hidden;
   color: #fff;
@@ -295,6 +298,9 @@ div.elastic.inner {
   text-decoration: underline;
   transition: all 0.2s;
 }
+
+/* Main Content */
+
 #ahmiaMainContent {
   color: #fff;
   position: absolute;
@@ -369,11 +375,105 @@ div.elastic.inner {
   line-height: 1.7em;
   text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
 }
+
+/* Results Page */
+
 #ahmiaResultsPage {
   margin: 1.0em;
 }
-#ahmiaResultsPage div.resultsSubheader {
+
+/* Filters Menu */
+
+/* # todo simplifying the code for the filters menu would be a good idea if possible
+ * # todo making the dropdown on click instead on hover would be nice, (e.g checkbox hack),
+ * #      but integrating to the already code below is tricky
+ */
+
+#ahmiaResultsPage #resultsFiltersMenu a {
+   outline: 0;
+   color: #1c3c4a;  /* a bit darker that #body a
+   /*color: rgba(0, 0, 0, 0.4);*/
+}
+
+#ahmiaResultsPage #resultsFiltersMenu, #resultsFiltersMenu ul {
+  list-style: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0 0 29px 0;
+  margin: 0 0 10px 0;
+  text-decoration: none;
+}
+#ahmiaResultsPage #resultsFiltersMenu ul {
+  position: absolute;
+  top: 25px;
+  left: -1px;
+  padding: 0;
+  display: none;
+  text-decoration: none;
+}
+#ahmiaResultsPage #resultsFiltersMenu li {
+  float: left;
+  margin-right: 3px;
+  position: relative;
+  text-decoration: none;
+}
+#ahmiaResultsPage #resultsFiltersMenu .options {
+  /* # todo this would be nice to move the dropdown like 5px below,
+       but currently it disappears if cursor moves slowly */
+  margin-top: 0;
+}
+#ahmiaResultsPage #resultsFiltersMenu .category {
+  margin-right: 14px;
+}
+#ahmiaResultsPage #resultsFiltersMenu .first {
+  padding-top: 3px;
+}
+#ahmiaResultsPage #resultsFiltersMenu .last {
+  padding-bottom: 3px;
+}
+#ahmiaResultsPage #resultsFiltersMenu .child {
+  padding-left: 6px;
+  width: 125px;
+  margin: 3px 0 3px 0;
+}
+
+#ahmiaResultsPage #resultsFiltersMenu li img {
+  float: right;
+  margin: 7px 20px 0 3px;
+}
+
+#ahmiaResultsPage #resultsFiltersMenu ul li {
+  float: none;
+  margin: 0;
+  padding: 0;
+  line-height: 15px;
+  text-decoration: none;
+  background: #fafafa;
+}
+
+#ahmiaResultsPage #resultsFiltersMenu a:link, #resultsFiltersMenu {
+  /*text-shadow:1px 1px 0px #fff; !* this is nice but does it fit to the rest of the page? *!*/
+  display: block;
+  text-align: left;
+  padding: 5px;
+  text-decoration: none;
+  vertical-align: baseline;
+  clear: both;
+}
+#ahmiaResultsPage #resultsFiltersMenu .child:hover {
+  background-color: rgba(0,0,0,.2);
+  /*background-color: rgba(89,112,170,.3);*/
+  /*border: 1px solid #000;*/
+}
+
+#ahmiaResultsPage #resultsFiltersMenu .category:hover ul {
+  display: block;
+  box-shadow: 4px 4px 8px 4px rgba(1,0,1,0.2);   /* give it a 3d feeling: */
+  background: #fafafa;
+}
+
+/* Results Subheader */
+
+#ahmiaResultsPage div.resultsSubheader {
   margin-bottom: 1em;
   padding-bottom: 1em;
 }
@@ -382,6 +482,9 @@ div.elastic.inner {
   margin: 0;
   padding: 0;
 }
+
+/* Results Page Generic */
+
 #ahmiaResultsPage p {
   font-size: 1.1em;
   color: #000;
@@ -457,6 +560,9 @@ div.elastic.inner {
 #ahmiaResultsPage ol li p.metadata span.hidden {
   display: none;
 }
+
+/* Results Page Pager */
+
 #ahmiaResultsPage div.pager {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
   padding-top: 1em;
@@ -515,6 +621,9 @@ div.elastic.inner {
   font-size: 1.1em;
   float: right;
 }
+
+/* Disclaimer */
+
 #ahmiaDisclaimer {
   width: 70%;
   max-width: 960px;
@@ -547,6 +656,9 @@ div.elastic.inner {
   margin-bottom: 2em;
   padding-bottom: 2em;
 }
+
+/* Add Onion */
+
 #ahmiaAddOnion {
   width: 70%;
   max-width: 960px;
@@ -608,6 +720,9 @@ div.elastic.inner {
   box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
   margin-right: 0.5em;
 }
+
+/* Blacklist ~ AddService */
+
 #ahmiaBlacklist,
 #ahmiaAddService {
   width: 70%;
@@ -709,6 +824,9 @@ div.elastic.inner {
 #ahmiaAddService h4 {
   font-size: 1.3em;
 }
+
+/* About Page */
+
 #ahmiaAboutPage {
   /* elasticize this for legibility */
   width: 70%;
