@@ -1,4 +1,6 @@
 {% extends 'core.html' %}
+
+{% load ahmia_tags %}
 {% load i18n %}
 {% load static %}
 
@@ -10,6 +12,20 @@ Search results for {{query_string}}
 
 {% block body %}
 <div id="ahmiaResultsPage">
+
+    <div id="resultsFiltersMenuWrapper">
+      <ul id="resultsFiltersMenu">
+          <li class="category"><a href="#">Any Time<img src="{% static 'images/ddarrow.png' %}"></a>
+              <ul class="options">
+                  <li class="first child"><a href="{% add_query_params request pastdays='all' %}">Any Time</a></li>
+                  <li class="child"><a href="{% add_query_params request pastdays=1 %}">Last Day</a></li>
+                  <li class="child"><a href="{% add_query_params request pastdays=7 %}">Last Week</a></li>
+                  <li class="last child"><a href="{% add_query_params request pastdays=30 %}">Last Month</a></li>
+              </ul>
+          </li>
+      </ul>
+    </div>
+
   {% if total_search_results == 0 %}
     <p id="noResults">
       {% blocktrans %}
@@ -18,28 +34,30 @@ Search results for {{query_string}}
       Please try a different search or try again later.
       {% endblocktrans %}
     </p>
+
   {% else %}
-    <div class="resultsSubheader">
-      <p>
-        {% blocktrans %}
-        Omitted very similar entries. Displaying
-        <span class="resultNumber" id="totalResults">
-          {{ total_search_results }}
-        </span>
-        matches in
-        <span class="resultNumber" id="searchTime">
-          {{ search_time }}
-        </span> seconds. Page
-        <span class="resultNumber" id="pageResultBegin">
-          {{ page }}
-        </span>
-        of
-        <span class="resultNumber" id="pageResultEnd">
-          {{ max_pages }}
-        </span>.
-        {% endblocktrans %}
-      </p>
-    </div>
+      <div class="resultsSubheader">
+          <p>
+            {% blocktrans %}
+            Omitted very similar entries. Displaying
+            <span class="resultNumber" id="totalResults">
+              {{ total_search_results }}
+            </span>
+            matches in
+            <span class="resultNumber" id="searchTime">
+              {{ search_time }}
+            </span> seconds. Page
+            <span class="resultNumber" id="pageResultBegin">
+              {{ page }}
+            </span>
+            of
+            <span class="resultNumber" id="pageResultEnd">
+              {{ max_pages }}
+            </span>.
+            {% endblocktrans %}
+          </p>
+      </div>
+
     <ol class="searchResults">
       {% for result in search_results %}
       <li class="result" href="search/redirect?search_term={{ query_string }}&redirect_url={{ result.url }}" id="onion_key">

@@ -99,6 +99,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
 )
 
 ROOT_URLCONF = 'ahmia.urls'
@@ -111,7 +112,14 @@ TEMPLATES = [
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ]
+                'django.template.context_processors.request',
+            ],
+
+            # loads custom template tags
+            'libraries': {
+                'ahmia_tags': 'ahmia.template_tags',
+            }
+
         }
     },
 ]

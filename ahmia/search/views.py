@@ -5,7 +5,7 @@ Full text search views.
 import logging
 import math
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
@@ -48,6 +48,14 @@ def redirect_page(message, red_time, url):
     return HttpResponse(template.render(content))
 
 
+def filter_hits_by_time(hits, pastdays):
+    """Return only the hits that were crawled the past pastdays"""
+
+    time_threshold = datetime.fromtimestamp(time.time()) - timedelta(days=pastdays)
+    ret = [hit for hit in hits if hit['updated_on'] >= time_threshold]
+    return ret
+
+
 class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
 
@@ -68,7 +76,7 @@ class TorResultsView(ElasticsearchBaseListView):
                             {
                                 "multi_match": {
                                     "query": query,
-                                    "type":   "most_fields",
+                                    "type": "most_fields",
                                     "fields": [
                                         "fancy",
                                         "fancy.stemmed",
@@ -198,6 +206,25 @@ class TorResultsView(ElasticsearchBaseListView):
             'search_time': kwargs['time'],
             'now': date.fromtimestamp(time.time())
         }
+
+    def filter_hits(self, hits):
+        url_params = self.request.GET
+
+        try:
+            pastdays = int(url_params.get('pastdays'))
+        except (TypeError, ValueError):
+            # Either pastdays not exists or not valid int (e.g 'all')
+            # In any case hits returned unchanged
+            pass
+        else:
+            hits = filter_hits_by_time(hits, pastdays)
+
+        return hits
+
+    def get_queryset(self, **kwargs):
+        _, hits = super(TorResultsView, self).get_queryset(**kwargs)
+        hits = self.filter_hits(hits)
+        return len(hits), hits
 
 
 class IipResultsView(TorResultsView):
