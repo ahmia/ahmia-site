@@ -55,7 +55,13 @@ at least the postgresql credentials, if you are using the production settings.
 
 __NOTE__: You can always override the environment values defined inside `.env` in command line, e.g:
 ```
-DEBUG=False python3 manage.py test
+DEBUG=False
+```
+
+## Todo: test
+
+```sh
+python3 manage.py test
 ```
 
 ## Setup Website

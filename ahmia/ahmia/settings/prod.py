@@ -26,6 +26,7 @@ DATABASES = {
 DEPLOYMENT_DIR = config('DEPLOYMENT_DIR', default='/usr/local/lib/ahmia-site/ahmia/')
 
 # additionally to default LOGGING settings from base.py
+"""
 LOGGING.update({
     'handlers': {
         'django_file': {
@@ -91,3 +92,4 @@ LOGGING.update({
 })
 
 logging.config.dictConfig(LOGGING)
+"""
