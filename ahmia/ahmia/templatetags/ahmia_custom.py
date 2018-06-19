@@ -4,6 +4,7 @@ from django.conf import settings
 
 register = template.Library()
 
+
 @register.assignment_tag
 def is_development_environment():
     """Test if template is rendered in debug mode"""

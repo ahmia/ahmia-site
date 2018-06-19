@@ -2,10 +2,11 @@ language: python
 services:
   - postgresql
 python:
-  - 2.7
+  - 3.6
 install:
   - pip install -r requirements/dev.txt
 before_script:
+  - cp ahmia/ahmia/settings/example.env ahmia/ahmia/settings/.env
   - python ahmia/manage.py migrate
 script:
   - python ahmia/manage.py test

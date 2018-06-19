@@ -3,17 +3,20 @@ from django import forms
 from django.conf import settings
 from django.core.mail import send_mail
 from django.utils.translation import ugettext as _
-from models import HiddenWebsite
+
+from .models import HiddenWebsite
 from .validators import validate_onion_url, validate_status
+
 
 class AddOnionForm(forms.ModelForm):
     """Request to add an onion domain."""
     onion = forms.CharField(
-        validators = [validate_onion_url, validate_status],
-        widget = forms.TextInput(
+        validators=[validate_onion_url, validate_status],
+        widget=forms.TextInput(
             attrs={'placeholder': _('Enter your .onion address here')}
         )
     )
+
     class Meta:
         model = HiddenWebsite
         fields = ('onion',)
@@ -29,6 +32,7 @@ class AddOnionForm(forms.ModelForm):
         send_mail(subject, message,
                   settings.DEFAULT_FROM_EMAIL, settings.RECIPIENT_LIST,
                   fail_silently=False)
+
 
 class ReportOnionForm(forms.Form):
     """Request to add an onion domain."""

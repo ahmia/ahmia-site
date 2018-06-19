@@ -10,9 +10,10 @@ in Finland. This repository contains ahmia.fi source code.
 
 # Compatibility
 
-The newest version of Ahmia is built with Python 2.7, Django and
-Elasticsearch. You will need to know these technologies to create a
-working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
+The newest version of Ahmia is built with Python 3.6, Django 1.11 and Elasticsearch 6.2 (5.6 is also compatible).
+Python 2.7+ should be ok too, but preferably try Python 3 instead.
+You will need to know these technologies to create a working Ahmia installation.
+Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
 
 # Prerequisites
 [Ahmia-index](https://github.com/ahmia/ahmia-index) should be installed and running
@@ -23,14 +24,14 @@ working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/ahm
 
 ### Ubuntu 16.04
 ```sh
-# apt-get install build-essential python-pip python-virtualenv
-# apt-get install libxml2-dev libxslt1-dev python-dev libpq-dev libffi-dev libssl-dev
+$ apt-get install build-essential python3 python3-pip python3-dev python3-setuptools
+python3-virtualenv libxml2-dev libxslt1-dev python3-dev libpq-dev libffi-dev libssl-dev
 ```
 
 ### Fedora 23
 ```sh
-# dnf install @development-tools redhat-rpm-config python-pip python-virtualenv
-# dnf install libxml-devel libxslt-devel python-devel postgresql-devel libffi-devel openssl-devel
+$ dnf install @development-tools redhat-rpm-config python3-pip python3-virtualenv
+$ dnf install libxml-devel libxslt-devel python3-devel postgresql-devel libffi-devel openssl-devel
 ```
 
 ## Install requirements in a virtual environment
@@ -38,27 +39,53 @@ working Ahmia installation. Ahmia crawls using [OnionBot](https://github.com/ahm
 ```sh
 $ virtualenv /path/to/venv
 $ source /path/to/venv/bin/activate
-(venv)$ pip install -r requirements/dev.txt
+(venv)$ pip3 install -r requirements/dev.txt
+```
+
+## Configuration
+
+This is a common step, both for local (dev) and production environment.
+
+```
+$ cp ahmia/ahmia/settings/example.env ahmia/ahmia/settings/.env
+```
+
+Please **modify the values** in `.env`, to fit your needs. You have to specify
+at least the postgresql credentials, if you are using the production settings.
+
+__NOTE__: You can always override the environment values defined inside `.env` in command line, e.g:
+```
+DEBUG=False python3 manage.py test
+```
+
+## Setup Website
+
+### Migrate db
+```sh
+$ python3 ahmia/manage.py makemigrations ahmia
+$ python3 ahmia/manage.py makemigrations search
+$ python3 ahmia/manage.py migrate
+```
+
+### Make the static files
+```sh
+$ python3 ahmia/manage.py collectstatic
 ```
 
 # Run site in dev mode
 
-## Migrate db
+## Start development server
+
+Development settings use sqlite as a database.
+Default settings should work out of the box.
+
 ```sh
-$ python ahmia/manage.py makemigrations ahmia
-$ python ahmia/manage.py makemigrations search
-$ python ahmia/manage.py migrate
+$ python3 ahmia/manage.py runserver
 ```
 
-## Start development server
-```sh
-$ python ahmia/manage.py runserver
-Starting development server at http://127.0.0.1:8000/
-Quit the server with CONTROL-C.
-```
 ## Crontab to remove '/onionsadded' weekly
 ```sh
-0 22 * * * cd ahmia/ && ./manage.py shell < remove_onionsadded.py
+0 22 * * * python ahmia/manage.py remove_onions
 ```
 
 # FAQ
@@ -70,7 +97,12 @@ You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/mas
 The django settings.py is configured in a way that it only serve statics if DEBUG is True. Please verify [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/settings.py#L9) if it's the case. You can change this behaviour [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/urls.py#L18).
 
 ## What should I use to host ahmia in a production environment ?
-Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf). We suggest Apache2 or Nginx with Uwsgi
+
+You need to create a postgres database, and insert the database credentials in
+`ahmia/ahmia/settings/.env`.
+
+We suggest to deploy ahmia using Apache2 or Nginx with Uwsgi.
+Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf).
 
 ```sh
 cp conf/uwsgi/vassals/*.ini /etc/uwsgi/vassals/
@@ -79,12 +111,20 @@ uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data --daemonize /va
 service nginx start
 ```
 
+#### Using the development server
+
+However if you want to have a quick grasp of the production settings, using the development server,
+you can run:
+
+```sh
+$ python3 ahmia/manage.py runserver --settings ahmia.settings.prod
+```
+
 # Support
 
-No support is currently provided. It is up to you for now. This will
-change as Ahmia stabilizes.
+No support is currently provided. It is up to you for now. This will change as Ahmia stabilizes.
 
 # License
 
-Ahmia is licensed under the [3-clause BSD
-license](https://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29).
+Ahmia is licensed under the [3-clause BSD license](
+https://en.wikipedia.org/wiki/BSD_licenses#3-clause_license_.28.22Revised_BSD_License.22.2C_.22New_BSD_License.22.2C_or_.22Modified_BSD_License.22.29).

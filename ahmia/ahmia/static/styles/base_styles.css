@@ -524,7 +524,7 @@ ul#tweet_update_list a { color: #96997a; }
  white-space: -pre-wrap; /* Opera 4-6 */
  white-space: -o-pre-wrap; /* Opera 7 */
  word-wrap: break-word; /* Internet Explorer 5.5+ */
- style="background: #F2F2F2;
+ /* style:"background: #F2F2F2; */
  border-width: 1px;
  border-style: dashed;
 }
