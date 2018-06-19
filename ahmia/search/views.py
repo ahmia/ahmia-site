@@ -2,18 +2,25 @@
 Views
 Full text search views.
 """
+import logging
 import math
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
-from ahmia.views import ElasticsearchBaseListView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
-from ahmia.models import SearchResultsClicks
+
 from ahmia import utils
+from ahmia.models import SearchResultsClicks
+from ahmia.utils import get_elasticsearch_i2p_index
+from ahmia.views import ElasticsearchBaseListView
+
+logger = logging.getLogger(__name__)
+
 
 def onion_redirect(request):
     """Add clicked information and redirect to .onion address."""
+
     redirect_url = request.GET.get('redirect_url', '')
     search_term = request.GET.get('search_term', '')
     if not redirect_url or not search_term:
@@ -23,23 +30,35 @@ def onion_redirect(request):
         onion = redirect_url.split("://")[1].split(".onion")[0]
         if len(onion) != 16:
             raise ValueError('Invalid onion value = %s' % onion)
-        onion = "http://" + onion + ".onion/"
-        clicks, created = SearchResultsClicks.objects.get_or_create(
-            onionDomain=onion, clicked=redirect_url, searchTerm=search_term )
+        onion = "http://{}.onion/".format(onion)
+        _, _ = SearchResultsClicks.objects.get_or_create(
+            onionDomain=onion, clicked=redirect_url, searchTerm=search_term)
     except Exception as error:
-        print( "Error with redirect URL: " + redirect_url )
-        print( error )
+        logger.error("Error with redirect URL: {0}\n{1}".format(redirect_url, error))
+
     message = "Redirecting to hidden service."
     return redirect_page(message, 0, redirect_url)
 
-def redirect_page(message, time, url):
+
+def redirect_page(message, red_time, url):
     """Build and return redirect page."""
+
     template = loader.get_template('redirect.html')
-    content = {'message': message, 'time': time, 'redirect': url}
+    content = {'message': message, 'time': red_time, 'redirect': url}
     return HttpResponse(template.render(content))
+
+
+def filter_hits_by_time(hits, pastdays):
+    """Return only the hits that were crawled the past pastdays"""
+
+    time_threshold = datetime.fromtimestamp(time.time()) - timedelta(days=pastdays)
+    ret = [hit for hit in hits if hit['updated_on'] >= time_threshold]
+    return ret
+
 
 class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
+
     http_method_names = ['get']
     template_name = "tor_results.html"
     RESULTS_PER_PAGE = 100
@@ -48,7 +67,7 @@ class TorResultsView(ElasticsearchBaseListView):
     def get_es_context(self, **kwargs):
         query = kwargs['q']
         return {
-            "index": utils.get_elasticsearch_index(),
+            "index": utils.get_elasticsearch_tor_index(),
             "doc_type": utils.get_elasticsearch_type(),
             "body": {
                 "query": {
@@ -57,7 +76,7 @@ class TorResultsView(ElasticsearchBaseListView):
                             {
                                 "multi_match": {
                                     "query": query,
-                                    "type":   "most_fields",
+                                    "type": "most_fields",
                                     "fields": [
                                         "fancy",
                                         "fancy.stemmed",
@@ -71,6 +90,7 @@ class TorResultsView(ElasticsearchBaseListView):
                         "must_not": [
                             {
                                 "exists": {
+                                    # todo duplicate key since its defined as python dict
                                     "field": "is_fake",
                                     "field": "is_banned"
                                 }
@@ -91,17 +111,17 @@ class TorResultsView(ElasticsearchBaseListView):
                     }
 
                 },
-                "aggregations" : {
-                    "domains" : {
-                        "terms" : {
-                            "size" : 1000,
-                            "field" : "domain",
+                "aggregations": {
+                    "domains": {
+                        "terms": {
+                            "size": 1000,
+                            "field": "domain",
                             "order": {"max_score": "desc"}
                         },
                         "aggregations": {
                             "score": {
                                 "top_hits": {
-                                    "size" : 1,
+                                    "size": 1,
                                     "sort": [
                                         {
                                             "authority": {
@@ -146,9 +166,7 @@ class TorResultsView(ElasticsearchBaseListView):
         for res in results:
             try:
                 res['anchors'] = res['anchors'][0]
-            except KeyError:
-                pass
-            except TypeError:
+            except (KeyError, TypeError):
                 pass
             res['updated_on'] = datetime.strptime(res['updated_on'],
                                                   '%Y-%m-%dT%H:%M:%S')
@@ -189,10 +207,31 @@ class TorResultsView(ElasticsearchBaseListView):
             'now': date.fromtimestamp(time.time())
         }
 
+    def filter_hits(self, hits):
+        url_params = self.request.GET
+
+        try:
+            pastdays = int(url_params.get('pastdays'))
+        except (TypeError, ValueError):
+            # Either pastdays not exists or not valid int (e.g 'all')
+            # In any case hits returned unchanged
+            pass
+        else:
+            hits = filter_hits_by_time(hits, pastdays)
+
+        return hits
+
+    def get_queryset(self, **kwargs):
+        _, hits = super(TorResultsView, self).get_queryset(**kwargs)
+        hits = self.filter_hits(hits)
+        return len(hits), hits
+
+
 class IipResultsView(TorResultsView):
     """ I2P Search results view """
     template_name = "i2p_results.html"
+
     def get_es_context(self, **kwargs):
         context = super(IipResultsView, self).get_es_context(**kwargs)
-        context['doc_type'] = "i2p"
+        context['index'] = get_elasticsearch_i2p_index()
         return context

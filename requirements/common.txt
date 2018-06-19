@@ -3,7 +3,7 @@ backports.functools-lru-cache==1.2.1
 cffi==1.7.0
 colorama==0.3.7
 configparser==3.5.0
-cryptography==1.4
+cryptography==2.2.2
 Django==1.11
 elasticsearch==5.4.0
 enum34==1.1.6
@@ -12,12 +12,14 @@ ipaddress==1.0.16
 isort==4.2.5
 lazy-object-proxy==1.2.2
 mccabe==0.5.2
-psycopg2==2.6.2
 pyasn1==0.1.9
 pycparser==2.14
 pylint==1.6.4
-pyOpenSSL==16.0.0
+pyOpenSSL==18.0.0
 simplejson==3.8.2
 six==1.10.0
 urllib3==1.16
 wrapt==1.10.8
+networkx==2.1
+python-decouple==3.1
+wheel>=0.30
