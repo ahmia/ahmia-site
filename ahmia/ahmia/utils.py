@@ -5,21 +5,9 @@ from elasticsearch import Elasticsearch
 
 def get_elasticsearch_object():
     """ Creating an elasticsearch object to query the index """
-    # todo move the default values to settings instead of using exception handling
 
-    try:
-        es_servers = settings.ELASTICSEARCH_SERVERS
-        es_servers = es_servers if isinstance(es_servers, list) \
-            else [es_servers]
-    except AttributeError:
-        es_servers = [settings.ELASTICSEARCH_SERVERS]
-
-    try:
-        timeout = settings.ELASTICSEARCH_TIMEOUT
-    except AttributeError:
-        timeout = 60
-    es_obj = Elasticsearch(hosts=es_servers,
-                           timeout=timeout)
+    es_obj = Elasticsearch(hosts=settings.ELASTICSEARCH_SERVERS,
+                           timeout=settings.ELASTICSEARCH_TIMEOUT)
     return es_obj
 
 
