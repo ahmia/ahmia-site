@@ -15,22 +15,22 @@ def my_path(*x):
     return join(PROJECT_HOME, *x)
 
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default='localhost, 127.0.0.1')
 
 # ELASTICSEARCH STUFF
 ELASTICSEARCH_TLS_FPRINT = config(
     'ELASTICSEARCH_TLS_FPRINT',
     default="8C:DC:67:EA:C3:B3:97:94:92:30:81:35:8C:C6:D9:2A:E2:E6:8E:3E")
 # 'https://ahmia.fi/esconnection/'
-ELASTICSEARCH_SERVERS = config('ELASTICSEARCH_SERVERS', default='http://localhost:9200')
+ELASTICSEARCH_SERVERS = config('ELASTICSEARCH_SERVERS',
+                               cast=Csv(), default='http://localhost:9200,')
 # BOTH-INDEX exists in case we want to look into both to onion and i2p addresses ~ currently unused
 # ELASTICSEARCH_BOTH_INDEX = config('ELASTICSEARCH_BOTH_INDEX', default='latest-crawl')
 ELASTICSEARCH_TOR_INDEX = config('ELASTICSEARCH_TOR_INDEX', default='latest-tor')
 ELASTICSEARCH_I2P_INDEX = config('ELASTICSEARCH_I2P_INDEX', default='latest-i2p')
-ELASTICSEARCH_TYPE = config('ELASTICSEARCH_TYPE', default='doc')  # todo change/rm when ES 7.x
+# common type for bot indices # todo change to _doc or rm when upgrade to ES 7.x
+ELASTICSEARCH_TYPE = config('ELASTICSEARCH_TYPE', default='doc')
+ELASTICSEARCH_TIMEOUT = config('ELASTICSEARCH_TIMEOUT', cast=int, default=60)
 
 # Email settings
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool, default=True)
