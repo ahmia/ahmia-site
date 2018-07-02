@@ -257,12 +257,20 @@ class BannedDomainListView(OnionListView):
             "size": 0,
             "body": {
                 "query": {
-                    "constant_score": {
-                        "filter": {
-                            "term": {
-                                "is_banned": 1
-                            }
-                        }
+                    "bool": {
+                        "must": [
+                            {
+                                "exists": {
+                                    "field": "is_banned"
+                                }
+                            },
+                            {
+                                "match": {
+                                    "is_banned": "true"
+                                }
+                            },
+
+                        ]
                     }
                 },
                 "aggs": {
