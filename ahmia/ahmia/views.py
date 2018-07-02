@@ -247,7 +247,7 @@ class BannedDomainListView(OnionListView):
         Returns (total number of results, results)
         """
         hits = super(BannedDomainListView, self).format_hits(hits)
-        hits = [hashlib.md5(hit['domain']).hexdigest() for hit in hits]
+        hits = [hashlib.md5(hit['domain'].encode('utf-8')).hexdigest() for hit in hits]
         return sorted(hits)
 
     def get_es_context(self, **kwargs):
