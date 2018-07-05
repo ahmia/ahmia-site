@@ -24,14 +24,14 @@ Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
 
 ### Ubuntu 16.04
 ```sh
-$ apt-get install build-essential python3 python3-pip python3-dev python3-setuptools
+$ (sudo) apt-get install build-essential python3 python3-pip python3-dev python3-setuptools
 python3-virtualenv libxml2-dev libxslt1-dev python3-dev libpq-dev libffi-dev libssl-dev
 ```
 
 ### Fedora 23
 ```sh
-$ dnf install @development-tools redhat-rpm-config python3-pip python3-virtualenv
-$ dnf install libxml-devel libxslt-devel python3-devel postgresql-devel libffi-devel openssl-devel
+$ (sudo) dnf install @development-tools redhat-rpm-config python3-pip python3-virtualenv
+$ (sudo) dnf install libxml-devel libxslt-devel python3-devel postgresql-devel libffi-devel openssl-devel
 ```
 
 ## Install requirements in a virtual environment
@@ -39,7 +39,7 @@ $ dnf install libxml-devel libxslt-devel python3-devel postgresql-devel libffi-d
 ```sh
 $ virtualenv /path/to/venv
 $ source /path/to/venv/bin/activate
-(venv)$ pip3 install -r requirements/dev.txt
+(venv)$ pip install -r requirements/dev.txt
 ```
 
 ## Configuration
@@ -104,22 +104,39 @@ The django settings.py is configured in a way that it only serve statics if DEBU
 
 ## What should I use to host ahmia in a production environment ?
 
-You need to create a postgres database, and insert the database credentials in
-`ahmia/ahmia/settings/.env`.
-
-We suggest to deploy ahmia using Apache2 or Nginx with Uwsgi.
+We suggest to deploy ahmia using Apache2 or Nginx with Gunicorn.
 Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf).
 
+* First you need to create a postgres database, and insert the database credentials in
+`ahmia/ahmia/settings/.env`.
+
+* Configure and run nginx:
 ```sh
-cp conf/uwsgi/vassals/*.ini /etc/uwsgi/vassals/
-cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
-uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data --daemonize /var/log/uwsgi-emperor.log
-service nginx start
+(sudo) cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
+(sudo) service nginx start
 ```
+
+* Run gunicorn via bash scripts (work as daemons ~ edit files to change):
+```sh
+./bin/run-ahmia.sh
+./bin/run-ahmia-onion.sh
+```
+
+OR
+
+* Alternatively you can **configure and** run gunicorn as systemd daemon
+```sh
+(sudo) cp conf/gunicorn/*.service /etc/systemd/system/
+(sudo) service gunicorn (re)start
+```
+
+In that case it is **highly recommended** editing `/etc/systemd/system/gunicorn.service` to replace:
+-- `User` with the login user (eithewise gunicorn will be ran as **root**).
+-- `ExecStart` value, with your gunicorn path  (needed if gunicorn in virtualenv)
 
 #### Using the development server
 
-However if you want to have a quick grasp of the production settings, using the development server,
+If you want to have a quick grasp of the production settings, using the development server,
 you can run:
 
 ```sh
