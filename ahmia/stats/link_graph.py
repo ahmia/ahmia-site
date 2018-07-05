@@ -12,7 +12,7 @@ try:
 except ImportError:
     from urlparse import urlparse
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("stats")
 
 
 def query(graph, es, color):
