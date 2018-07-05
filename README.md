@@ -42,6 +42,12 @@ $ source /path/to/venv/bin/activate
 (venv)$ pip install -r requirements/dev.txt
 ```
 
+Or globally, for instance, in production server:
+
+```sh
+$ pip3 install -r requirements/prod.txt
+```
+
 ## Configuration
 
 This is a common step, both for local (dev) and production environment.
@@ -118,8 +124,8 @@ Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/
 
 * Run gunicorn via bash scripts (work as daemons ~ edit files to change):
 ```sh
-./bin/run-ahmia.sh
-./bin/run-ahmia-onion.sh
+bash ./bin/run-ahmia.sh
+bash ./bin/run-ahmia-onion.sh
 ```
 
 OR

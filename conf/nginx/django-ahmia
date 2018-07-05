@@ -33,8 +33,8 @@ server {
     listen      443 ssl;
     server_name ahmia.fi;
 
-    limit_conn conn_limit_per_ip 50;
-    limit_req zone=req_limit_per_ip burst=100 nodelay;
+    #limit_conn conn_limit_per_ip 50;
+    #limit_req zone=req_limit_per_ip burst=100 nodelay;
 
     charset     utf-8;
     client_max_body_size 75M;   # adjust to taste
