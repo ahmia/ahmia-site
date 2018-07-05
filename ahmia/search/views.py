@@ -15,7 +15,7 @@ from ahmia.models import SearchResultsClicks
 from ahmia.utils import get_elasticsearch_i2p_index
 from ahmia.views import ElasticsearchBaseListView
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("search")
 
 
 def onion_redirect(request):

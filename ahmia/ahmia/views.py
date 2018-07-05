@@ -19,7 +19,7 @@ from . import utils
 from .models import HiddenWebsite
 from .forms import AddOnionForm, ReportOnionForm
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("ahmia")
 
 
 class CoreView(TemplateView):

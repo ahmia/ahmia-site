@@ -49,7 +49,7 @@ LOGGING.update({
             'formatter': 'verbose'
         },
         'console': {
-            'level': config('LOG_LEVEL', default='DEBUG'),
+            'level': config('LOG_LEVEL', default='INFO'),
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
