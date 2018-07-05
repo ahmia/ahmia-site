@@ -26,7 +26,6 @@ DATABASES = {
 DEPLOYMENT_DIR = config('DEPLOYMENT_DIR', default='/usr/local/lib/ahmia-site/ahmia/')
 
 # additionally to default LOGGING settings from base.py
-"""
 LOGGING.update({
     'handlers': {
         'django_file': {
@@ -36,26 +35,25 @@ LOGGING.update({
             'formatter': 'verbose'
         },
         'ahmia_file': {
-            'level': 'WARNING',
+            'level': config('LOG_LEVEL', default='INFO'),
             'class': 'logging.handlers.WatchedFileHandler',  # log rotation with logrotate
             'filename': join(LOGFILE_ROOT, 'ahmia.log'),
             'formatter': 'verbose'
         },
         'search_file': {
-            'level': 'WARNING',
+            'level': config('LOG_LEVEL', default='INFO'),
             'class': 'logging.handlers.WatchedFileHandler',  # log rotation with logrotate
             'filename': join(LOGFILE_ROOT, 'search.log'),
             'formatter': 'verbose'
         },
         'stats_file': {
-            'level': 'WARNING',
+            'level': config('LOG_LEVEL', default='INFO'),
             'class': 'logging.handlers.WatchedFileHandler',  # log rotation with logrotate
             'filename': join(LOGFILE_ROOT, 'stats.log'),
             'formatter': 'verbose'
         },
-        # in production console is usually handled by the webserver
         'console': {
-            'level': config('LOG_LEVEL', default='INFO'),
+            'level': 'WARNING',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
@@ -92,4 +90,4 @@ LOGGING.update({
 })
 
 logging.config.dictConfig(LOGGING)
-"""
+
