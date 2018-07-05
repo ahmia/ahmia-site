@@ -1,0 +1,18 @@
+# Systemd file if you dont want to use /bin/run-ahmia-onion.sh
+
+[Unit]
+Description=gunicorn daemon
+# only start this after the networking target has been reached:
+After=network.target
+
+[Service]
+# User=ahmia      # FILL IN your login user
+Group=www-data
+WorkingDirectory=/usr/local/lib/ahmia-site/ahmia
+ExecStart=gunicorn --access-logfile - --workers 6 --bind unix:/tmp/ahmia.sock ahmia.wsgi:application
+# if virtualenv is used, the full path to gunicorn has to be specified as ExecStart
+# ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/tmp/ahmia.sock ahmia.wsgi:application
+
+[Install]
+# start when the regular multi-user system is up and running
+WantedBy=multi-user.target
