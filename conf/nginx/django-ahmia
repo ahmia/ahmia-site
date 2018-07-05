@@ -1,19 +1,23 @@
 upstream django {
-    server unix:///tmp/ahmia.sock;
+    # fail_timeout=0 means we always retry an upstream even if it failed to return a good HTTP response
+    # UNIX domain socket
+    server unix:/tmp/ahmia.sock fail_timeout=0;
 }
 
 upstream django-onion {
-    server unix:///tmp/msydqstlz2kzerdg.sock;
+    # fail_timeout=0 means we always retry an upstream even if it failed to return a good HTTP response
+    # UNIX domain socket
+    server unix:/tmp/msydqstlz2kzerdg.sock fail_timeout=0;
 }
 
 server {
-   listen 80;
-   return 301 https://$host$request_uri;
+    listen 80;
+    return 301 https://$host$request_uri;
 }
 
 server {
-         server_name "~^www\.(.*)$" ;
-         return 301 $scheme://$1$request_uri ;
+    server_name "~^www\.(.*)$";
+    return 301 $scheme://$1$request_uri;
 }
 
 # Sets the path and other parameters of a cache. Cache data are stored in files.
@@ -64,11 +68,11 @@ server {
 
     # Django WSGI Server
     location / {
-        uwsgi_pass  django;
-        include     uwsgi_params;
+        proxy_pass http://django;    # defined at the beginning
+        include proxy_params;        # should be /etc/nginx/proxy_param
 
         ################## CACHE SETTINGS ##################
-	proxy_cache my_cache;
+	    proxy_cache my_cache;
 
         # Sets the number of requests after which the response will be cached.
         proxy_cache_min_uses 1;
@@ -111,11 +115,11 @@ server {
 
     # Django WSGI Server
     location / {
-        uwsgi_pass  django-onion;
-        include     uwsgi_params;
+        proxy_pass http://django;    # defined at the beginning
+        include proxy_params;        # should be in /etc/nginx/proxy_params
 
         ################## CACHE SETTINGS ##################
-	proxy_cache my_cache;
+	    proxy_cache my_cache;
 
         # Sets the number of requests after which the response will be cached.
         proxy_cache_min_uses 1;
