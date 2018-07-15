@@ -931,3 +931,22 @@ div.elastic.inner {
   padding-left: 1em;
 
 }
+
+
+/****   USAGE STATISTCICS PAGE   ****/
+
+#usage-stats{
+  font-size: 18px;
+  width: 70%;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#usage-stats h2{
+  margin-bottom: 60px;
+}
+
+#usage-stats h3, #usage-stats #footer{
+  margin-top: 50px;
+}

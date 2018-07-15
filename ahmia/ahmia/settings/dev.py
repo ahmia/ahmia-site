@@ -10,14 +10,14 @@ if 'test' in sys.argv:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',       # Database engine
-            'NAME': my_path('ahmia_db_test')   # Database name
+            'NAME': ROOT_PATH('ahmia_db_test')   # Database name
         }
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',  # Database engine
-            'NAME': my_path('ahmia_db')   # Database name
+            'NAME': ROOT_PATH('ahmia_db')   # Database name
         }
     }
 

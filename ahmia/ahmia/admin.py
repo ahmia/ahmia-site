@@ -1,7 +1,10 @@
 from django.contrib import admin
 
-from .models import HiddenWebsite, SearchResultsClicks
 
+from .models import *
 
 admin.site.register(HiddenWebsite)
-admin.site.register(SearchResultsClicks)
+admin.site.register(SearchResultsClick)
+admin.site.register(SearchQuery)
+admin.site.register(TorStats)
+admin.site.register(I2PStats)

@@ -59,16 +59,6 @@ $ cp ahmia/ahmia/settings/example.env ahmia/ahmia/settings/.env
 Please **modify the values** in `.env`, to fit your needs. You have to specify
 at least the postgresql credentials, if you are using the production settings.
 
-__NOTE__: You can always override the environment values defined inside `.env` in command line, e.g:
-```
-DEBUG=False
-```
-
-## Todo: test
-
-```sh
-python3 manage.py test
-```
 
 ## Setup Website
 
@@ -95,11 +85,26 @@ Default settings should work out of the box.
 $ python3 ahmia/manage.py runserver
 ```
 
-## Crontab to remove '/onionsadded' weekly
+## Crontab
+
+* Rule to remove '/onionsadded' weekly
 ```sh
-0 22 * * * python ahmia/manage.py remove_onions
+0 22 * * * python /usr/local/bin/ahmia-site/ahmia/manage.py remove_onions --settings=ahmia.settings.prod
 ```
 
+* Rule to update usage statistics hourly (could be once per day as well)
+```sh
+59 * * * * python /usr/local/bin/ahmia-site/ahmia/manage.py update_stats --settings=ahmia.settings.prod
+```
+
+* Rule to clean up the DB on the first day of each month
+```sh
+0 0 1 * * python /usr/local/bin/ahmia-site/ahmia/manage.py cleanup_db --settings=ahmia.settings.prod
+```
+
+__NOTE__: If you are using virtualenv replace `python` with the absolute path to your virtualenv's python executable, e.g `/path/to/venv/bin/python`
+
+__NOTE__: If your deployment directory isn't `/usr/local/bin/ahmia-site` replace accordingly
 # FAQ
 
 ## How can populate my index to do searches ?
@@ -122,6 +127,8 @@ Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/
 (sudo) service nginx start
 ```
 
+EITHER:
+
 * Run gunicorn via bash scripts (work as daemons ~ edit files to change):
 ```sh
 bash ./bin/run-ahmia.sh
@@ -140,14 +147,15 @@ In that case it is **highly recommended** editing `/etc/systemd/system/gunicorn.
 -- `User` with the login user (eithewise gunicorn will be ran as **root**).
 -- `ExecStart` value, with your gunicorn path  (needed if gunicorn in virtualenv)
 
-#### Using the development server
+## How to run the Django Dev Server using the Production Settings?
 
-If you want to have a quick grasp of the production settings, using the development server,
-you can run:
+If you want to have a quick grasp of the production settings, using the development server:
 
 ```sh
-$ python3 ahmia/manage.py runserver --settings ahmia.settings.prod
+$ python3 ahmia/manage.py runserver --settings=ahmia.settings.prod
 ```
+
+__NOTE__: You can also append `--settings=ahmia.settings.prod` to any other `manage.py` command.
 
 # Support
 

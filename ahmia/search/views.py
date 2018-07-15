@@ -11,7 +11,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 
 from ahmia import utils
-from ahmia.models import SearchResultsClicks
+from ahmia.models import SearchResultsClick, SearchQuery
 from ahmia.utils import get_elasticsearch_i2p_index
 from ahmia.views import ElasticsearchBaseListView
 
@@ -31,8 +31,8 @@ def onion_redirect(request):
         if len(onion) != 16:
             raise ValueError('Invalid onion value = %s' % onion)
         onion = "http://{}.onion/".format(onion)
-        _, _ = SearchResultsClicks.objects.get_or_create(
-            onionDomain=onion, clicked=redirect_url, searchTerm=search_term)
+        SearchResultsClick.objects.add_or_increment(
+            onion_domain=onion, clicked=redirect_url, search_term=search_term)
     except Exception as error:
         logger.error("Error with redirect URL: {0}\n{1}".format(redirect_url, error))
 
@@ -109,7 +109,6 @@ class TorResultsView(ElasticsearchBaseListView):
                         #     }
                         # ]
                     }
-
                 },
                 "aggregations": {
                     "domains": {
@@ -172,6 +171,11 @@ class TorResultsView(ElasticsearchBaseListView):
                                                   '%Y-%m-%dT%H:%M:%S')
         return total, results
 
+    @staticmethod
+    def log_stats(**kwargs):
+        """log the query for stats calculations"""
+        SearchQuery.objects.add_or_increment(search_term=kwargs['q'], network='T')
+
     def get(self, request, *args, **kwargs):
         """
         This method is override to add parameters to the get_context_data call
@@ -179,6 +183,8 @@ class TorResultsView(ElasticsearchBaseListView):
         start = time.time()
         kwargs['q'] = request.GET.get('q', '')
         kwargs['page'] = request.GET.get('page', 0)
+
+        self.log_stats(**kwargs)
 
         self.object_list = self.get_queryset(**kwargs)
 
@@ -230,6 +236,11 @@ class TorResultsView(ElasticsearchBaseListView):
 class IipResultsView(TorResultsView):
     """ I2P Search results view """
     template_name = "i2p_results.html"
+
+    @staticmethod
+    def log_stats(**kwargs):
+        """Invoked by super().get() to log the query for stats calculations"""
+        SearchQuery.objects.add_or_increment(search_term=kwargs['q'], network='I')
 
     def get_es_context(self, **kwargs):
         context = super(IipResultsView, self).get_es_context(**kwargs)
