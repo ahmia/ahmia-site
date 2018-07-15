@@ -1,5 +1,6 @@
 """ Utility fonctions """
 from django.conf import settings
+from django.utils import timezone
 from elasticsearch import Elasticsearch
 
 
@@ -29,3 +30,8 @@ def get_elasticsearch_i2p_index():
 def get_elasticsearch_type():
     """ Getting the name of the main type used """
     return settings.ELASTICSEARCH_TYPE
+
+
+def timezone_today():
+    """ Timezone aware function that returns the current day"""
+    return timezone.now().date()

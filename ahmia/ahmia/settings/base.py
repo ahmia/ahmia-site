@@ -11,7 +11,7 @@ PROJECT_HOME = abspath(join(dirname(__file__), '..', '..'))
 
 
 # Build paths inside the project like this: path("ahmia")
-def my_path(*x):
+def ROOT_PATH(*x):
     return join(PROJECT_HOME, *x)
 
 
@@ -49,6 +49,7 @@ RECIPIENT_LIST = config('RECIPIENT_LIST', cast=Csv(), default=DEFAULT_FROM_EMAIL
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'America/Chicago'
+# todo Isn't TIME_ZONE theoretically useless without USE_TZ=True?
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -73,14 +74,14 @@ STATIC_URL = '/static/'
 
 # Absolute path to the directory where collectstatic will collect static files for deployment.
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = my_path('staticfiles/')
+STATIC_ROOT = ROOT_PATH('staticfiles/')
 
 # Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled
 # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-STATICFILES_DIRS
 # STATICFILES_DIRS = [
-#     my_path('ahmia/static/'),
-#     my_path('search/static/'),
-#     my_path('stats/static/')
+#     ROOT_PATH('ahmia/static/'),
+#     ROOT_PATH('search/static/'),
+#     ROOT_PATH('stats/static/')
 # ]
 
 # List of finder classes that know how to find static files in various locations.
@@ -139,7 +140,7 @@ INSTALLED_APPS = (
 )
 
 # Log everything to the logs directory at the top
-LOGFILE_ROOT = my_path('logs')
+LOGFILE_ROOT = ROOT_PATH('logs')
 if not os.path.exists(LOGFILE_ROOT):
     print("Creating logs empty folder %s" % LOGFILE_ROOT)
     os.mkdir(LOGFILE_ROOT)
@@ -169,3 +170,6 @@ LOGGING = {
         }
     },
 }
+
+# How many days to keep usage statistics related information
+USAGE_STATS_DAYS = config('USAGE_STATS_DAYS', cast=int, default=30)
