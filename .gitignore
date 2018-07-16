@@ -9,3 +9,4 @@ onionbot/*.json
 .DS_Store
 ahmia/ahmia/migrations/
 .env
+staticfiles
