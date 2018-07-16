@@ -124,7 +124,7 @@ class Command(BaseCommand):
         y1 = list(tor_stats.values_list('num_clicks', flat=True))
         y2 = list(tor_stats.values_list('num_unique_clicks', flat=True))
         image_path = os.path.join(stats_folder, 'tor_clicks.png')
-        plots.generate_figure(tor_x, y1, y2, image_path, 'Result Clicks)')
+        plots.generate_figure(tor_x, y1, y2, image_path, 'Result Clicks')
 
         # queries (I2P)
         y1 = list(i2p_stats.values_list('num_queries', flat=True))
