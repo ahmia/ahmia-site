@@ -1,4 +1,6 @@
 import matplotlib
+from matplotlib.ticker import MaxNLocator
+
 matplotlib.use('agg')   # server no need to display graphics
 import matplotlib.pyplot as plt
 
@@ -36,9 +38,11 @@ def generate_figure(x, y1, y2, image_path, metric_str):
     axis[0].bar(x, y2, edgecolor="k")
     axis[0].set_xticks(x_labels)
     axis[0].set_xticklabels(x_labels)
+    axis[0].yaxis.set_major_locator(MaxNLocator(integer=True))  # int ylabels
 
     axis[1].set_title(metric_str)
     axis[1].bar(x, y1, edgecolor="k")
+    axis[1].yaxis.set_major_locator(MaxNLocator(integer=True))  # int ylabels
 
     # save the figure
     plt.savefig(image_path, bbox_inches='tight', transparent=True)
