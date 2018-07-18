@@ -13,7 +13,6 @@
 {% endblock %}
 
 {% block body %}
-    <link rel="stylesheet" href="/ahmia/static/css/style.css" type="text/css" media="screen" />
 
     <div id="usage-stats">
 
@@ -56,14 +55,14 @@
 {#            {% endif %}#}
         </div>
 
-        <div class="plot" style="display: block;">
+{#        <div class="plot" style="display: block;">#}
 {#            <h4>The total number of result clicks (redirects) made each day </h4>#}
 {#            {% if num_days > 3 %}#}
-                <img src="{% static "stats/i2p_clicks.png" %}" alt="search queries plot"/>
+{#                <img src="{% static "stats/i2p_clicks.png" %}" alt="search queries plot"/>#}
 {#            {% else %}#}
 {#                <img src="{% static "stats/uc.png" %}" alt="under-construction image"/>#}
 {#            {% endif %}#}
-        </div>
+{#        </div>#}
 
         <div id="footer">
             <i>The page is being updated frequently</i>

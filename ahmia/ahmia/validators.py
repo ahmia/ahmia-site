@@ -60,3 +60,20 @@ def validate_onion_url(url):
 def validate_onion(url):
     """Test if an url is a valid hiddenservice url"""
     return re.match(r"^[a-z2-7]{16}(\.onion)?", url.strip())
+
+
+def is_valid_onion_url(domain):
+    """
+    Uses django validator validate_onion_url defined above
+    in order to derive if domain is a valid onion, but returns
+    boolean instead of throwing an exception
+
+    :param domain The url in question
+    :returns True if valid onion_domain else False
+    """
+
+    try:
+        validate_onion_url(domain)
+    except ValidationError:
+        return False
+    return True
