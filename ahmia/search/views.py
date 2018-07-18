@@ -13,6 +13,7 @@ from django.template import loader
 from ahmia import utils
 from ahmia.models import SearchResultsClick, SearchQuery
 from ahmia.utils import get_elasticsearch_i2p_index
+from ahmia.validators import is_valid_onion_url
 from ahmia.views import ElasticsearchBaseListView
 
 logger = logging.getLogger("search")
@@ -23,16 +24,20 @@ def onion_redirect(request):
 
     redirect_url = request.GET.get('redirect_url', '')
     search_term = request.GET.get('search_term', '')
+
     if not redirect_url or not search_term:
         answer = "Bad request: no GET parameter URL."
         return HttpResponseBadRequest(answer)
     try:
         onion = redirect_url.split("://")[1].split(".onion")[0]
-        if len(onion) != 16:
-            raise ValueError('Invalid onion value = %s' % onion)
+        # if len(onion) != 16:
+        #     raise ValueError('Invalid onion value = %s' % onion)
         onion = "http://{}.onion/".format(onion)
-        SearchResultsClick.objects.add_or_increment(
-            onion_domain=onion, clicked=redirect_url, search_term=search_term)
+        if is_valid_onion_url(onion):
+            # currently we can't log i2p clicks due to
+            # SearchResultsClick.onion_domain having an onion validator
+            SearchResultsClick.objects.add_or_increment(
+                onion_domain=onion, clicked=redirect_url, search_term=search_term)
     except Exception as error:
         logger.error("Error with redirect URL: {0}\n{1}".format(redirect_url, error))
 
