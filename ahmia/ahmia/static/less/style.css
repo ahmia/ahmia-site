@@ -932,6 +932,18 @@ div.elastic.inner {
 
 }
 
+.messages .error{
+  color: red;
+}
+
+.messages .warning{
+  color: orange;
+}
+
+.messages .success{
+  color: dodgerblue;
+}
+
 /*** USAGE STATISTCICS PAGE ***/
 
 #usage-stats{
@@ -948,4 +960,8 @@ div.elastic.inner {
 
 #usage-stats h3, #usage-stats #footer{
   margin-top: 50px;
+}
+
+#usage-stats .plot{
+  margin-bottom: 20px;
 }
