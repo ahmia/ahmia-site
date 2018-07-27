@@ -2,15 +2,15 @@
 {% load i18n %}
 
 {% block body %}
-<div id="ahmiaBlacklist">
-  <p>
-    {% blocktrans %}
-    Your abuse report was successfully submitted.
-    Thank you for helping to keep Ahmia free of child abuse material.
-    A moderator will remove this from the index shortly.
-    {% endblocktrans %}
-  <br>
-  <a href="javascript:history.back();">{% trans "Go back" %}</a>
-  </p>
-</div>
+  <div id="ahmiaBlacklist">
+    <p>
+      {% blocktrans %}
+        Your abuse report was successfully submitted.
+        Thank you for helping to keep Ahmia free of child abuse material.
+        A moderator will remove this from the index shortly.
+      {% endblocktrans %}
+      <br>
+      <a href="javascript:history.back();">{% trans "Go back" %}</a>
+    </p>
+  </div>
 {% endblock %}

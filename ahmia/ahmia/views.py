@@ -130,7 +130,8 @@ def add_list_view(request):
 
 
 class BlacklistView(FormView):
-    """Return a blacklist page with MD5 sums of banned content."""
+    """Blacklist report page"""
+
     form_class = ReportOnionForm
     success_url = "/blacklist/success/"
     template_name = "blacklist.html"
@@ -163,6 +164,7 @@ class BlacklistView(FormView):
         }
 
     def form_valid(self, form):
+        # todo replace with a spam-tolerant report functionality
         form.send_abuse_report()
         return super(BlacklistView, self).form_valid(form)
 

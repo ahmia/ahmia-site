@@ -91,7 +91,7 @@ class Command(BaseCommand):
             except (ValidationError, IntegrityError) as e:
                 logging.exception(e)
 
-        logger.info("Updated stats for day: %s " % self.today)
+        logger.info("Updated {0} for: {1} ".format(modelclass.__name__, self.today))
 
     @staticmethod
     def generate_plots():

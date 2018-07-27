@@ -5,70 +5,85 @@
 {% block title %}Ahmia - Description Linked Data Proposal{% endblock %}
 
 {% block body %}
-<div id="ahmiaAboutPage">
-  <div class="aboutAhmia">
-<h2>Description Linked Data Proposal to WWW Servers Inside Tor</h2>
-<p>
-  This proposal is to all HTTP servers inside Tor network.
-</p>
-<p>
-  <strong>The problem : </strong>
-  We are wondering how we could get authenticated hidden service descriptions. That is, descriptions of hidden services that are provided by the hidden service operator themselves. We would like to show these official descriptions in ahmia.fi search.
-</p>
-<p>
-  <strong>The solution proposal : </strong>
-  Simple linked description datasheets provided by the hidden services.
-</p>
-<p>
-  <strong>How to do this : </strong>
-  Simply provide a linked description file in your hidden service web at <u><strong class="color9">"http://youronionaddress.onion/description.json"</strong></u> and anyone could find this file.
-</p>
-<p>
-  You can write your information to the given link and use the generated JSON file : <a href="/documentation/createHsDescription/">HS description generator</a>
-</p>
+  <div id="ahmiaAboutPage">
 
-<strong>Example JSON (DuckDuckGo):</strong>
-<br />
+    <div class="aboutAhmia">
+      <h2>Description Linked Data Proposal to WWW Servers Inside Tor</h2>
+      <p>
+        This proposal is to all HTTP servers inside Tor network.
+      </p>
+      <p>
+        <strong>The problem: </strong>
+        We are wondering how we could get authenticated hidden service descriptions. That
+        is, descriptions of hidden services that are provided by the hidden service operator
+        themselves. We would like to show these official descriptions in ahmia.fi search.
+      </p>
+      <p>
+        <strong>The solution proposal : </strong>
+        Simple linked description datasheets provided by the hidden services.
+      </p>
+      <p>
+        <strong>How to do this : </strong>
+        Simply provide a linked description file in your hidden service web at
+          <u>
+             <strong class="color9">"http://youronionaddress.onion/description.json"</strong>
+          </u>
+          and anyone could find this file.
+      </p>
+      <p>
+        You can write your information to the given link and use the generated JSON file :
+        <a href="/documentation/createHsDescription/">HS description generator</a>
+      </p>
 
-<pre class="precode">
-<code id="json">
-{
-    "title": "DuckDuckGo",
-    "description": "DuckDuckGo is a search engine that is based in Valley Forge, Pennsylvania and uses information from crowd-sourced sites (like Wikipedia) with the aim of augmenting traditional results and improving relevance. The search engine philosophy emphasizes privacy and does not record user information.",
-    "relation": "http://duckduckgo.com/",
-    "keywords": "search engine, privacy, no tracking, DuckDuckGo",
-    "type": "search engine",
-    "language": "en",
-    "contactInformation": "http://help.duckduckgo.com/customer/portal/emails/new"
-}
-</code>
-</pre>
+      <strong>Example JSON (DuckDuckGo):</strong>
+      <br/>
 
-<p>
-  You can download and study the example <a href="{% static '3g2upl4pq6kufc4m.json' %}">JSON file</a>.
-</p>
-</div>
- <div class="aboutAhmia">
-<h3>Help us</h3>
-<p>
-  Do tell us your opinion about this. We are considering this as a simple method for getting official description information from the hidden services.
-  We will show these in our page : <a href="/address/">Onion list</a>
-</p>
-</div>
-<div class="credits">
-    <p>
-      {% trans "3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY" as bitcoin_address %}
-      {% blocktrans %}
-      We extend a thank you to Ahmia's supporters.
-      Bitcoin address: <a href="bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY">{{ bitcoin_address }}</a>.
-      {% endblocktrans %}
-    </p>
-    <ul>
-      <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
-      <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
-      <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
-      <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
-    </ul>
+      <pre class="precode">
+        <code id="json">
+        {
+          "title": "DuckDuckGo",
+          "description": "DuckDuckGo is a search engine that is based in Valley Forge, Pennsylvania and uses information from crowd-sourced sites (like Wikipedia) with the aim of augmenting traditional results and improving relevance. The search engine philosophy emphasizes privacy and does not record user information.",
+          "relation": "http://duckduckgo.com/",
+          "keywords": "search engine, privacy, no tracking, DuckDuckGo",
+          "type": "search engine",
+          "language": "en",
+          "contactInformation": "http://help.duckduckgo.com/customer/portal/emails/new"
+        }
+        </code>
+      </pre>
+      <p>
+        You can download and study the example
+          <a href="{% static '3g2upl4pq6kufc4m.json' %}">JSON file</a>.
+      </p>
+    </div>
+
+    <div class="aboutAhmia">
+      <h3>Help us</h3>
+      <p>
+        Do tell us your opinion about this. We are considering this as a simple method for
+        getting official description information from the hidden services.
+        We will show these in our page : <a href="{% url 'address' %}">Onion list</a>
+      </p>
+    </div>
+    <div class="credits">
+      <p>
+        {% trans "3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY" as bitcoin_address %}
+        {% blocktrans %}
+          We extend a thank you to Ahmia's supporters.
+          Bitcoin address:
+          <a href="bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY">{{ bitcoin_address }}</a>.
+        {% endblocktrans %}
+      </p>
+      <ul>
+        <li><img src="/static/images/logos/globaleaks.png"
+                 alt="{% trans "Globaleaks Platform" %}"></li>
+        <li><img src="/static/images/logos/tor2web.png"
+                 alt="{% trans "Tor2Web Platform" %}"></li>
+        <li><img src="/static/images/logos/hermes.png"
+                 alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+        <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}">
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
 {% endblock %}

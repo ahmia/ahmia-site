@@ -2,31 +2,35 @@
 {% load i18n %}
 
 {% block body %}
-<div id="ahmiaMainContent">
-  <div id="ahmiaSearchArea">
-    <h1>Ahmia</h1>
-    <h2>i2p network search</h2>
-    <form id="searchForm" class="autocomplete" action="/search/i2p/" method="get">
-      <input id="id_q" type="search" name="q">
-      <input type="submit" value="{% trans "Search" %}" style="submitButton">
-    </form>
-  </div>
+  <div id="ahmiaMainContent">
+    <div id="ahmiaSearchArea">
+      <h1>Ahmia</h1>
+      <h2>i2p network search</h2>
+      <form id="searchForm" class="autocomplete" action="/search/i2p/" method="get">
+        <input id="id_q" type="search" name="q" title="q">
+        <input type="submit" value="{% trans "Search" %}">
+      </form>
+    </div>
 
-  <div id="ahmiaDescriptionArea">
-    {% trans "Tor browser bundle" as tor_browser_bundle %}
-    {% trans "report abuse material" as report_abuse_material %}
-    {% trans "service blacklist" as service_blacklist %}
+    <div id="ahmiaDescriptionArea">
+      {% trans "Tor browser bundle" as tor_browser_bundle %}
+      {% trans "report abuse material" as report_abuse_material %}
+      {% trans "service blacklist" as service_blacklist %}
 
-    {% trans "indexing information" as indexing_info %}
-    {% trans "contribute to the source code" as contribute_to_source %}
-    <p>
-      {% blocktrans %}
-        For more about Ahmia, see <a href="{% endblocktrans %}{% url 'doc-indexing' %}{% blocktrans %}">{{ indexing_info }}</a>,
-        <a href="https://github.com/ahmia/search">{{contribute_to_source}}.
-        <br /> Bitcoin address: 3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY
-        <br /> Onion service: <a href="http://msydqstlz2kzerdg.onion/">msydqstlz2kzerdg.onion</a>
-      {% endblocktrans %}
-    </p>
+      {% trans "indexing information" as indexing_info %}
+      {% trans "contribute to the source code" as contribute_to_source %}
+      <p>
+        {% blocktrans %}
+          For more about Ahmia, see
+          <a href="{% endblocktrans %}{% url 'doc-indexing' %}{% blocktrans %}">
+            {{ indexing_info }}
+          </a>,
+          <a href="https://github.com/ahmia/ahmia-site">{{ contribute_to_source }}.
+          <br/> Bitcoin address: 3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY
+          <br/> Onion service:
+          <a href="http://msydqstlz2kzerdg.onion/">msydqstlz2kzerdg.onion</a>
+        {% endblocktrans %}
+      </p>
+    </div>
   </div>
-</div>
 {% endblock %}
