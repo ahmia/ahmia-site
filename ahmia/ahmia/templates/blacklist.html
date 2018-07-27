@@ -5,73 +5,77 @@
 
 {% block title %}{% trans "Hidden Service Blacklist" %} &mdash; Ahmia{% endblock %}
 {% block extra_js %}
-{% is_development_environment as is_dev %}
+  {% is_development_environment as is_dev %}
   <script src="{% static 'js/blacklist.js' %}"></script>
   <script src="{% static 'js/md5.js' %}"></script>
 {% endblock %}
 {% block body %}
-<div id="ahmiaBlacklist">
-  <p class="end">
-    {% blocktrans %}
-    Ahmia blacklists sites containing child abuse material from its index. This list contains
-    a masked version of all hidden service .onion addresses that have been added to the Ahmia
-    blacklist, and is updated whenever Ahmia blacklists a new .onion site for abuse material.
-    {% endblocktrans %}
-  </p>
-  <h3>{% trans "Blacklist information" %}</h3>
-  <p>
-    {% blocktrans %}
-    Hidden service names are masked by creating an MD5 sum of the onion name plus a new line.
-    For example, if
-    the onion is <code>abcdefghijklmnop.onion</code>, the resulting hash would be
-    <code>c50b9578b6357a561909ff29331ad7ad</code>.
-    This way it is possible for researchers and administrators to check if a site has been
-    blacklisted from the index without making the .onion hostnames easily accessible. <br>
-    To calculate MD5 of onions run the following command : <br>
-    <code> echo -e "abcdefghijklmnop.onion\c" | md5sum </code>
-    {% endblocktrans %}
-  </p>
-  <p class="end">
-    {% blocktrans %}
-    Blacklist hash data is available for raw text download <a href="/blacklist/banned">here</a>. You may use this
-    in your own search indexes to remove abusive content.
-    {% endblocktrans %}
-  </p>
-  <div id="checkForBannedService" class="hidden">
-  <h3 class="checkForm">{% trans "Check For a Banned Service" %}</h3>
-  <div id="ahmiaFormContainer">
-    <form id="checkBlacklist" method="post" action="">
-      {{ form.onion }}
-      <input type="submit" value="{% trans "Check" %}">
-    </form>
-    {% if form.errors %}
-      <div id="flashMessage" class="{% if flash_message %}server{% endif %}">
-      {{ form.onion.errors }}
+  <div id="ahmiaBlacklist">
+    <p class="end">
+      {% blocktrans %}
+        Ahmia blacklists sites containing child abuse material from its index. This list
+        contains a masked version of all hidden service .onion addresses that have been
+        added to the Ahmia blacklist, and is updated whenever Ahmia blacklists a
+        new .onion site for abuse material.
+      {% endblocktrans %}
+    </p>
+    <h3>{% trans "Blacklist information" %}</h3>
+    <p>
+      {% blocktrans %}
+        Hidden service names are masked by creating an MD5 sum of the onion name plus a new
+        line. For example, if the onion is <code>abcdefghijklmnop.onion</code>, the
+        resulting hash would be <code>c50b9578b6357a561909ff29331ad7ad</code>.
+        This way it is possible for researchers and administrators to check if a site has
+        been blacklisted from the index without making the .onion hostnames easily accessible.
+        <br>
+        To calculate MD5 of onions run the following command : <br>
+        <code> echo -e "abcdefghijklmnop.onion\c" | md5sum </code>
+      {% endblocktrans %}
+    </p>
+    <p class="end">
+      {% url 'banned' as banned_url %}
+      {% blocktrans %}
+        Blacklist hash data is <strong>available for raw text download</strong>
+        <a href="{{ banned_url }}">here</a>. You may use this
+        in your own search indexes to remove abusive content.
+      {% endblocktrans %}
+    </p>
+    <div id="checkForBannedService" class="hidden">
+      <h3 class="checkForm">{% trans "Check For a Banned Service" %}</h3>
+      <div id="ahmiaFormContainer">
+        <form id="checkBlacklist" method="post" action="">
+          {{ form.onion }}
+          <input type="submit" value="{% trans "Check" %}">
+        </form>
+        {% if form.errors %}
+          <div id="flashMessage" class="{% if flash_message %}server{% endif %}">
+            {{ form.onion.errors }}
+          </div>
+        {% endif %}
       </div>
-    {% endif %}
+    </div>
+    <div id="bannedHiddenServices">
+      <h3>{% trans "Banned Hidden Services" %}</h3>
+      <ul id="blacklist">
+        {% comment %}
+          originally this filtered only to banned services online.
+          i don't understand why. show everything that is banned.
+        {% endcomment %}
+        {% for onion in banned_onions %}
+          <li><code> {{ onion.md5 }} </code></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {#    <div id="bannedDomainsMD5">#}
+    {#      <h3>Banned Hidden Services MD5 checksums</h3>#}
+    {##}
+    {#      <ul id='list'>#}
+    {#        {% for site in domains %}#}
+    {#          <li>{{ site }}</li>#}
+    {#        {% endfor %}#}
+    {#      </ul>#}
+    {##}
+    {#    </div>#}
+
   </div>
-  </div>
-  <div id="bannedHiddenServices">
-  <h3>{% trans "Banned Hidden Services" %}</h3>
-  <ul id="blacklist">
-    {% comment %}
-      originally this filtered only to banned services online.
-      i don't understand why. show everything that is banned.
-    {% endcomment %}
-    {% for onion in banned_onions %}
-    <li><code>{{ onion.md5 }} </code></li>
-    {% endfor %}
-  </ul>
-  </div>
-  <div id="bannedDomainsMD5">
-  <p class="end">
-    <h3>Banned Hidden Services MD5 checksums</h3>
-    <ul id='list'>
-      {% for site in domains %}
-      <li>{{ site }}</li>
-      {% endfor %}
-    </ul>
-  </p>
-  </div>
-</div>
 {% endblock %}

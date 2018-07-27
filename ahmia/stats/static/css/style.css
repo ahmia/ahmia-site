@@ -87,7 +87,7 @@ canvas#sigma_bg_1 {
 
 
 #attributepane .returntext em {
-	background-image: url('../images/sprite.png');
+	/*background-image: url('../images/sprite.png'); todo 404 find sprite.png */
 	background-repeat: no-repeat;
 	display: block;
 	width: 20px;
@@ -112,7 +112,7 @@ canvas#sigma_bg_1 {
 }
 
 #attributepane .close em {
-background-image: url('../images/sprite.png');
+/*background-image: url('../images/sprite.png');*/
 background-repeat: no-repeat;
 background-position: -11px -13px;
 display: block;
@@ -149,7 +149,7 @@ font-weight:bold;
 
 #attributepane .data .plus {
 background-repeat: no-repeat;
-background-image: url('../images/sprite.png');
+/*background-image: url('../images/sprite.png');*/
 background-position: -171px -122px;
 width: 22px;
 height: 20px;
@@ -193,31 +193,33 @@ font-size:14px;
 	bottom:0;
 }
 
-#jisc {
-width: 71px;
-height: 56px;
-background-image: url('../images/jisc-logo-small.png');
-background-repeat: no-repeat;
-display:inline-block;
-}
+/* <NOT USED> */
+/*#jisc {*/
+/*width: 71px;*/
+/*height: 56px;*/
+/*background-image: url('../images/jisc-logo-small.png');*/
+/*background-repeat: no-repeat;*/
+/*display:inline-block;*/
+/*}*/
 
-#jisc span {
-	display:none;
-}
+/*#jisc span {*/
+	/*display:none;*/
+/*}*/
 
-#oii {
-width: 227px;
-height: 56px;
-background-image: url('../images/oii_text.png');
-background-repeat: no-repeat;
-display:inline-block;
-margin-right:10px;
+/*#oii {*/
+/*width: 227px;*/
+/*height: 56px;*/
+/*background-image: url('../images/oii_text.png');*/
+/*background-repeat: no-repeat;*/
+/*display:inline-block;*/
+/*margin-right:10px;*/
 
-}
+/*}*/
 
-#oii span {
-	display:none;
-}
+/*#oii span {*/
+	/*display:none;*/
+/*}*/
+/* </NOT USED> */
 
 #maintitle {
 width: 100%;
@@ -285,7 +287,7 @@ color: #000;
 #search .state {
 width: 14px;
 height: 14px;
-background-image: url('../images/sprite.png');
+/*background-image: url('../images/sprite.png');*/
 float: right;
 margin-top: 6px;
 cursor: pointer;
@@ -338,7 +340,7 @@ user-select: none;
 	color: #fff;
 	cursor: pointer;
 	background-color: #999;
-	background-image: url('../images/sprite.png');
+	/*background-image: url('../images/sprite.png');*/
 	background-repeat: no-repeat;
 	background-position: 200px -144px;
 }
@@ -396,7 +398,7 @@ width: 20px;
 height: 20px;
 float: left;
 background-repeat: no-repeat;
-background-image: url('../images/sprite.png');
+/*background-image: url('../images/sprite.png');*/
 }
 
 #legend dl {
@@ -532,7 +534,7 @@ margin: 0 0 4px 0;
 #information .button {
 width: 14px;
 height: 14px;
-background-image: url('../images/sprite.png');
+/*background-image: url('../images/sprite.png');*/
 border: 1px solid #999;
 display: inline-block;
 *display: inline;
@@ -555,7 +557,7 @@ background-position: -131px -122px;
 background-color: #fff;
 padding: 4px 4px 4px 25px;
 cursor: pointer;
-background-image: url('../images/sprite.png');
+/*background-image: url('../images/sprite.png');*/
 background-repeat: no-repeat;
 background-position: -167px -118px;
 position: absolute;
@@ -568,7 +570,7 @@ display: none;
 position: absolute;
 width: 20px;
 height: 16px;
-background-image: url('../images/sprite.png');
+/*background-image: url('../images/sprite.png');*/
 background-repeat: no-repeat;
 background-position: -45px -147px;
 cursor: pointer;
