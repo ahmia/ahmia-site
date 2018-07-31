@@ -35,6 +35,16 @@
       </ul>
     </div>
 
+    {% if suggest != None %}
+      <div id="didYouMean">
+        <p> {% trans "Did you mean" %}
+          <a href="{% add_query_params request q=suggest %}">
+            <i>{{ suggest }}</i>
+          </a>?
+        </p>
+      </div>
+    {% endif %}
+
     {% if total_search_results == 0 %}
       <p id="noResults">
         {% blocktrans %}
@@ -93,6 +103,7 @@
                   {{ result.updated_on|timesince:now }} {% trans "ago" %}
             </span> &mdash;
             <span class="abuseReportForm">
+              {# todo invalid url #}
               <a href="/blacklist/report?onion={{ result.domain|urlencode }}"
                  data-href="{{ result.domain }}"
                  title="{% trans 'Report this link to us' %}"

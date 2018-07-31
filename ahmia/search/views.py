@@ -158,6 +158,38 @@ class TorResultsView(ElasticsearchBaseListView):
             "size": 0
         }
 
+    def suggest(self, **kwargs):
+        """ Did you mean functionality """
+        suggest = None
+        es_obj = self.es_obj or utils.get_elasticsearch_object()
+
+        payload = {
+            "index": utils.get_elasticsearch_tor_index(),
+            "doc_type": utils.get_elasticsearch_type(),
+            "size": 0,
+            "body": {
+                "suggest": {
+                    "text": kwargs.get('q'),
+                    "simple-phrase": {
+                        "phrase": {
+                            "field": "fancy",
+                            "gram_size": 2   # todo make this applicable?
+                        }
+                    }
+                }
+            }
+        }
+        resp = es_obj.search(**payload)
+
+        try:
+            suggestions = resp['suggest']['simple-phrase'][0]['options']
+            if len(suggestions) > 0:
+                suggest = suggestions[0]['text']
+        except (TypeError, ValueError) as e:
+            logger.exception(e)
+
+        return suggest
+
     def format_hits(self, hits):
         """
         Transform ES response into a list of results.
@@ -193,6 +225,13 @@ class TorResultsView(ElasticsearchBaseListView):
 
         self.object_list = self.get_queryset(**kwargs)
 
+        if 's' in request.GET:
+            # testing feature: "did you mean" enabled by url param 's'
+            suggest = self.suggest(**kwargs)
+            if suggest != kwargs['q']:
+                # if ES fuzziness suggests something else, display it
+                kwargs['suggest'] = suggest
+
         kwargs['time'] = round(time.time() - start, 2)
 
         context = self.get_context_data(**kwargs)
@@ -207,6 +246,7 @@ class TorResultsView(ElasticsearchBaseListView):
         max_pages = int(math.ceil(float(length) / self.RESULTS_PER_PAGE))
 
         return {
+            'suggest': kwargs.get('suggest'),
             'page': page+1,
             'max_pages': max_pages,
             'result_begin': self.RESULTS_PER_PAGE * page,
