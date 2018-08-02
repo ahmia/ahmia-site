@@ -12,56 +12,84 @@
     <script src="{% static 'add.signed.js' %}"></script>
   {% endif %}
 {% endblock %}
+
 {% block body %}
-<div id="ahmiaAboutPage">
-  <div id="ahmiaAddService">
-  <p class="end">
-    {% blocktrans %}
-    Add your site to the Ahmia index to help us learn more about hidden services. Adding your
-    onion will allow users of Ahmia to find your hidden service and its content. Please do not
-    add child abuse material; it will not be indexed and your hidden service will be blacklisted.
-    {% endblocktrans %}
-  </p>
-  <h3 class="checkForm">{% trans "Add your hidden service" %}</h3>
-  <div id="ahmiaFormContainer">
-    <form id="addOnion" method="post" action="">
-      {{ form.onion }}<input type="url" name="onion">
-      <input type="submit" value="{% trans "Add" %}">
-    </form>
-    {% if form.errors %}
-      <div id="flashMessage" class="{% if flash_message %}server{% endif %}">
-      {{ form.onion.errors }}
+  <div id="ahmiaAboutPage">
+
+    <div id="ahmiaAddService">
+      <p class="end">
+        {% blocktrans %}
+          Add your site to the Ahmia index to help us learn more about hidden
+          services. Adding your onion will allow users of Ahmia to find your
+          hidden service and its content. Please do not add child abuse
+          material; it will not be indexed and your hidden service will be
+          blacklisted.
+        {% endblocktrans %}
+      </p>
+
+      <h3 class="checkForm">{% trans "Add your hidden service" %} </h3>
+
+      <div id="ahmiaFormContainer">
+        <form id="addOnion" method="post" action="">
+          <input type="url" name="onion" title="onion">
+          <input type="submit" value="{% trans "Add" %}">
+        </form>
+
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <h3 class="checkForm">
+          {% blocktrans %}
+             Example: <br>
+               http://msydqstlz2kzerdg.onion/ <br> or subdomains:<br>
+               http://abc.msydqstlz2kzerdg.onion/
+          {% endblocktrans %}
+        </h3>
       </div>
-    {% endif %}
-  <h3 class="checkForm">{% trans "Example : http://msydqstlz2kzerdg.onion/ or http://abc.msydqstlz2kzerdg.onion/ for sub-domains" %}</h3>
+    </div>
+
+
+    <div class="aboutAhmia">
+      <h3>For hidden service operators</h3>
+
+      <p>
+        Info about hidden service indexing and crawling :
+        <a href="{% url 'doc-indexing' %}">Indexing</a>
+      </p>
+
+      <p>
+        Ahmia blacklists child abuse content:
+        <a href="{% url 'blacklist' %}">Blacklist</a>
+      </p>
+    </div>
+
+
+    <div class="credits">
+      <p>
+        {% trans "3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY" as bitcoin_address %}
+        {% blocktrans %}
+          We extend a thank you to Ahmia's supporters.
+          Bitcoin address:
+          <a href="bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY">
+            {{ bitcoin_address }}
+          </a>.
+        {% endblocktrans %}
+      </>
+      <ul>
+        <li><img src="/static/images/logos/globaleaks.png"
+             alt="{% trans "Globaleaks Platform" %}"></li>
+        <li><img src="/static/images/logos/tor2web.png"
+             alt="{% trans "Tor2Web Platform" %}"></li>
+        <li><img src="/static/images/logos/hermes.png"
+             alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+        <li><img src="/static/images/logos/torproject.png" 
+             alt="{% trans "Tor Project" %}"></li>
+      </ul>
+    </div>
   </div>
-</div>
-<div class="aboutAhmia">
-  <h3>For hidden service operators</h3>
-
-  <p>
-    Info about hidden service indexing and crawling : <a href="/documentation/indexing/">Indexing</a>
-  </p>
-
-  <p>
-    Ahmia blacklists child abuse content : <a href="/blacklist/">Blacklist</a>
-  </p>
-
-</div>
-<div class="credits">
-  <p>
-    {% trans "3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY" as bitcoin_address %}
-    {% blocktrans %}
-    We extend a thank you to Ahmia's supporters.
-    Bitcoin address: <a href="bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY">{{ bitcoin_address }}</a>.
-    {% endblocktrans %}
-  </>
-  <ul>
-    <li><img src="/static/images/logos/globaleaks.png" alt="{% trans "Globaleaks Platform" %}"></li>
-    <li><img src="/static/images/logos/tor2web.png" alt="{% trans "Tor2Web Platform" %}"></li>
-    <li><img src="/static/images/logos/hermes.png" alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
-    <li><img src="/static/images/logos/torproject.png" alt="{% trans "Tor Project" %}"></li>
-  </ul>
-  </div>
-</div>
 {% endblock %}

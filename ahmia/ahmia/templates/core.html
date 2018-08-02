@@ -3,65 +3,104 @@
 {% load ahmia_custom %}
 <!doctype html>
 <html class="no-js" lang="en">
-  <head>
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <title>{% block title %}Ahmia &mdash; {% trans "Search Tor Hidden Services" %}{% endblock %}</title>
-      <meta name="description" content="{% trans "A search engine for services accessible on the Tor network." %}">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <script src="{% static 'js/jquery.min.js' %}"></script>
-      <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-      <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-      <link rel="stylesheet" href="{% static 'less/style.css' %}">
-      <script src="{% static 'js/less.min.js' %}"></script>
-      <script src="{% static 'js/modernizr.js' %}"></script>
-      <link rel="stylesheet" href="data:text/css;base64,QC1tb3otZG9jdW1lbnQgcmVnZXhwKCcoPyFodHRwcz86Ly9haG1pYVxcLmZpfGh0dHBzPzovL2xvY2FsaG9zdHxodHRwcz86Ly8xMjdcXC4wXFwuMFxcLjF8aHR0cDovL21zeWRxc3QuKjJremVyZGdcXC5vbmlvbikuKicpe2JvZHk6YmVmb3Jle21hcmdpbi1sZWZ0OjEwJTttYXJnaW4tdG9wOjIwJTttYXJnaW4tcmlnaHQ6MTAlO2NvbG9yOnJlZDtmb250LXNpemU6MjAwJTtjb250ZW50OiJXYXJuaW5nOiBZb3UgYXJlIHVzaW5nIGEgbWFuLWluLXRoZS1taWRkbGUgZmFrZSBjbG9uZSBzaXRlIC0tIFZpc2l0IGh0dHBzOi8vYWhtaWEuZmkvIHRvIGZpbmQgcmlnaHQgb25pb24gYWRkcmVzcy4iO2Rpc3BsYXk6YmxvY2t9YTpiZWZvcmV7Y29sb3I6cmVkO2NvbnRlbnQ6IltTQ0FNXSAifSNhaG1pYU1haW5Db250ZW50LCNpbWFnZU92ZXJsYXl7ZGlzcGxheTpub25lfX0jd2FybmluZ3tkaXNwbGF5Om5vbmV9">
-  </head>
-  <body class="{% get_environment %} {% block body_class %}{% endblock %}">
-    {% block precontent %}{% endblock %}
-    <div class="outer">
-      <div id="content" class="inner">
-        <div id="ahmiaHeader" class="{% block navtype %}maxi{% endblock %}">
-          <div id="notTorBrowserWarning" style="display:none">
-            <p>{% trans "Unfortunately we have not deployd non-JavaScript version of Ahmia yet." %}</p>
-          </div>
-          {% block searchbar %}
-          <div class="maxiContent">
-            <h1><a href="{% url 'home' %}">Ahmia</a></h1>
-            <form id="searchForm" class="searchForm autocomplete" action="{% url 'search:results' %}" method="get">
-              <input id="id_q" type="search" name="q" placeholder="{% trans "Search Ahmia" %}" value="{{ query_string }}">
-              <input type="submit" value="{% trans "Search" %}" style="submitButton">
-            </form>
-          </div>
-          {% endblock %}
-          <nav>
-            <ul class="primary">
-              <li><a href="{% url 'about' %}" title="{% trans "Learn more about Ahmia and its team." %}">{% trans "About Ahmia" %}</a></li>
-              <!-- <li><a href="/directory" title="{% trans "A directory of .onion services." %}">{% trans "Directory" %}</a></li> -->
-              <li><a href="{% url 'stats:stats' %}" title="{% trans "Statistics about the Ahmia engine." %}">{% trans "Statistics" %}</a></li>
-              <li><a href="{% url 'add' %}" title="{% trans "Add a hidden service to our index." %}">{% trans "Add Service" %}</a></li>
-              <li><a href="{% url 'i2p' %}" title="{% trans "I2p network search." %}">{% trans "i2p search" %}</a></li>
-            </ul>
-            <ul class="secondary">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>
+    {% block title %}Ahmia &mdash;
+      {% trans "Search Tor Hidden Services" %}
+    {% endblock %}
+  </title>
+  <meta name="description"
+        content="{% trans "A search engine for services accessible on the Tor network." %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'less/style.css' %}">
+  <script src="{% static 'js/less.min.js' %}"></script>
+  <script src="{% static 'js/modernizr.js' %}"></script>
+  <link rel="stylesheet"
+    href="data:text/css;base64,QC1tb3otZG9jdW1lbnQgcmVnZXhwKCcoPyFodHRwcz86Ly9haG1pYVxcLmZpfGh0dHBzPzovL2xvY2FsaG9zdHxodHRwcz86Ly8xMjdcXC4wXFwuMFxcLjF8aHR0cDovL21zeWRxc3QuKjJremVyZGdcXC5vbmlvbikuKicpe2JvZHk6YmVmb3Jle21hcmdpbi1sZWZ0OjEwJTttYXJnaW4tdG9wOjIwJTttYXJnaW4tcmlnaHQ6MTAlO2NvbG9yOnJlZDtmb250LXNpemU6MjAwJTtjb250ZW50OiJXYXJuaW5nOiBZb3UgYXJlIHVzaW5nIGEgbWFuLWluLXRoZS1taWRkbGUgZmFrZSBjbG9uZSBzaXRlIC0tIFZpc2l0IGh0dHBzOi8vYWhtaWEuZmkvIHRvIGZpbmQgcmlnaHQgb25pb24gYWRkcmVzcy4iO2Rpc3BsYXk6YmxvY2t9YTpiZWZvcmV7Y29sb3I6cmVkO2NvbnRlbnQ6IltTQ0FNXSAifSNhaG1pYU1haW5Db250ZW50LCNpbWFnZU92ZXJsYXl7ZGlzcGxheTpub25lfX0jd2FybmluZ3tkaXNwbGF5Om5vbmV9">
+</head>
 
-              <li><a href="{% url 'blacklist' %}" title="{% trans "Blacklist of banned .onion services." %}">{% trans "Blacklist" %}</a></li>
-              <li><a href="{% url 'legal' %}">{% trans "Contact" %}</a></li>
-            </ul>
-          </nav>
-        </div>
-        {% block body %}{% endblock %}
-        <div id="warning" style="background-color: black; font-size: 200%; color: red; position: fixed; top: 5%; left: 30%;">
-          A man-in-the-middle fake clone detected! <br />
-          Warning! <br />
-          Right onion address starts with msydq and ends with zerdg.onion. <br />
-          Find real address from ahmia.fi
-        </div>
+<body class="{% get_environment %} {% block body_class %}{% endblock %}">
+
+{% block precontent %}{% endblock %}
+
+<div class="outer">
+
+  <div id="content" class="inner">
+
+    <div id="ahmiaHeader" class="{% block navtype %}maxi{% endblock %}">
+    <div id="notTorBrowserWarning" style="display:none">
+      <p>
+        {% trans "Unfortunately we have not deployd non-JavaScript version of Ahmia yet." %}
+      </p>
       </div>
+      {% block searchbar %}
+        <div class="maxiContent">
+          <h1><a href="{% url 'home' %}">Ahmia</a></h1>
+          <form id="searchForm" class="searchForm autocomplete"
+                action="{% url 'search:results' %}" method="get">
+            <input id="id_q" type="search" name="q"
+                   placeholder="{% trans "Search Ahmia" %}" value="{{ query_string }}">
+            <input type="submit" value="{% trans "Search" %}" style="submitButton">
+          </form>
+        </div>
+      {% endblock %}
+      <nav>
+        <ul class="primary">
+          <li>
+            <a href="{% url 'about' %}"
+               title="{% trans "Learn more about Ahmia and its team." %}">
+                 {% trans "About Ahmia" %}
+            </a>
+          </li>
+          <!-- <li><a href="/directory" title="{% trans "A directory of .onion services." %}">{% trans "Directory" %}</a></li> -->
+          <li>
+            <a href="{% url 'stats:stats' %}"
+               title="{% trans "Statistics about the Ahmia engine." %}">{% trans "Statistics" %}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'add' %}"
+               title="{% trans "Add a hidden service to our index." %}">{% trans "Add Service" %}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'i2p' %}"
+               title="{% trans "I2p network search." %}">{% trans "i2p search" %}
+            </a>
+          </li>
+        </ul>
+        <ul class="secondary">
+
+          <li>
+            <a href="{% url 'blacklist' %}"
+               title="{% trans "Blacklist of banned .onion services." %}">{% trans "Blacklist" %}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'legal' %}">{% trans "Contact" %}</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <script src="{% static 'js/jquery.scrollTo.js' %}"></script>
-    <script src="{% static 'js/jquery.pow.js' %}"></script>
-    <script src="{% static 'js/sha256.js' %}"></script>
-    <script src="{% static 'js/utils.js' %}"></script>
-    {% block extra_js %}{% endblock %}
-  </body>
+    {% block body %}{% endblock %}
+    <div id="warning"
+       style="background-color: black; font-size: 200%; color: red; position: fixed; top: 5%; left: 30%;">
+      A man-in-the-middle fake clone detected! <br/>
+      Warning! <br/>
+      Right onion address starts with msydq and ends with zerdg.onion. <br/>
+      Find real address from ahmia.fi
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/jquery.scrollTo.js' %}"></script>
+<script src="{% static 'js/jquery.pow.js' %}"></script>
+<script src="{% static 'js/sha256.js' %}"></script>
+<script src="{% static 'js/utils.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
 </html>
