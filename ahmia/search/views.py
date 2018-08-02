@@ -262,10 +262,10 @@ class TorResultsView(ElasticsearchBaseListView):
         url_params = self.request.GET
 
         try:
-            pastdays = int(url_params.get('pastdays'))
+            pastdays = int(url_params.get('d'))
         except (TypeError, ValueError):
             # Either pastdays not exists or not valid int (e.g 'all')
-            # In any case hits returned unchanged
+            # In any case hits returned without filtering
             pass
         else:
             hits = filter_hits_by_time(hits, pastdays)
