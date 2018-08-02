@@ -18,6 +18,9 @@ class HiddenWebsite(models.Model):
     # For instance: http://3g2upl4pq6kufc4m.onion/
     onion = models.URLField(validators=[validate_onion_url, validate_status], unique=True)
 
+    def __str__(self):
+        return str(self.onion)
+
 
 # *** Stats related models and managers following *** #
 

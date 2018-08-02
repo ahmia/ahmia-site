@@ -483,6 +483,22 @@ div.elastic.inner {
   padding: 0;
 }
 
+/* Did you mean */
+#ahmiaResultsPage #didYouMean p {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 1.3em;
+  margin: 0 0 5px 0;
+}
+
+#ahmiaResultsPage #didYouMean a {
+  text-decoration: none;
+  color: #19749b;
+}
+
+#ahmiaResultsPage #didYouMean a:hover {
+  color: #294957;
+}
+
 /* Results Page Generic */
 
 #ahmiaResultsPage p {
@@ -932,6 +948,18 @@ div.elastic.inner {
 
 }
 
+.messages .error{
+  color: red;
+}
+
+.messages .warning{
+  color: orange;
+}
+
+.messages .success{
+  color: dodgerblue;
+}
+
 /*** USAGE STATISTCICS PAGE ***/
 
 #usage-stats{
@@ -948,4 +976,8 @@ div.elastic.inner {
 
 #usage-stats h3, #usage-stats #footer{
   margin-top: 50px;
+}
+
+#usage-stats .plot{
+  margin-bottom: 20px;
 }

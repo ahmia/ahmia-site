@@ -7,17 +7,19 @@ import hashlib
 import logging
 from operator import itemgetter
 
+from django.contrib import messages
 from django.db import IntegrityError
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.template import loader
+from django.urls import reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from . import utils
-from .models import HiddenWebsite
 from .forms import AddOnionForm, ReportOnionForm
+from .models import HiddenWebsite
 
 logger = logging.getLogger("ahmia")
 
@@ -72,42 +74,50 @@ class GsocView(CoreView):
     template_name = "gsoc.html"
 
 
-class AddView(TemplateView):
+class AddView(FormView):
     """Add form for a new .onion address."""
-    # todo distinguish between ORM failure (except) case and already exists (outer else) case
 
     form_class = AddOnionForm
     template_name = "add.html"
-    failpage = "add_fail.html"
-    successpage = "add_success.html"
-
-    def post(self, request):
-        if request.method == "POST":
-            domain = AddOnionForm(request.POST)
-            onion_url = request.POST.get('onion', '').strip()
-            if domain.is_valid():
-                onion = HiddenWebsite(onion=onion_url)
-                try:
-                    onion.save()
-                except IntegrityError as e:  # error saving to DB
-                    logger.exception(e)
-                else:
-                    return render(request, self.successpage)  # redirect('/add/success')
-            else:
-                logger.info("Domain {} already exists or invalid".format(onion_url))
-
-        return render(request, self.failpage)
+    success_url = reverse_lazy("add")
+    success_msg = _(""" Your request to add a service was successfully submitted. 
+                        Thank you for improving Ahmia content. A moderator will 
+                        add it to the index shortly. """)
+    exists_msg = _("The specified onion address already exists in our database.")
+    invalid_msg = _("Your request to add a service was invalid.")
+    fail_msg = _("Internal Server Error occurred. Please try again later")
 
     def form_valid(self, form):
-        # todo TemplateViews dont have form_valid(), consider using FormView instead
+        r = super(AddView, self).form_valid(form)
 
-        form.send_new_onion()
-        return super(AddView, self).form_valid(form)
+        request = self.request
+        onion_url = form.cleaned_data['onion'].strip()
 
+        try:
+            # created or retrieve
+            _, created = HiddenWebsite.objects.get_or_create(onion=onion_url)
+        except IntegrityError as e:
+            # should never happen: DB error despite earlier validation
+            logger.exception(e)
+            messages.error(request, self.fail_msg)
+        else:
+            if created:
+                # newly instance created
+                messages.success(request, self.success_msg)
+                form.send_new_onion()
+            else:
+                # fetched, already existed
+                messages.warning(request, self.exists_msg)
 
-# class AddSuccessView(CoreView):
-#     """Onion successfully added."""
-#     template_name = "add_success.html"
+        return r
+
+    def form_invalid(self, form):
+        r = super(AddView, self).form_valid(form)
+
+        logger.info(self.invalid_msg)
+        messages.error(self.request, self.invalid_msg)
+
+        return r
 
 
 def add_list_view(request):
@@ -120,7 +130,8 @@ def add_list_view(request):
 
 
 class BlacklistView(FormView):
-    """Return a blacklist page with MD5 sums of banned content."""
+    """Blacklist report page"""
+
     form_class = ReportOnionForm
     success_url = "/blacklist/success/"
     template_name = "blacklist.html"
@@ -153,6 +164,7 @@ class BlacklistView(FormView):
         }
 
     def form_valid(self, form):
+        # todo replace with a spam-tolerant report functionality
         form.send_abuse_report()
         return super(BlacklistView, self).form_valid(form)
 

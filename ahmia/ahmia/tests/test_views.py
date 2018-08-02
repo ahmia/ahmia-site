@@ -7,6 +7,8 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils.translation import ugettext as _
 
+from ahmia.views import AddView
+
 
 def read_file(filename):
     """Read a file and return the text content."""
@@ -86,17 +88,18 @@ class OnionAddressViewsTestCase(TestCase):
 
         a_valid_onion = _("http://msydqstlz2kzerdg.onion/")
         an_invalid_onion = _("http://length17nameaaaaa.onion/")
-        successful_text = _("Your request to add a service was successfully submitted")
-        failure_text = _("Your request to add a service was either invalid or already")
+        successful_text = AddView.success_msg
+        invalid_text = AddView.invalid_msg
+        exists_msg = AddView.exists_msg
 
         # add a valid onion
-        resp = self.client.post('/add/', {'onion': a_valid_onion})
-        self.assertContains(resp, successful_text, status_code=200)
+        resp = self.client.post('/add/', {'onion': a_valid_onion}, follow=True)
+        self.assertContains(resp, successful_text)
 
         # adding again the same onion should fail
-        resp = self.client.post('/add/', {'onion': a_valid_onion})
-        self.assertContains(resp, failure_text)
+        resp = self.client.post('/add/', {'onion': a_valid_onion}, follow=True)
+        self.assertContains(resp, exists_msg)
 
         # adding an invalid onion will also fail with the same message
-        resp = self.client.post('/add/', {'onion': an_invalid_onion})
-        self.assertContains(resp, failure_text)
+        resp = self.client.post('/add/', {'onion': an_invalid_onion}, follow=True)
+        self.assertContains(resp, invalid_text)
