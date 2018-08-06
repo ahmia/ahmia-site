@@ -70,23 +70,6 @@ class TorResultsView(ElasticsearchBaseListView):
     object_list = None
 
     def get_es_context(self, **kwargs):
-        query = kwargs['q']
-        if kwargs.get('w') is not None:
-            fields = [
-                'title^6',
-                'anchor^6',
-                'fancy.shingles^3',
-                'fancy.stemmed^3',
-                'fancy^3',
-                'content^1',
-            ]
-        else:
-            fields = [
-                "fancy",
-                "fancy.stemmed",
-                "fancy.shingles"
-            ]
-
         return {
             "index": utils.get_elasticsearch_tor_index(),
             "doc_type": utils.get_elasticsearch_type(),
@@ -96,9 +79,16 @@ class TorResultsView(ElasticsearchBaseListView):
                         "must": [
                             {
                                 "multi_match": {
-                                    "query": query,
+                                    "query": kwargs['q'],
                                     "type": "most_fields",
-                                    "fields": fields,
+                                    "fields": [
+                                        'title^6',
+                                        'anchor^6',
+                                        'fancy.shingles^3',
+                                        'fancy.stemmed^3',
+                                        'fancy^3',
+                                        'content^1',
+                                    ],
                                     "minimum_should_match": "75%",
                                     "cutoff_frequency": 0.01
                                 }
@@ -232,18 +222,15 @@ class TorResultsView(ElasticsearchBaseListView):
         start = time.time()
         kwargs['q'] = request.GET.get('q', '')
         kwargs['page'] = request.GET.get('page', 0)
-        kwargs['w'] = request.GET.get('w')
 
         self.log_stats(**kwargs)
 
         self.object_list = self.get_queryset(**kwargs)
 
-        if 's' in request.GET:
-            # testing feature: "did you mean" enabled by url param 's'
-            suggest = self.suggest(**kwargs)
-            if suggest != kwargs['q']:
-                # if ES fuzziness suggests something else, display it
-                kwargs['suggest'] = suggest
+        suggest = self.suggest(**kwargs)
+        if suggest != kwargs['q']:
+            # if ES fuzziness suggests something else, display it
+            kwargs['suggest'] = suggest
 
         kwargs['time'] = round(time.time() - start, 2)
 
