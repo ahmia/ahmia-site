@@ -71,6 +71,22 @@ class TorResultsView(ElasticsearchBaseListView):
 
     def get_es_context(self, **kwargs):
         query = kwargs['q']
+        if kwargs.get('w') is not None:
+            fields = [
+                'title^6',
+                'anchor^6',
+                'fancy.shingles^3',
+                'fancy.stemmed^3',
+                'fancy^3',
+                'content^1',
+            ]
+        else:
+            fields = [
+                "fancy",
+                "fancy.stemmed",
+                "fancy.shingles"
+            ]
+
         return {
             "index": utils.get_elasticsearch_tor_index(),
             "doc_type": utils.get_elasticsearch_type(),
@@ -82,11 +98,7 @@ class TorResultsView(ElasticsearchBaseListView):
                                 "multi_match": {
                                     "query": query,
                                     "type": "most_fields",
-                                    "fields": [
-                                        "fancy",
-                                        "fancy.stemmed",
-                                        "fancy.shingles"
-                                    ],
+                                    "fields": fields,
                                     "minimum_should_match": "75%",
                                     "cutoff_frequency": 0.01
                                 }
@@ -220,6 +232,7 @@ class TorResultsView(ElasticsearchBaseListView):
         start = time.time()
         kwargs['q'] = request.GET.get('q', '')
         kwargs['page'] = request.GET.get('page', 0)
+        kwargs['w'] = request.GET.get('w')
 
         self.log_stats(**kwargs)
 
@@ -262,10 +275,10 @@ class TorResultsView(ElasticsearchBaseListView):
         url_params = self.request.GET
 
         try:
-            pastdays = int(url_params.get('pastdays'))
+            pastdays = int(url_params.get('d'))
         except (TypeError, ValueError):
             # Either pastdays not exists or not valid int (e.g 'all')
-            # In any case hits returned unchanged
+            # In any case hits returned without filtering
             pass
         else:
             hits = filter_hits_by_time(hits, pastdays)

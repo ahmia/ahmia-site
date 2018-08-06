@@ -16,19 +16,21 @@
     <div id="resultsFiltersMenuWrapper">
       <ul id="resultsFiltersMenu">
         <li class="category">
-          <a href="#">Any Time<img src="{% static 'images/ddarrow.png' %}"></a>
+          <a href="#" class="label">
+            Any Time<img src="{% static 'images/ddarrow.png' %}">
+          </a>
           <ul class="options">
             <li class="first child">
-              <a href="{% add_query_params request pastdays='all' %}">Any Time</a>
+              <a href="{% add_query_params request d='all' %}">Any Time</a>
             </li>
             <li class="child">
-              <a href="{% add_query_params request pastdays=1 %}">Last Day</a>
+              <a href="{% add_query_params request d=1 %}">Last Day</a>
             </li>
             <li class="child">
-              <a href="{% add_query_params request pastdays=7 %}">Last Week</a>
+              <a href="{% add_query_params request d=7 %}">Last Week</a>
             </li>
             <li class="last child">
-              <a href="{% add_query_params request pastdays=30 %}">Last Month</a>
+              <a href="{% add_query_params request d=30 %}">Last Month</a>
             </li>
           </ul>
         </li>

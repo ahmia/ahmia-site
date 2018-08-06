@@ -424,6 +424,10 @@ div.elastic.inner {
 #ahmiaResultsPage #resultsFiltersMenu .category {
   margin-right: 14px;
 }
+#ahmiaResultsPage #resultsFiltersMenu .label {
+  margin-left: -2px;
+  font-size: 1.2em;
+}
 #ahmiaResultsPage #resultsFiltersMenu .first {
   padding-top: 3px;
 }
@@ -434,6 +438,7 @@ div.elastic.inner {
   padding-left: 6px;
   width: 125px;
   margin: 3px 0 3px 0;
+  font-size: 1.1em;
 }
 
 #ahmiaResultsPage #resultsFiltersMenu li img {
