@@ -11,7 +11,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 
 from ahmia import utils
-from ahmia.models import SearchResultsClick, SearchQuery
+from ahmia.models import SearchResultsClick, SearchQuery, PagePopScore
 from ahmia.utils import get_elasticsearch_i2p_index
 from ahmia.validators import is_valid_onion_url
 from ahmia.views import ElasticsearchBaseListView
@@ -36,10 +36,14 @@ def onion_redirect(request):
         if is_valid_onion_url(onion):
             # currently we can't log i2p clicks due to
             # SearchResultsClick.onion_domain having an onion validator
+            # Also we don't have yet i2p results in order to test it
             SearchResultsClick.objects.add_or_increment(
-                onion_domain=onion, clicked=redirect_url, search_term=search_term)
+                onion_domain=onion,
+                clicked=redirect_url,
+                search_term=search_term)
     except Exception as error:
-        logger.error("Error with redirect URL: {0}\n{1}".format(redirect_url, error))
+        logger.error("Error with redirect URL: {0}\n{1}".format(
+            redirect_url, error))
 
     message = "Redirecting to hidden service."
     return redirect_page(message, 0, redirect_url)
@@ -56,8 +60,40 @@ def redirect_page(message, red_time, url):
 def filter_hits_by_time(hits, pastdays):
     """Return only the hits that were crawled the past pastdays"""
 
-    time_threshold = datetime.fromtimestamp(time.time()) - timedelta(days=pastdays)
+    time_threshold = datetime.fromtimestamp(
+        time.time()) - timedelta(days=pastdays)
     ret = [hit for hit in hits if hit['updated_on'] >= time_threshold]
+    return ret
+
+
+def heuristic_score(ir_score, pp_score):
+    """
+    A formula to combine IR score given by Elasticsearch and
+    PagePop score given by page popularity algorithm. Adjust the
+    influence of pr/ir scores according to the number of terms that
+    query is consisted of, as well as other factors. Arithmetics is
+    black art, it can only improve via manually testing queries, and
+    user feedback. Currently its a simple weighted sum.
+    todo: improve it
+    Normally the more tokens in query the lower pagepop influence
+    should be. However the more tokens given the more ES seems to
+    diverge IR score. Thus we bypass 'number of tokens' for the moment
+
+    :param ir_score: Information Relevance score by Elasticsearch
+    :param pp_score: PagePop score for that domain
+    :return: final score
+    :rtype: ``float``
+    """
+
+    pp_coeff = 0.35
+    ir_coeff = 1 - pp_coeff
+    ret = pp_score * pp_coeff + ir_score * ir_coeff
+
+    # drag down the average score when the two scores diverge too much
+    # pp = pp_coeff * pp_score
+    # ir = ir_coeff * ir_score
+    # ret = pp * ir / (pp + ir)  # too much of a penalty
+
     return ret
 
 
@@ -199,21 +235,53 @@ class TorResultsView(ElasticsearchBaseListView):
         """
         hits = hits['aggregations']['domains']
         total = len(hits['buckets']) + hits['sum_other_doc_count']
-        results = [h['score']['hits']['hits'][0]['_source']
-                   for h in hits['buckets']]
-        for res in results:
+
+        results = []
+        for h in hits['buckets']:
+            # replace score, updated_on, anchors with clear values
+            tmp = h['score']['hits']['hits'][0]
+            res = tmp['_source'].copy()
+            res['score'] = tmp['sort'][1] * tmp['sort'][0]
+            res['updated_on'] = datetime.strptime(res['updated_on'],
+                                                  '%Y-%m-%dT%H:%M:%S')
             try:
                 res['anchors'] = res['anchors'][0]
             except (KeyError, TypeError):
                 pass
-            res['updated_on'] = datetime.strptime(res['updated_on'],
-                                                  '%Y-%m-%dT%H:%M:%S')
+
+            results.append(res)
+
         return total, results
 
     @staticmethod
     def log_stats(**kwargs):
         """log the query for stats calculations"""
-        SearchQuery.objects.add_or_increment(search_term=kwargs['q'], network='T')
+        SearchQuery.objects.add_or_increment(
+            search_term=kwargs['q'], network='T')
+
+    def sort_results(self):
+        """
+        Combine IR (Information Relevant) score given by Elasticsearch,
+        with PP (Page Popularity) score, to sort the results
+        """
+        hits = self.object_list[1]  # object_list is tuple(int, list)
+        if not hits:
+            return
+
+        ir_scores = [h.get('score', 0) for h in hits]
+        pp_scores = [PagePopScore.objects.get(onion=h['domain']).score
+                     for h in hits]
+        ir_scores_norm = utils.normalize_on_max(ir_scores)
+        pp_scores_norm = utils.normalize_on_max(pp_scores)
+        # assert len(ir_scores_norm) == len(pp_scores_norm) == len(hits)
+
+        for h, ir, pp in zip(hits, ir_scores_norm, pp_scores_norm):
+            h['final_score'] = heuristic_score(ir, pp)
+
+        self.object_list[1] = sorted(
+            hits,
+            key=lambda k: k['final_score'],
+            reverse=True)
 
     def get(self, request, *args, **kwargs):
         """
@@ -232,6 +300,9 @@ class TorResultsView(ElasticsearchBaseListView):
             # if ES fuzziness suggests something else, display it
             kwargs['suggest'] = suggest
 
+        if 'r' in request.GET:  # enable PagePop
+            self.sort_results()
+
         kwargs['time'] = round(time.time() - start, 2)
 
         context = self.get_context_data(**kwargs)
@@ -247,7 +318,7 @@ class TorResultsView(ElasticsearchBaseListView):
 
         return {
             'suggest': kwargs.get('suggest'),
-            'page': page+1,
+            'page': page + 1,
             'max_pages': max_pages,
             'result_begin': self.RESULTS_PER_PAGE * page,
             'result_end': self.RESULTS_PER_PAGE * (page + 1),
@@ -275,7 +346,7 @@ class TorResultsView(ElasticsearchBaseListView):
     def get_queryset(self, **kwargs):
         _, hits = super(TorResultsView, self).get_queryset(**kwargs)
         hits = self.filter_hits(hits)
-        return len(hits), hits
+        return [len(hits), hits]
 
 
 class IipResultsView(TorResultsView):
@@ -285,7 +356,8 @@ class IipResultsView(TorResultsView):
     @staticmethod
     def log_stats(**kwargs):
         """Invoked by super().get() to log the query for stats calculations"""
-        SearchQuery.objects.add_or_increment(search_term=kwargs['q'], network='I')
+        SearchQuery.objects.add_or_increment(
+            search_term=kwargs['q'], network='I')
 
     def get_es_context(self, **kwargs):
         context = super(IipResultsView, self).get_es_context(**kwargs)

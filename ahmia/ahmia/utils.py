@@ -1,4 +1,5 @@
-""" Utility fonctions """
+""" Utility fonctions used by all apps """
+
 from django.conf import settings
 from django.utils import timezone
 from elasticsearch import Elasticsearch
@@ -35,3 +36,40 @@ def get_elasticsearch_type():
 def timezone_today():
     """ Timezone aware function that returns the current day"""
     return timezone.now().date()
+
+
+def extract_domain_from_url(url):
+    """
+    Removes protocol, subdomain and url path. It does not
+    perform any validation on input parameter url
+
+    :param url Full onion url as str
+    :return domain name as str
+    """
+    if '.onion' not in url:
+        return None
+
+    no_path_no_tld = url.split('.onion')[0]
+    domain_name = no_path_no_tld.split('.')[-1].split('/')[-1]
+    domain = domain_name + '.onion'
+
+    return domain
+
+
+def normalize_on_max(scalars):
+    """
+    Normalize ``scallars`` to have max value: 1
+
+    :param scalars: Python iterable (not numpy)
+    :return: A normalized version of input
+    """
+    max_i = max(scalars)
+    class_type = type(scalars)
+
+    ret = class_type(i / max_i for i in scalars)
+
+    return ret
+
+
+# todo: these functions are also used by `search` so
+# it might be cleaner to make `utils` a separate app

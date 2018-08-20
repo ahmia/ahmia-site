@@ -11,7 +11,6 @@ in Finland. This repository contains ahmia.fi source code.
 # Compatibility
 
 The newest version of Ahmia is built with Python 3.6, Django 1.11 and Elasticsearch 6.2 (5.6 is also compatible).
-Python 2.7+ should be ok too, but preferably try Python 3 instead.
 You will need to know these technologies to create a working Ahmia installation.
 Ahmia crawls using [OnionBot](https://github.com/ahmia/ahmia-crawler).
 
@@ -64,8 +63,7 @@ at least the postgresql credentials, if you are using the production settings.
 
 ### Migrate db
 ```sh
-$ python3 ahmia/manage.py makemigrations ahmia
-$ python3 ahmia/manage.py makemigrations search
+$ python3 ahmia/manage.py makemigrations
 $ python3 ahmia/manage.py migrate
 ```
 
@@ -87,9 +85,9 @@ $ python3 ahmia/manage.py runserver
 
 ## Crontab
 
-* Rule to remove '/onionsadded' weekly
+* Rule to remove onions added by users weekly
 ```sh
-0 22 * * * python /usr/local/bin/ahmia-site/ahmia/manage.py remove_onions --settings=ahmia.settings.prod
+0 0 */7 * * python /usr/local/bin/ahmia-site/ahmia/manage.py remove_onions --settings=ahmia.settings.prod
 ```
 
 * Rule to update usage statistics hourly (could be once per day as well)
@@ -97,10 +95,13 @@ $ python3 ahmia/manage.py runserver
 59 * * * * python /usr/local/bin/ahmia-site/ahmia/manage.py update_stats --settings=ahmia.settings.prod
 ```
 
-* Rule to clean up the DB on the first day of each month
+* Rule to clean up some DB tables on the first day of each month
 ```sh
 0 0 1 * * python /usr/local/bin/ahmia-site/ahmia/manage.py cleanup_db --settings=ahmia.settings.prod
 ```
+
+* Rule to build PagePopularity Score Index every 10 days
+0 0 */10 * * python /usr/local/bin/ahmia-site/ahmia/manage.py calc_page_pop --settings=ahmia.settings.prod
 
 __NOTE__: If you are using virtualenv replace `python` with the absolute path to your virtualenv's python executable, e.g `/path/to/venv/bin/python`
 
@@ -111,14 +112,17 @@ __NOTE__: If your deployment directory isn't `/usr/local/bin/ahmia-site` replace
 You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/master/onionElasticBot) to populate your index.
 
 ## Why can't my browser load django statics ?
-The django settings.py is configured in a way that it only serve statics if DEBUG is True. Please verify [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/settings.py#L9) if it's the case. You can change this behaviour [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/urls.py#L18).
+The django settings.py is configured in a way that it only serve statics if DEBUG is True.
+Please verify [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/settings/dev.py#L6)
+if it's the case. You can change this behaviour
+[here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/urls.py#L71).
 
 ## What should I use to host ahmia in a production environment ?
 
 We suggest to deploy ahmia using Apache2 or Nginx with Gunicorn.
 Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/conf).
 
-* First you need to create a postgres database, and insert the database credentials in
+* Moreover you need to create a postgres database, and insert the database credentials in
 `ahmia/ahmia/settings/.env`.
 
 * Configure and run nginx:
