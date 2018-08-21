@@ -8,7 +8,7 @@ from django.db import models, IntegrityError
 from django.utils import timezone
 
 from . import utils
-from .validators import validate_onion_url, validate_status
+from .validators import validate_onion_url, validate_status, validate_onion
 
 logger = logging.getLogger("ahmia")
 
@@ -16,13 +16,48 @@ logger = logging.getLogger("ahmia")
 class HiddenWebsite(models.Model):
     """Hidden service website."""
     # For instance: http://3g2upl4pq6kufc4m.onion/
-    onion = models.URLField(validators=[validate_onion_url, validate_status], unique=True)
+    onion = models.URLField(validators=[validate_onion_url, validate_status],
+                            unique=True)
 
     def __str__(self):
         return str(self.onion)
 
 
-# *** Stats related models and managers following *** #
+class PagePopScore(models.Model):
+    """
+    Note: This will be called by bulk create thus
+    save(), pre_save(), post_save() will not be called
+    """
+    onion = models.URLField(
+        validators=[validate_onion, validate_status],
+        unique=True)
+    score = models.FloatField(
+        default=0,
+        verbose_name='PagePop score',
+        help_text='Score as returned by PagePop algorithm')
+
+    def __str__(self):
+        return "{0}: {1}".format(self.onion, self.score)
+
+
+class PagePopStats(models.Model):
+    """One entry/row is created by rank_pages command"""
+    day = models.DateField(default=utils.timezone_today, unique=True)
+    num_links = models.IntegerField(null=True,
+                                    verbose_name='Number of Links (Edges)',
+                                    help_text='Number of links between websites')
+    num_edges = models.IntegerField(null=True,
+                                    verbose_name='Number of Unique Links (Edges)',
+                                    help_text='Number of unique links between websites')
+    num_nodes = models.IntegerField(null=True,
+                                    verbose_name='Number of nodes',
+                                    help_text='Number of onion domains (nodes)')
+
+    def __str__(self):
+        return str(self.day)
+
+
+# *** Statistics related models and managers following *** #
 
 class MetricQuerySet(models.QuerySet):
     """Custom queryset to be used to filter SearchQueries per time"""
