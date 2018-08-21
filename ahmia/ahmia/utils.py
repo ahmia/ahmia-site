@@ -60,14 +60,20 @@ def extract_domain_from_url(url):
 def normalize_on_max(scalars):
     """
     Normalize ``scallars`` to have max value: 1
+    Also substitudes None Values with a value a bit lower that min.
 
     :param scalars: Python iterable (not numpy)
     :return: A normalized version of input
     """
-    max_i = max(scalars)
+    max_i = max(i for i in scalars if i is not None)
+    min_i = min(i for i in scalars if i is not None)
     class_type = type(scalars)
 
-    ret = class_type(i / max_i for i in scalars)
+    # Substitude Nones with a value lower than min
+    ret = [i if i else min_i / 3 for i in scalars]
+
+    # normalize to max=1, return same type to scalars
+    ret = class_type(i / max_i for i in ret)
 
     return ret
 

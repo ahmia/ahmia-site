@@ -22,6 +22,34 @@ class HiddenWebsite(models.Model):
         return str(self.onion)
 
 
+class PagePopScoreManager(models.Manager):
+    """
+    Manager for PagePopScore Model
+    """
+    def get_or_None(self, **kwargs):
+        """
+        :param kwargs: same that would be given to get()
+        :return: the object found or None
+        """
+        try:
+            return self.get(**kwargs)
+        except self.model.DoesNotExist:
+            return None
+
+    def get_score(self, **kwargs):
+        """
+        Returns the score but handles the DoesNotExist case
+        returning None instead.
+
+        :param kwargs: the lookup attributes for get()
+        :rtype: float
+        """
+        try:
+            return self.get(**kwargs).score
+        except self.model.DoesNotExist:
+            return None
+
+
 class PagePopScore(models.Model):
     """
     Note: This will be called by bulk create thus
@@ -34,6 +62,8 @@ class PagePopScore(models.Model):
         default=0,
         verbose_name='PagePop score',
         help_text='Score as returned by PagePop algorithm')
+
+    objects = PagePopScoreManager()
 
     def __str__(self):
         return "{0}: {1}".format(self.onion, self.score)

@@ -269,7 +269,7 @@ class TorResultsView(ElasticsearchBaseListView):
             return
 
         ir_scores = [h.get('score', 0) for h in hits]
-        pp_scores = [PagePopScore.objects.get(onion=h['domain']).score
+        pp_scores = [PagePopScore.objects.get_score(onion=h['domain'])
                      for h in hits]
         ir_scores_norm = utils.normalize_on_max(ir_scores)
         pp_scores_norm = utils.normalize_on_max(pp_scores)
