@@ -3,8 +3,7 @@ import logging
 from datetime import timedelta
 
 from django.conf import settings
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
-from django.db import models, IntegrityError
+from django.db import models, DatabaseError
 from django.utils import timezone
 
 from . import utils
@@ -102,19 +101,15 @@ class MetricManager(models.Manager):
         """
 
         try:
-            try:
-                obj = self.get(**kwargs)
-            except ObjectDoesNotExist:
-                obj = self.create(**kwargs)
-            else:
+            obj, created = self.get_or_create(**kwargs)
+            if not created:
                 obj.occurrences += 1
-                obj.save()
+            obj.save()
 
-        # todo find all possible Exceptions here
-        except (IntegrityError, ValidationError, ValueError) as e:
+        except DatabaseError as e:
             logger.exception(e)
             obj = None
-            # pass, so that stats errors don't disrupt website functionality
+            # stats shouldn't disrupt website functionality
 
         return obj
 
@@ -126,7 +121,7 @@ class Metric(models.Model):
         ('I', 'I2P'),
     )
 
-    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(default=timezone.now)
     network = models.CharField(max_length=1, default='T', choices=NETWORKS)
     occurrences = models.IntegerField(default=1)
 
@@ -160,9 +155,9 @@ class SearchResultsClick(Metric):
         unique_together = ("clicked", "search_term", "onion_domain")
 
 
-# todo The way the whole workflow ended up... it may be redundant
-# to store Stats in database, since we are generating the plots
-# each time we run update_stats. Consider again whats optimal
+# todo Reconsider the current workflow: We recalculate Stats for
+# the current day when `manage.py update_stats` is ran. Thus it
+# ends up being redundant to keep *Stats tables in the DB?
 
 class StatsQuerySet(models.QuerySet):
     """Custom queryset to be used to filter Stats per time"""
@@ -180,8 +175,9 @@ class StatsQuerySet(models.QuerySet):
 
 
 class Stats(models.Model):
-    """Abstract base class. Subclasses to be used for storing precalculated
-       statistics, computed by update_stats management command (app: stats)
+    """
+    Abstract base class. Subclasses to be used for storing precalculated
+    statistics, computed by update_stats management command (app: stats)
     """
 
     # horizontal axis: 30 last days (common for 4 plots)
