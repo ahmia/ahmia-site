@@ -8,8 +8,9 @@ from elasticsearch import Elasticsearch
 def get_elasticsearch_object():
     """ Creating an elasticsearch object to query the index """
 
-    es_obj = Elasticsearch(hosts=settings.ELASTICSEARCH_SERVERS,
-                           timeout=settings.ELASTICSEARCH_TIMEOUT)
+    es_obj = Elasticsearch(
+        hosts=settings.ELASTICSEARCH_SERVERS,
+        timeout=settings.ELASTICSEARCH_TIMEOUT)
     return es_obj
 
 
