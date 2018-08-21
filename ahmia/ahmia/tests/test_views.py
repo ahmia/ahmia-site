@@ -37,7 +37,8 @@ class OnionAddressViewsTestCase(TestCase):
     def test_description_edition(self):
         """Edit a description and test the result."""
 
-        # todo How does this work? Anyway we have to edit the disc before checking the result
+        # todo How does this work? There is no resp.context,
+        # we have to edit the disc before checking the result
         # resp = self.client.get('/address/')
         # hs_1 = resp.context['description_list'][0]
         #
@@ -56,7 +57,7 @@ class OnionAddressViewsTestCase(TestCase):
         resp = self.client.get('/address/aaaaaaaaaaaaaaaa')
         self.assertEqual(resp.status_code, 404)
 
-        # todo disabled because no url rule matches and response varies on DEBUG value
+        # disabled because no url rule matches and response varies on DEBUG value
         # resp_content = resp.content.decode('utf-8')
         # correct_result = "There is no aaaaaaaaaaaaaaaa.onion indexed."
         # self.assertEqual(resp_content, correct_result)
