@@ -18,7 +18,8 @@ logger = logging.getLogger("stats")
 
 
 class Command(BaseCommand):
-    help = 'Calculate the usage statistics for the past day and updates Stats tables'
+    help = """ Calculates the usage statistics for the past day and 
+               updates Stats tables """
 
     def __init__(self):
         super(Command, self).__init__()
@@ -45,14 +46,19 @@ class Command(BaseCommand):
         :return: stats numbers as dict following model's attributes naming
         """
 
-        # todo assuming that update_stats runs periodically and consistently
-        # we currently recalculate only the last day in each run. Consider if
-        # we should rather filter the whole month or settings.USAGE_STATS_DAYS
+        # Because we assum that update_stats runs periodically and consistently
+        # (e.g by cron), we currently calculate only the last day in each run.
+        # Consider if we should rather filter/calculate all of the
+        # settings.USAGE_STATS_DAYS
 
-        past_day_queries = SearchQuery.objects.today().filter(network=network)
-        past_day_clicks = SearchResultsClick.objects.today().filter(network=network)
-        num_queries = past_day_queries.aggregate(Sum('occurrences'))['occurrences__sum']
-        num_clicks = past_day_clicks.aggregate(Sum('occurrences'))['occurrences__sum']
+        past_day_queries = SearchQuery.objects.today().\
+            filter(network=network)
+        past_day_clicks = SearchResultsClick.objects.today().\
+            filter(network=network)
+        num_queries = past_day_queries.aggregate(
+            Sum('occurrences'))['occurrences__sum']
+        num_clicks = past_day_clicks.aggregate(
+            Sum('occurrences'))['occurrences__sum']
 
         kwargs = {
             'num_queries': num_queries or 0,
@@ -66,32 +72,32 @@ class Command(BaseCommand):
         """
         Update modelclass table with current day traffic
 
-        :param modelclass: A subclass of Stats (not instance)
+        :param modelclass: A subclass (not instance) of Stats
+        :type modelclass: class type of `ahmia.models.Stats`
         :param kwargs: the current day stats
         """
 
+        # lookup by `day` and create if not existing
         try:
-            obj = modelclass.objects.get(day=self.today)
+            obj, created = modelclass.objects.get_or_create(
+                defaults=kwargs,
+                day=self.today,
+            )
 
-        except modelclass.DoesNotExist:
-            # if not exist add the unique field (day) and save the new obj
-            kwargs['day'] = self.today
-            try:
-                modelclass.objects.create(**kwargs)
-            except IntegrityError as e:
-                logging.exception(e)
-
-        else:
-            # assuming kwargs returned by calculate_stats match the model's fields:
-            for key, value in kwargs.items():
-                setattr(obj, key, value)
-            try:
+            if not created:
+                # if already exists
+                for key, value in kwargs.items():
+                    # assuming kwargs's keys returned by calculate_stats
+                    # match the model's attributes:
+                    setattr(obj, key, value)
                 obj.full_clean()
                 obj.save()
-            except (ValidationError, IntegrityError) as e:
-                logging.exception(e)
 
-        logger.info("Updated {0} for: {1} ".format(modelclass.__name__, self.today))
+        except (ValidationError, IntegrityError) as e:
+            logging.exception(e)
+
+        logger.info("Created/Updated {0} for: {1} ".format(
+            modelclass.__name__, self.today))
 
     @staticmethod
     def generate_plots():
