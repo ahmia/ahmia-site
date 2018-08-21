@@ -969,7 +969,7 @@ div.elastic.inner {
 
 #usage-stats{
   font-size: 18px;
-  width: 70%;
+  width: 80%;
   max-width: 960px;
   margin: 0 auto;
   text-align: center;
@@ -985,4 +985,5 @@ div.elastic.inner {
 
 #usage-stats .plot{
   margin-bottom: 20px;
+  align-items : left;
 }

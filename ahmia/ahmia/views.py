@@ -188,9 +188,7 @@ class ElasticsearchBaseListView(ListView):
         return hits
 
     def get_queryset(self, **kwargs):
-        es_obj = self.es_obj
-        if es_obj is None:
-            es_obj = utils.get_elasticsearch_object()
+        es_obj = self.es_obj or utils.get_elasticsearch_object()
         hits = es_obj.search(**self.get_es_context(**kwargs))
         return self.format_hits(hits)
 

@@ -32,17 +32,20 @@ def generate_figure(x, y1, y2, image_path, metric_str):
 
     # 2 subplots, the axes array is 1-d
     fig, axis = plt.subplots(2, sharex=True)
-    x_labels = _select_xticks(x)
+    fig.set_size_inches(11.4, 5.5)
+    x_labels = x  # _select_xticks(x)
 
     axis[0].set_title("Unique %s" % metric_str)
-    axis[0].bar(x, y2, edgecolor="k")
-    axis[0].set_xticks(x_labels)
-    axis[0].set_xticklabels(x_labels)
+    axis[0].bar(x, y2, edgecolor="k")  # fill in data
     axis[0].yaxis.set_major_locator(MaxNLocator(integer=True))  # int ylabels
+    axis[0].grid(clip_on=True, marker='o', axis='y')  # draw grid lines
+    axis[0].set_xticks(x_labels)  # set x-axis label values
+    axis[0].set_xticklabels(x_labels)
 
     axis[1].set_title(metric_str)
-    axis[1].bar(x, y1, edgecolor="k")
+    axis[1].bar(x, y1, edgecolor="k")  # fill in data
     axis[1].yaxis.set_major_locator(MaxNLocator(integer=True))  # int ylabels
+    axis[1].grid(clip_on=False, marker='o')  # draw grid lines
 
     # save the figure
     plt.savefig(image_path, bbox_inches='tight', transparent=True)
