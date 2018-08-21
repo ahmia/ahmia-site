@@ -196,7 +196,6 @@ class PagePopHandler(object):
             kwargs = {
                 'onion': onion,
                 'score': self.scores[index],
-                # 'score_norm': self.norm_scores[index]
             }
             new_obj = PagePopScore(**kwargs)
             objs.append(new_obj)
