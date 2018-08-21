@@ -11,7 +11,6 @@ from .utils import get_elasticsearch_object
 
 def validate_status(value):
     """Test if an onion domain is not banned."""
-
     res = get_elasticsearch_object().count(
         index=settings.ELASTICSEARCH_TOR_INDEX,
         doc_type=settings.ELASTICSEARCH_TYPE,
@@ -36,44 +35,109 @@ def validate_status(value):
         )
 
 
-def validate_onion_url(url):
-    """ Test is url correct onion URL."""
+def validate_full_onion_url(url):
+    """
+    Check if an onion url represents a valid v2 or v3 onion url,
+    with or without path. A valid url looks like:
+    e.g: http://msydqstlz2kzerdg.onion/search/?q=tor+network&d=7
+    :param url: The url in question
+    :raises ValidationError
+    :return: None
+    """
+    # check for trailing slash if there is a path
+    path = url.split('.onion')[-1]
+    if path and path[0] != '/':
+        raise ValidationError(
+            _("{} url path should start with '/'".format(url))
+        )
 
-    # Must be like http://3g2upl4pq6kufc4m.onion/
-    if url[0:7] != 'http://':
+    # check the rest of the url, left from .onion
+    regex = "https?:\/\/([a-z0-9\-]+[.])*[a-z2-7]{16}([a-z2-7]{40})?[.]onion"
+    if not re.match(regex, url.strip()):
+        raise ValidationError(
+            _("{} url is not a valid onion url".format(url))
+        )
+
+# todo merge validate_full_onion_url() and validate_onion_url()
+
+
+def validate_onion_url(url):
+    """
+    Test is url correct onion URL.
+    Must be like http://3g2upl4pq6kufc4m.onion/
+    """
+    if not url:
+        raise ValidationError(_('NoneType is not a valid url'))
+
+    url = url.strip().rstrip('/')
+
+    if url[0:7] != 'http://' and url[0:8] != 'https://':
         raise ValidationError(
             _(u'%(url)s is not beginning with http://') % {'url': url}
         )
-    if url[-7:] != '.onion/':
+    if url[-6:] != '.onion':
         raise ValidationError(
-            _(u'%(url)s is not ending with .onion/') % {'url': url}
+            _(u'%(url)s is not ending with .onion') % {'url': url}
         )
+
+    # todo we should also validate subdomain
     main_dom = url.find('.')
-    if main_dom == 23:
+    if main_dom in (23, 63):   # match both v2 & v3 lengths
         main_dom = 6
-    if not validate_onion(url[main_dom+1:-7]):
-        raise ValidationError(
-            _(u'%(url)s is not valid onion domain') % {'url': url}
-        )
+
+    validate_onion(url[main_dom+1:-6])
 
 
-def validate_onion(url):
-    """Test if an url is a valid hiddenservice url"""
-    return re.match(r"^[a-z2-7]{16}(\.onion)?", url.strip())
+def validate_onion(onion):
+    """Test if a url is a valid hiddenservice domain"""
+    if not onion:
+        raise ValidationError(_('The provided value is not a valid onion'))
+
+    if not re.match(r"^[a-z2-7]{16}([a-z2-7]{40})?(\.onion)?$", onion.strip()):
+        raise ValidationError(_("%s url is not a valid onion url" % onion))
 
 
-def is_valid_onion_url(domain):
+def is_valid_onion_url(url):
     """
     Uses django validator validate_onion_url defined above
-    in order to derive if domain is a valid onion, but returns
-    boolean instead of throwing an exception
+    in order to derive if url is a valid onion url, but
+    returns boolean instead of throwing an exception
 
-    :param domain The url in question
+    :param url The url in question
     :returns True if valid onion_domain else False
     """
-
     try:
-        validate_onion_url(domain)
+        validate_onion_url(url)
+    except ValidationError:
+        return False
+    return True
+
+
+def is_valid_full_onion_url(url):
+    """
+    Uses django validator validate_full_onion_url defined above
+    but returns boolean instead of throwing an exception
+
+    :param url The url in question
+    :returns True if valid onion else False
+    """
+    try:
+        validate_full_onion_url(url)
+    except ValidationError:
+        return False
+    return True
+
+
+def is_valid_onion(onion):
+    """
+    Uses django validate_onion defined above to validate onion
+    but returns boolean instead of throwing an exception
+
+    :param onion The onion in question
+    :returns True if valid onion domain else False
+    """
+    try:
+        validate_onion(onion)
     except ValidationError:
         return False
     return True
