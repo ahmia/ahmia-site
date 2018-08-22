@@ -273,14 +273,14 @@ class TorResultsView(ElasticsearchBaseListView):
                      for h in hits]
         ir_scores_norm = utils.normalize_on_max(ir_scores)
         pp_scores_norm = utils.normalize_on_max(pp_scores)
-        # assert len(ir_scores_norm) == len(pp_scores_norm) == len(hits)
+        assert len(ir_scores_norm) == len(pp_scores_norm) == len(hits)
 
         for h, ir, pp in zip(hits, ir_scores_norm, pp_scores_norm):
-            h['final_score'] = heuristic_score(ir, pp)
+            h['score'] = heuristic_score(ir, pp)
 
         self.object_list[1] = sorted(
             hits,
-            key=lambda k: k['final_score'],
+            key=lambda k: k['score'],
             reverse=True)
 
     def get(self, request, *args, **kwargs):
@@ -301,6 +301,22 @@ class TorResultsView(ElasticsearchBaseListView):
             kwargs['suggest'] = suggest
 
         if 'r' in request.GET:  # enable PagePop
+            # todo to_remove this - debug info
+            hits = self.object_list[1]
+            pps = PagePopScore.objects.order_by('-score').values('onion', 'score')
+
+            bucket = "===== HITS ======\n"
+            for h in hits:
+                bucket += "%s\n" % str(h)
+            bucket += "\n==== SCORES ====\n"
+            for pp in pps:
+                bucket += "%s\n" % str(pp)
+
+            response = HttpResponse(bucket, content_type="plain/text")
+            response['Content-Disposition'] = 'attachment; filename=\"debug.txt\"'
+            return response
+            # todo END OF to_remove code
+
             self.sort_results()
 
         kwargs['time'] = round(time.time() - start, 2)
