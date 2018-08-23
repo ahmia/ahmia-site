@@ -6,20 +6,31 @@ from .base import *
 DEBUG = config('DEBUG', cast=bool, default=True)
 
 
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',       # Database engine
-            'NAME': ROOT_PATH('ahmia_db_test')   # Database name
-        }
+# if 'test' in sys.argv:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',       # Database engine
+#             'NAME': ROOT_PATH('ahmia_db_test')   # Database name
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',  # Database engine
+#             'NAME': ROOT_PATH('ahmia_db')   # Database name
+#         }
+#     }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='postgres'),     # Database name
+        'USER': config('DB_USER', default='postgres'),     # User with permissions on that DB
+        'PASSWORD': config('DB_PASS', default=''),         # Password for the user specified above
+        'HOST': config('DB_HOST', default="localhost"),    # Set to empty string for localhost
+        'PORT': config('DB_PORT', default=5432, cast=int)  # pbbouncer port
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',  # Database engine
-            'NAME': ROOT_PATH('ahmia_db')   # Database name
-        }
-    }
+}
+
 
 # additionally to default LOGGING settings from base.py
 LOGGING.update({
