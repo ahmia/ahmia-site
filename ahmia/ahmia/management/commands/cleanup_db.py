@@ -24,5 +24,5 @@ class Command(BaseCommand):
 
         # SearchQueries and Clicks
         oldest_datetime_to_keep = timezone.now() - timedelta(days=self.days_to_keep)
-        SearchQuery.objects.filter(created__lt=oldest_datetime_to_keep).delete()
-        SearchResultsClick.objects.filter(created__lt=oldest_datetime_to_keep).delete()
+        SearchQuery.objects.filter(updated__lt=oldest_datetime_to_keep).delete()
+        SearchResultsClick.objects.filter(updated__lt=oldest_datetime_to_keep).delete()
