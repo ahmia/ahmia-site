@@ -101,7 +101,7 @@ class PagePopHandler(object):
                 if 'target' in source:           # source case
                     links.append({'link': source['target']})
                 for l in links:
-                    url = l['link']
+                    url = l['link'].encode('utf-8', 'ignore').decode()
                     if is_valid_full_onion_url(url):
                         destiny = utils.extract_domain_from_url(url)
                         if destiny != origin:

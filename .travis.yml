@@ -4,7 +4,7 @@ services:
 python:
   - 3.6
 install:
-  - pip install -r requirements/dev.txt
+  - pip install -r requirements/prod.txt
 before_script:
   - cp ahmia/ahmia/settings/example.env ahmia/ahmia/settings/.env
   - python ahmia/manage.py migrate
