@@ -72,15 +72,18 @@ class PagePopScore(models.Model):
 class PagePopStats(models.Model):
     """One entry/row is created by rank_pages command"""
     day = models.DateField(default=utils.timezone_today, unique=True)
-    num_links = models.IntegerField(null=True,
-                                    verbose_name='Number of Links (Edges)',
-                                    help_text='Number of links between websites')
-    num_edges = models.IntegerField(null=True,
-                                    verbose_name='Number of Unique Links (Edges)',
-                                    help_text='Number of unique links between websites')
-    num_nodes = models.IntegerField(null=True,
-                                    verbose_name='Number of nodes',
-                                    help_text='Number of onion domains (nodes)')
+    num_links = models.IntegerField(
+        null=True,
+        verbose_name='Number of Links (Edges)',
+        help_text='Number of links between websites')
+    num_edges = models.IntegerField(
+        null=True,
+        verbose_name='Number of Unique Links (Edges)',
+        help_text='Number of unique links between websites')
+    num_nodes = models.IntegerField(
+        null=True,
+        verbose_name='Number of nodes',
+        help_text='Number of onion domains (nodes)')
 
     def __str__(self):
         return str(self.day)
@@ -96,18 +99,17 @@ class MetricQuerySet(models.QuerySet):
 
         utc = timezone.now()
         today_start = utc.replace(hour=0, minute=0, second=0, microsecond=0)
-        return self.filter(created__gte=today_start)
+        return self.filter(updated__gte=today_start)
 
     def month(self):
         """
-        This follows different logic than today, since we lookup
-        back `settings.USAGE_STATS_DAYS` (default 30) days instead
-        of looking into the current month (e.g April)
+        Filter the queryset by looking up `settings.USAGE_STATS_DAYS`
+        (default 30) back
         """
 
         utc = timezone.now()
         oldest_utc = utc - timedelta(days=settings.USAGE_STATS_DAYS)
-        return self.filter(created__gte=oldest_utc)
+        return self.filter(updated__gte=oldest_utc)
 
 
 class MetricManager(models.Manager):
