@@ -40,22 +40,30 @@ def validate_full_onion_url(url):
     Check if an onion url represents a valid v2 or v3 onion url,
     with or without path. A valid url looks like:
     e.g: http://msydqstlz2kzerdg.onion/search/?q=tor+network&d=7
+
     :param url: The url in question
     :raises ValidationError
     :return: None
     """
-    # check for trailing slash if there is a path
-    path = url.split('.onion')[-1]
-    if path and path[0] != '/':
-        raise ValidationError(
-            _("{} url path should start with '/'".format(url))
-        )
+    try:
+        # check for trailing slash if there is a path
+        path = url.split('.onion')[-1]
+        if path and path[0] != '/':
+            raise ValidationError(
+                _("{} url path should start with '/'".format(url))
+            )
 
-    # check the rest of the url, left from .onion
-    regex = "https?:\/\/([a-z0-9\-]+[.])*[a-z2-7]{16}([a-z2-7]{40})?[.]onion"
-    if not re.match(regex, url.strip()):
+        # check the rest of the url, left from .onion
+        regex = "https?:\/\/([a-z0-9\-]+[.])*[a-z2-7]{16}([a-z2-7]{40})?[.]onion"
+        if not re.match(regex, url.strip()):
+            raise ValidationError(
+                _("{} url is not a valid onion url".format(url))
+            )
+    except ValueError:
+        # ValueError is parent to UnicodeError
         raise ValidationError(
-            _("{} url is not a valid onion url".format(url))
+            _("Url provided is invalid. It probably contains non-ascii "
+              "characters that couldn't be encoded")
         )
 
 # todo merge validate_full_onion_url() and validate_onion_url()
