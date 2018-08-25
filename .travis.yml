@@ -6,7 +6,10 @@ python:
 install:
   - pip install -r requirements/prod.txt
 before_script:
-  - cp ahmia/ahmia/settings/example.env ahmia/ahmia/settings/.env
-  - python ahmia/manage.py migrate
+  - psql -c 'create database ahmiasite;' -U postgres
+  - cd ahmia
+  - cp ahmia/settings/example.env ahmia/settings/.env
+  - python manage.py collectstatic --noinput -c
+  - python manage.py migrate
 script:
-  - python ahmia/manage.py test
+  - python manage.py test
