@@ -6,7 +6,7 @@ python:
 
 env:
   # todo we should have a dependent build on ahmia-index instead of
-  # redefining values and manually running ahmia-index scripts further below
+  # redefining values and manually running same commands
   - ES_URL=http://localhost:9200/
   - ES_TOR_INDEX=latest-tor
   - ES_I2P_INDEX=latest-i2p
