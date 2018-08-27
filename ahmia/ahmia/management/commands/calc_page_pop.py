@@ -20,6 +20,7 @@ class Command(BaseCommand):
             self.es_obj,
             query={"query": {"match_all": {}}},
             index=self.es_index,
+            scroll='30m'
         )
 
         return doc_gen
