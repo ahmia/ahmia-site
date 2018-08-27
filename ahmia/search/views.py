@@ -301,22 +301,6 @@ class TorResultsView(ElasticsearchBaseListView):
             kwargs['suggest'] = suggest
 
         if 'r' in request.GET:  # enable PagePop
-            # todo to_remove this - debug info
-            hits = self.object_list[1]
-            pps = PagePopScore.objects.order_by('-score').values('onion', 'score')
-
-            bucket = "===== HITS ======\n"
-            for h in hits:
-                bucket += "%s\n" % str(h)
-            bucket += "\n==== SCORES ====\n"
-            for pp in pps:
-                bucket += "%s\n" % str(pp)
-
-            response = HttpResponse(bucket, content_type="plain/text")
-            response['Content-Disposition'] = 'attachment; filename=\"debug.txt\"'
-            return response
-            # todo END OF to_remove code
-
             self.sort_results()
 
         kwargs['time'] = round(time.time() - start, 2)
