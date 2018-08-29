@@ -179,20 +179,6 @@ msgstr ""
 msgid "contribute to the source code"
 msgstr ""
 
-#: templates/index.html:38
-#, python-format
-msgid ""
-"\n"
-"      For more about Ahmia, see <a href=\"/documentation/indexing\">"
-"%(indexing_info)s</a>,\n"
-"      <a href=\"//github.com/juhanurmi/ahmia\">%(contribute_to_source)s, \n"
-"      <a href=\"//twitter.com/AhmiaNews\">@AhmiaNews</a> on Twitter, or "
-"maybe\n"
-"      <a href=\"bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY\">"
-"%(donate_bitcoin)s</a>.\n"
-"    "
-msgstr ""
-
 #: templates/partial/nav.html:4
 msgid "It appears that you are not using the Tor Browser."
 msgstr ""
@@ -410,20 +396,6 @@ msgstr ""
 
 #: templates/static/about.html:68
 msgid "A presentation about Ahmia and the Tor Ecosystem"
-msgstr ""
-
-#: templates/static/about.html:73
-msgid "donate Bitcoin"
-msgstr ""
-
-#: templates/static/about.html:74
-#, python-format
-msgid ""
-"\n"
-"  We extend a thank you to Ahmia's supporters.\n"
-"  If you believe in Ahmia, please <a href="
-"\"bitcoin:3LCFqc9NfMwNJA6TrudgHVdpfwxhn4JadY\">%(donate_bitcoin)s</a>.</p>\n"
-"  "
 msgstr ""
 
 #: templates/static/about.html:80
