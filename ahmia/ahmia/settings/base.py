@@ -112,8 +112,8 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'django.contrib.messages.context_processors.messages',
             ],
 
             # loads custom template tags
@@ -138,6 +138,11 @@ INSTALLED_APPS = (
     'search',
     'stats'
 )
+
+# https://docs.djangoproject.com/en/1.11/ref/contrib/messages/#configuring-the-message-engine
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+# *** LOGGING *** #
 
 # Log everything to the logs directory at the top
 LOGFILE_ROOT = ROOT_PATH('logs')
