@@ -38,7 +38,9 @@
         {% if messages %}
           <ul class="messages">
             {% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+              </li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -72,13 +74,17 @@
     <div class="credits">
       <ul>
         <li><img src="/static/images/logos/globaleaks.png"
-             alt="{% trans "Globaleaks Platform" %}"></li>
+             alt="{% trans "Globaleaks Platform" %}">
+        </li>
         <li><img src="/static/images/logos/tor2web.png"
-             alt="{% trans "Tor2Web Platform" %}"></li>
+             alt="{% trans "Tor2Web Platform" %}">
+        </li>
         <li><img src="/static/images/logos/hermes.png"
-             alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+             alt="{% trans "HERMES Center for Transparency and Digital Rights" %}">
+        </li>
         <li><img src="/static/images/logos/torproject.png" 
-             alt="{% trans "Tor Project" %}"></li>
+             alt="{% trans "Tor Project" %}">
+        </li>
       </ul>
     </div>
   </div>

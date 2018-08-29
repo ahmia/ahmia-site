@@ -101,7 +101,9 @@ $ python3 ahmia/manage.py runserver
 ```
 
 * Rule to build PagePopularity Score Index every 10 days
+```sh
 0 0 */10 * * python /usr/local/bin/ahmia-site/ahmia/manage.py calc_page_pop --settings=ahmia.settings.prod
+```
 
 __NOTE__: If you are using virtualenv replace `python` with the absolute path to your virtualenv's python executable, e.g `/path/to/venv/bin/python`
 
