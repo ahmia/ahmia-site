@@ -104,7 +104,6 @@ class AddView(FormView):
             if created:
                 # newly instance created
                 messages.success(request, self.success_msg)
-                form.send_new_onion()
             else:
                 # fetched, already existed
                 messages.warning(request, self.exists_msg)
