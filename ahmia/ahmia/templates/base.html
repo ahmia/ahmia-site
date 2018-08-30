@@ -8,24 +8,32 @@
     <meta charset=utf-8/>
     <meta name='description' content='Search onion web pages'/>
     <meta name='keywords'
-        content='onion domains, hidden services, deep web, search engine, onion pages, onion sites, list, cache, tor, tor2web, index, search, pages, show content'/>
+        content='onion domains, hidden services, deep web, search engine,
+                 onion pages, onion sites, list, cache, tor, tor2web, index,
+                 search, pages, show content'/>
     <meta name='author' content='ahmia'/>
     <title>{% block title %}{% endblock %}</title>
-    <link rel='stylesheet' type='text/css' href='{% static "styles/base_styles.css" %}'/>
+    <link rel='stylesheet' type='text/css'
+          href='{% static "styles/base_styles.css" %}'/>
     <script src='{% static "js/jquery.min.js" %}'></script>
     <script src='{% static "js/highlight.js" %}'></script>
     <link rel='shortcut icon' href='{% static "images/favicon.ico" %}'/>
-    <link href='{% static "styles/fontstyles/Cagliostro.css" %}' rel='stylesheet'/>
-    <link href='{% static "styles/fontstyles/Bitter.css" %}' rel='stylesheet'/>
-    <link href='{% static "styles/fontstyles/OpenSans.css" %}' rel='stylesheet'/>
+    <link href='{% static "styles/fontstyles/Cagliostro.css" %}'
+          rel='stylesheet'/>
+    <link href='{% static "styles/fontstyles/Bitter.css" %}'
+          rel='stylesheet'/>
+    <link href='{% static "styles/fontstyles/OpenSans.css" %}'
+          rel='stylesheet'/>
   </head>
 
   <body>
-  <a href="http://msydqstlz2kzerdg.onion/" id="cornerBanner">Ahmia Hidden Website</a>
+  <a href="http://msydqstlz2kzerdg.onion/" id="cornerBanner">
+    Ahmia Hidden Website
+  </a>
 
   <header class="pagetitle" role="banner">
 
-    <a href="https://github.com/ahmia/search">
+    <a href="https://github.com/ahmia/ahmia-site">
       <img style="position: absolute; top: 0; right: 0; border: 0;"
          src="{% static 'images/forkme_right_green_007200.png' %}"
          alt="Fork me on GitHub"
@@ -46,14 +54,15 @@
 
   <footer>
     <p>This is a search engine for hidden onion sites running inside
-      <a href="https://www.torproject.org/" rel="external">Tor</a> network. Use
+      <a href="https://www.torproject.org/" rel="external">Tor</a> network.
+      Use
       <a href="https://www.torproject.org/projects/torbrowser.html.en">
         Tor Browser Bundle
-      </a> to access hidden services.
+      </a>
+      to access hidden services.
       <br/>
-      <a href="{% url 'add' %}">Add</a> new sites. <a href="{% url 'doc-indexing' %}">HS
-        crawling
-        info</a>.
+      <a href="{% url 'add' %}">Add</a> new sites.
+      <a href="{% url 'doc-indexing' %}">HS crawling info</a>.
       <a href="{% url 'address' %}">Inform us</a> about CP and we will
       <a href="{% url 'policy' %}">filter it</a>.
       <a href="{% url 'stats:stats' %}">Hidden Websites statistics</a>:
@@ -88,12 +97,15 @@
       </script>
     </div>
     <div class="item">
-      <h3>Twitter <a href="https://twitter.com/AhmiaNews">&#64;AhmiaNews</a></h3>
+      <h3>
+        Twitter <a href="https://twitter.com/AhmiaNews">&#64;AhmiaNews</a>
+      </h3>
       <div id="tweet_div">
         <ul id="tweet_update_list">
           <li>
             <span>
-              Juha is enjoying his Google Summer of Code. Developing the search engine in his backyard.
+              Juha is enjoying his Google Summer of Code.
+              Developing the search engine in his backyard.
               <a href="http://t.co/flcMn9s1dj">pic.twitter.com/flcMn9s1dj</a>
             </span>
           </li>
