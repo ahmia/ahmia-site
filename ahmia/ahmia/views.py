@@ -174,9 +174,12 @@ class BlacklistSuccessView(CoreView):
 
 
 class ElasticsearchBaseListView(ListView):
-    """ Base view to display lists of items coming from ES """
-    object_list = None
+    """
+    Base view to display lists of items coming from ES
+    :todo: TemplateView would probably fit better here
+    """
     es_obj = None
+    object_list = None  # SimpleNamespace instead of list of instances
 
     def get_es_context(self, **kwargs):
         """ Get parameters list to use with Elasticsearch.search() """
