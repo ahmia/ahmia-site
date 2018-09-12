@@ -13,7 +13,7 @@ from django.template import loader
 from ahmia import utils
 from ahmia.models import SearchResultsClick, SearchQuery, PagePopScore
 from ahmia.utils import get_elasticsearch_i2p_index
-from ahmia.validators import is_valid_onion_url
+from ahmia.validators import is_valid_full_onion_url
 from ahmia.views import ElasticsearchBaseListView
 
 logger = logging.getLogger("search")
@@ -28,12 +28,10 @@ def onion_redirect(request):
     if not redirect_url or not search_term:
         answer = "Bad request: no GET parameter URL."
         return HttpResponseBadRequest(answer)
+
     try:
-        onion = redirect_url.split("://")[1].split(".onion")[0]
-        # if len(onion) != 16:
-        #     raise ValueError('Invalid onion value = %s' % onion)
-        onion = "http://{}.onion/".format(onion)
-        if is_valid_onion_url(onion):
+        onion = utils.extract_domain_from_url(redirect_url)
+        if is_valid_full_onion_url(redirect_url):
             # currently we can't log i2p clicks due to
             # SearchResultsClick.onion_domain having an onion validator
             # Also we don't have yet i2p results in order to test it
@@ -84,7 +82,6 @@ def heuristic_score(ir_score, pp_score):
     :return: final score
     :rtype: ``float``
     """
-
     pp_coeff = 0.35
     ir_coeff = 1 - pp_coeff
     ret = pp_score * pp_coeff + ir_score * ir_coeff
