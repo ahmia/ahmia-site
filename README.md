@@ -87,27 +87,27 @@ $ python3 ahmia/manage.py runserver
 
 * Rule to remove onions added by users weekly
 ```sh
-0 0 */7 * * python /usr/local/bin/ahmia-site/ahmia/manage.py remove_onions --settings=ahmia.settings.prod
+0 0 */7 * * python3 /usr/local/lib/ahmia-site/ahmia/manage.py remove_onions --settings=ahmia.settings.prod
 ```
 
 * Rule to update usage statistics hourly (could be once per day as well)
 ```sh
-59 * * * * python /usr/local/bin/ahmia-site/ahmia/manage.py update_stats --settings=ahmia.settings.prod
+59 * * * * python3 /usr/local/lib/ahmia-site/ahmia/manage.py update_stats --settings=ahmia.settings.prod
 ```
 
 * Rule to clean up some DB tables on the first day of each month
 ```sh
-0 0 1 * * python /usr/local/bin/ahmia-site/ahmia/manage.py cleanup_db --settings=ahmia.settings.prod
+0 0 1 * * python3 /usr/local/lib/ahmia-site/ahmia/manage.py cleanup_db --settings=ahmia.settings.prod
 ```
 
 * Rule to build PagePopularity Score Index every 10 days
 ```sh
-0 0 */10 * * python /usr/local/bin/ahmia-site/ahmia/manage.py calc_page_pop --settings=ahmia.settings.prod
+0 0 */10 * * python3 /usr/local/lib/ahmia-site/ahmia/manage.py calc_page_pop --settings=ahmia.settings.prod
 ```
 
-__NOTE__: If you are using virtualenv replace `python` with the absolute path to your virtualenv's python executable, e.g `/path/to/venv/bin/python`
+__NOTE__: If you are using virtualenv replace `python3` with the absolute path to your virtualenv's python executable, e.g `/path/to/venv/lib/python`
 
-__NOTE__: If your deployment directory isn't `/usr/local/bin/ahmia-site` replace accordingly
+__NOTE__: If your deployment directory isn't `/usr/local/lib/ahmia-site` replace accordingly
 # FAQ
 
 ## How can populate my index to do searches ?
