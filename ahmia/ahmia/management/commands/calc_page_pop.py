@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.core.management import BaseCommand
+from elasticsearch import Elasticsearch, RequestsHttpConnection
 from elasticsearch.helpers import scan
 
 from ahmia import utils
@@ -11,7 +13,11 @@ class Command(BaseCommand):
     def __init__(self):
         super(BaseCommand, self).__init__()
 
-        self.es_obj = utils.get_elasticsearch_object()
+        self.es_obj = Elasticsearch(
+            hosts=settings.ELASTICSEARCH_SERVERS,
+            timeout=settings.ELASTICSEARCH_TIMEOUT,
+            connection_class=RequestsHttpConnection
+        )
         self.es_index = utils.get_elasticsearch_tor_index()
 
     def _fetch_all_docs(self):
