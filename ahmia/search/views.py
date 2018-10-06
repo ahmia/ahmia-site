@@ -8,10 +8,12 @@ import time
 from datetime import date, datetime, timedelta
 from types import SimpleNamespace
 
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 
 from ahmia import utils
+from ahmia.lib.pagepop import PagePopHandler
 from ahmia.models import SearchResultsClick, SearchQuery, PagePopScore
 from ahmia.utils import get_elasticsearch_i2p_index
 from ahmia.validators import is_valid_full_onion_url
@@ -65,34 +67,48 @@ def filter_hits_by_time(hits, pastdays):
     return ret
 
 
-def heuristic_score(ir_score, pp_score):
+def heuristic_score(ir_score, gp_score, lp_score, urlparams):
     """
     A formula to combine IR score given by Elasticsearch and
-    PagePop score given by page popularity algorithm. Adjust the
-    influence of pr/ir scores according to the number of terms that
-    query is consisted of, as well as other factors. Arithmetics is
+    PagePop scores given by page popularity algorithm. Arithmetics is
     black art, it can only improve via manually testing queries, and
     user feedback. Currently its a simple weighted sum.
-    todo: improve it
+
     Normally the more tokens in query the lower pagepop influence
     should be. However the more tokens given the more ES seems to
     diverge IR score. Thus we bypass 'number of tokens' for the moment
 
+    todo: hardcode coefficient values (currently in url params) and
+    todo: make local pagepop coeff: `lp_coeff` proportional to number of hits
+
     :param ir_score: Information Relevance score by Elasticsearch
-    :param pp_score: PagePop score for that domain
+    :param gp_score: Global popularity score for that domain
+    :param lp_score: Local popularity score for that domain
     :return: final score
     :rtype: ``float``
     """
-    pp_coeff = 0.35
-    ir_coeff = 1 - pp_coeff
-    ret = pp_score * pp_coeff + ir_score * ir_coeff
+    lp_coeff = float(urlparams.get('lp', 0))
+    gp_coeff = float(urlparams.get('gp', 0))
+    ir_coeff = 1 - gp_coeff - lp_coeff
+    ret = gp_score * gp_coeff + lp_score * lp_coeff + ir_score * ir_coeff
 
     # drag down the average score when the two scores diverge too much
-    # pp = pp_coeff * pp_score
+    # pp = gp_coeff * gp_score
     # ir = ir_coeff * ir_score
-    # ret = pp * ir / (pp + ir)  # too much of a penalty
+    # ret = pp * ir / (pp + ir)  # failed: too much of a penalty
 
     return ret
+
+
+def local_page_pop(hits):
+    """Calculate page popularity only for the domains of our results (hits)"""
+    domains = set(h['domain'] for h in hits)
+
+    p = PagePopHandler(hits, domains)
+    p.build_pagescores()
+    scores = p.get_scores_as_dict()
+
+    return scores
 
 
 class TorResultsView(ElasticsearchBaseListView):
@@ -112,10 +128,13 @@ class TorResultsView(ElasticsearchBaseListView):
 
         self.log_stats(**kwargs)
 
-        self.object_list = self.get_queryset(**kwargs)
+        self.get_queryset(**kwargs)
 
-        if 'r' in request.GET:  # enable PagePop
-            self.sort_results()
+        if 'gp' in request.GET or 'lp' in request.GET:  # enable PagePop
+            local_pp_scores = local_page_pop(self.object_list.hits)
+            self.sort_hits(local_pp_scores, request.GET)
+
+        self.filter_hits()
 
         kwargs['time'] = round(time.time() - start, 2)
 
@@ -128,10 +147,10 @@ class TorResultsView(ElasticsearchBaseListView):
         SearchQuery.objects.add_or_increment(
             search_term=kwargs['q'], network='T')
 
-    def get_queryset(self, **kwargs):
-        object_list = super(TorResultsView, self).get_queryset(**kwargs)
-        object_list.hits = self.filter_hits(object_list.hits)
-        return object_list
+    # def get_queryset(self, **kwargs):
+    #     object_list = super(TorResultsView, self).get_queryset(**kwargs)
+    #     object_list.hits = self.filter_hits(object_list.hits)
+    #     return object_list
 
     def get_es_context(self, **kwargs):
         return {
@@ -217,7 +236,8 @@ class TorResultsView(ElasticsearchBaseListView):
                                     "_source": {
                                         "include": ["title", "url", "meta",
                                                     "updated_on", "domain",
-                                                    "authority", "anchors"]
+                                                    "authority", "anchors",
+                                                    "links"]
                                     }
                                 }
                             },
@@ -225,7 +245,7 @@ class TorResultsView(ElasticsearchBaseListView):
                                 "max": {
                                     "script": "_score"
                                 }
-                            }
+                            },
                         }
                     }
                 }
@@ -263,45 +283,52 @@ class TorResultsView(ElasticsearchBaseListView):
 
             new_hits.append(new_hit)
 
-        return SimpleNamespace(total=total, hits=new_hits, suggest=suggest)
+        self.object_list = SimpleNamespace(total=total, hits=new_hits, suggest=suggest)
 
-    def filter_hits(self, hits):
+    def filter_hits(self):
         url_params = self.request.GET
-
+        hits = self.object_list.hits
         try:
             pastdays = int(url_params.get('d'))
         except (TypeError, ValueError):
             # Either pastdays not exists or not valid int (e.g 'all')
-            # In any case hits returned without filtering
+            # Either case hits are not altered
             pass
         else:
             hits = filter_hits_by_time(hits, pastdays)
+            self.object_list.hits = hits
+            self.object_list.total = len(hits)
 
-        return hits
-
-    def sort_results(self):
+    def sort_hits(self, local_pp_scores, urlparams):
         """
         Combine IR (Information Relevant) score given by Elasticsearch,
         with PP (Page Popularity) score, to sort the results
         """
-        hits = self.object_list.hits
-        if not hits:
+        if not self.object_list:
             return
+        hits = self.object_list.hits
 
-        ir_scores = [h.get('score', 0) for h in hits]
-        pp_scores = [PagePopScore.objects.get_score(onion=h['domain'])
-                     for h in hits]
+        ir_scores = []
+        pp_globl_scores = []
+        pp_local_scores = []
+        for h in hits:
+            ir_scores.append(h.get('score', 0))
+            pp_globl_scores.append(PagePopScore.objects.get_score(onion=h['domain']))
+            pp_local_scores.append(local_pp_scores[h['domain']])
+
         ir_scores_norm = utils.normalize_on_max(ir_scores)
-        pp_scores_norm = utils.normalize_on_max(pp_scores)
-        assert len(ir_scores_norm) == len(pp_scores_norm) == len(hits)
+        pp_globl_scores_norm = utils.normalize_on_max(pp_globl_scores)
+        pp_local_scores_norm = utils.normalize_on_max(pp_local_scores)
 
-        for h, ir, pp in zip(hits, ir_scores_norm, pp_scores_norm):
-            h['score'] = heuristic_score(ir, pp)
+        if settings.DEBUG:
+            assert len(ir_scores_norm) == len(pp_globl_scores_norm) == \
+                   len(pp_local_scores_norm) == len(hits)
 
-        self.object_list.hits = sorted(
-            hits,
-            key=lambda k: k['score'],
-            reverse=True)
+        for h, ir, pp, pl in zip(hits, ir_scores_norm, pp_globl_scores_norm,
+                                 pp_local_scores_norm):
+            h['score'] = heuristic_score(ir, pp, pl, urlparams)
+
+        self.object_list.hits = sorted(hits, key=lambda k: k['score'], reverse=True)
 
     def get_context_data(self, **kwargs):
         """

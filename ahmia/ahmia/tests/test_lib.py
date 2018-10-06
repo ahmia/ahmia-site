@@ -16,8 +16,8 @@ class TestPagePop(TestCase):
             (3, 1),  # D -> B
         ]
 
-        sparse = p.build_sparse_matrix(adj_mat)
-        ranks = p.compute_page_pop(sparse)
+        sparse = p._build_sparse_matrix(adj_mat)
+        ranks = p._compute_page_pop(sparse)
         # print(ranks)
         assert ranks[2] > ranks[0] > ranks[1] > ranks[3]  # C > A > B > D
 
@@ -31,7 +31,7 @@ class TestPagePop(TestCase):
             (4, 0),  # E -> A
         ]
 
-        sparse = p.build_sparse_matrix(adj_mat)
-        ranks = p.compute_page_pop(sparse, beta=0.6)
+        sparse = p._build_sparse_matrix(adj_mat)
+        ranks = p._compute_page_pop(sparse, beta=0.6)
         # print(ranks)
         assert ranks[0] > ranks[1] > ranks[2] > ranks[3] > ranks[4]
