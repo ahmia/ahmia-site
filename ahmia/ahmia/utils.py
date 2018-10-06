@@ -76,7 +76,3 @@ def normalize_on_max(scalars):
     ret = class_type(i / max_i for i in ret)
 
     return ret
-
-
-# todo: these functions are also used by `search` so
-# it might be cleaner to make `utils` a separate app

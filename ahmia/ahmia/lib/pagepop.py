@@ -11,9 +11,21 @@ from ahmia.validators import is_valid_full_onion_url, is_valid_onion
 logger = logging.getLogger('ahmia')
 
 
+def is_legit_link(link, entry):
+    """
+    Estimate whether a link is legit or not (check: hidden links, etc)
+
+    TODO: ignore hidden links, links to mirror sites (efficiently..)
+          or any other tricky / promoting links
+    """
+    if link['link_name']:
+        return True
+    return False
+
+
 class PagePopHandler(object):
 
-    def __init__(self, documents=None, beta=0.85, epsilon=10 ** -6):
+    def __init__(self, entries=None, domains=None, beta=0.85, epsilon=10 ** -6):
         """
         Handler for PagePop algorithm. It uses a :dict: `domain_idxs` in
         order to assign each domain an id, that's the corresponding
@@ -22,13 +34,19 @@ class PagePopHandler(object):
         adjacency matrix and ``domain_idxs`` is also stored as an
         instance attribute for statistics purposes.
 
-        :param documents: An iterable to fetch documents from. It should be a
+        todo: profile code to reduce execution time (critical for local pagepop)
+        todo: simplify by merging domain_idxs and scores?
+
+        :param entries: An iterable to fetch entries from. It should be a
             generator in order to reduce memory used.
+        :param domains: If non-empty then inspect only the links that point
+            to webpages under these domains
         :param beta: 1-teleportation probability.
         :param epsilon: stop condition. Minimum allowed amount of change
             in the PagePops between iterations.
         """
-        self.documents = documents
+        self.entries = entries
+        self.domains = domains
         self.beta = beta
         self.epsilon = epsilon
 
@@ -39,21 +57,34 @@ class PagePopHandler(object):
         self.num_links = None
         self.num_edges = None
 
-    def _get_domain_idx(self, domain):
-        domain_idxs = self.domains_idxs
+    def get_scores_as_dict(self):
+        """
+        Associate onion with its score and returns the corresponding dict
 
-        if domain not in domain_idxs:
-            domain_idxs[domain] = self.num_domains
-            self.num_domains += 1
+        :rtype dict
+        """
+        objs = {}
+        for onion, index in self.domains_idxs.items():
+            objs[onion] = float(self.scores[index])
 
-        return domain_idxs[domain]
+        return objs
 
-    def _store_page_pop_stats(self):
-        kwargs = self.get_stats()
+    def get_scores(self):
+        """
+        Associate onion with its score and returns PagePopScore objs
 
-        _, _ = PagePopStats.objects.update_or_create(
-            day=utils.timezone_today(),
-            defaults=kwargs)
+        :rtype list
+        """
+        objs = []
+        for onion, index in self.domains_idxs.items():
+            kwargs = {
+                'onion': onion,
+                'score': self.scores[index],
+            }
+            new_obj = PagePopScore(**kwargs)
+            objs.append(new_obj)
+
+        return objs
 
     def get_stats(self):
         """
@@ -70,43 +101,91 @@ class PagePopHandler(object):
 
         return ret
 
-    def build_adjacency_graph(self, documents):
+    def save(self):
+        """
+        Associates each onion with its score, using the parallel
+        structures: self.domain_idxs, self.scores, and stores the
+        results in the DB: PagePop model
+        """
+        # Bulk Delete
+        PagePopScore.objects.all().delete()
+
+        # Associate onion with its score and create PagePopScore objs
+        objs = self.get_scores()
+
+        # Bulk Save the objects into the DB
+        PagePopScore.objects.bulk_create(objs)
+
+        # save stats
+        self._store_page_pop_stats()
+
+    def build_pagescores(self, entries=None, domains=None):
+        """
+        Calculate the popularity of each domain and save scores to
+        `self.scores`, and the respecting indices in `self.domain_idxs`.
+
+        :param entries: An iterable that yields all the ES entries.
+            If not provided, the instance (class) attribute is used.
+        :param domains: If non-empty then inspect only the links that point
+            to webpages under these domains
+        """
+        es_entries = entries or self.entries
+        domains = domains or self.domains
+
+        adj_graph = self._build_adjacency_graph(es_entries, domains)
+        matrix = self._build_sparse_matrix(adj_graph)
+        _ = self._compute_page_pop(matrix)
+
+    def _build_adjacency_graph(self, entries, domains):
         """
         Constructs adjacency graph for outgoing links, saves to self.adj_graph
 
-        :param documents: An iterable that contains the ES documents.
+        todo: mv ES entries/documents parsing in separate function
+
+        :param entries: An iterable that contains the ES entries.
             Preferably a generator to reduce RAM usage.
+        :param domains: If non-empty then inspect only the links that point
+            to webpages under these domains
         :return: adjacency matrix
         :rtype: ``list`` of tuples
         """
-        documents = documents or self.documents
+        entries = entries or self.entries
         adj_graph = []
 
-        for doc in documents:
-            source = doc['_source']
+        for e in entries:
+            if '_source' in e:
+                # if called by `calc_page_pop.py` then `e` is an ES document
+                e = e['_source']
 
-            if 'domain' in source:
-                origin = source['domain']
-            elif 'source' in source:
-                origin = source['source']
+            if 'domain' in e:
+                # entry from crawled page
+                origin = e['domain']
+            elif 'source' in e:
+                # entry from anchor text
+                origin = e['source']
             else:
-                logger.info('rank_pages: Unable to process: %s' % source)
+                logger.warning('rank_pages: Unable to process: %s' % e)
                 continue
 
             origin = utils.extract_domain_from_url(origin)
             if is_valid_onion(origin):
                 origin_idx = self._get_domain_idx(origin)
 
-                links = source.get('links', [])  # crawled case
-                if 'target' in source:           # anchor case
-                    links.append({'link': source['target']})
+                links = e.get('links', [])  # crawled case
+                if 'target' in e:  # anchor case
+                    links.append({'link': e['target']})
+
                 for l in links:
-                    url = l['link']
-                    if is_valid_full_onion_url(url):
-                        destiny = utils.extract_domain_from_url(url)
-                        if destiny != origin:
-                            destiny_idx = self._get_domain_idx(destiny)
-                            adj_graph.append((origin_idx, destiny_idx))
+                    # ignore any links without text
+                    if is_legit_link(l, e):
+                        url = l['link']
+                        if is_valid_full_onion_url(url):
+                            destiny = utils.extract_domain_from_url(url)
+                            # if domains non-empty ignore any other origins
+                            if not domains or destiny in domains:
+                                if destiny != origin:
+                                    destiny_idx = self._get_domain_idx(destiny)
+                                    adj_graph.append((origin_idx, destiny_idx))
 
         self.num_links = len(adj_graph)  # total links
         adj_graph = set(adj_graph)  # count only 1 edge of source->destiny
@@ -114,7 +193,7 @@ class PagePopHandler(object):
 
         return adj_graph
 
-    def build_sparse_matrix(self, adj_graph, num_nodes=None):
+    def _build_sparse_matrix(self, adj_graph, num_nodes=None):
         """
         Builds a sparse matrix needed by compute_page_pop()
 
@@ -136,7 +215,7 @@ class PagePopHandler(object):
             ([True] * len(adj_graph), (row, col)),
             shape=(num_nodes, num_nodes))
 
-    def compute_page_pop(self, adj, beta=None, epsilon=None):
+    def _compute_page_pop(self, adj, beta=None, epsilon=None):
         """
         Efficient computation of the PagePop values using a sparse adjacency
         matrix and the iterative power method.
@@ -181,41 +260,18 @@ class PagePopHandler(object):
         self.scores = scores
         return scores
 
-    def save(self):
-        """
-        Associates each onion with its score, using the parallel
-        structures: self.domain_idxs, self.scores, and stores the
-        results in the DB: PagePop model
-        """
-        # Bulk Delete
-        PagePopScore.objects.all().delete()
+    def _get_domain_idx(self, domain):
+        domain_idxs = self.domains_idxs
 
-        # Associate onion with its score and create PagePop objs
-        objs = []
-        for onion, index in self.domains_idxs.items():
-            kwargs = {
-                'onion': onion,
-                'score': self.scores[index],
-            }
-            new_obj = PagePopScore(**kwargs)
-            objs.append(new_obj)
+        if domain not in domain_idxs:
+            domain_idxs[domain] = self.num_domains
+            self.num_domains += 1
 
-        # Bulk Save the objects into the DB
-        PagePopScore.objects.bulk_create(objs)
+        return domain_idxs[domain]
 
-        # save stats
-        self._store_page_pop_stats()
+    def _store_page_pop_stats(self):
+        kwargs = self.get_stats()
 
-    def build_pagescores(self, documents=None):
-        """
-        Calculate the popularity of each domain and save scores to
-        `self.scores`, and the respecting indices in `self.domain_idxs`.
-
-        :param documents: An iterable that yields all the ES documents.
-            If not provided, the instance (class) attribute is used.
-        """
-        doc_generator = documents or self.documents
-
-        adj_graph = self.build_adjacency_graph(doc_generator)
-        matrix = self.build_sparse_matrix(adj_graph)
-        _ = self.compute_page_pop(matrix)
+        _, _ = PagePopStats.objects.update_or_create(
+            day=utils.timezone_today(),
+            defaults=kwargs)

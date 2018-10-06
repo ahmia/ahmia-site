@@ -32,8 +32,8 @@ class Command(BaseCommand):
         return doc_gen
 
     def handle(self, *args, **options):
-        doc_gen = self._fetch_all_docs()
+        entries = self._fetch_all_docs()
 
-        p = PagePopHandler(documents=doc_gen, beta=0.85)
+        p = PagePopHandler(entries=entries, beta=0.85)
         p.build_pagescores()
         p.save()
