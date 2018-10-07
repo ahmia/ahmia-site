@@ -15,12 +15,14 @@ def is_legit_link(link, entry):
     """
     Estimate whether a link is legit or not (check: hidden links, etc)
 
-    TODO: ignore hidden links, links to mirror sites (efficiently..)
-          or any other tricky / promoting links
+    TODO: ignore hidden links or any other tricky / promoting links like:
+    TODO: links to mirror sites (performance issue for local papepop)
+    TODO: Dead links (performance issue ~ resolve via the crawler?)
     """
-    if link['link_name']:
-        return True
-    return False
+    # ignore any links without text ~ but some entries dont have link_name so:
+    if 'link_name' in link and not link['link_name']:
+        return False
+    return True
 
 
 class PagePopHandler(object):
@@ -140,7 +142,7 @@ class PagePopHandler(object):
         """
         Constructs adjacency graph for outgoing links, saves to self.adj_graph
 
-        todo: mv ES entries/documents parsing in separate function
+        todo: mv ES entries/documents parsing in separate function?
 
         :param entries: An iterable that contains the ES entries.
             Preferably a generator to reduce RAM usage.
@@ -176,7 +178,7 @@ class PagePopHandler(object):
                     links.append({'link': e['target']})
 
                 for l in links:
-                    # ignore any links without text
+                    # ignore SE-spam links
                     if is_legit_link(l, e):
                         url = l['link']
                         if is_valid_full_onion_url(url):

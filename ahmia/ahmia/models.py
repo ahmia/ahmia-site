@@ -74,12 +74,12 @@ class PagePopStats(models.Model):
     day = models.DateField(default=utils.timezone_today, unique=True)
     num_links = models.IntegerField(
         null=True,
-        verbose_name='Number of Links (Edges)',
-        help_text='Number of links between websites')
+        verbose_name='Number of Links',
+        help_text='Number of links in general')
     num_edges = models.IntegerField(
         null=True,
-        verbose_name='Number of Unique Links (Edges)',
-        help_text='Number of unique links between websites')
+        verbose_name='Number of Edges',
+        help_text='Number of Unique inter-domain Links')
     num_nodes = models.IntegerField(
         null=True,
         verbose_name='Number of nodes',
