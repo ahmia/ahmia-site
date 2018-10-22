@@ -144,6 +144,9 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # *** LOGGING *** #
 
+# Override exception method for use the same format as in 'error'
+logging.Logger.exception = logging.Logger.error   
+
 # Log everything to the logs directory at the top
 LOGFILE_ROOT = ROOT_PATH('logs')
 if not os.path.exists(LOGFILE_ROOT):
