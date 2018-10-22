@@ -4,6 +4,7 @@ from os.path import dirname, join, abspath
 
 from decouple import config, Csv
 
+import logging
 
 # Set the PROJECT_HOME variable.
 # This will be used to prepend to all file/directory paths.
