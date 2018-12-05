@@ -118,12 +118,53 @@ class TorResultsView(ElasticsearchBaseListView):
     template_name = "tor_results.html"
     RESULTS_PER_PAGE = 100
 
+    def banned_search(self, search_term):
+        """
+        I try to filter out two kind of search results:
+            1. Ahmia tries to filter out explicit child media abuse material.
+            2. https://en.wikipedia.org/wiki/Right_to_be_forgotten
+        This algorithm filters banned search terms.
+        It is a best efford solution and it is not perfect.
+        """
+        for f_term in settings.FILTERED_TERMS:
+            for term in search_term.split(" "):
+                term = ''.join(c for c in term if c.isdigit() or c.isalpha())
+                if f_term.lower() == term.lower():
+                    context = {'suggest': None, 'page': 1, 'max_pages': 0,
+                    'result_begin': 0, 'total_search_results': 0,
+                    'query_string': term, 'search_results': [] }
+                    return context
+        for f_term in settings.FILTER_TERMS_AND_SHOW_HELP:
+            for term in search_term.split(" "):
+                term = ''.join(c for c in term if c.isdigit() or c.isalpha())
+                if f_term.lower() == term.lower():
+                    context = {'suggest': None, 'page': 1, 'max_pages': 0,
+                    'result_begin': 0, 'total_search_results': 0,
+                    'query_string': term, 'search_results': [] }
+                    context = { 'suggest': None, 'page': 1, 'max_pages': 1,
+                    'result_begin': 0, 'result_end': 100, 'total_search_results': 2,
+                    'query_string': term, 'search_results':
+                    [{'domain': 'pelastakaalapset.fi',
+                    'meta': 'Clearnet page: Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
+                    'title': 'Self-help Program For People Who Are Worried About Their Sexual Interest In Children',
+                    'url': 'https://www.pelastakaalapset.fi/en/our-work-in-finland/child-protection-and-finnish-hotline/otanvastuun/'},
+                    {'domain': 'mielenterveystalo.fi', 'title': 'Sexual Interest In Children - Self-Help Programme',
+                    'meta': 'Clearnet page: What is it all about when my sexual interest is directed towards children considerably younger than myself?',
+                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/'}],
+                    'search_time': 1.23, 'now': datetime.now() }
+                    return context
+        return False # Not filtered
+
     def get(self, request, *args, **kwargs):
         """
         This method is override to add parameters to the get_context_data call
         """
         start = time.time()
-        kwargs['q'] = request.GET.get('q', '')
+        search_term = request.GET.get('q', '')
+        context = self.banned_search(search_term)
+        if context:
+            return self.render_to_response(context)
+        kwargs['q'] = search_term
         kwargs['page'] = request.GET.get('page', 0)
 
         self.log_stats(**kwargs)
