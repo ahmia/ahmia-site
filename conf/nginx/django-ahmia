@@ -68,11 +68,14 @@ server {
 
     # Django WSGI Server
     location / {
+        proxy_read_timeout 300;
+        proxy_connect_timeout 300;
+
         proxy_pass http://django;    # defined at the beginning
         include proxy_params;        # should be /etc/nginx/proxy_param
 
         ################## CACHE SETTINGS ##################
-	    proxy_cache my_cache;
+	proxy_cache my_cache;
 
         # Sets the number of requests after which the response will be cached.
         proxy_cache_min_uses 1;
@@ -115,11 +118,14 @@ server {
 
     # Django WSGI Server
     location / {
+        proxy_read_timeout 300;
+        proxy_connect_timeout 300;
+
         proxy_pass http://django;    # defined at the beginning
         include proxy_params;        # should be in /etc/nginx/proxy_params
 
         ################## CACHE SETTINGS ##################
-	    proxy_cache my_cache;
+	proxy_cache my_cache;
 
         # Sets the number of requests after which the response will be cached.
         proxy_cache_min_uses 1;
