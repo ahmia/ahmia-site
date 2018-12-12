@@ -18,7 +18,7 @@ pylint==1.6.4
 pyOpenSSL==18.0.0
 simplejson==3.8.2
 six==1.10.0
-urllib3==1.16
+urllib3>=1.23
 wrapt==1.10.8
 networkx==2.1
 python-decouple==3.1
