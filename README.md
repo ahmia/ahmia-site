@@ -111,7 +111,7 @@ __NOTE__: If your deployment directory isn't `/usr/local/lib/ahmia-site` replace
 # FAQ
 
 ## How can populate my index to do searches ?
-You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/master/onionElasticBot) to populate your index.
+You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/master/ahmia) to populate your index.
 
 ## Why can't my browser load django statics ?
 The django settings.py is configured in a way that it only serve statics if DEBUG is True.
