@@ -27,6 +27,16 @@ def onion_redirect(request):
 
     redirect_url = request.GET.get('redirect_url', '')
     search_term = request.GET.get('search_term', '')
+    
+    #Checks for "malicious" URI-schemes that could lead to XSS
+    original_redirect_url = redirect_url
+    redirect_url = redirect_url.replace('javascript:', '').replace('data:', '')
+    
+    #Malicious user is redirected on a 403 error page 
+    #if the previous checks replace a malicious URI-scheme
+    if original_redirect_url != redirect_url:
+        answer = "Bad request: undefined URI-scheme provided"
+        return HttpResponseForbidden(answer)
 
     if not redirect_url or not search_term:
         answer = "Bad request: no GET parameter URL."
