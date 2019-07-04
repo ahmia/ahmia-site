@@ -30,7 +30,7 @@ def onion_redirect(request):
     
     #Checks for "malicious" URI-schemes that could lead to XSS
     original_redirect_url = redirect_url
-    redirect_url = redirect_url.replace('javascript:', '').replace('data:', '')
+    redirect_url = redirect_url.replace('javascript:', '').replace('data:', '').replace('javascript%09:', '')
     
     #Malicious user is redirected on a 403 error page 
     #if the previous checks replace a malicious URI-scheme
