@@ -80,8 +80,8 @@ class AddView(FormView):
     form_class = AddOnionForm
     template_name = "add.html"
     success_url = reverse_lazy("add")
-    success_msg = _(""" Your request to add a service was successfully submitted. 
-                        Thank you for improving Ahmia content. A moderator will 
+    success_msg = _(""" Your request to add a service was successfully submitted.
+                        Thank you for improving Ahmia content. A moderator will
                         add it to the index shortly. """)
     exists_msg = _("The specified onion address already exists in our database.")
     invalid_msg = _("Your request to add a service was invalid.")
@@ -154,7 +154,7 @@ class BlacklistView(FormView):
                     "domains": {
                         "terms": {
                             "field": "domain",
-                            "size": 1000
+                            "size": 10000
                         }
                     }
                 }
