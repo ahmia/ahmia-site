@@ -30,13 +30,26 @@ def onion_redirect(request):
     
     #Checks for "malicious" URI-schemes that could lead to XSS
     original_redirect_url = redirect_url
-    redirect_url = redirect_url.replace('javascript:', '').replace('data:', '').replace('javascript%09:', '')
-    
-    #Malicious user is redirected on a 403 error page 
-    #if the previous checks replace a malicious URI-scheme
-    if original_redirect_url != redirect_url:
+    if not xss_safe(redirect_url):
         answer = "Bad request: undefined URI-scheme provided"
-        return HttpResponseForbidden(answer)
+        return HttpResponseBadRequest(answer)
+    
+def remove_non_ascii(text):
+    """ Remove non-ASCI characters """
+    return ''.join([i if ord(i) < 128 else '' for i in text])
+
+def xss_safe(redirect_url):
+    """ Validate that redirect URL is cross-site scripting safe """
+    if redirect_url[0:4] != "http":
+        return False # URL does not start with http
+    # Look javascript or data inside the URL
+    if "javascript:" in redirect_url or "data:" in redirect_url:
+        return False
+    url = remove_non_ascii(redirect_url) # Remove special chars
+    url = url.strip() # Remove empty spaces and newlines
+    if "javascript:" in url or "data:" in url:
+        return False
+    return True # XSS safe content
 
     if not redirect_url or not search_term:
         answer = "Bad request: no GET parameter URL."
