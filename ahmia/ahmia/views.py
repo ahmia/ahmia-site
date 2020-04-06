@@ -289,7 +289,7 @@ class BannedDomainListView(OnionListView):
                     "domains": {
                         "terms": {
                             "field": "domain",
-                            "size": 10000
+                            "size": 9000
                         }
                     }
                 }
