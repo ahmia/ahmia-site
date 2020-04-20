@@ -9,9 +9,11 @@ After=network.target
 # User=ahmia      # FILL IN your login user
 Group=www-data
 WorkingDirectory=/usr/local/lib/ahmia-site/ahmia
+# Recommended formula is 1 + 2 * NUM_CORES for the workers
+# We have 2 for the onion site and 4 for the public site
 ExecStart=gunicorn --access-logfile - --workers 2 --bind unix:/tmp/msydqstlz2kzerdg.sock ahmia.wsgi:application
 # if virtualenv is used, the full path to gunicorn has to be specified as ExecStart
-# ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/tmp/ahmia.sock ahmia.wsgi:application
+# ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn --access-logfile - --workers 2 --bind unix:/tmp/ahmia.sock ahmia.wsgi:application
 
 [Install]
 # start when the regular multi-user system is up and running
