@@ -154,7 +154,7 @@ class BlacklistView(FormView):
                     "domains": {
                         "terms": {
                             "field": "domain",
-                            "size": 10000
+                            "size": 30000
                         }
                     }
                 }
@@ -289,7 +289,7 @@ class BannedDomainListView(OnionListView):
                     "domains": {
                         "terms": {
                             "field": "domain",
-                            "size": 9000
+                            "size": 30000
                         }
                     }
                 }
