@@ -11,7 +11,9 @@ APP=ahmia.wsgi:application                     # wsgi application
 SOCKET=/tmp/msydqstlz2kzerdg.sock              # the socket that nginx will search for
 PID=/tmp/project-master-msydqstlz2kzerdg.pid   # the path to the pid of current gunicorn instance
 NAME=ahmia-site-onion                          # name of the application (optional)
-NUM_WORKERS=3                                  # number of gunicorn processes
+# Recommended formula is 1 + 2 * NUM_CORES for the workers
+# We have 2 for the onion site and 4 for the public site
+NUM_WORKERS=2                                  # number of gunicorn processes
 MAX_REQUESTS=5000                              # max requests a worker will process
 LOG_FILE=gunicorn.log                          # gunicorn log file created before running the app
 ENV=LANG='en_US.UTF-8'
