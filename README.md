@@ -147,6 +147,8 @@ OR
 ```sh
 (sudo) cp conf/gunicorn/*.service /etc/systemd/system/
 (sudo) service gunicorn (re)start
+(sudo) systemctl enable /etc/systemd/system/ahmia.service
+(sude) systemctl enable /etc/systemd/system/msydqstlz2kzerdg.service
 ```
 
 In that case it is **highly recommended** editing `/etc/systemd/system/gunicorn.service` to replace:
