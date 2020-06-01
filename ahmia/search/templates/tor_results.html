@@ -104,6 +104,7 @@
             <span class="lastSeen" data-timestamp="{{ result.updated_on }}">
                   {{ result.updated_on|timesince:now }} {% trans "ago" %}
             </span> &mdash;
+            <!--
             <span class="abuseReportForm">
               {# todo invalid url #}
               <a href="/blacklist/report?onion={{ result.domain|urlencode }}"
@@ -119,6 +120,7 @@
                 {% trans "Abuse report error." %}
               </span>
             </span>
+            -->
           </li>
         {% endfor %}
       </ol>
