@@ -6,9 +6,8 @@
     <p>
       <strong>{% trans "Ahmia content warning" %}:</strong>
       {% blocktrans %}
-        The indexed sites are running inside the Tor network and ahmia.fi
-        is not responsible for them. The administrator of this site
-        (ahmia.fi) cannot be held responsible for any actions of its users.
+        The indexed sites are running inside the Tor network and Ahmia.fi is not responsible for them.
+        The administrator of this site (Ahmia.fi) cannot be held responsible for any actions of its users.
       {% endblocktrans %}
     </p>
 
@@ -20,19 +19,31 @@
       {% endblocktrans %}
     </p>
 
-    <h3>{% trans "Contact and reporting illegal content" %}</h3>
+    <h3>{% trans "Contact and reporting child abuse" %}</h3>
     <p class="end">
       {% blocktrans %}
-        This site is fully compliant with the Law of Finland. The
-        administrator is removing any illegal content and is working
-        according to the Finnish law. Please email us and provide exact
-        URL of the content you suspect to be illegal.
+        This site is fully compliant with the Law of Finland. The administrator is removing any links to child abuse content.
+
+        Please email us and provide exact URL of the content you suspect to be child abuse.
       {% endblocktrans %}
+    </p>
+    <p class="end">
+      If a site user tries to search child abuse material the Ahmia.fi is not showing search results normally.
+      Instead, the search offers a link to Self-help Program.
+
+      The self-help program is primarily intended for people who are worried about their interest, thoughts, feelings or actions concerning children.
+
+      If the search contains terms which are only used for searching abusive material then Ahmia.fi refuses to show the results.
+
+      For example, &bdquo;jailbait&ldquo; is one of these filtered terms. As a result, Ahmia.fi is offering a link to self-help program:
+      <a href="https://ahmia.fi/search/?q=jailbait">https://ahmia.fi/search/?q=jailbait</a>
+
+      In addition, Ahmia applies automated text mining algorithm to remove possible links to child abuse from the search results.
     </p>
     <p>
       {% blocktrans %}
-        For administrative purposes, please contact Juha Nurmi, Ahmia Project
-        Leader, at <a href="mailto:juha.nurmi@ahmia.fi">juha.nurmi@ahmia.fi</a>.
+        Please contact Juha Nurmi, Ahmia Project Leader,
+        at <a href="mailto:juha.nurmi@ahmia.fi">juha.nurmi@ahmia.fi</a>.
       {% endblocktrans %}
     </p>
   </div>
