@@ -110,11 +110,11 @@ __NOTE__: If you are using virtualenv replace `python3` with the absolute path t
 __NOTE__: If your deployment directory isn't `/usr/local/lib/ahmia-site` replace accordingly
 # FAQ
 
-## How can populate my index to do searches ?
+## How can I populate my index to do searches ?
 You should use [OnionElasticBot](https://github.com/ahmia/ahmia-crawler/tree/master/ahmia) to populate your index.
 
 ## Why can't my browser load django statics ?
-The django settings.py is configured in a way that it only serve statics if DEBUG is True.
+The django settings.py is configured in a way that it only serves statics if DEBUG is True.
 Please verify [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/settings/dev.py#L6)
 if it's the case. You can change this behaviour
 [here](https://github.com/ahmia/ahmia-site/blob/master/ahmia/ahmia/urls.py#L71).
