@@ -273,13 +273,16 @@ class BannedDomainListView(OnionListView):
                 lines = filehandle.readlines()
         except IOError:
             print("Cache file %s is not created yet." % cache_file)
+        added = False
         for hit in hits:
             domain = hit['domain']
             new_line = "%s\n" % domain
             if not new_line in lines:
                 lines.append(new_line)
-        with open(cache_file, 'w') as filehandle:
-            filehandle.writelines(lines)
+                added = True
+        if added:
+            with open(cache_file, 'w') as filehandle:
+                filehandle.writelines(lines)
         return [line.replace("\n", "") for line in lines]
 
     def format_hits(self, hits):
