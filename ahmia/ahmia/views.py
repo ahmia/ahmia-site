@@ -159,7 +159,7 @@ class BlacklistView(FormView):
                     }
                 }
             },
-            "_source_include": ["title", "url", "meta", "updated_on", "domain"]
+            "_source_include": ["title", "url", "meta", "updated_on", "domain", "is_banned"]
         }
 
     def form_valid(self, form):
@@ -240,7 +240,7 @@ class OnionListView(ElasticsearchBaseListView):
                     }
                 }
             },
-            "_source_include": ["title", "url", "meta", "updated_on", "domain"]
+            "_source_include": ["title", "url", "meta", "updated_on", "domain", "is_banned"]
         }
 
 
@@ -294,5 +294,5 @@ class BannedDomainListView(OnionListView):
                     }
                 }
             },
-            "_source_include": ["title", "url", "meta", "updated_on", "domain"]
+            "_source_include": ["title", "url", "meta", "updated_on", "domain", "is_banned"]
         }
