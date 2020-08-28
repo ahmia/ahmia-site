@@ -40,20 +40,6 @@
         in your own search indexes to remove abusive content.
       {% endblocktrans %}
     </p>
-    <div id="checkForBannedService" class="hidden">
-      <h3 class="checkForm">{% trans "Check For a Banned Service" %}</h3>
-      <div id="ahmiaFormContainer">
-        <form id="checkBlacklist" method="post" action="">
-          {{ form.onion }}
-          <input type="submit" value="{% trans "Check" %}">
-        </form>
-        {% if form.errors %}
-          <div id="flashMessage" class="{% if flash_message %}server{% endif %}">
-            {{ form.onion.errors }}
-          </div>
-        {% endif %}
-      </div>
-    </div>
     <div id="bannedHiddenServices">
       <h3>{% trans "Banned Hidden Services" %}</h3>
       <ul id="blacklist">

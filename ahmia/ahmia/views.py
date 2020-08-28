@@ -231,6 +231,17 @@ class OnionListView(ElasticsearchBaseListView):
             "doc_type": utils.get_elasticsearch_type(),
             "size": 0,
             "body": {
+                "query": {
+                    "bool": {
+                        "must_not": [
+                            {
+                                "match": {
+                                    "is_banned": "true"
+                                }
+                            },
+                        ]
+                    }
+                },
                 "aggs": {
                     "domains": {
                         "terms": {
@@ -253,13 +264,34 @@ class BannedDomainListView(OnionListView):
     """ Displays a list banned .onion domain's md5 as a plain text page """
     template_name = "banned.html"
 
+    def cached_hits(self, hits):
+        """ Fetch cached hits and cache new ones """
+        cache_file = "banned_domains.txt"
+        lines = []
+        try:
+            with open(cache_file, 'rt') as filehandle:
+                lines = filehandle.readlines()
+        except IOError:
+            print("Cache file %s is not created yet." % cache_file)
+        for hit in hits:
+            domain = hit['domain']
+            new_line = "%s\n" % domain
+            if not new_line in lines:
+                lines.append(new_line)
+        with open(cache_file, 'w') as filehandle:
+            filehandle.writelines(lines)
+        return [line.replace("\n", "") for line in lines]
+
     def format_hits(self, hits):
         """
         Transform ES response into a list of results.
         Returns (total number of results, results)
         """
         hits = super(BannedDomainListView, self).format_hits(hits)
-        hits = [hashlib.md5(hit['domain'].encode('utf-8')).hexdigest() for hit in hits]
+        #hits = [hashlib.md5(hit['domain'].encode('utf-8')).hexdigest() for hit in hits]
+        # Cache file to maintain the list of banned domains
+        hits = self.cached_hits(hits) # Add cached hits and cache new hits
+        hits = [hashlib.md5(hit.encode('utf-8')).hexdigest() for hit in hits]
         return sorted(hits)
 
     def get_es_context(self, **kwargs):
