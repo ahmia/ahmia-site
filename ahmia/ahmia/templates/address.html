@@ -6,6 +6,7 @@
 {% block title %}Ahmia - Hidden service list{% endblock %}
 
 {% block extra_js %}
+<!--
   <script type="text/javascript">
     function abuse_notice(id) {
       var question = "Have you really checked that there are pictures of child abuse" +
@@ -43,6 +44,7 @@
     <p>ENABLE JAVASCRIPT (CLIENT SIDE).</p>
   </noscript>
   <script type="text/javascript" src="{% static 'search:search.js' %}"></script>
+-->
 {% endblock %}
 
 {% block body %}
@@ -55,10 +57,12 @@
             {% for site in domains %} {% if not site.is_banned %}
               <li class="hs_site clickable_pointer">
                 <h3><a href="http://{{ site.domain }}/">{{ site.domain }}</a></h3>
+                <!--
                 <button id="button_{{ site.hs_id }}" type="button"
                         onclick="abuse_notice('{{ site.hs_id }}');">
                   Send a note that this site should be filtered.
                 </button>
+                -->
               </li>
             {% endif %} {% endfor %}
           </ul>
