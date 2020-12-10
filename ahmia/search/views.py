@@ -144,7 +144,7 @@ class TorResultsView(ElasticsearchBaseListView):
     def banned_search(self, search_term):
         """
         I try to filter out two kind of search results:
-            1. Ahmia tries to filter out explicit child media abuse material.
+            1. Ahmia tries to filter out links to explicit child abuse material.
             2. https://en.wikipedia.org/wiki/Right_to_be_forgotten
         This algorithm filters banned search terms.
         It is a best efford solution and it is not perfect.
@@ -165,15 +165,39 @@ class TorResultsView(ElasticsearchBaseListView):
                     'result_begin': 0, 'total_search_results': 0,
                     'query_string': term, 'search_results': [] }
                     context = { 'suggest': None, 'page': 1, 'max_pages': 1,
-                    'result_begin': 0, 'result_end': 100, 'total_search_results': 2,
+                    'result_begin': 0, 'result_end': 100, 'total_search_results': 5,
                     'query_string': term, 'search_results':
-                    [{'domain': 'pelastakaalapset.fi',
-                    'meta': 'Clearnet page: Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
+                    [
+                    {'domain': 'webropol.com',
+                    'meta': 'Questionnaire which aims at developing a self-help program intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
+                    'title': 'Help us to help you. Take few minutes to answer this questionnaire (English).',
+                    'url': 'https://link.webropolsurveys.com/Participation/Public/52793cbd-dee6-4938-bb6b-391c58573f34?displayId=Fin2138852',
+                    'type': 'questionnaire'},
+
+                    {'domain': 'webropol.com',
+                    'meta': 'Tómese algunos minutos para responder este cuestionario que busca desarrollar un programa de auto-ayuda para personas que usan material de abuso sexual de niñas, niños y adolescentes o material ilegal violento.',
+                    'title': 'Ayúdenos a ayudarlo. Tómese algunos minutos para responder este cuestionario (Spanish).',
+                    'url': 'https://link.webropolsurveys.com/Participation/Public/40ccc371-6f8c-4b40-bdf7-43937a886432?displayId=Fin2162835',
+                    'type': 'questionnaire'},
+
+                    {'domain': 'webropol.com',
+                    'meta': "I don't need any help. Would you like to tell us the reason for this?",
+                    'title': 'No need for help.',
+                    'url': 'https://link.webropolsurveys.com/Participation/Public/34723db1-82fb-4817-888e-58e54c63844f?displayId=Fin2151439',
+                    'type': 'nohelp'},
+
+                    {'domain': 'pelastakaalapset.fi',
+                    'meta': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
                     'title': 'Self-help Program For People Who Are Worried About Their Sexual Interest In Children',
-                    'url': 'https://www.pelastakaalapset.fi/en/our-work-in-finland/child-protection-and-finnish-hotline/otanvastuun/'},
-                    {'domain': 'mielenterveystalo.fi', 'title': 'Sexual Interest In Children - Self-Help Programme',
-                    'meta': 'Clearnet page: What is it all about when my sexual interest is directed towards children considerably younger than myself?',
-                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/'}],
+                    'url': 'https://www.pelastakaalapset.fi/en/our-work-in-finland/child-protection-and-finnish-hotline/otanvastuun/',
+                    'type': 'help'},
+
+                    {'domain': 'mielenterveystalo.fi',
+                    'title': 'Sexual Interest In Children - Self-Help Programme',
+                    'meta': 'What is it all about when my sexual interest is directed towards children considerably younger than myself?',
+                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/',
+                    'type': 'help'},
+                    ],
                     'search_time': 1.23, 'now': datetime.now() }
                     return context
         return False # Not filtered

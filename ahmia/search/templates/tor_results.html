@@ -81,7 +81,15 @@
 
       <ol class="searchResults">
         {% for result in search_results %}
+          {% if result.type == "questionnaire" %}
+          <li class="result" style="background: #E0FFFF">
+          {% elif result.type == "help" %}
+          <li class="result" style="background: #98FB98">
+          {% elif result.type == "nohelp" %}
+          <li class="result" style="background: #FFF8DC">
+          {% else %}
           <li class="result">
+          {% endif %}
             <h4>
               <a
                 href="{% url 'search:onion-redirect' %}?search_term={{ query_string }}&redirect_url={{ result.url }}">
@@ -100,10 +108,13 @@
             {% else %}
               <p>{% trans "No description provided" %}</p>
             {% endif %}
-            <cite>{{ result.domain }}</cite> &mdash;
+            <cite>{{ result.domain }}</cite>
+            {% if result.updated_on %}
+            &mdash;
             <span class="lastSeen" data-timestamp="{{ result.updated_on }}">
                   {{ result.updated_on|timesince:now }} {% trans "ago" %}
             </span> &mdash;
+            {% endif %}
             <!--
             <span class="abuseReportForm">
               {# todo invalid url #}
