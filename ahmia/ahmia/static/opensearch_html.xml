@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"> 
+  <ShortName>Ahmia Search</ShortName> 
+  <Description>Ahmia Onion Search Engine</Description> 
+  <InputEncoding>UTF-8</InputEncoding> 
+  <LongName>Ahmia Search (HTML, non-JS)</LongName> 
+  <Image height="16" width="16">data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABMLAAATCwAAAAAAAAAAAAAwMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8zMzP/MjIy/zExMf8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8xMTH/MjIy/zMzM/8xMTH/MDAw/y8vL/84ODj/oaGh/8HBwf+VlZX/MjIy/y4uLv8vLy//Ly8v/y4uLv8xMTH/k5OT/8HBwf+ioqL/OTk5/y8vL/8wMDD/Ly8v/6Ojo///////6+vr/2BgYP9CQkL/RERE/0RERP9CQkL/Xl5e/+np6f//////pKSk/y8vL/8wMDD/MDAw/y0tLf9eXl7/8/Pz///////o6Oj/39/f/+Dg4P/g4OD/4ODg/+fn5///////8/Pz/19fX/8tLS3/MDAw/zAwMP8vLy//NjY2/8XFxf///////////////////////////////////////////8XFxf82Njb/Ly8v/zAwMP8wMDD/MDAw/ywsLP+BgYH//v7+///////Jycn/paWl/6Wlpf/IyMj///////7+/v+BgYH/LCws/zAwMP8wMDD/MDAw/zAwMP8uLi7/SEhI/+Li4v//////q6ur/y0tLf8tLS3/qKio///////i4uL/SEhI/y4uLv8wMDD/MDAw/zAwMP8wMDD/MDAw/y8vL/+np6f//////+bm5v9KSkr/SEhI/+Tk5P//////p6en/y8vL/8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8tLS3/ZGRk//b29v//////hISE/4CAgP//////9fX1/2NjY/8tLS3/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/Ly8v/zk5Of/Ly8v//////9LS0v/Pz8///////8nJyf84ODj/Ly8v/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8sLCz/iIiI///////9/f3//f39//////+Ghob/LCws/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/Li4u/01NTf/m5ub////////////l5eX/S0tL/y4uLv8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/rq6u////////////q6ur/y8vL/8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/Li4u/05OTv97e3v/e3t7/01NTf8uLi7/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/MDAw/zAwMP8uLi7/Kysr/ysrK/8uLi7/MDAw/zAwMP8wMDD/MDAw/zAwMP8wMDD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</Image>
+  <Url type="text/html" method="get" template="https://ahmia.fi/search/">
+    <Param name="q" value="{searchTerms}"/>  
+  </Url>
+</OpenSearchDescription> 

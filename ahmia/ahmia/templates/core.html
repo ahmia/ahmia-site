@@ -15,9 +15,12 @@
         content="{% trans "A search engine for services accessible on the Tor network." %}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="{% static 'js/jquery.min.js' %}"></script>
+
+  <link title="Ahmia Search" type="application/opensearchdescription+xml" rel="search" href="/static/opensearch_html.xml" />
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
   <link rel="stylesheet" href="{% static 'less/style.css' %}">
+
   <script src="{% static 'js/less.min.js' %}"></script>
   <script src="{% static 'js/modernizr.js' %}"></script>
   <link rel="stylesheet"
