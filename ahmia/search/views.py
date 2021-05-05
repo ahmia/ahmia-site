@@ -25,7 +25,7 @@ logger = logging.getLogger("search")
 def onion_redirect(request):
     """Add clicked information and redirect to .onion address."""
 
-    redirect_url = request.GET.get('redirect_url', '')
+    redirect_url = request.GET.get('redirect_url', '').replace('"', '')
     search_term = request.GET.get('search_term', '')
 
     #Checks for "malicious" URI-schemes that could lead to XSS
