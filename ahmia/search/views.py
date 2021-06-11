@@ -16,7 +16,7 @@ from ahmia import utils
 from ahmia.lib.pagepop import PagePopHandler
 from ahmia.models import SearchResultsClick, SearchQuery, PagePopScore
 from ahmia.utils import get_elasticsearch_i2p_index
-from ahmia.validators import is_valid_full_onion_url
+from ahmia.validators import is_valid_full_onion_url, allowed_url
 from ahmia.views import ElasticsearchBaseListView
 
 logger = logging.getLogger("search")
@@ -29,6 +29,10 @@ def onion_redirect(request):
     redirect_url = redirect_url.replace('%26', '&').replace('%3F', '?')
     search_term = request.GET.get('search_term', '')
 
+    if not redirect_url or not search_term:
+        answer = "Bad request: no GET parameter URL."
+        return HttpResponseBadRequest(answer)
+
     #Checks for "malicious" URI-schemes that could lead to XSS
     #Malicious user is redirected on a 403 error page
     #if the previous checks replace a malicious URI-scheme
@@ -36,8 +40,8 @@ def onion_redirect(request):
         answer = "Bad request: undefined URI-scheme provided"
         return HttpResponseBadRequest(answer)
 
-    if not redirect_url or not search_term:
-        answer = "Bad request: no GET parameter URL."
+    if not allowed_url(redirect_url) and not is_valid_full_onion_url(redirect_url):
+        answer = "Bad request: this is not an onion address."
         return HttpResponseBadRequest(answer)
 
     try:

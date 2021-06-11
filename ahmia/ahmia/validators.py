@@ -7,7 +7,30 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 
 from .utils import get_elasticsearch_object
+from urllib.parse import urlparse
 
+def extract_domain(url):
+    ''' Returns the main domain from the URL address '''
+    try:
+        domain = urlparse(url).netloc
+        main_domain = '.'.join(domain.split('.')[-2:])
+        return main_domain
+    except:
+        return None
+
+def allowed_url(redirect_url):
+    """ Validate the URL as allowed redirect URL """
+    allowed_domain_list = ['webropolsurveys.com', 'pelastakaalapset.fi', 'mielenterveystalo.fi']
+    main_domain = extract_domain(redirect_url)
+    if not main_domain:
+        return False
+    # Specially allowed domains
+    if main_domain in allowed_domain_list:
+        return True
+    # *.onion and *.i2p addresses
+    if main_domain.split('.')[-1] == 'i2p' or main_domain.split('.')[-1] == 'onion':
+        return True
+    return False # Not allowed
 
 def validate_status(value):
     """Test if an onion domain is not banned."""
