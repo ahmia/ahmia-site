@@ -176,53 +176,14 @@ class TorResultsView(ElasticsearchBaseListView):
                     {'domain': 'webropol.com',
                     'meta': 'Questionnaire which aims at developing a self-help program intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
                     'title': 'Help us to help you. Take few minutes to answer this questionnaire.',
-                    'url': 'https://link.webropolsurveys.com/Participation/Public/d1527e12-101c-4bea-ae1d-772988881714%3FdisplayId=Fin2268011%26surveyLocale=en',
+                    'url': 'https://link.webropolsurveys.com/S/8A07773150E3D599',
                     'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': 'Nehmen Sie sich bitte ein paar Minuten Zeit für diese Umfrage. Ihr Ziel ist es, ein Selbsthilfeprogramm zu entwickeln für Menschen, die Darstellungen des sexuellen Kindesmissbrauchs (CSAM) oder illegale Gewaltdarstellungen anschauen: ReDirection.',
-                    'title': 'Helfen Sie uns, Ihnen zu helfen',
-                    'url': 'https://link.webropolsurveys.com/Participation/Public/d1527e12-101c-4bea-ae1d-772988881714%3FdisplayId=Fin2268011%26surveyLocale=de',
-                    'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': 'Tómese algunos minutos para responder este cuestionario que busca desarrollar un programa de auto-ayuda para personas que usan material de abuso sexual de niñas, niños y adolescentes o material ilegal violento.',
-                    'title': 'Ayúdenos a ayudarlo',
-                    'url': 'https://link.webropolsurveys.com/Participation/Public/d1527e12-101c-4bea-ae1d-772988881714%3FdisplayId=Fin2268011%26surveyLocale=es',
-                    'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': 'Prenditi alcuni minuti per rispondere a questo questionario, il cui scopo è sviluppare un programma di auto-aiuto di ReDirection per persone che utilizzano materiale abusivo su bambini o materiale illegale e violento.',
-                    'title': 'Aiutaci ad aiutarti',
-                    'url': 'https://link.webropolsurveys.com/Participation/Public/d1527e12-101c-4bea-ae1d-772988881714%3FdisplayId=Fin2268011%26surveyLocale=it',
-                    'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': 'Уделите несколько минут заполнению этой анкеты, цель которой - разработать программу самопомощи ReDirection для людей, использующих материалы с сексуальным насилием над детьми или противозаконные материалы, изображающие сцены насилия.',
-                    'title': 'Помогите нам помочь вам',
-                    'url': 'https://link.webropolsurveys.com/Participation/Public/d1527e12-101c-4bea-ae1d-772988881714%3FdisplayId=Fin2268011%26surveyLocale=ru',
-                    'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': 'Tämän kyselyn tuloksia hyödynnetään uuden ReDirection omahoito-ohjelman kehittämiseen henkilöille, jotka haluavat lopettaa lapsiin kohdistuvaa seksuaaliväkivaltaa tai muuta väkivaltaa sisältävän laittoman kuvamateriaalin käytön.',
-                    'title': 'Auta meitä auttamaan',
-                    'url': 'https://link.webropolsurveys.com/Participation/Public/d1527e12-101c-4bea-ae1d-772988881714%3FdisplayId=Fin2268011%26surveyLocale=fi',
-                    'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': 'Leidke mõni minut, et vastata küsimustikule, mille eesmärk on välja töötada ReDirectioni eneseabi programm inimestele, kes kasutavad laste seksuaalse väärkohtlemise materjali (child sexual abuse material-CSAM) või ebaseaduslikku vägivaldset materjali.',
-                    'title': 'Aita meil aidata',
-                    'url': 'https://link.webropolsurveys.com/Participation/Public/d1527e12-101c-4bea-ae1d-772988881714%3FdisplayId=Fin2268011%26surveyLocale=et',
-                    'type': 'questionnaire'},
-
 
                     {'domain': 'webropol.com',
                     'meta': "I don't need any help. Would you like to tell us the reason for this?",
                     'title': 'No need for help.',
                     'url': 'https://link.webropolsurveys.com/S/808867687BE8AECA',
                     'type': 'nohelp'},
-
-
 
                     {'domain': 'pelastakaalapset.fi',
                     'meta': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
