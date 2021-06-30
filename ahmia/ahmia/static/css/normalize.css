@@ -7,12 +7,12 @@
  */
 
 
-/* 
+/*
 Man-In-The-Middle detection -- Add warning text when domain changes
 .*msydqstl[^2].*[^g]\..*
 */
 
-@-moz-document regexp('(?!https?://ahmia\\.fi|https?://localhost|https?://127\\.0\\.0\\.1|http://msydqst.*2kzerdg\\.onion).*') {
+@-moz-document regexp('(?!https?://ahmia\\.fi|https?://localhost|https?://127\\.0\\.0\\.1|http://msydqst.*2kzerdg\\.onion|http://juhanurmi.*csyd\\.onion).*') {
         body:before {
                 margin-left: 10%;
                 margin-top: 20%;
@@ -26,7 +26,7 @@ Man-In-The-Middle detection -- Add warning text when domain changes
                 color: #f00;
                 content: "[SCAM] ";
         }
-        
+
 	#imageOverlay {
 		display: none;
 	}

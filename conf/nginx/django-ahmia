@@ -92,7 +92,13 @@ server {
 
 server {
     listen      127.0.0.1:56789;
-    server_name msydqstlz2kzerdg.onion;
+    server_name .msydqstlz2kzerdg.onion;
+    return 301 http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion$request_uri;
+}
+
+server {
+    listen      127.0.0.1:56790;
+    server_name juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion;
 
     charset     utf-8;
     client_max_body_size 75M;   # adjust to taste
