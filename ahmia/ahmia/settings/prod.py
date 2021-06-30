@@ -10,6 +10,8 @@ ALLOWED_HOSTS += [
     '.ahmia.fi.',  # Also allow FQDN and subdomains
     '.msydqstlz2kzerdg.onion',
     '.msydqstlz2kzerdg.onion.',
+    '.juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion',
+    '.juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion.',
 ]
 
 DATABASES = {
@@ -90,4 +92,3 @@ LOGGING.update({
 })
 
 logging.config.dictConfig(LOGGING)
-
