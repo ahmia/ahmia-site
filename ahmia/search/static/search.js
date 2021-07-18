@@ -50,7 +50,6 @@ var glb_timeout = "";
   //ondomready
   $(function () {
     var input = createSearch($("#search"));
-    var searchTerm = readUrl();
     listFilter($("#list"), input);
     $("#torsearch").change();
   });
