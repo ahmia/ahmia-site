@@ -1,10 +1,9 @@
 """Django WSGI module"""
 import os
 import sys
-
-from django.conf import settings
 from django.core.wsgi import get_wsgi_application
 
+#from django.conf import settings
 #sys.path.append(settings.DEPLOYMENT_DIR)
 sys.path.append('/usr/local/lib/ahmia-site/ahmia/')
 
