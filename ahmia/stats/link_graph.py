@@ -7,11 +7,6 @@ from random import randint
 import networkx as nx  # Network modeling library
 from elasticsearch import Elasticsearch  # Elasticsearch connection
 
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
-
 logger = logging.getLogger("stats")
 
 
@@ -46,8 +41,6 @@ def query(graph, es, color):
             for link in item["links"]:
                 link = link["link"]
                 if ".onion/" in link:
-                    # print link
-                    # parsed_uri = urlparse(link)
                     domain = link  # '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
                     # graph.add_node(domain)
                     # graph.node[domain]['viz'] = {'color': color}
