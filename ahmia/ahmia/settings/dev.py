@@ -1,11 +1,9 @@
 import logging.config
-import sys
-
 from .base import *
 
 DEBUG = config('DEBUG', cast=bool, default=True)
 
-
+# import sys
 # if 'test' in sys.argv:
 #     DATABASES = {
 #         'default': {
