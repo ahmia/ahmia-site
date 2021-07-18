@@ -361,8 +361,7 @@ function Search(a) {
         this.input.val("");
     };
     this.search = function (a) {
-        var b = !1,
-            c = [],
+        var c = [],
             b = this.exactMatch ? ("^" + a + "$").toLowerCase() : a.toLowerCase(),
             g = RegExp(b);
         this.exactMatch = !1;
