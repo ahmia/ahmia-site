@@ -166,10 +166,7 @@ class TorResultsView(ElasticsearchBaseListView):
             for term in search_term.split(" "):
                 term = ''.join(c for c in term if c.isdigit() or c.isalpha())
                 if f_term.lower() == term.lower():
-                    context = {'suggest': None, 'page': 1, 'max_pages': 0,
-                    'result_begin': 0, 'total_search_results': 0,
-                    'query_string': term, 'search_results': [] }
-                    context = { 'suggest': None, 'page': 1, 'max_pages': 1,
+                    return { 'suggest': None, 'page': 1, 'max_pages': 1,
                     'result_begin': 0, 'result_end': 100, 'total_search_results': 10,
                     'query_string': term, 'search_results':
                     [
@@ -198,7 +195,6 @@ class TorResultsView(ElasticsearchBaseListView):
                     'type': 'help'},
                     ],
                     'search_time': 1.23, 'now': datetime.now() }
-                    return context
         return False # Not filtered
 
     def get(self, request, *args, **kwargs):
