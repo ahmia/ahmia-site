@@ -185,6 +185,12 @@ class TorResultsView(ElasticsearchBaseListView):
                     'url': 'https://link.webropolsurveys.com/S/808867687BE8AECA',
                     'type': 'nohelp'},
 
+                    {'domain': 'redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion',
+                    'meta': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
+                    'title': 'New Self-help Program Available In The Tor Network! For People Who Are Worried About Their Sexual Interest In Children',
+                    'url': 'http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/',
+                    'type': 'help'},
+
                     {'domain': 'pelastakaalapset.fi',
                     'meta': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
                     'title': 'Self-help Program For People Who Are Worried About Their Sexual Interest In Children',
