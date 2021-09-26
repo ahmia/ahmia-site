@@ -186,19 +186,13 @@ class TorResultsView(ElasticsearchBaseListView):
                     'type': 'nohelp'},
 
                     {'domain': 'redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion',
-                    'meta': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
-                    'title': 'New Self-help Program Available In The Tor Network! For People Who Are Worried About Their Sexual Interest In Children',
+                    'meta': 'ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)!',
+                    'title': 'New Self-help Program Available In The Tor Network!',
                     'url': 'http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/',
                     'type': 'help'},
 
-                    {'domain': 'pelastakaalapset.fi',
-                    'meta': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
-                    'title': 'Self-help Program For People Who Are Worried About Their Sexual Interest In Children',
-                    'url': 'https://www.pelastakaalapset.fi/en/our-work-in-finland/child-protection-and-finnish-hotline/otanvastuun/',
-                    'type': 'help'},
-
                     {'domain': 'mielenterveystalo.fi',
-                    'title': 'Sexual Interest In Children - Self-Help Programme',
+                    'title': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
                     'meta': 'What is it all about when my sexual interest is directed towards children considerably younger than myself?',
                     'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/',
                     'type': 'help'},
