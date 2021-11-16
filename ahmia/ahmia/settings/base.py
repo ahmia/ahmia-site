@@ -13,6 +13,7 @@ PROJECT_HOME = abspath(join(dirname(__file__), '..', '..'))
 FILTER_TERMS_AND_SHOW_HELP = ["jailbait", "12yo"] # Etc.
 FILTERED_TERMS = []
 
+
 # Build paths inside the project like this: path("ahmia")
 def ROOT_PATH(*x):
     return join(PROJECT_HOME, *x)
@@ -32,7 +33,7 @@ ELASTICSEARCH_SERVERS = config('ELASTICSEARCH_SERVERS',
 ELASTICSEARCH_TOR_INDEX = config('ELASTICSEARCH_TOR_INDEX', default='latest-tor')
 ELASTICSEARCH_I2P_INDEX = config('ELASTICSEARCH_I2P_INDEX', default='latest-i2p')
 # common type for bot indices # todo change to _doc or rm when upgrade to ES 7.x
-ELASTICSEARCH_TYPE = config('ELASTICSEARCH_TYPE', default='doc')
+ELASTICSEARCH_TYPE = config('ELASTICSEARCH_TYPE', default='_doc')
 ELASTICSEARCH_TIMEOUT = config('ELASTICSEARCH_TIMEOUT', cast=int, default=60)
 
 # Email settings

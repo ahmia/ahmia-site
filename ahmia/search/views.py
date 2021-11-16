@@ -33,9 +33,9 @@ def onion_redirect(request):
         answer = "Bad request: no GET parameter URL."
         return HttpResponseBadRequest(answer)
 
-    #Checks for "malicious" URI-schemes that could lead to XSS
-    #Malicious user is redirected on a 403 error page
-    #if the previous checks replace a malicious URI-scheme
+    # Checks for "malicious" URI-schemes that could lead to XSS
+    # Malicious user is redirected on a 403 error page
+    # if the previous checks replace a malicious URI-scheme
     if not xss_safe(redirect_url):
         answer = "Bad request: undefined URI-scheme provided"
         return HttpResponseBadRequest(answer)
@@ -61,22 +61,25 @@ def onion_redirect(request):
     message = "Redirecting to hidden service."
     return redirect_page(message, 0, redirect_url)
 
+
 def remove_non_ascii(text):
     """ Remove non-ASCI characters """
     return ''.join([i if ord(i) < 128 else '' for i in text])
 
+
 def xss_safe(redirect_url):
     """ Validate that redirect URL is cross-site scripting safe """
     if redirect_url[0:4] != "http":
-        return False # URL does not start with http
+        return False  # URL does not start with http
     # Look javascript or data inside the URL
     if "javascript:" in redirect_url or "data:" in redirect_url:
         return False
-    url = remove_non_ascii(redirect_url) # Remove special chars
-    url = url.strip().replace(" ", "") # Remove empty spaces and newlines
+    url = remove_non_ascii(redirect_url)  # Remove special chars
+    url = url.strip().replace(" ", "")  # Remove empty spaces and newlines
     if "javascript:" in url or "data:" in url:
         return False
-    return True # XSS safe content
+    return True  # XSS safe content
+
 
 def redirect_page(message, red_time, url):
     """Build and return redirect page."""
@@ -159,47 +162,47 @@ class TorResultsView(ElasticsearchBaseListView):
                 term = ''.join(c for c in term if c.isdigit() or c.isalpha())
                 if f_term.lower() == term.lower():
                     context = {'suggest': None, 'page': 1, 'max_pages': 0,
-                    'result_begin': 0, 'total_search_results': 0,
-                    'query_string': term, 'search_results': [] }
+                               'result_begin': 0, 'total_search_results': 0,
+                               'query_string': term, 'search_results': []}
                     return context
         for f_term in settings.FILTER_TERMS_AND_SHOW_HELP:
             for term in search_term.split(" "):
                 term = ''.join(c for c in term if c.isdigit() or c.isalpha())
                 if f_term.lower() == term.lower():
                     context = {'suggest': None, 'page': 1, 'max_pages': 0,
-                    'result_begin': 0, 'total_search_results': 0,
-                    'query_string': term, 'search_results': [] }
-                    context = { 'suggest': None, 'page': 1, 'max_pages': 1,
-                    'result_begin': 0, 'result_end': 100, 'total_search_results': 10,
-                    'query_string': term, 'search_results':
-                    [
-                    {'domain': 'webropol.com',
-                    'meta': 'Questionnaire which aims at developing a self-help program intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
-                    'title': 'Help us to help you. Take few minutes to answer this questionnaire.',
-                    'url': 'https://link.webropolsurveys.com/S/8A07773150E3D599',
-                    'type': 'questionnaire'},
+                               'result_begin': 0, 'total_search_results': 0,
+                               'query_string': term, 'search_results': []}
+                    context = {'suggest': None, 'page': 1, 'max_pages': 1,
+                               'result_begin': 0, 'result_end': 100, 'total_search_results': 10,
+                               'query_string': term, 'search_results':
+                                   [
+                                       {'domain': 'webropol.com',
+                                        'meta': 'Questionnaire which aims at developing a self-help program intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
+                                        'title': 'Help us to help you. Take few minutes to answer this questionnaire.',
+                                        'url': 'https://link.webropolsurveys.com/S/8A07773150E3D599',
+                                        'type': 'questionnaire'},
 
-                    {'domain': 'webropol.com',
-                    'meta': "I don't need any help. Would you like to tell us the reason for this?",
-                    'title': 'No need for help.',
-                    'url': 'https://link.webropolsurveys.com/S/808867687BE8AECA',
-                    'type': 'nohelp'},
+                                       {'domain': 'webropol.com',
+                                        'meta': "I don't need any help. Would you like to tell us the reason for this?",
+                                        'title': 'No need for help.',
+                                        'url': 'https://link.webropolsurveys.com/S/808867687BE8AECA',
+                                        'type': 'nohelp'},
 
-                    {'domain': 'redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion',
-                    'meta': 'ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)!',
-                    'title': 'New Self-help Program Available In The Tor Network!',
-                    'url': 'http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/',
-                    'type': 'help'},
+                                       {'domain': 'redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion',
+                                        'meta': 'ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)!',
+                                        'title': 'New Self-help Program Available In The Tor Network!',
+                                        'url': 'http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/',
+                                        'type': 'help'},
 
-                    {'domain': 'mielenterveystalo.fi',
-                    'title': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
-                    'meta': 'What is it all about when my sexual interest is directed towards children considerably younger than myself?',
-                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/',
-                    'type': 'help'},
-                    ],
-                    'search_time': 1.23, 'now': datetime.now() }
+                                       {'domain': 'mielenterveystalo.fi',
+                                        'title': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
+                                        'meta': 'What is it all about when my sexual interest is directed towards children considerably younger than myself?',
+                                        'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/',
+                                        'type': 'help'},
+                                   ],
+                               'search_time': 1.23, 'now': datetime.now()}
                     return context
-        return False # Not filtered
+        return False  # Not filtered
 
     def get(self, request, *args, **kwargs):
         """
@@ -242,7 +245,6 @@ class TorResultsView(ElasticsearchBaseListView):
     def get_es_context(self, **kwargs):
         return {
             "index": utils.get_elasticsearch_tor_index(),
-            "doc_type": utils.get_elasticsearch_type(),
             "body": {
                 "query": {
                     "bool": {
@@ -260,7 +262,6 @@ class TorResultsView(ElasticsearchBaseListView):
                                         'content^1',
                                     ],
                                     "minimum_should_match": "75%",
-                                    "cutoff_frequency": 0.01
                                 }
                             }
                         ],
@@ -321,7 +322,7 @@ class TorResultsView(ElasticsearchBaseListView):
                                         }
                                     ],
                                     "_source": {
-                                        "include": ["title", "url", "meta",
+                                        "includes": ["title", "url", "meta",
                                                     "updated_on", "domain",
                                                     "authority", "anchors",
                                                     "links"]
