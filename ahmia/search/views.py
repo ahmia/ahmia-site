@@ -180,7 +180,7 @@ class TorResultsView(ElasticsearchBaseListView):
                     'type': 'questionnaire'},
 
                     {'domain': 'webropol.com',
-                    'meta': "I don't need any help. Would you like to tell us the reason for this?",
+                    'meta': "I do not need any help. Would you like to tell us the reason for this?",
                     'title': 'No need for help.',
                     'url': 'https://link.webropolsurveys.com/S/808867687BE8AECA',
                     'type': 'nohelp'},
@@ -196,6 +196,18 @@ class TorResultsView(ElasticsearchBaseListView):
                     'meta': 'What is it all about when my sexual interest is directed towards children considerably younger than myself?',
                     'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/',
                     'type': 'help'},
+
+                    {'domain': 'mielenterveystalo.fi',
+                    'title': 'ReDirection Self-Help Program (English).',
+                    'meta': 'The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).',
+                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redirection/Pages/default.aspx',
+                    'type': 'help'},
+
+                    {'domain': 'mielenterveystalo.fi',
+                    'title': 'Programa de Autoayuda ReDirección (Spanish).',
+                    'meta': 'Programa de Autoayuda ReDirección para personas que buscan, usan y distribuyen material de explotación sexual de niñas, niños y adolescentes (MESNNA) u otro material violento ilegal.',
+                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redireccion/Pages/default.aspx',
+                    'type': 'help'}
                     ],
                     'search_time': 1.23, 'now': datetime.now() }
                     return context
