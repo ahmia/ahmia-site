@@ -207,6 +207,12 @@ class TorResultsView(ElasticsearchBaseListView):
                     'title': 'Programa de Autoayuda ReDirección (Spanish).',
                     'meta': 'Programa de Autoayuda ReDirección para personas que buscan, usan y distribuyen material de explotación sexual de niñas, niños y adolescentes (MESNNA) u otro material violento ilegal.',
                     'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redireccion/Pages/default.aspx',
+                    'type': 'help'},
+
+                    {'domain': 'helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion',
+                    'title': 'Sexual interest in children? - Help page.',
+                    'meta': 'This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.',
+                    'url': 'http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion',
                     'type': 'help'}
                     ],
                     'search_time': 1.23, 'now': datetime.now() }
