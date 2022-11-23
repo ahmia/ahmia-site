@@ -20,13 +20,12 @@ server {
     return 301 $scheme://$1$request_uri;
 }
 
-# Sets the path and other parameters of a cache. Cache data are stored in files.
-# Max size is 5 GigaByte.
-# Inactive specifies how long an item can remain in the cache without being accessed.
-# In this setting, a file that has not been requested for 1440 minutes (24h)
-# is automatically deleted from the cache by the cache manager process,
-# regardless of whether or not it has expired.
-proxy_cache_path /var/cache/nginx/ levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=1440m;
+# Sets the path and other parameters of a cache.
+# Max size is 1 GigaByte.
+# The term "inactive" describes how long a website is cached without being viewed.
+# The page is constructed again once the time restriction has been reached.
+# Reduce content caching to 60 minutes to accelerate the removal of filtered content.
+proxy_cache_path /var/cache/nginx/ levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m;
 
 server {
     ssl on;
@@ -88,7 +87,7 @@ server {
         proxy_cache_methods GET HEAD;
 
         # Sets caching time for different response codes.
-        proxy_cache_valid 200 301 302 1440m; # 0s, 24h, 1440m = 24h
+        proxy_cache_valid 200 301 302 60m; # 60m
         proxy_cache_valid 404 500 60m; # 60m
         proxy_cache_valid any 30m; # 30m
     }
@@ -144,7 +143,7 @@ server {
         proxy_cache_methods GET HEAD;
 
         # Sets caching time for different response codes.
-        proxy_cache_valid 200 301 302 1440m; # 0s, 24h, 1440m = 24h
+        proxy_cache_valid 200 301 302 60m; # 60m
         proxy_cache_valid 404 500 60m; # 60m
         proxy_cache_valid any 30m; # 30m
     }
