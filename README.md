@@ -133,6 +133,14 @@ Config samples are in [config/](https://github.com/ahmia/ahmia-site/tree/master/
 (sudo) service nginx start
 ```
 
+Increase worker_connections in /etc/nginx/nginx.conf:
+
+```
+events {
+        worker_connections 2048;
+}
+```
+
 EITHER:
 
 * Run gunicorn via bash scripts (work as daemons ~ edit files to change):
