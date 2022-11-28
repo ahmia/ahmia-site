@@ -94,6 +94,21 @@ def filter_hits_by_time(hits, pastdays):
     ret = [hit for hit in hits if hit['updated_on'] >= time_threshold]
     return ret
 
+def filter_hits_by_terms(hits):
+    """Child abuse filtering"""
+    ret = []
+    for hit in hits:
+        add = True
+        for f_term in settings.FILTER_TERMS_AND_SHOW_HELP:
+            if f_term.lower() in hit.get('title', '').lower():
+                add = False
+                break
+            if f_term.lower() in hit.get('meta', '').lower():
+                add = False
+                break
+        if add:
+            ret.append(hit)
+    return ret
 
 def heuristic_score(ir_score, gp_score, lp_score, urlparams):
     """
@@ -391,8 +406,18 @@ class TorResultsView(ElasticsearchBaseListView):
         self.object_list = SimpleNamespace(total=total, hits=new_hits, suggest=suggest)
 
     def filter_hits(self):
+        """
+        1. Remove results which contain FILTERED TERMS.
+            - Extra measure because the text mining filtering has a delay to ban content.
+        2. Use time filter if it is available
+        """
         url_params = self.request.GET
         hits = self.object_list.hits
+        # Simple extra check to remove child abuse
+        hits = filter_hits_by_terms(hits)
+        self.object_list.hits = hits
+        self.object_list.total = len(hits)
+        # Time filtering
         try:
             pastdays = int(url_params.get('d'))
         except (TypeError, ValueError):
