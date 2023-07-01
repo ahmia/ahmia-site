@@ -206,9 +206,21 @@ class TorResultsView(ElasticsearchBaseListView):
                     'url': 'https://link.webropolsurveys.com/S/808867687BE8AECA',
                     'type': 'nohelp'},
 
+                    {'domain': '6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion',
+                    'meta': 'Are you concerned about your use of child sexual abuse material? Let us help you. Click here to learn more about the Bridge study for anonymous support. Available on the Tor Browser and without enabling JavaScript. In English, German, Spanish, Swedish, Finnish, Czech, and Slovak.',
+                    'title': 'NEW ANONYMOUS SUPPORT AVAILABLE ON TOR!',
+                    'url': 'https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/sites/bridge',
+                    'type': 'help'},
+
+                    {'domain': 'iterapi.se',
+                    'meta': 'Are you concerned about your use of child sexual abuse material? Let us help you. Click here to learn more about the Bridge study for anonymous support. In English, German, Spanish, Swedish, Finnish, Czech, and Slovak.',
+                    'title': 'Clearweb support website for 6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion',
+                    'url': 'https://www.iterapi.se/sites/bridge',
+                    'type': 'help'},
+
                     {'domain': 'redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion',
-                    'meta': 'ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)!',
-                    'title': 'New Self-help Program Available In The Tor Network!',
+                    'meta': 'ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)',
+                    'title': 'Self-help Program Available In The Tor Network',
                     'url': 'http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/',
                     'type': 'help'},
 
