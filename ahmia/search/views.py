@@ -189,6 +189,12 @@ class TorResultsView(ElasticsearchBaseListView):
                     'query_string': term, 'search_results':
                     [
                     {'domain': 'webropol.com',
+                    'meta': '‘Help us to know’ questionnaire to understand the experiences of people who search for child sexual abuse material in order to develop more effective support resources.',
+                    'title': 'Share your experience – we want to understand so we can help you and others',
+                    'url': 'https://link.webropolsurveys.com/S/996EF3BD577FCDAE',
+                    'type': 'questionnaire'},
+
+                    {'domain': 'webropol.com',
                     'meta': 'Questionnaire which aims at developing a self-help program intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
                     'title': 'Help us to help you. Take few minutes to answer this questionnaire.',
                     'url': 'https://link.webropolsurveys.com/S/8A07773150E3D599',
