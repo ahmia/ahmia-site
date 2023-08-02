@@ -169,14 +169,6 @@ class TorResultsView(ElasticsearchBaseListView):
         This algorithm filters banned search terms.
         It is a best efford solution and it is not perfect.
         """
-        for f_term in settings.FILTERED_TERMS:
-            for term in search_term.split(" "):
-                term = ''.join(c for c in term if c.isdigit() or c.isalpha())
-                if f_term.lower() == term.lower():
-                    context = {'suggest': None, 'page': 1, 'max_pages': 0,
-                    'result_begin': 0, 'total_search_results': 0,
-                    'query_string': term, 'search_results': [] }
-                    return context
         for f_term in settings.FILTER_TERMS_AND_SHOW_HELP:
             for term in search_term.split(" "):
                 term = ''.join(c for c in term if c.isdigit() or c.isalpha())
@@ -225,21 +217,21 @@ class TorResultsView(ElasticsearchBaseListView):
                     'type': 'help'},
 
                     {'domain': 'mielenterveystalo.fi',
-                    'title': 'Self-help program is primarily intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
-                    'meta': 'What is it all about when my sexual interest is directed towards children considerably younger than myself?',
-                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/sexual-interest-in-children/Pages/default.aspx/',
-                    'type': 'help'},
-
-                    {'domain': 'mielenterveystalo.fi',
-                    'title': 'ReDirection Self-Help Program (English).',
+                    'title': 'ReDirection Self-Help Program (English)',
                     'meta': 'The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).',
-                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redirection/Pages/default.aspx',
+                    'url': 'https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam',
                     'type': 'help'},
 
                     {'domain': 'mielenterveystalo.fi',
-                    'title': 'Programa de Autoayuda ReDirección (Spanish).',
+                    'title': 'Programa de Autoayuda ReDirección (Español)',
                     'meta': 'Programa de Autoayuda ReDirección para personas que buscan, usan y distribuyen material de explotación sexual de niñas, niños y adolescentes (MESNNA) u otro material violento ilegal.',
-                    'url': 'https://www.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redireccion/Pages/default.aspx',
+                    'url': 'https://vanha.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redireccion/Pages/default.aspx',
+                    'type': 'help'},
+
+                    {'domain': 'mielenterveystalo.fi',
+                    'title': 'ReDirection omahoito-ohjelma (Suomi).',
+                    'meta': 'ReDirection omahoito-ohjelma on anonyymi kuntouttava ohjelma, jonka tarkoituksena on auttaa sinua elämään ilman kuvamateriaalia, joka todistaa lapsiin kohdistuvaa seksuaaliväkivaltaa.',
+                    'url': 'https://www.mielenterveystalo.fi/fi/omahoito/redirection-laittoman-kuvamateriaalin-kayttajan-omahoito-ohjelma',
                     'type': 'help'},
 
                     {'domain': 'helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion',
@@ -249,6 +241,14 @@ class TorResultsView(ElasticsearchBaseListView):
                     'type': 'help'}
                     ],
                     'search_time': 1.23, 'now': datetime.now() }
+                    return context
+        for f_term in settings.FILTERED_TERMS:
+            for term in search_term.split(" "):
+                term = ''.join(c for c in term if c.isdigit() or c.isalpha())
+                if f_term.lower() == term.lower():
+                    context = {'suggest': None, 'page': 1, 'max_pages': 0,
+                    'result_begin': 0, 'total_search_results': 0,
+                    'query_string': term, 'search_results': [] }
                     return context
         return False # Not filtered
 
