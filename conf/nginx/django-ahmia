@@ -56,7 +56,7 @@ server {
     add_header X-Content-Type-Options nosniff;
     add_header Onion-Location http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion$request_uri;
 
-    access_log  /usr/local/lib/search/error/access.log;
+    access_log  /usr/local/lib/search/error/access.log no_ip;
     error_log  /usr/local/lib/search/error/error.log;
 
     # Django media
@@ -108,7 +108,7 @@ server {
     #log_format   main '0.0.0.0 - $remote_user [$time_local]  $status '
     #'"$request" $body_bytes_sent "$http_referer" '
     #'"$http_user_agent" "$http_x_forwarded_for"';
-    access_log  /usr/local/lib/search/error/hs_access.log;
+    access_log  /usr/local/lib/search/error/hs_access.log no_ip;
     error_log  /usr/local/lib/search/error/hs_error.log;
 
     # Django media
