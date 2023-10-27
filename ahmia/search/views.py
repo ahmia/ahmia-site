@@ -85,6 +85,11 @@ def redirect_page(message, red_time, url):
     content = {'message': message, 'time': red_time, 'redirect': url}
     return HttpResponse(template.render(content))
 
+def help_page():
+    """ Return Help page """
+    template = loader.get_template('help.html')
+    content = {}
+    return HttpResponse(template.render(content))
 
 def filter_hits_by_time(hits, pastdays):
     """Return only the hits that were crawled the past pastdays"""
@@ -163,93 +168,14 @@ class TorResultsView(ElasticsearchBaseListView):
 
     def banned_search(self, search_term):
         """
-        I try to filter out two kind of search results:
-            1. Ahmia tries to filter out links to explicit child abuse material.
-            2. https://en.wikipedia.org/wiki/Right_to_be_forgotten
         This algorithm filters banned search terms.
         It is a best efford solution and it is not perfect.
         """
         for f_term in settings.FILTER_TERMS_AND_SHOW_HELP:
             for term in search_term.split(" "):
-                term = ''.join(c for c in term if c.isdigit() or c.isalpha())
-                if f_term.lower() == term.lower():
-                    context = {'suggest': None, 'page': 1, 'max_pages': 0,
-                    'result_begin': 0, 'total_search_results': 0,
-                    'query_string': term, 'search_results': [] }
-                    context = { 'suggest': None, 'page': 1, 'max_pages': 1,
-                    'result_begin': 0, 'result_end': 100, 'total_search_results': 10,
-                    'query_string': term, 'search_results':
-                    [
-                    {'domain': 'webropol.com',
-                    'meta': '‘Help us to know’ questionnaire to understand the experiences of people who search for child sexual abuse material in order to develop more effective support resources.',
-                    'title': 'Share your experience – we want to understand so we can help you and others',
-                    'url': 'https://link.webropolsurveys.com/S/996EF3BD577FCDAE',
-                    'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': 'Questionnaire which aims at developing a self-help program intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.',
-                    'title': 'Help us to help you. Take few minutes to answer this questionnaire.',
-                    'url': 'https://link.webropolsurveys.com/S/8A07773150E3D599',
-                    'type': 'questionnaire'},
-
-                    {'domain': 'webropol.com',
-                    'meta': "I do not need any help. Would you like to tell us the reason for this?",
-                    'title': 'No need for help.',
-                    'url': 'https://link.webropolsurveys.com/S/808867687BE8AECA',
-                    'type': 'nohelp'},
-
-                    {'domain': '6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion',
-                    'meta': 'Are you concerned about your use of child sexual abuse material? Let us help you. Click here to learn more about the Bridge study for anonymous support. Available on the Tor Browser and without enabling JavaScript. In English, German, Spanish, Swedish, Finnish, Czech, and Slovak.',
-                    'title': 'NEW ANONYMOUS SUPPORT AVAILABLE ON TOR!',
-                    'url': 'https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/sites/bridge',
-                    'type': 'help'},
-
-                    {'domain': 'iterapi.se',
-                    'meta': 'Are you concerned about your use of child sexual abuse material? Let us help you. Click here to learn more about the Bridge study for anonymous support. In English, German, Spanish, Swedish, Finnish, Czech, and Slovak.',
-                    'title': 'Clearweb support website for 6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion',
-                    'url': 'https://www.iterapi.se/sites/bridge',
-                    'type': 'help'},
-
-                    {'domain': 'redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion',
-                    'meta': 'ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)',
-                    'title': 'Self-help Program Available In The Tor Network',
-                    'url': 'http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/',
-                    'type': 'help'},
-
-                    {'domain': 'mielenterveystalo.fi',
-                    'title': 'ReDirection Self-Help Program (English)',
-                    'meta': 'The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).',
-                    'url': 'https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam',
-                    'type': 'help'},
-
-                    {'domain': 'mielenterveystalo.fi',
-                    'title': 'Programa de Autoayuda ReDirección (Español)',
-                    'meta': 'Programa de Autoayuda ReDirección para personas que buscan, usan y distribuyen material de explotación sexual de niñas, niños y adolescentes (MESNNA) u otro material violento ilegal.',
-                    'url': 'https://vanha.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redireccion/Pages/default.aspx',
-                    'type': 'help'},
-
-                    {'domain': 'mielenterveystalo.fi',
-                    'title': 'ReDirection omahoito-ohjelma (Suomi).',
-                    'meta': 'ReDirection omahoito-ohjelma on anonyymi kuntouttava ohjelma, jonka tarkoituksena on auttaa sinua elämään ilman kuvamateriaalia, joka todistaa lapsiin kohdistuvaa seksuaaliväkivaltaa.',
-                    'url': 'https://www.mielenterveystalo.fi/fi/omahoito/redirection-laittoman-kuvamateriaalin-kayttajan-omahoito-ohjelma',
-                    'type': 'help'},
-
-                    {'domain': 'helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion',
-                    'title': 'Sexual interest in children? - Help page.',
-                    'meta': 'This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.',
-                    'url': 'http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion',
-                    'type': 'help'}
-                    ],
-                    'search_time': 1.23, 'now': datetime.now() }
-                    return context
-        for f_term in settings.FILTERED_TERMS:
-            for term in search_term.split(" "):
-                term = ''.join(c for c in term if c.isdigit() or c.isalpha())
-                if f_term.lower() == term.lower():
-                    context = {'suggest': None, 'page': 1, 'max_pages': 0,
-                    'result_begin': 0, 'total_search_results': 0,
-                    'query_string': term, 'search_results': [] }
-                    return context
+                term_ascii = ''.join(c for c in term if c.isdigit() or c.isalpha())
+                if f_term.lower() == term.lower() or f_term.lower() == term_ascii.lower():
+                    return True # Filtered
         return False # Not filtered
 
     def get(self, request, *args, **kwargs):
@@ -258,9 +184,11 @@ class TorResultsView(ElasticsearchBaseListView):
         """
         start = time.time()
         search_term = request.GET.get('q', '')
-        context = self.banned_search(search_term)
-        if context:
-            return self.render_to_response(context)
+        if len(search_term) > 100 or len(search_term.split(" ")) > 10:
+            answer = "Bad request: too long search query"
+            return HttpResponseBadRequest(answer)
+        if self.banned_search(search_term):
+            return help_page()
         kwargs['q'] = search_term
         kwargs['page'] = request.GET.get('page', 0)
 

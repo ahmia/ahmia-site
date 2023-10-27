@@ -1,0 +1,683 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Ahmia &mdash; Help Us to Help You</title>
+  <meta name="description"
+        content="A search engine for services accessible on the Tor network.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/static/js/jquery.min.js"></script>
+
+  <link title="Ahmia Search" type="application/opensearchdescription+xml" rel="search" href="/static/opensearch_html.xml" />
+  <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/less/style.css">
+
+  <script src="/static/js/less.min.js"></script>
+  <script src="/static/js/modernizr.js"></script>
+  <link rel="stylesheet"
+    href="data:text/css;base64,QC1tb3otZG9jdW1lbnQgcmVnZXhwKCcoPyFodHRwcz86Ly9haG1pYVxcLmZpfGh0dHBzPzovL2xvY2FsaG9zdHxodHRwcz86Ly8xMjdcXC4wXFwuMFxcLjF8aHR0cDovL2p1aGFudXJtaS4qY3N5ZFxcLm9uaW9ufGh0dHA6Ly9tc3lkcXN0Lioya3plcmRnXFwub25pb24pLionKXtib2R5OmJlZm9yZXttYXJnaW4tbGVmdDoxMCU7bWFyZ2luLXRvcDoyMCU7bWFyZ2luLXJpZ2h0OjEwJTtjb2xvcjpyZWQ7Zm9udC1zaXplOjIwMCU7Y29udGVudDoiV2FybmluZzogWW91IGFyZSB1c2luZyBhIG1hbi1pbi10aGUtbWlkZGxlIGZha2UgY2xvbmUgc2l0ZSAtLSBWaXNpdCBodHRwczovL2FobWlhLmZpLyB0byBmaW5kIHJpZ2h0IG9uaW9uIGFkZHJlc3MuIjtkaXNwbGF5OmJsb2NrfWE6YmVmb3Jle2NvbG9yOnJlZDtjb250ZW50OiJbU0NBTV0gIn0jYWhtaWFNYWluQ29udGVudCwjaW1hZ2VPdmVybGF5e2Rpc3BsYXk6bm9uZX19I3dhcm5pbmd7ZGlzcGxheTpub25lfQ">
+  <style>
+    .language-selector {
+      margin: 20px 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 10px;
+    }
+    .language-selector a {
+      text-decoration: none;
+      color: black;
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: color 0.3s, background-color 0.3s;
+    }
+    .language-selector a:hover,
+    .language-selector a:active {
+      background-color: #f0f0f0;
+    }
+
+    /* Initially hide all content divs */
+    .content {
+      display: none;
+    }
+
+    /* Show the :target content div */
+    .content:target {
+      display: block;
+    }
+
+    /* This is the magic: using a not-actual element to control the display property. */
+    #default-target:target ~ .content {
+      display: none;
+    }
+
+    /* Show the English content by default and when its corresponding control is the target. */
+    #default-target:target ~ #english-content,
+    #english-content:target {
+      display: block;
+    }
+  </style>
+</head>
+<body class="production ">
+<div class="outer">
+  <div id="content" class="inner">
+    <div id="ahmiaHeader" class="maxi">
+    <div class="maxiContent">
+      <h1><a href="/">Ahmia</a></h1>
+      <form id="searchForm" class="searchForm autocomplete" action="/search/" method="get">
+        <input id="id_q" type="search" name="q" placeholder="Search Ahmia" value="">
+        <input type="submit" value="Search" style="submitButton">
+      </form>
+    </div>
+    </div>
+    <div id="ahmiaResultsPage">
+      <!-- Invisible default target -->
+      <div id="default-target"></div>
+      <!-- The language selector bar -->
+      Are you worried about your use of child sexual abuse material? Let us help you. First, choose your language.
+      <ul class="language-selector">
+        <li><a href="#english-content">English</a></li>
+        <li><a href="#spanish-content">Español</a></li>
+        <li><a href="#german-content">Deutsch</a></li>
+        <li><a href="#swedish-content">Svenska</a></li>
+        <li><a href="#finnish-content">Suomi</a></li>
+        <li><a href="#czech-content">Čeština</a></li>
+        <li><a href="#slovak-content">Slovenčina</a></li>
+      </ul>
+      <!-- The content sections for each language. The div IDs correspond to the hrefs in the links above. -->
+      <div id="english-content" class="content">
+        <ol class="searchResults">
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/bridge/lang/en">
+                  NEW ANONYMOUS SUPPORT AVAILABLE ON TOR!
+              </a>
+            </h4>
+              <p>Are you concerned about your use of child sexual abuse material? Let us help you. Click here to learn more about the Bridge study for anonymous support. Available on the Tor Browser and without enabling JavaScript. In English, German, Spanish, Swedish, Finnish, Czech, and Slovak.</p>
+              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.iterapi.se/sites/bridge/lang/en">
+                  Clearweb support website for Project Bridge
+              </a>
+            </h4>
+              <p>Are you concerned about your use of child sexual abuse material? Let us help you. Click here to learn more about the Bridge study for anonymous support. In English, German, Spanish, Swedish, Finnish, Czech, and Slovak.</p>
+              <cite>iterapi.se</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/8A07773150E3D599">
+                  Help us to help you. Take few minutes to answer this questionnaire.
+              </a>
+            </h4>
+              <p>Questionnaire which aims at developing a self-help program intended for people who are worried about their sexual interest, thoughts, feelings or actions concerning children.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #FFF8DC">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/808867687BE8AECA">
+                  No need for help.
+              </a>
+            </h4>
+              <p>I do not need any help. Would you like to tell us the reason for this?</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Share your experience – we want to understand so we can help you and others
+              </a>
+            </h4>
+              <p>‘Help us to know’ questionnaire to understand the experiences of people who search for child sexual abuse material in order to develop more effective support resources.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
+                  Self-help Program Available In The Tor Network
+              </a>
+            </h4>
+              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
+              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
+                  ReDirection Self-Help Program (English)
+              </a>
+            </h4>
+              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
+              <cite>mielenterveystalo.fi</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
+                  Sexual interest in children? - Help page.
+              </a>
+            </h4>
+              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
+              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
+          </li>
+        </ol>
+      </div>
+      <div id="spanish-content" class="content">
+        <ol class="searchResults">
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/bridge/lang/es">
+                  ¡NUEVO SOPORTE ANÓNIMO DISPONIBLE EN TOR!
+              </a>
+            </h4>
+              <p>¿Le preocupa su uso de Material Sexual de Abuso Infantil (MASI)? Déjenos ayudarle. Haga clic aquí para obtener más información sobre el estudio Bridge y para obtener ayuda de forma anónima. Disponible en el Navegador Tor y sin habilitar JavaScript. En español, inglés, alemán, sueco, finlandés, checo y eslovaco.</p>
+              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.iterapi.se/sites/bridge/lang/es">
+                  Sitio web de soporte Clearweb para el proyecto Bridge
+              </a>
+            </h4>
+              <p>¿Le preocupa su uso de Material Sexual de Abuso Infantil (MASI)? Déjenos ayudarle. Haga clic aquí para obtener más información sobre el estudio Bridge y para obtener ayuda de forma anónima. En español, inglés, alemán, sueco, finlandés, checo y eslovaco.</p>
+              <cite>iterapi.se</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/8A07773150E3D599">
+                  Ayúdenos a ayudarlo. Tómese unos minutos para responder este cuestionario.
+              </a>
+            </h4>
+              <p>Cuestionario que tiene como objetivo desarrollar un programa de autoayuda dirigido a personas preocupadas por sus intereses, pensamientos, sentimientos o acciones sexuales respecto a niños/as.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #FFF8DC">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/808867687BE8AECA">
+                  No necesito de ayuda.
+              </a>
+            </h4>
+              <p>Yo no necesito ninguna ayuda. ¿Le gustaría decirnos la razón de por qué no necesita ayuda?</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Comparta su experiencia: queremos comprenderla para poder ayudar a otras personas
+              </a>
+            </h4>
+              <p>El cuestionario "Ayúdanos a comprender" nos ayuda a entender las experiencias de las personas que buscan MASI, con el fin de desarrollar recursos de apoyo más eficaces.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
+                  Self-help Program Available In The Tor Network
+              </a>
+            </h4>
+              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
+              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://vanha.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redireccion/Pages/default.aspx">
+                  Programa de Autoayuda ReDirección (Español)
+              </a>
+            </h4>
+              <p>Programa de Autoayuda ReDirección para personas que buscan, usan y distribuyen material de explotación sexual de niñas, niños y adolescentes (MESNNA) u otro material violento ilegal.</p>
+              <cite>mielenterveystalo.fi</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
+                  Sexual interest in children? - Help page.
+              </a>
+            </h4>
+              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
+              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
+          </li>
+        </ol>
+      </div>
+      <div id="german-content" class="content">
+        <ol class="searchResults">
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/bridge/lang/de">
+                  NEUE ANONYME UNTERSTÜTZUNG AUF TOR!
+              </a>
+            </h4>
+              <p>Sind Sie besorgt über Ihre Nutzung von Missbrauchsabbildungen? Lassen Sie uns Ihnen helfen. Klicken Sie hier, um mehr über das anonyme Online-Hilfsangebot Bridge zu erfahren. Verfügbar mit dem Tor-Browser und ohne Aktivierung von JavaScript. Auf Deutsch, Englisch, Spanisch, Schwedisch, Finnisch, Tschechisch und Slowakisch.</p>
+              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.iterapi.se/sites/bridge/lang/de">
+                  Clear Web Unterstützung für Projekt Bridge.
+              </a>
+            </h4>
+              <p>Sind Sie besorgt über Ihre Nutzung von Missbrauchsabbildungen? Lassen Sie uns Ihnen helfen. Klicken Sie hier, um mehr über das anonyme Online-Hilfsangebot Bridge zu erfahren. Auf Deutsch, Englisch, Spanisch, Schwedisch, Finnisch, Tschechisch und Slowakisch.</p>
+              <cite>iterapi.se</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/8A07773150E3D599">
+                  Helfen Sie uns, Ihnen zu helfen. Nehmen Sie sich ein paar Minuten Zeit, um diesen Fragebogen zu beantworten.
+              </a>
+            </h4>
+              <p>Dieser Fragebogen zielt darauf ab, ein Selbsthilfeprogramm für Menschen zu entwickeln, die sich Sorgen über ihr sexuelles Interesse, ihre Gedanken, Gefühle oder Handlungen in Bezug auf Kinder machen.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #FFF8DC">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/808867687BE8AECA">
+                  Keine Hilfe erforderlich.
+              </a>
+            </h4>
+              <p>Ich brauche keine Hilfe. Würdest du uns deine Gründe nennen?</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Teilen Sie uns Ihre Erfahrungen mit - wir wollen Sie verstehen, um Ihnen und anderen helfen zu können.
+              </a>
+            </h4>
+              <p>Die Umfrage "Help us to help you" soll Aufschluss über die Erfahrungen von Personen geben, die nach Missbrauchsabbildungen suchen und nutzen, um wirksamere Hilfsmittel zu entwickeln.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
+                  Self-help Program Available In The Tor Network
+              </a>
+            </h4>
+              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
+              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
+                  ReDirection Self-Help Program (English)
+              </a>
+            </h4>
+              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
+              <cite>mielenterveystalo.fi</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
+                  Sexual interest in children? - Help page.
+              </a>
+            </h4>
+              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
+              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
+          </li>
+        </ol>
+      </div>
+      <div id="swedish-content" class="content">
+        <ol class="searchResults">
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/bridge/lang/sv">
+                  Nytt anonymt stöd tillgängligt via Tor!
+              </a>
+            </h4>
+              <p>Är du orolig över dina sexuella tankar, känslor och beteenden riktade mot barn? Hjälp oss att hjälpa dig. Klicka här för att få mer information om forskningsprojektet Bridge där vi prövar två olika hjälpinsatser. Du kan vara helt anonym. Bridge finns tillgängligt via Tor-webbläsare och utan JavaScript på svenska, engelska, finska, tyska, spanska, tjeckiska och slovakiska.</p>
+              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.iterapi.se/sites/bridge/lang/sv">
+                  Stödsidor på Clearweb för Project Bridge
+              </a>
+            </h4>
+              <p>Är du orolig över dina sexuella tankar, känslor och beteenden riktade mot barn? Hjälp oss att hjälpa dig. Klicka här för att få mer information om forskningsprojektet Bridge där vi prövar två olika hjälpinsatser. Du kan vara helt anonym. Bridge finns tillgängligt på svenska, engelska, finska, tyska, spanska, tjeckiska och slovakiska.</p>
+              <cite>iterapi.se</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/8A07773150E3D599">
+                  Hjälp oss att hjälpa dig. Lägg gärna några minuter på att besvara detta frågeformulär.
+              </a>
+            </h4>
+              <p>Frågeformuläret bidrar till utvecklingen av ett självhjälpsprogram för personer som är oroliga över sina sexuella tankar, känslor eller beteenden riktade mot barn.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #FFF8DC">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/808867687BE8AECA">
+                  Inget behov av hjälp.
+              </a>
+            </h4>
+              <p>Jag behöver ingen hjälp. Vill du berätta mer om varför du inte vill ha hjälp?</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Dela med dig av dina upplevelser – vi vill förstå så att vi kan hjälpa dig och andra
+              </a>
+            </h4>
+              <p>'Hjälp oss att förstå”-enkäten för att utveckla ökad kunskap om upplevelser bland individer som söker efter översgreppsmaterial med barn med syfte att utveckla effektiva stödresurser.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
+                  Self-help Program Available In The Tor Network
+              </a>
+            </h4>
+              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
+              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
+                  ReDirection Self-Help Program (English)
+              </a>
+            </h4>
+              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
+              <cite>mielenterveystalo.fi</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
+                  Sexual interest in children? - Help page.
+              </a>
+            </h4>
+              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
+              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
+          </li>
+        </ol>
+      </div>
+      <div id="finnish-content" class="content">
+        <ol class="searchResults">
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/bridge/lang/fi">
+                  UUTTA ANONYYMIÄ TUKEA SAATAVILLA TOR-SELAIMELLA!
+              </a>
+            </h4>
+              <p>Oletko huolissasi laittoman kuvamateriaalin käytöstäsi? Anna meidän auttaa sinua. Napauta tästä oppiaksesi lisää Bridge-tutkimuksesta anonyymin tuen saamiseksi. Saatavilla Tor-selaimella ja ilman JavaScriptin käyttöönottoa. Suomeksi, ruotsiksi, englanniksi, saksaksi, espanjaksi, tšekiksi ja slovakiksi.</p>
+              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.iterapi.se/sites/bridge/lang/fi">
+                  Avoimen verkon tukiverkkosivusto Bridge-projektille
+              </a>
+            </h4>
+              <p>Oletko huolissasi laittoman kuvamateriaalin käytöstäsi? Anna meidän auttaa sinua. Napauta tästä oppiaksesi lisää Bridge-tutkimuksesta anonyymin tuen saamiseksi. Suomeksi, ruotsiksi, englanniksi, saksaksi, espanjaksi, tšekiksi ja slovakiksi.</p>
+              <cite>iterapi.se</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/8A07773150E3D599">
+                  Auta meitä auttamaan. Käytä muutama minuutti vastataksesi tähän kyselyyn.
+              </a>
+            </h4>
+              <p>Kyselylomake, jonka tarkoituksena on kehittää itsehoito-ohjelma henkilöille, jotka ovat huolissaan lapsiin liittyvästä seksuaalisesta kiinnostuksesta, ajatuksista, tunteista tai käyttäytymisestä.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #FFF8DC">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/808867687BE8AECA">
+                  Ei tarvetta apuun.
+              </a>
+            </h4>
+              <p>En tarvitse apua. Haluaisitko kertoa meille syyn tälle?</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Jaa kokemuksesi – haluamme ymmärtää, jotta voimme auttaa sinua ja muita
+              </a>
+            </h4>
+              <p>“Auta meitä ymmärtämään" -kyselylomakkeella pyritään ymmärtämään laitonta kuvamateriaalia etsivien ihmisten kokemuksia tehokkaampien tukiresurssien kehittämiseksi.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
+                  Self-help Program Available In The Tor Network
+              </a>
+            </h4>
+              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
+              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.mielenterveystalo.fi/fi/omahoito/redirection-laittoman-kuvamateriaalin-kayttajan-omahoito-ohjelma">
+                  ReDirection omahoito-ohjelma (Suomi).
+              </a>
+            </h4>
+              <p>ReDirection omahoito-ohjelma on anonyymi kuntouttava ohjelma, jonka tarkoituksena on auttaa sinua elämään ilman kuvamateriaalia, joka todistaa lapsiin kohdistuvaa seksuaaliväkivaltaa.</p>
+              <cite>mielenterveystalo.fi</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
+                  Sexual interest in children? - Help page.
+              </a>
+            </h4>
+              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
+              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
+          </li>
+        </ol>
+      </div>
+      <div id="czech-content" class="content">
+        <ol class="searchResults">
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/bridge/lang/cs">
+                  NOVÁ ANONYMNÍ PODPORA NA SERVERU TOR!
+              </a>
+            </h4>
+              <p>Znepokojuje vás vaše konzumace materiálů zachycujících sexuální zneužívání dětí? Dovolte nám, abychom vám pomohli. Kliknutím sem se můžete dozvědět více o studii Bridge poskytující anonymní formu pomoci, dostupnou v prohlížeči Tor Browser a bez zapnutého JavaScriptu. V češtině, slovenštině, angličtině, němčině, španělštině, švédštině, a finštině.</p>
+              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.iterapi.se/sites/bridge/lang/cs">
+                  Clearweb support website for Project Bridge
+              </a>
+            </h4>
+              <p>Znepokojuje vás vaše konzumace materiálů zachycujících sexuální zneužívání dětí? Dovolte nám, abychom vám pomohli. Kliknutím sem se můžete dozvědět více o studii Bridge poskytující anonymní formu pomoci. V češtině, slovenštině, angličtině, němčině, španělštině, švédštině, a finštině.</p>
+              <cite>iterapi.se</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/8A07773150E3D599">
+                  Pomozte nám Vám pomoci. Věnujte několik minut vyplnění tohoto dotazníku.
+              </a>
+            </h4>
+              <p>Cílem dotazníku je vytvořit svépomocný program určený lidem, kteří se obávají svých sexuálních zájmů, myšlenek, pocitů nebo jednání vůči dětem.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #FFF8DC">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/808867687BE8AECA">
+                  Nepotřebuji pomoc
+              </a>
+            </h4>
+              <p>Žádnou pomoc nepotřebuji. Mohl byste nám napsat, jaký k tomu máte důvod?</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Podělte se o své zkušenosti - chceme vám porozumět, abychom mohli pomoci vám i ostatním.
+              </a>
+            </h4>
+              <p>Cílem dotazníku "Pomozte nám poznat”, je porozumět zkušenostem lidí, kteří vyhledávají materiály zachycující sexuální zneužívání dětí, aby bylo možné vyvinout účinnější zdroje podpory.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
+                  Self-help Program Available In The Tor Network
+              </a>
+            </h4>
+              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
+              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
+                  ReDirection Self-Help Program (English)
+              </a>
+            </h4>
+              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
+              <cite>mielenterveystalo.fi</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
+                  Sexual interest in children? - Help page.
+              </a>
+            </h4>
+              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
+              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
+          </li>
+        </ol>
+      </div>
+      <div id="slovak-content" class="content">
+        <ol class="searchResults">
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/bridge/lang/sk">
+                  NOVÁ ANONYMNÁ PODPORA DOSTUPNÁ NA WEBE TOR!
+              </a>
+            </h4>
+              <p>Máte obavy z Vášho používania materiálov o sexuálnom zneužívaní detí? Dovoľte nám, aby sme vám pomohli. Kliknite sem a zistite viac o štúdii Bridge pre anonymnú podporu. Dostupné v prehliadači Tor a bez zapnutia JavaScriptu. V slovenčine, češtine, angličtine, nemčine, španielčine, švédčine, a fínčine.</p>
+              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.iterapi.se/sites/bridge/lang/sk">
+                  Webová stránka podpory pre projekt Bridge
+              </a>
+            </h4>
+              <p>Máte obavy z Vášho používania materiálov o sexuálnom zneužívaní detí? Dovoľte nám, aby sme vám pomohli. Kliknite sem a zistite viac o štúdii Bridge pre anonymnú podporu. V slovenčine, češtine, angličtine, nemčine, španielčine, švédčine, a fínčine.</p>
+              <cite>iterapi.se</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/8A07773150E3D599">
+                  Pomôžte nám pomôcť vám. Venujte niekoľko minút vyplneniu tohto dotazníka.
+              </a>
+            </h4>
+              <p>Dotazník, ktorého cieľom je vytvoriť svojpomocný program určený pre ľudí, ktorí sa obávajú svojho sexuálneho záujmu, myšlienok, pocitov alebo konania v súvislosti s deťmi.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #FFF8DC">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/808867687BE8AECA">
+                  Pomoc nie je potrebná.
+              </a>
+            </h4>
+              <p>Nepotrebujem žiadnu pomoc. Chceli by ste nám povedať prečo to tak je?</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Podeľte sa o svoje skúsenosti - chceme porozumieť, aby sme mohli pomôcť vám aj ostatným
+              </a>
+            </h4>
+              <p>Dotazník "Pomôžte nám vedieť" s cieľom pochopiť skúsenosti ľudí, ktorí vyhľadávajú materiály o sexuálnom zneužívaní detí, aby bolo možné vyvinúť účinnejšie zdroje podpory.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
+                  Self-help Program Available In The Tor Network
+              </a>
+            </h4>
+              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
+              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
+                  ReDirection Self-Help Program (English)
+              </a>
+            </h4>
+              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
+              <cite>mielenterveystalo.fi</cite>
+          </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
+                  Sexual interest in children? - Help page.
+              </a>
+            </h4>
+              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
+              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
