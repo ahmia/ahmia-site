@@ -8,10 +8,9 @@ DEBUG = config('DEBUG', cast=bool, default=False)
 ALLOWED_HOSTS += [
     '.ahmia.fi',   # Allow domain and subdomains
     '.ahmia.fi.',  # Also allow FQDN and subdomains
-    '.msydqstlz2kzerdg.onion',
-    '.msydqstlz2kzerdg.onion.',
     '.juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion',
     '.juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion.',
+    '46.19.38.63'
 ]
 
 DATABASES = {
