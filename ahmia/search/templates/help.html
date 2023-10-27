@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="/static/js/jquery.min.js"></script>
 
-  <link title="Ahmia Search" type="application/opensearchdescription+xml" rel="search" href="/static/opensearch_html.xml" />
+  <link title="Ahmia Search" type="application/opensearchdescription+xml" rel="search" href="/static/opensearch_html.xml"/>
   <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/static/css/normalize.css">
   <link rel="stylesheet" href="/static/less/style.css">
@@ -44,20 +44,26 @@
       display: none;
     }
 
+    li {
+      list-style-type: none;
+    }
+
+    /* Remove the styles related to the default-target, as we will manage the default visibility differently. */
+
     /* Show the :target content div */
     .content:target {
       display: block;
     }
 
-    /* This is the magic: using a not-actual element to control the display property. */
-    #default-target:target ~ .content {
-      display: none;
+    /* Show the English content by default. This rule now applies all the time, so the English content is the default state. */
+    #english-content {
+      display: block;
     }
 
-    /* Show the English content by default and when its corresponding control is the target. */
-    #default-target:target ~ #english-content,
-    #english-content:target {
-      display: block;
+    /* Hide the English content when something else is targeted. The ~ combinator selects subsequent siblings. */
+    /* This means if any other content div is :target, it will hide the #english-content. */
+    .content:target ~ #english-content {
+      display: none;
     }
   </style>
 </head>
@@ -69,7 +75,7 @@
       <h1><a href="/">Ahmia</a></h1>
       <form id="searchForm" class="searchForm autocomplete" action="/search/" method="get">
         <input id="id_q" type="search" name="q" placeholder="Search Ahmia" value="">
-        <input type="submit" value="Search" style="submitButton">
+        <input type="submit" value="Search" style="submitButton"/>
       </form>
     </div>
     </div>
@@ -173,6 +179,8 @@
         </ol>
       </div>
       <div id="spanish-content" class="content">
+        <hr/>
+        Spanish:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
             <h4>
@@ -227,16 +235,6 @@
           <li class="result" style="background: #98FB98">
             <h4>
               <a
-                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
-                  Self-help Program Available In The Tor Network
-              </a>
-            </h4>
-              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
-              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
                 href="https://vanha.mielenterveystalo.fi/aikuiset/itsehoito-ja-oppaat/itsehoito/redireccion/Pages/default.aspx">
                   Programa de Autoayuda ReDirección (Español)
               </a>
@@ -244,19 +242,11 @@
               <p>Programa de Autoayuda ReDirección para personas que buscan, usan y distribuyen material de explotación sexual de niñas, niños y adolescentes (MESNNA) u otro material violento ilegal.</p>
               <cite>mielenterveystalo.fi</cite>
           </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? - Help page.
-              </a>
-            </h4>
-              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
-              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
-          </li>
         </ol>
       </div>
       <div id="german-content" class="content">
+        <hr/>
+        German:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
             <h4>
@@ -308,39 +298,11 @@
               <p>Die Umfrage "Help us to help you" soll Aufschluss über die Erfahrungen von Personen geben, die nach Missbrauchsabbildungen suchen und nutzen, um wirksamere Hilfsmittel zu entwickeln.</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
-                  Self-help Program Available In The Tor Network
-              </a>
-            </h4>
-              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
-              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
-                  ReDirection Self-Help Program (English)
-              </a>
-            </h4>
-              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
-              <cite>mielenterveystalo.fi</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? - Help page.
-              </a>
-            </h4>
-              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
-              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
-          </li>
         </ol>
       </div>
       <div id="swedish-content" class="content">
+        <hr/>
+        Swedish:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
             <h4>
@@ -392,39 +354,11 @@
               <p>'Hjälp oss att förstå”-enkäten för att utveckla ökad kunskap om upplevelser bland individer som söker efter översgreppsmaterial med barn med syfte att utveckla effektiva stödresurser.</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
-                  Self-help Program Available In The Tor Network
-              </a>
-            </h4>
-              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
-              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
-                  ReDirection Self-Help Program (English)
-              </a>
-            </h4>
-              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
-              <cite>mielenterveystalo.fi</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? - Help page.
-              </a>
-            </h4>
-              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
-              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
-          </li>
         </ol>
       </div>
       <div id="finnish-content" class="content">
+        <hr/>
+        Finnish:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
             <h4>
@@ -479,16 +413,6 @@
           <li class="result" style="background: #98FB98">
             <h4>
               <a
-                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
-                  Self-help Program Available In The Tor Network
-              </a>
-            </h4>
-              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
-              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
                 href="https://www.mielenterveystalo.fi/fi/omahoito/redirection-laittoman-kuvamateriaalin-kayttajan-omahoito-ohjelma">
                   ReDirection omahoito-ohjelma (Suomi).
               </a>
@@ -496,19 +420,11 @@
               <p>ReDirection omahoito-ohjelma on anonyymi kuntouttava ohjelma, jonka tarkoituksena on auttaa sinua elämään ilman kuvamateriaalia, joka todistaa lapsiin kohdistuvaa seksuaaliväkivaltaa.</p>
               <cite>mielenterveystalo.fi</cite>
           </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? - Help page.
-              </a>
-            </h4>
-              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
-              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
-          </li>
         </ol>
       </div>
       <div id="czech-content" class="content">
+        <hr/>
+        Czech:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
             <h4>
@@ -560,39 +476,11 @@
               <p>Cílem dotazníku "Pomozte nám poznat”, je porozumět zkušenostem lidí, kteří vyhledávají materiály zachycující sexuální zneužívání dětí, aby bylo možné vyvinout účinnější zdroje podpory.</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
-                  Self-help Program Available In The Tor Network
-              </a>
-            </h4>
-              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
-              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
-                  ReDirection Self-Help Program (English)
-              </a>
-            </h4>
-              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
-              <cite>mielenterveystalo.fi</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? - Help page.
-              </a>
-            </h4>
-              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
-              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
-          </li>
         </ol>
       </div>
       <div id="slovak-content" class="content">
+        <hr/>
+        Slovak:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
             <h4>
@@ -643,36 +531,6 @@
             </h4>
               <p>Dotazník "Pomôžte nám vedieť" s cieľom pochopiť skúsenosti ľudí, ktorí vyhľadávajú materiály o sexuálnom zneužívaní detí, aby bolo možné vyvinúť účinnejšie zdroje podpory.</p>
               <cite>webropol.com</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion/">
-                  Self-help Program Available In The Tor Network
-              </a>
-            </h4>
-              <p>ReDirection self-help program for people who are worried about their use of Child Sexual Abuse Material (CSAM)</p>
-              <cite>redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="https://www.mielenterveystalo.fi/en/self-help/redirection-self-help-program-stop-using-csam">
-                  ReDirection Self-Help Program (English)
-              </a>
-            </h4>
-              <p>The ReDirection Self-Help Program is an anonymous rehabilitative program which aims to help you adopt a lifestyle without child sexual abuse material (CSAM).</p>
-              <cite>mielenterveystalo.fi</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? - Help page.
-              </a>
-            </h4>
-              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
-              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
           </li>
         </ol>
       </div>
