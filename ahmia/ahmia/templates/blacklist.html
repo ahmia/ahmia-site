@@ -22,14 +22,14 @@
     <h3>{% trans "Blacklist information" %}</h3>
     <p>
       {% blocktrans %}
-        Hidden service names are masked by creating an MD5 sum of the onion name plus a new
-        line. For example, if the onion is <code>abcdefghijklmnop.onion</code>, the
+        Onion service names are masked by creating an MD5 sum of the onion domain.
+        For example, if the onion is <code>abcdefghijklmnop.onion</code>, the
         resulting hash would be <code>c50b9578b6357a561909ff29331ad7ad</code>.
         This way it is possible for researchers and administrators to check if a site has
         been blacklisted from the index without making the .onion hostnames easily accessible.
         <br>
         To calculate MD5 of onions run the following command : <br>
-        <code> echo -e "abcdefghijklmnop.onion\c" | md5sum </code>
+        <code> echo -n "abcdefghijklmnop.onion" | md5sum </code>
       {% endblocktrans %}
     </p>
     <p class="end">
