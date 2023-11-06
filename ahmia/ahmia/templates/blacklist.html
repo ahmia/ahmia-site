@@ -13,31 +13,20 @@
   <div id="ahmiaBlacklist">
     <p class="end">
       {% blocktrans %}
-        Ahmia blacklists sites containing child abuse material from its index. This list
-        contains a masked version of all hidden service .onion addresses that have been
-        added to the Ahmia blacklist, and is updated whenever Ahmia blacklists a
-        new .onion site for abuse material.
-      {% endblocktrans %}
-    </p>
-    <h3>{% trans "Blacklist information" %}</h3>
-    <p>
-      {% blocktrans %}
-        Onion service names are masked by creating an MD5 sum of the onion domain.
+	Ahmia blocks websites that contain child sexual abuse material.
+	You can use this to filter child sexual abuse material from your own search indexes.
+	Onion addresses are masked by creating an MD5 sum of the onion domain.
         For example, if the onion is <code>abcdefghijklmnop.onion</code>, the
         resulting hash would be <code>c50b9578b6357a561909ff29331ad7ad</code>.
-        This way it is possible for researchers and administrators to check if a site has
-        been blacklisted from the index without making the .onion hostnames easily accessible.
         <br>
-        To calculate MD5 of onions run the following command : <br>
+        To calculate the MD5 checksum from an onion address, run the following command: <br>
         <code> echo -n "abcdefghijklmnop.onion" | md5sum </code>
       {% endblocktrans %}
     </p>
     <p class="end">
       {% url 'banned' as banned_url %}
       {% blocktrans %}
-        Blacklist hash data is <strong>available for raw text download</strong>
-        <a href="{{ banned_url }}">here</a>. You may use this
-        in your own search indexes to remove abusive content.
+        The blocklist hashlist is available <a href="{{ banned_url }}">here</a>.
       {% endblocktrans %}
     </p>
     <div id="bannedHiddenServices">
