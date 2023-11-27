@@ -262,28 +262,30 @@ class AddressListView(OnionListView):
 
 class BannedDomainListView(OnionListView):
     """ Displays a list banned .onion domain's md5 as a plain text page """
+    # TODO: simple return this as plain/text, not as a HTML page
     template_name = "banned.html"
 
     def cached_hits(self, hits):
         """ Fetch cached hits and cache new ones """
-        cache_file = "banned_domains.txt"
+        cache_file = 'banned_domains.txt'
         lines = []
         try:
-            with open(cache_file, 'rt') as filehandle:
+            with open(cache_file, 'rt', encoding='utf-8') as filehandle:
                 lines = filehandle.readlines()
         except IOError:
-            print("Cache file %s is not created yet." % cache_file)
+            print(f'Cache file {cache_file} is not created yet.')
         added = False
         for hit in hits:
-            domain = hit['domain']
-            new_line = "%s\n" % domain
+            new_line = f'{hit["domain"]}\n'
             if not new_line in lines:
                 lines.append(new_line)
                 added = True
+        lines = [line for line in lines if len(line) >= 56]
+        lines = list(set(lines))
         if added:
-            with open(cache_file, 'w') as filehandle:
+            with open(cache_file, 'w', encoding='utf-8') as filehandle:
                 filehandle.writelines(lines)
-        return [line.replace("\n", "") for line in lines]
+        return lines
 
     def format_hits(self, hits):
         """
