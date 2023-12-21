@@ -20,7 +20,8 @@ def extract_domain(url):
 
 def allowed_url(redirect_url):
     """ Validate the URL as allowed redirect URL """
-    allowed_domain_list = ['webropolsurveys.com', 'pelastakaalapset.fi', 'mielenterveystalo.fi', 'iterapi.se']
+    allowed_domain_list = ['webropolsurveys.com', 'pelastakaalapset.fi',
+                           'mielenterveystalo.fi', 'iterapi.se', 'troubled-desire.com']
     main_domain = extract_domain(redirect_url)
     if not main_domain:
         return False
