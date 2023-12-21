@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="/static/js/jquery.min.js"></script>
 
-  <link title="Ahmia Search" type="application/opensearchdescription+xml" rel="search" href="/static/opensearch_html.xml"/>
+  <link title="Ahmia Search" type="application/opensearchdescription+xml" rel="search" href="/static/opensearch_html.xml">
   <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/static/css/normalize.css">
   <link rel="stylesheet" href="/static/less/style.css">
@@ -75,7 +75,7 @@
       <h1><a href="/">Ahmia</a></h1>
       <form id="searchForm" class="searchForm autocomplete" action="/search/" method="get">
         <input id="id_q" type="search" name="q" placeholder="Search Ahmia" value="">
-        <input type="submit" value="Search" style="submitButton"/>
+        <input type="submit" value="Search" style="submitButton">
       </form>
     </div>
     </div>
@@ -120,6 +120,16 @@
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Share your experience – we want to understand so we can help you and others
+              </a>
+            </h4>
+              <p>‘Help us to know’ questionnaire to understand the experiences of people who search for child sexual abuse material in order to develop more effective support resources.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/8A07773150E3D599">
                   Help us to help you. Take few minutes to answer this questionnaire.
               </a>
@@ -135,16 +145,6 @@
               </a>
             </h4>
               <p>I do not need any help. Would you like to tell us the reason for this?</p>
-              <cite>webropol.com</cite>
-          </li>
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Share your experience – we want to understand so we can help you and others
-              </a>
-            </h4>
-              <p>‘Help us to know’ questionnaire to understand the experiences of people who search for child sexual abuse material in order to develop more effective support resources.</p>
               <cite>webropol.com</cite>
           </li>
           <li class="result" style="background: #98FB98">
@@ -171,16 +171,26 @@
             <h4>
               <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? - Help page.
+                  Sexual interest in children? – Help page.
               </a>
             </h4>
               <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
               <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
           </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://troubled-desire.com/en/">
+                   Are you attracted to children? – Troubled Desire Anonymous Self-help and Chat
+              </a>
+            </h4>
+              <p>TROUBLED DESIRE is a free support service for people who are concerned about their sexual attraction to children. We would like to make it easier for you to deal with this sensitive topic.</p>
+              <cite>troubled-desire.com</cite>
+          </li>
         </ol>
       </div>
       <div id="spanish-content" class="content">
-        <hr/>
+        <hr>
         Spanish:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
@@ -206,6 +216,16 @@
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Comparta su experiencia: queremos comprenderla para poder ayudar a otras personas
+              </a>
+            </h4>
+              <p>El cuestionario "Ayúdanos a comprender" nos ayuda a entender las experiencias de las personas que buscan MASI, con el fin de desarrollar recursos de apoyo más eficaces.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/8A07773150E3D599">
                   Ayúdenos a ayudarlo. Tómese unos minutos para responder este cuestionario.
               </a>
@@ -223,16 +243,6 @@
               <p>Yo no necesito ninguna ayuda. ¿Le gustaría decirnos la razón de por qué no necesita ayuda?</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Comparta su experiencia: queremos comprenderla para poder ayudar a otras personas
-              </a>
-            </h4>
-              <p>El cuestionario "Ayúdanos a comprender" nos ayuda a entender las experiencias de las personas que buscan MASI, con el fin de desarrollar recursos de apoyo más eficaces.</p>
-              <cite>webropol.com</cite>
-          </li>
           <li class="result" style="background: #98FB98">
             <h4>
               <a
@@ -243,10 +253,20 @@
               <p>Programa de Autoayuda ReDirección para personas que buscan, usan y distribuyen material de explotación sexual de niñas, niños y adolescentes (MESNNA) u otro material violento ilegal.</p>
               <cite>mielenterveystalo.fi</cite>
           </li>
+          <li class="result" style="background: #98FB98">
+            <h4>
+              <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://troubled-desire.com/es/">
+                    ¿Se siente atraído por los niños y/o las niñas? – Aquí hay ayuda anónima.
+              </a>
+            </h4>
+              <p>TROUBLED DESIRE es un servicio de apoyo gratuito para personas preocupadas por su atracción sexual hacia los niños. Queremos facilitarle el tratamiento de este delicado tema.</p>
+              <cite>troubled-desire.com</cite>
+          </li>
         </ol>
       </div>
       <div id="german-content" class="content">
-        <hr/>
+        <hr>
         German:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
@@ -272,6 +292,16 @@
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Teilen Sie uns Ihre Erfahrungen mit - wir wollen Sie verstehen, um Ihnen und anderen helfen zu können.
+              </a>
+            </h4>
+              <p>Die Umfrage "Help us to help you" soll Aufschluss über die Erfahrungen von Personen geben, die nach Missbrauchsabbildungen suchen und nutzen, um wirksamere Hilfsmittel zu entwickeln.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/8A07773150E3D599">
                   Helfen Sie uns, Ihnen zu helfen. Nehmen Sie sich ein paar Minuten Zeit, um diesen Fragebogen zu beantworten.
               </a>
@@ -289,22 +319,32 @@
               <p>Ich brauche keine Hilfe. Würdest du uns deine Gründe nennen?</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #E0FFFF">
+          <li class="result" style="background: #98FB98">
             <h4>
               <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Teilen Sie uns Ihre Erfahrungen mit - wir wollen Sie verstehen, um Ihnen und anderen helfen zu können.
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://troubled-desire.com/de/">
+                  Sie fühlen sich zu Kindern hingezogen?  – Hier gibt es anonyme Hilfe.
               </a>
             </h4>
-              <p>Die Umfrage "Help us to help you" soll Aufschluss über die Erfahrungen von Personen geben, die nach Missbrauchsabbildungen suchen und nutzen, um wirksamere Hilfsmittel zu entwickeln.</p>
-              <cite>webropol.com</cite>
+              <p>TROUBLED DESIRE ist ein kostenloses Hilfsangebot für Menschen, die sich Gedanken über ihre sexuelle Anziehung zu Kindern machen. Wir möchten Ihnen den Umgang mit diesem sensiblen Thema erleichtern.</p>
+              <cite>troubled-desire.com</cite>
           </li>
         </ol>
       </div>
       <div id="dutch-content" class="content">
-        <hr/>
+        <hr>
         Dutch:
         <ol class="searchResults">
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Deel uw ervaring – wij willen u begrijpen zodat we u en anderen kunnen helpen
+              </a>
+            </h4>
+              <p>Vragenlijst 'Help ons te weten' om inzicht te krijgen in de ervaringen van mensen die zoeken naar beeldmateriaal van seksueel kindermisbruik, zodat we effectievere ondersteuningsmiddelen kunnen ontwikkelen.</p>
+              <cite>webropol.com</cite>
+          </li>
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
@@ -325,20 +365,10 @@
               <p>Ik heb geen behoefte aan hulp. Kunt u ons vertellen waarom?</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Deel uw ervaring – wij willen u begrijpen zodat we u en anderen kunnen helpen
-              </a>
-            </h4>
-              <p>Vragenlijst 'Help ons te weten' om inzicht te krijgen in de ervaringen van mensen die zoeken naar beeldmateriaal van seksueel kindermisbruik, zodat we effectievere ondersteuningsmiddelen kunnen ontwikkelen.</p>
-              <cite>webropol.com</cite>
-          </li>
         </ol>
       </div>
       <div id="swedish-content" class="content">
-        <hr/>
+        <hr>
         Swedish:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
@@ -364,6 +394,16 @@
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Dela med dig av dina upplevelser – vi vill förstå så att vi kan hjälpa dig och andra
+              </a>
+            </h4>
+              <p>'Hjälp oss att förstå”-enkäten för att utveckla ökad kunskap om upplevelser bland individer som söker efter översgreppsmaterial med barn med syfte att utveckla effektiva stödresurser.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/8A07773150E3D599">
                   Hjälp oss att hjälpa dig. Lägg gärna några minuter på att besvara detta frågeformulär.
               </a>
@@ -381,20 +421,10 @@
               <p>Jag behöver ingen hjälp. Vill du berätta mer om varför du inte vill ha hjälp?</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Dela med dig av dina upplevelser – vi vill förstå så att vi kan hjälpa dig och andra
-              </a>
-            </h4>
-              <p>'Hjälp oss att förstå”-enkäten för att utveckla ökad kunskap om upplevelser bland individer som söker efter översgreppsmaterial med barn med syfte att utveckla effektiva stödresurser.</p>
-              <cite>webropol.com</cite>
-          </li>
         </ol>
       </div>
       <div id="finnish-content" class="content">
-        <hr/>
+        <hr>
         Finnish:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
@@ -420,6 +450,16 @@
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Jaa kokemuksesi – haluamme ymmärtää, jotta voimme auttaa sinua ja muita
+              </a>
+            </h4>
+              <p>“Auta meitä ymmärtämään" -kyselylomakkeella pyritään ymmärtämään laitonta kuvamateriaalia etsivien ihmisten kokemuksia tehokkaampien tukiresurssien kehittämiseksi.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/8A07773150E3D599">
                   Auta meitä auttamaan. Käytä muutama minuutti vastataksesi tähän kyselyyn.
               </a>
@@ -437,16 +477,6 @@
               <p>En tarvitse apua. Haluaisitko kertoa meille syyn tälle?</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Jaa kokemuksesi – haluamme ymmärtää, jotta voimme auttaa sinua ja muita
-              </a>
-            </h4>
-              <p>“Auta meitä ymmärtämään" -kyselylomakkeella pyritään ymmärtämään laitonta kuvamateriaalia etsivien ihmisten kokemuksia tehokkaampien tukiresurssien kehittämiseksi.</p>
-              <cite>webropol.com</cite>
-          </li>
           <li class="result" style="background: #98FB98">
             <h4>
               <a
@@ -460,7 +490,7 @@
         </ol>
       </div>
       <div id="czech-content" class="content">
-        <hr/>
+        <hr>
         Czech:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
@@ -486,6 +516,16 @@
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Podělte se o své zkušenosti - chceme vám porozumět, abychom mohli pomoci vám i ostatním.
+              </a>
+            </h4>
+              <p>Cílem dotazníku "Pomozte nám poznat”, je porozumět zkušenostem lidí, kteří vyhledávají materiály zachycující sexuální zneužívání dětí, aby bylo možné vyvinout účinnější zdroje podpory.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/8A07773150E3D599">
                   Pomozte nám Vám pomoci. Věnujte několik minut vyplnění tohoto dotazníku.
               </a>
@@ -503,20 +543,20 @@
               <p>Žádnou pomoc nepotřebuji. Mohl byste nám napsat, jaký k tomu máte důvod?</p>
               <cite>webropol.com</cite>
           </li>
-          <li class="result" style="background: #E0FFFF">
+          <li class="result" style="background: #98FB98">
             <h4>
               <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Podělte se o své zkušenosti - chceme vám porozumět, abychom mohli pomoci vám i ostatním.
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://troubled-desire.com/cs/">
+                  Přitahují vás děti? – Zde poskytujeme anonymní pomoc.
               </a>
             </h4>
-              <p>Cílem dotazníku "Pomozte nám poznat”, je porozumět zkušenostem lidí, kteří vyhledávají materiály zachycující sexuální zneužívání dětí, aby bylo možné vyvinout účinnější zdroje podpory.</p>
-              <cite>webropol.com</cite>
+              <p>TROUBLED DESIRE je bezplatná podpůrná služba pro lidi, kteří se obávají své sexuální přitažlivosti k dětem. Rádi bychom vám usnadnili řešení tohoto citlivého tématu.</p>
+              <cite>troubled-desire.com</cite>
           </li>
         </ol>
       </div>
       <div id="slovak-content" class="content">
-        <hr/>
+        <hr>
         Slovak:
         <ol class="searchResults">
           <li class="result" style="background: #98FB98">
@@ -542,6 +582,16 @@
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
+                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
+                  Podeľte sa o svoje skúsenosti - chceme porozumieť, aby sme mohli pomôcť vám aj ostatným
+              </a>
+            </h4>
+              <p>Dotazník "Pomôžte nám vedieť" s cieľom pochopiť skúsenosti ľudí, ktorí vyhľadávajú materiály o sexuálnom zneužívaní detí, aby bolo možné vyvinúť účinnejšie zdroje podpory.</p>
+              <cite>webropol.com</cite>
+          </li>
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
                 href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/8A07773150E3D599">
                   Pomôžte nám pomôcť vám. Venujte niekoľko minút vyplneniu tohto dotazníka.
               </a>
@@ -557,16 +607,6 @@
               </a>
             </h4>
               <p>Nepotrebujem žiadnu pomoc. Chceli by ste nám povedať prečo to tak je?</p>
-              <cite>webropol.com</cite>
-          </li>
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'search:onion-redirect' %}?search_term=BLOCKLIST&redirect_url=https://link.webropolsurveys.com/S/996EF3BD577FCDAE">
-                  Podeľte sa o svoje skúsenosti - chceme porozumieť, aby sme mohli pomôcť vám aj ostatným
-              </a>
-            </h4>
-              <p>Dotazník "Pomôžte nám vedieť" s cieľom pochopiť skúsenosti ľudí, ktorí vyhľadávajú materiály o sexuálnom zneužívaní detí, aby bolo možné vyvinúť účinnejšie zdroje podpory.</p>
               <cite>webropol.com</cite>
           </li>
         </ol>
