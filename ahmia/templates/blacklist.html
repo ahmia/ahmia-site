@@ -1,0 +1,36 @@
+{% extends 'core.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Hidden Service Blacklist" %} &mdash; Ahmia{% endblock %}
+{% block body %}
+  <div id="ahmiaBlacklist">
+    <p class="end">
+      {% blocktrans %}
+	Ahmia blocks websites that contain child sexual abuse material.
+	You can use this to filter child sexual abuse material from your own search indexes.
+	Onion addresses are masked by creating an MD5 sum of the onion domain.
+        For example, if the onion is <code>abcdefghijklmnop.onion</code>, the
+        resulting hash would be <code>2ab597f404a139079640b2392d0cb593</code>.
+        <br>
+        To calculate the MD5 checksum from an onion address, run the following command: <br>
+        <code> echo "abcdefghijklmnop.onion" | md5sum </code>
+        <br>
+        <br>
+        Or using Python3:
+        <br>
+        <code>
+          import hashlib
+          <br>
+          hashlib.md5("abcdefghijklmnop.onion\n".encode('utf-8')).hexdigest()
+        </code>
+      {% endblocktrans %}
+    </p>
+    <p class="end">
+      {% url 'banned' as banned_url %}
+      {% blocktrans %}
+        The blocklist hashlist is available <a href="/blacklist/banned/">here</a>.
+      {% endblocktrans %}
+    </p>
+  </div>
+{% endblock %}

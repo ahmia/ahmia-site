@@ -1,12 +1,11 @@
 *.pyc
 *.bak
 *.log
-templates_old/
 venv/
-ahmia_db
-onionbot/*.json
-.idea/
+ahmia/banned_domains.txt
+onionAddDatabase
 .DS_Store
-ahmia/ahmia/migrations/
+ahmia/migrations/
+ahmia/__pycache__
 .env
 staticfiles

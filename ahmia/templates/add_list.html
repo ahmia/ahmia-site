@@ -1,0 +1,9 @@
+{% block body %}
+
+    <ul id='list' class='steps'>
+        {% for website in hidden_websites %}
+            <li><a href="{{ website.onion }}">{{ website.onion }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

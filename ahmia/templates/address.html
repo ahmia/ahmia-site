@@ -1,0 +1,39 @@
+{% extends "core.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Ahmia - Hidden service list{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+{% block body %}
+  <div id="ahmiaAboutPage">
+    <div id="ahmiaAddService">
+      <div class="aboutAhmia">
+        <h1>Onion domain list</h1>
+        <div id='wrap'>
+          <ul id='list' class='steps'>
+            {% for site in domains %} {% if not site.is_banned %}
+              <li class="hs_site clickable_pointer" style="list-style-type: none; font-size: xx-small;">
+                <h3><a href="http://{{ site.domain }}/">{{ site.domain }}</a></h3>
+              </li>
+            {% endif %} {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="credits">
+      <ul>
+        <li><img src="/static/images/logos/globaleaks.png"
+                 alt="{% trans "Globaleaks Platform" %}"></li>
+        <li><img src="/static/images/logos/tor2web.png"
+                 alt="{% trans "Tor2Web Platform" %}"></li>
+        <li><img src="/static/images/logos/hermes.png"
+                 alt="{% trans "HERMES Center for Transparency and Digital Rights" %}"></li>
+        <li><img src="/static/images/logos/torproject.png"
+                 alt="{% trans "Tor Project" %}"></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
