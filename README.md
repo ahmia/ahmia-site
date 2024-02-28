@@ -23,8 +23,8 @@ pip install -r requirements.txt
 
 This is a common step, both for local (dev) and production environment.
 
-```
-$ cp ahmia/example.env ahmia/.env
+```sh
+cp ahmia/example.env ahmia/.env
 ```
 
 Please **modify the values** in `.env`, to fit your needs. You have to specify
@@ -55,7 +55,7 @@ Default settings should work out of the box.
 python manage.py runserver
 ```
 
-## Production
+## Production -- Nginx
 
 * Configure and run nginx:
 ```sh
@@ -71,7 +71,19 @@ events {
 }
 ```
 
-* **configure and** run gunicorn as systemd daemon
+## Production -- Gunicorn
+
+EITHER:
+
+* Run gunicorn via bash scripts (work as daemons ~ edit files to change):
+```sh
+bash ./bin/run-ahmia.sh
+bash ./bin/run-ahmia-onion.sh
+```
+
+OR
+
+* **configure and** run gunicorn (tested with gunicorn==21.2.0) as systemd daemon
 ```sh
 (sudo) cp conf/gunicorn/*.service /etc/systemd/system/
 (sudo) service gunicorn (re)start
