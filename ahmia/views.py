@@ -11,7 +11,6 @@ from elasticsearch import Elasticsearch
 from django.conf import settings
 from django.template import loader
 from django.template.loader import render_to_string
-from django.utils.http import url_has_allowed_host_and_scheme
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -173,8 +172,7 @@ class BannedDomainListView(OnionListView):
         except FileNotFoundError:
             cached_lines = set()
 
-        new_lines = {hit for hit in hits}
-        updated_lines = cached_lines.union(new_lines)
+        updated_lines = cached_lines.union(set(hits))
 
         if updated_lines != cached_lines:
             with open(cache_file_path, 'wt', encoding='utf-8') as filehandle:
@@ -213,6 +211,21 @@ def redirect_page(msg, rtime, url):
     content = render_to_string('redirect.html', {'message': msg, 'time': rtime, 'redirect': url})
     return HttpResponse(content)
 
+def remove_non_ascii(text):
+    """ Remove non-ASCI characters """
+    return ''.join([i if ord(i) < 128 else '' for i in text])
+
+def xss_safe(redirect_url):
+    """ Validate that redirect URL is cross-site scripting safe """
+    url = remove_non_ascii(redirect_url) # Remove special chars
+    url = url.strip().replace(" ", "") # Remove empty spaces and newlines
+    if not url.startswith('http'):
+        return False # URL does not start with http
+    # Look javascript or data inside the URL
+    if "javascript:" in url or "data:" in url:
+        return False
+    return True # XSS safe content
+
 def onion_redirect(request):
     """Add clicked information and redirect to .onion address."""
     redirect_url = request.GET.get('redirect_url', '').replace('%22', '')
@@ -220,7 +233,7 @@ def onion_redirect(request):
     search_term = request.GET.get('search_term', '')
     if not redirect_url or not search_term:
         return HttpResponseBadRequest("Bad request: no GET parameter URL.")
-    if not url_has_allowed_host_and_scheme(redirect_url, allowed_hosts=None):
+    if not xss_safe(redirect_url):
         return HttpResponseBadRequest("Bad request: URL is not safe or allowed.")
     # Verify it's a valid full .onion URL or valid otherwise
     if not allowed_url(redirect_url):
