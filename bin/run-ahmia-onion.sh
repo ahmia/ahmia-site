@@ -15,7 +15,7 @@ NAME=ahmia-site-onion                          # name of the application (option
 # We have 2 for the onion site and 4 for the public site
 NUM_WORKERS=2                                  # number of gunicorn processes
 MAX_REQUESTS=5000                              # max requests a worker will process
-LOG_FILE=gunicorn.log                          # gunicorn log file created before running the app
+LOG_FILE=gunicorn_onion.log                    # gunicorn log file created before running the app
 ENV=LANG='en_US.UTF-8'
 DJANGO_SETTINGS_MODULE=ahmia.settings
 
