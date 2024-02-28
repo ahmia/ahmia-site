@@ -33,7 +33,7 @@ ELASTICSEARCH_TIMEOUT = config('ELASTICSEARCH_TIMEOUT', cast=int, default=60)
 SECRET_KEY = 'django-insecure-_2r8zw$f^8)j1n8o*3va^9wt784fqtn%^t1!4*lr2!s#1k7zyh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',

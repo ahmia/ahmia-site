@@ -31,21 +31,9 @@ server {
     listen 443 ssl;
     server_name ahmia.fi;
 
-    #limit_conn conn_limit_per_ip 50;
-    #limit_req zone=req_limit_per_ip burst=100 nodelay;
-
     charset     utf-8;
     client_max_body_size 75M;   # adjust to taste
 
-    #Startcom
-    #ssl on;
-    #ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    #ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
-    #ssl_certificate         /etc/nginx/cert_2016.crt;
-    #ssl_certificate_key     /etc/nginx/cert_2016.key;
-
-    #ssl_stapling_verify on
-    #ssl_stapling on;
     ssl_trusted_certificate /etc/letsencrypt/live/ahmia.fi/chain.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_certificate_key /etc/letsencrypt/live/ahmia.fi/privkey.pem;
@@ -59,14 +47,9 @@ server {
     access_log  /usr/local/lib/search/error/access.log no_ip;
     error_log  /usr/local/lib/search/error/error.log;
 
-    # Django media
-    location /media  {
-        alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
+    location /static/ {
+        alias /usr/local/lib/ahmia-site/ahmia/staticfiles;
     }
-
-    #location /static {
-    #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
-    #}
 
     # Django WSGI Server
     location / {
@@ -105,23 +88,11 @@ server {
     charset     utf-8;
     client_max_body_size 75M;   # adjust to taste
 
-    #log_format   main '0.0.0.0 - $remote_user [$time_local]  $status '
-    #'"$request" $body_bytes_sent "$http_referer" '
-    #'"$http_user_agent" "$http_x_forwarded_for"';
     access_log  /usr/local/lib/search/error/hs_access.log no_ip;
     error_log  /usr/local/lib/search/error/hs_error.log;
 
-    # Django media
-    location /media  {
-        alias /usr/local/lib/python2.6/dist-packages/django/contrib/admin/static;
-    }
-
-    #location /static {
-    #    alias /usr/local/lib/ahmia-site/ahmia/search/static;
-    #}
-
-    location =/description.json {
-        alias /usr/local/lib/ahmia-site/ahmia/search/static/description.json;
+    location /static/ {
+        alias /usr/local/lib/ahmia-site/ahmia/staticfiles;
     }
 
     # Django WSGI Server
