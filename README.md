@@ -83,6 +83,12 @@ It is **highly recommended** editing `/etc/systemd/system/gunicorn.service` to r
 -- `User` with the login user (eithewise gunicorn will be ran as **root**).
 -- `ExecStart` value, with your gunicorn path  (needed if gunicorn in virtualenv)
 
+## Copy Elasticsearch CA cert in place
+
+```sh
+/usr/local/share/ca-certificates/http_ca.crt
+```
+
 ## Crontab
 
 * Rule to remove onions added by users weekly

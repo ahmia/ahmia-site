@@ -1,1 +1,2 @@
 Django==5.0.2
+elasticsearch==8.12.0
