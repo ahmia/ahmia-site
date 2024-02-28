@@ -48,7 +48,7 @@ server {
     error_log  /usr/local/lib/search/error/error.log;
 
     location /static/ {
-        alias /usr/local/lib/ahmia-site/ahmia/staticfiles;
+        alias /usr/local/lib/ahmia-site/ahmia/staticfiles/;
     }
 
     # Django WSGI Server
@@ -92,7 +92,7 @@ server {
     error_log  /usr/local/lib/search/error/hs_error.log;
 
     location /static/ {
-        alias /usr/local/lib/ahmia-site/ahmia/staticfiles;
+        alias /usr/local/lib/ahmia-site/ahmia/staticfiles/;
     }
 
     # Django WSGI Server
