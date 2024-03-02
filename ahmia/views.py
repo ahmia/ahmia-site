@@ -269,6 +269,17 @@ def filter_hits_by_terms(hits):
             ret.append(hit)
     return ret
 
+def remove_duplicate_urls(hits):
+    """Return results with unique URLs."""
+    seen_urls = set()
+    unique_hits = []
+    for hit in hits:
+        url = hit.get('url', '')
+        if url not in seen_urls:
+            seen_urls.add(url)
+            unique_hits.append(hit)
+    return unique_hits
+
 class TorResultsView(ElasticsearchBaseListView):
     """ Search results view """
     http_method_names = ['get']
@@ -361,13 +372,14 @@ class TorResultsView(ElasticsearchBaseListView):
         1. Remove results which contain FILTERED TERMS.
             - Extra measure because the text mining filtering has a delay to ban content.
         2. Use time filter if it is available
+        3. Remove dupblicate URLs
         """
         url_params = self.request.GET
         hits = self.object_list.hits
         # Simple extra check to remove child abuse
         hits = filter_hits_by_terms(hits)
-        self.object_list.hits = hits
         self.object_list.total = len(hits)
+        self.object_list.hits = hits
         # Time filtering
         try:
             pastdays = int(url_params.get('d'))
@@ -379,6 +391,10 @@ class TorResultsView(ElasticsearchBaseListView):
             hits = filter_hits_by_time(hits, pastdays)
             self.object_list.hits = hits
             self.object_list.total = len(hits)
+        # Remove duplicate URLs
+        hits = remove_duplicate_urls(hits)
+        self.object_list.total = len(hits)
+        self.object_list.hits = hits
 
     def get_context_data(self, **kwargs):
         """
