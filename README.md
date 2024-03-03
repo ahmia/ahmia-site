@@ -93,12 +93,12 @@ OR
 
 * **configure and** run gunicorn (tested with gunicorn==21.2.0) as systemd daemon
 ```sh
-cp confs/ahmia-site.service /etc/systemd/system/*.service
+cp conf/gunicorn/*.service /etc/systemd/system/
 systemctl daemon-reload
-systemctl enable ahmia-site.service
-systemctl status ahmia-site.service
-systemctl enable ahmia-site-onion.service
-systemctl status ahmia-site-onion.service
+systemctl enable ahmia.service
+systemctl status ahmia.service
+systemctl enable ahmia-onion.service
+systemctl status ahmia-onion.service
 systemctl restart gunicorn
 ```
 
@@ -108,8 +108,8 @@ systemctl restart gunicorn
 systemctl edit nginx
 
 [Unit]
-After=network-online.target remote-fs.target nss-lookup.target ahmia-site.service ahmia-site-onion.service
-Requires=ahmia-site.service ahmia-site-onion.service
+After=network-online.target remote-fs.target nss-lookup.target ahmia.service ahmia-onion.service
+Requires=ahmia.service ahmia-onion.service
 
 systemctl daemon-reload
 systemctl cat nginx

@@ -69,9 +69,9 @@ server {
         proxy_cache_methods GET HEAD;
 
         # Sets caching time for different response codes.
-        proxy_cache_valid 200 301 302 600m;
-        proxy_cache_valid 404 500 60m;
-        proxy_cache_valid any 60m;
+        proxy_cache_valid 200 301 302 60m;
+        proxy_cache_valid 404 500 10m;
+        proxy_cache_valid any 10m;
     }
 }
 
@@ -113,8 +113,8 @@ server {
         proxy_cache_methods GET HEAD;
 
         # Sets caching time for different response codes.
-        proxy_cache_valid 200 301 302 600m;
-        proxy_cache_valid 404 500 60m;
-        proxy_cache_valid any 60m;
+        proxy_cache_valid 200 301 302 60m;
+        proxy_cache_valid 404 500 10m;
+        proxy_cache_valid any 10m;
     }
 }
