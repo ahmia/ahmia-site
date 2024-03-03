@@ -1,7 +1,7 @@
-# Systemd file if you dont want to use /bin/run-ahmia.sh
+# Systemd file if you dont want to use /bin/run-ahmia-onion.sh
 
 [Unit]
-Description=Gunicorn instance to serve Ahmia.fi site
+Description=Gunicorn instance to serve Ahmia onion site
 After=network.target
 
 [Service]
@@ -9,7 +9,7 @@ User=root
 WorkingDirectory=/usr/local/lib/ahmia-site/
 Environment="DJANGO_SETTINGS_MODULE=ahmia.settings" "LANG=en_US.UTF-8" "PYTHONPATH=/usr/local/lib/ahmia-site/"
 ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn ahmia.wsgi:application \
-          --bind unix:/tmp/ahmia.sock \
+          --bind unix:/tmp/msydqstlz2kzerdg.sock \
           --workers 4 \
           --max-requests 5000 \
           --log-level=debug \

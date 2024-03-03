@@ -44,6 +44,12 @@ python manage.py migrate
 python manage.py collectstatic
 ```
 
+### Copy Elasticsearch CA cert in place
+
+```sh
+/usr/local/share/ca-certificates/http_ca.crt
+```
+
 # Run site in dev mode
 
 ## Start development server
@@ -57,10 +63,12 @@ python manage.py runserver
 
 ## Production -- Nginx
 
+__NOTE__: If your deployment directory isn't `/usr/local/lib/ahmia-site` replace accordingly
+
 * Configure and run nginx:
 ```sh
-(sudo) cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
-(sudo) service nginx start
+cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
+service nginx start
 ```
 
 Increase worker_connections in /etc/nginx/nginx.conf:
@@ -85,30 +93,27 @@ OR
 
 * **configure and** run gunicorn (tested with gunicorn==21.2.0) as systemd daemon
 ```sh
-(sudo) cp conf/gunicorn/*.service /etc/systemd/system/
-(sudo) service gunicorn (re)start
-(sudo) systemctl enable /etc/systemd/system/ahmia.service
-(sude) systemctl enable /etc/systemd/system/msydqstlz2kzerdg.service
+cp confs/ahmia-site.service /etc/systemd/system/*.service
+systemctl daemon-reload
+systemctl enable ahmia-site.service
+systemctl status ahmia-site.service
+systemctl enable ahmia-site-onion.service
+systemctl status ahmia-site-onion.service
+systemctl restart gunicorn
 ```
 
-It is **highly recommended** editing `/etc/systemd/system/gunicorn.service` to replace:
--- `User` with the login user (eithewise gunicorn will be ran as **root**).
--- `ExecStart` value, with your gunicorn path  (needed if gunicorn in virtualenv)
-
-## Copy Elasticsearch CA cert in place
+## Edit your /lib/systemd/system/nginx.service to add ahmia-site.service ahmia-site-onion.service
 
 ```sh
-/usr/local/share/ca-certificates/http_ca.crt
+systemctl edit nginx
+
+[Unit]
+After=network-online.target remote-fs.target nss-lookup.target ahmia-site.service ahmia-site-onion.service
+Requires=ahmia-site.service ahmia-site-onion.service
+
+systemctl daemon-reload
+systemctl cat nginx
 ```
-
-## Crontab
-
-* Rule to remove onions added by users weekly
-```sh
-0 0 */7 * * python3 /usr/local/lib/ahmia-site/ahmia/manage.py remove_onions --settings=ahmia.settings.prod
-```
-
-__NOTE__: If your deployment directory isn't `/usr/local/lib/ahmia-site` replace accordingly
 
 # License
 
