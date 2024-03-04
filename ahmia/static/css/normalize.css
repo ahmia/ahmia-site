@@ -451,3 +451,16 @@ td,
 th {
   padding: 0;
 }
+
+ul.messages {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.messages li.success {
+    color: green;
+}
+
+ul.messages li.error {
+    color: red;
+}
