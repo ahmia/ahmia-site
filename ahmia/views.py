@@ -273,11 +273,13 @@ def remove_duplicate_urls(hits):
     """Return results with unique URLs."""
     seen_urls = set()
     unique_hits = []
-    results_by_domain = []
+    results_by_domain = {}
     for hit in hits:
-        domain = hit.get('domain', '')
-        results_by_domain.append(domain)
-        if results_by_domain.count(domain) > 10:
+        domain = hit.get('domain', None)
+        if not domain:
+            continue
+        results_by_domain[domain] = results_by_domain.get(domain, 0) + 1
+        if results_by_domain[domain] > 10:
             continue
         url = hit.get('url', '')
         if url not in seen_urls:
@@ -329,7 +331,7 @@ class TorResultsView(ElasticsearchBaseListView):
     def get_es_context(self, **kwargs):
         return { "index": settings.ELASTICSEARCH_INDEX, "body":
             {
-            "size": 10000,  # Specify the number of search hits to return
+            "size": 5000,  # Specify the number of search hits to return
             "query": {
                 "bool": {
                     "must": [
@@ -378,6 +380,10 @@ class TorResultsView(ElasticsearchBaseListView):
         """
         url_params = self.request.GET
         hits = self.object_list.hits
+        # Remove duplicate URLs
+        hits = remove_duplicate_urls(hits)
+        self.object_list.total = len(hits)
+        self.object_list.hits = hits
         # Simple extra check to remove child abuse
         hits = filter_hits_by_terms(hits)
         self.object_list.total = len(hits)
@@ -393,10 +399,6 @@ class TorResultsView(ElasticsearchBaseListView):
             hits = filter_hits_by_time(hits, pastdays)
             self.object_list.hits = hits
             self.object_list.total = len(hits)
-        # Remove duplicate URLs
-        hits = remove_duplicate_urls(hits)
-        self.object_list.total = len(hits)
-        self.object_list.hits = hits
 
     def get_context_data(self, **kwargs):
         """
