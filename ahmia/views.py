@@ -273,7 +273,12 @@ def remove_duplicate_urls(hits):
     """Return results with unique URLs."""
     seen_urls = set()
     unique_hits = []
+    results_by_domain = []
     for hit in hits:
+        domain = hit.get('domain', '')
+        results_by_domain.append(domain)
+        if results_by_domain.count(domain) > 10:
+            continue
         url = hit.get('url', '')
         if url not in seen_urls:
             seen_urls.add(url)
@@ -324,23 +329,20 @@ class TorResultsView(ElasticsearchBaseListView):
     def get_es_context(self, **kwargs):
         return { "index": settings.ELASTICSEARCH_INDEX, "body":
             {
-            "size": 1000,  # Specify the number of search hits to return
+            "size": 10000,  # Specify the number of search hits to return
             "query": {
                 "bool": {
                     "must": [
                         {
                             "multi_match": {
                                 "query": kwargs['q'],
-                                "fields": ["title^6", "content^1"],
+                                "fields": ["title^6", "h1^5", "content^1"],
                                 "type": "best_fields",
                                 "minimum_should_match": "75%"
                                 }
                         }
                     ],
                     "must_not": [
-                        {
-                            "term": {"is_fake": True}
-                        },
                         {
                             "term": {"is_banned": True}
                         }
