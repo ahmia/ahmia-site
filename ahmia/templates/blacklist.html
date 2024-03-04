@@ -14,7 +14,7 @@
         resulting hash would be <code>2ab597f404a139079640b2392d0cb593</code>.
         <br>
         To calculate the MD5 checksum from an onion address, run the following command: <br>
-        <code> echo "abcdefghijklmnop.onion" | md5sum </code>
+        <code> echo -n "abcdefghijklmnop.onion" | md5sum </code>
         <br>
         <br>
         Or using Python3:
@@ -22,7 +22,7 @@
         <code>
           import hashlib
           <br>
-          hashlib.md5("abcdefghijklmnop.onion\n".encode('utf-8')).hexdigest()
+          hashlib.md5("abcdefghijklmnop.onion".encode('utf-8')).hexdigest()
         </code>
       {% endblocktrans %}
     </p>
