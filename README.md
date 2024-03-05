@@ -118,8 +118,8 @@ systemctl cat nginx
 ## Delete added onions once a week
 
 ```sh
-# At 13:00 every Tuesday
-0 13 * * 2 cd /usr/local/lib/ahmia-site && venv/bin/python manage.py deleteonions >> weeklydelete.log 2>&1
+# EVERY WEEK, Tuesday 12:57
+57 12 * * 2 cd /usr/local/lib/ahmia-site && venv/bin/python manage.py deleteonions >> weeklydelete.log 2>&1
 ```
 
 # License
