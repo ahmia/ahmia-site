@@ -30,6 +30,22 @@ es_client = Elasticsearch(
     timeout=settings.ELASTICSEARCH_TIMEOUT
 )
 
+def banned_domains_cache(hits=None):
+    """ Banned domains """
+    file_path = os.path.join(os.path.dirname(__file__), 'banned_domains.txt')
+    try:
+        with open(file_path, 'rt', encoding='utf-8') as filehandle:
+            banned_list = set(line.strip() for line in filehandle if line.strip())
+    except FileNotFoundError:
+        banned_list = set()
+    if hits:
+        updated_lines = banned_list.union(set(hits))
+        if updated_lines != banned_list:
+            with open(file_path, 'wt', encoding='utf-8') as filehandle:
+                filehandle.write('\n'.join(updated_lines))
+        return updated_lines
+    return banned_list
+
 class CoreView(TemplateView):
     """Core page of the website."""
     template_name = "base.html"
@@ -75,6 +91,12 @@ class AddListView(ListView):
     model = HiddenWebsite
     template_name = "add_list.html"
     context_object_name = "hidden_websites"
+
+    def get_queryset(self):
+        """ Retrieve the original queryset and filter it based on banned domains """
+        queryset = super().get_queryset()
+        banned = banned_domains_cache()
+        return [w for w in queryset if not any(domain in w.onion for domain in banned)]
 
 class BlacklistView(CoreView):
     """Blacklist page"""
@@ -165,19 +187,7 @@ class BannedDomainListView(OnionListView):
 
     def cache_hits(self, hits):
         """ Fetch cached hits """
-        cache_file_path = os.path.join(os.path.dirname(__file__), 'banned_domains.txt')
-        try:
-            with open(cache_file_path, 'rt', encoding='utf-8') as filehandle:
-                cached_lines = set(line.strip() for line in filehandle if line.strip())
-        except FileNotFoundError:
-            cached_lines = set()
-
-        updated_lines = cached_lines.union(set(hits))
-
-        if updated_lines != cached_lines:
-            with open(cache_file_path, 'wt', encoding='utf-8') as filehandle:
-                filehandle.write('\n'.join(updated_lines))
-
+        updated_lines = banned_domains_cache(hits)
         return updated_lines
 
     def get_banned_domains(self):
