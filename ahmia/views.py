@@ -20,7 +20,7 @@ from django.contrib import messages
 
 from .forms import AddOnionForm
 from .models import HiddenWebsite
-from .validators import allowed_url
+from .validators import allowed_url, extract_domain_from_url
 
 # Initialize Elasticsearch client outside of the view class to reuse the connection
 es_client = Elasticsearch(
@@ -248,6 +248,8 @@ def onion_redirect(request):
     # Verify it's a valid full .onion URL or valid otherwise
     if not allowed_url(redirect_url):
         return HttpResponseBadRequest("Bad request: this is not an onion address.")
+    if extract_domain_from_url(redirect_url) in banned_domains_cache():
+        return HttpResponseBadRequest("Bad request: banned.")
     return HttpResponseRedirect(redirect_url)
 
 def help_page():
