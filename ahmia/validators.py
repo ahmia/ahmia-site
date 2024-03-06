@@ -1,4 +1,5 @@
 """ Validators used by forms and models. """
+import re
 from urllib.parse import urlparse
 from elasticsearch import Elasticsearch
 from django.core.exceptions import ValidationError
@@ -77,7 +78,10 @@ def validate_onion_url(url):
 
 def validate_onion(onion):
     """Test if a url is a valid hiddenservice domain"""
-    if not onion.endswith('.onion') or len(onion.split('.')[0]) != 56:
+    if not onion.endswith('.onion'):
+        raise ValidationError(_(f"{onion} is not a valid onion address"))
+    main_onion_domain_part = onion.split('.')[-2]
+    if not re.match(r'^[a-z2-7]{56}$', main_onion_domain_part):
         raise ValidationError(_(f"{onion} is not a valid onion address"))
 
 def is_valid_onion_url(url):

@@ -1,6 +1,4 @@
 """ Views """
-import os
-import math
 import time
 import hashlib
 from datetime import date, datetime, timedelta
@@ -17,9 +15,10 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, FormView, ListView
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.db import IntegrityError
 
 from .forms import AddOnionForm
-from .models import HiddenWebsite
+from .models import HiddenWebsite, BannedWebsite
 from .validators import allowed_url, extract_domain_from_url
 
 # Initialize Elasticsearch client outside of the view class to reuse the connection
@@ -30,20 +29,21 @@ es_client = Elasticsearch(
     timeout=settings.ELASTICSEARCH_TIMEOUT
 )
 
-def banned_domains_cache(hits=None):
-    """ Banned domains """
-    file_path = os.path.join(os.path.dirname(__file__), 'banned_domains.txt')
-    try:
-        with open(file_path, 'rt', encoding='utf-8') as filehandle:
-            banned_list = set(line.strip() for line in filehandle if line.strip())
-    except FileNotFoundError:
-        banned_list = set()
+def banned_domains_db(hits=None):
+    """Retrieve or update the list of banned domains from the database."""
+    # Retrieve existing banned domains from the database
+    banned_list = set(BannedWebsite.objects.all().values_list('onion', flat=True))
+    # If hits are provided, add them to the database
     if hits:
-        updated_lines = banned_list.union(set(hits))
-        if updated_lines != banned_list:
-            with open(file_path, 'wt', encoding='utf-8') as filehandle:
-                filehandle.write('\n'.join(updated_lines))
-        return updated_lines
+        new_domains = set(hits) - banned_list  # Filter out already banned domains
+        for domain in new_domains:
+            try:
+                BannedWebsite.objects.create(onion=domain)
+            except IntegrityError:
+                # Handle the case where the domain is already in the database
+                # This could happen in concurrent environments, or if hits include duplicates
+                continue
+        return banned_list.union(set(hits)) # Return combined list
     return banned_list
 
 class CoreView(TemplateView):
@@ -95,7 +95,7 @@ class AddListView(ListView):
     def get_queryset(self):
         """ Retrieve the original queryset and filter it based on banned domains """
         queryset = super().get_queryset()
-        banned = banned_domains_cache()
+        banned = banned_domains_db()
         return [w for w in queryset if not any(domain in w.onion for domain in banned)]
 
 class BlacklistView(CoreView):
@@ -187,7 +187,7 @@ class BannedDomainListView(OnionListView):
 
     def cache_hits(self, hits):
         """ Fetch cached hits """
-        updated_lines = banned_domains_cache(hits)
+        updated_lines = banned_domains_db(hits)
         return updated_lines
 
     def get_banned_domains(self):
@@ -248,7 +248,7 @@ def onion_redirect(request):
     # Verify it's a valid full .onion URL or valid otherwise
     if not allowed_url(redirect_url):
         return HttpResponseBadRequest("Bad request: this is not an onion address.")
-    if extract_domain_from_url(redirect_url) in banned_domains_cache():
+    if extract_domain_from_url(redirect_url) in banned_domains_db():
         return HttpResponseBadRequest("Bad request: banned.")
     return HttpResponseRedirect(redirect_url)
 
@@ -418,7 +418,8 @@ class TorResultsView(ElasticsearchBaseListView):
         """
         page = kwargs['page']
         length = self.object_list.total
-        max_pages = int(math.ceil(float(length) / self.RESULTS_PER_PAGE))
+        #max_pages = int(math.ceil(float(length) / self.RESULTS_PER_PAGE))
+        max_pages = 1
 
         return {
             'suggest': self.object_list.suggest,
