@@ -46,27 +46,23 @@ def banned_domains_db(hits=None):
         return banned_list.union(set(hits)) # Return combined list
     return banned_list
 
-class CoreView(TemplateView):
-    """Core page of the website."""
-    template_name = "base.html"
-
-class HomepageView(CoreView):
+class HomepageView(TemplateView):
     """ Main page view """
     template_name = "index_tor.html"
 
-class LegalView(CoreView):
+class LegalView(TemplateView):
     """ Legal page view """
     template_name = "legal.html"
 
-class DocumentationView(CoreView):
+class DocumentationView(TemplateView):
     """  Documentation view """
     template_name = "documentation.html"
 
-class IndexingDocumentationView(CoreView):
+class IndexingDocumentationView(TemplateView):
     """Static page about the indexing and crawling."""
     template_name = "indexing.html"
 
-class AboutView(CoreView):
+class AboutView(TemplateView):
     """ About page view """
     template_name = "about.html"
 
@@ -98,7 +94,7 @@ class AddListView(ListView):
         banned = banned_domains_db()
         return [w for w in queryset if not any(domain in w.onion for domain in banned)]
 
-class BlacklistView(CoreView):
+class BlacklistView(TemplateView):
     """Blacklist page"""
     template_name = "blacklist.html"
 
