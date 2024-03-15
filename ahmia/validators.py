@@ -26,15 +26,8 @@ def extract_domain_from_url(url):
 
 def allowed_url(url):
     """Checks if the URL is allowed based on its domain."""
-    allowed_domains = [
-        'webropolsurveys.com',
-        'pelastakaalapset.fi',
-        'mielenterveystalo.fi',
-        'iterapi.se',
-        'troubled-desire.com'
-    ]
     domain = extract_domain_from_url(url)
-    if is_valid_onion(domain) or domain in allowed_domains:
+    if is_valid_onion(domain) or domain in settings.HELP_DOMAINS:
         return True
     return False
 

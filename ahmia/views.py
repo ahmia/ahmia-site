@@ -244,8 +244,10 @@ def onion_redirect(request):
     # Verify it's a valid full .onion URL or valid otherwise
     if not allowed_url(redirect_url):
         return HttpResponseBadRequest("Bad request: this is not an onion address.")
-    if extract_domain_from_url(redirect_url) in banned_domains_db():
-        return HttpResponseBadRequest("Bad request: banned.")
+    main_domain = extract_domain_from_url(redirect_url)
+    if not main_domain in settings.HELP_DOMAINS:
+        if main_domain in banned_domains_db():
+            return HttpResponseBadRequest("Bad request: banned.")
     return HttpResponseRedirect(redirect_url)
 
 def help_page():

@@ -45,6 +45,18 @@ ALLOWED_HOSTS = [
     '46.19.38.63'
 ]
 
+HELP_DOMAINS = [
+    'webropolsurveys.com',
+    'pelastakaalapset.fi',
+    'mielenterveystalo.fi',
+    'iterapi.se',
+    'redirectionprogram.com',
+    'troubled-desire.com',
+    'redirhr3cvqeq2xglvjfd2uiilycwn7nmu3rtnuwv7zthzxjrj7wf3yd.onion',
+    'helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion',
+    '6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion'
+]
+
 # Application definition
 
 INSTALLED_APPS = [
