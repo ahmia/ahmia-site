@@ -92,7 +92,9 @@ class AddListView(ListView):
         """ Retrieve the original queryset and filter it based on banned domains """
         queryset = super().get_queryset()
         banned = banned_domains_db()
-        return [w for w in queryset if not any(domain in w.onion for domain in banned)]
+        urls = [w for w in queryset if not any(domain in w.onion for domain in banned)]
+        domains = list({url.onion.split('/')[2] for url in urls})
+        return domains
 
 class BlacklistView(TemplateView):
     """Blacklist page"""
