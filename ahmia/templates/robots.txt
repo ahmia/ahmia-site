@@ -1,6 +1,5 @@
 User-agent: *
-Disallow: /rule/
-Disallow: /address/
+Disallow: /add/onionsadded
+Disallow: /address
 Disallow: /static/
-Disallow: /stats/history
 Disallow: /*?
