@@ -93,7 +93,7 @@ class AddListView(ListView):
         queryset = super().get_queryset()
         banned = banned_domains_db()
         urls = [w for w in queryset if not any(domain in w.onion for domain in banned)]
-        domains = list({url.onion.split('/')[2] for url in urls})
+        domains = list({f'http://{url.onion.split('/')[2]}/' for url in urls})
         return domains
 
 class BlacklistView(TemplateView):
