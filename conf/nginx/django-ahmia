@@ -49,6 +49,8 @@ server {
 
     location /static/ {
         alias /usr/local/lib/ahmia-site/ahmia/staticfiles/;
+        # Try to serve the file, if not found, return 404
+        try_files $uri $uri/ =404;
     }
 
     # Django WSGI Server
@@ -105,6 +107,8 @@ server {
 
     location /static/ {
         alias /usr/local/lib/ahmia-site/ahmia/staticfiles/;
+        # Try to serve the file, if not found, return 404
+        try_files $uri $uri/ =404;
     }
 
     # Django WSGI Server
