@@ -12,6 +12,7 @@ ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn ahmia.wsgi:application \
           --bind unix:/tmp/msydqstlz2kzerdg.sock \
           --workers 4 \
           --max-requests 5000 \
+          --timeout 180 \
           --log-level=info \
           --log-file=/usr/local/lib/ahmia-site/gunicorn_onion.log \
           --pid=/tmp/project-master-onion.pid
