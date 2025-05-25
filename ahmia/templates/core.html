@@ -17,7 +17,7 @@
 
   <link title="Ahmia Search" type="application/opensearchdescription+xml" rel="search" href="/static/opensearch_html.xml" />
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-  
+
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
   <link rel="stylesheet"
@@ -65,7 +65,16 @@
           </li>
         </ul>
         <ul class="secondary">
-
+          <li>
+            <a href="{% url 'privacy' %}"
+               title="{% trans "Privacy Policy" %}">{% trans "Privacy Policy" %}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'terms' %}"
+               title="{% trans "Terms of Service" %}">{% trans "Terms of Service" %}
+            </a>
+          </li>
           <li>
             <a href="{% url 'blacklist' %}"
                title="{% trans "Blacklist of banned .onion services." %}">{% trans "Blacklist" %}

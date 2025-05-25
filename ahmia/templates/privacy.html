@@ -1,0 +1,122 @@
+{% extends 'core.html' %}
+{% load i18n %}
+{% block title %}{% trans "Privacy Policy" %} &mdash; Ahmia{% endblock %}
+{% block body %}
+  <div id="ahmiaDisclaimer">
+
+    <h3>{% trans "Privacy Policy" %}</h3>
+    <p>
+      {% blocktrans %}
+      Last updated: 25 May 2025
+      {% endblocktrans %}
+    </p>
+
+    <p>
+      {% blocktrans %}
+      Ahmia is a privacy-respecting search engine for publicly accessible Tor (.onion) websites.
+      We explain in this policy what limited information we collect, why we collect it, and how we use it—always protecting your anonymity.
+      This Privacy Policy applies to all users of Ahmia, including its Tor and clearnet versions.
+      For more details of functionality, refer to our <a href="/terms/">Terms of Service</a>.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "1. Ahmia Does Not Process Personal Data" %}</h4>
+    <p>
+      {% blocktrans %}
+      Ahmia does not store personal data, as defined by EU Regulation 2016/679 (GDPR).
+      If a user unexpectedly inputs personal data into the search field, it is not used to identify or track individuals.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans %}
+      Please do not enter personally identifiable information into search terms or send personal data via email unless absolutely necessary and only with your explicit consent.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "2. No Tracking. No Profiling. No Cookies." %}</h4>
+    <ul>
+      <li>{% trans "No IP addresses are stored." %}</li>
+      <li>{% trans "No cookies are used." %}</li>
+      <li>{% trans "No browser fingerprinting or local storage is employed." %}</li>
+      <li>{% trans "No tracking pixels or analytics are used." %}</li>
+      <li>{% trans "No user profiles are created." %}</li>
+      <li>{% trans "No data is stored or accessed on your device." %}</li>
+      <li>{% trans "No login or registration is required." %}</li>
+      <li>{% trans "We never combine Ahmia usage data with other datasets to identify users." %}</li>
+    </ul>
+
+    <h4>{% trans "3. Right to Erasure (Right to Be Forgotten)" %}</h4>
+    <p>
+      {% blocktrans %}
+      Ahmia does not retain any identifiable user data. However, if you believe that a link indexed by Ahmia violates your privacy rights (e.g., links to harmful or defamatory content), you may submit a removal request under Article 17 of the GDPR.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans %}
+      Once we receive a valid request, we may process limited personal data to assess and respond to the request. We evaluate each case individually and may delist or lower the visibility of `.onion` URLs when justified under Finnish or EU law.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "4. What We Collect and Why" %}</h4>
+    <p>
+      {% blocktrans %}
+      Ahmia does not collect personally identifiable information. The following non-personal data is collected for academic research and service quality purposes:
+      {% endblocktrans %}
+    </p>
+    <ul>
+      <li>{% trans "Search terms submitted via the interface" %}</li>
+      <li>{% trans "Clicked links on Ahmia search results" %}</li>
+      <li>{% trans "Browser user agent" %}</li>
+      <li>{% trans "HTTP Referer header" %}</li>
+      <li>{% trans "Timestamps of requests" %}</li>
+    </ul>
+    <p>
+      {% blocktrans %}
+      These logs do not contain IP addresses or other identifying information. They are used solely for academic research, search engine maintenance, and filtering improvements.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "5. How We Use This Data" %}</h4>
+    <ul>
+      <li>{% trans "Data is stored without IP addresses." %}</li>
+      <li>{% trans "Data is not sold or rented." %}</li>
+      <li>{% trans "Data is only shared with trusted academic collaborators under research agreements." %}</li>
+      <li>{% trans "Data is used for ethical and legally compliant academic research." %}</li>
+      <li>{% trans "Data is used to improve automatic filtering and public safety (e.g., content moderation)." %}</li>
+    </ul>
+    <p>
+      {% blocktrans %}
+      Ahmia supports peer-reviewed academic research.
+      For example, data from Ahmia contributed to the publication titled
+      “Investigating child sexual abuse material availability, searches, and users on the anonymous Tor network for a public health intervention strategy”,
+      see
+      {% endblocktrans %}
+      <a href="https://www.nature.com/articles/s41598-024-58346-7" target="_blank" rel="noopener noreferrer">
+        https://www.nature.com/articles/s41598-024-58346-7
+      </a>
+      {% blocktrans %}
+      {% endblocktrans %}
+    </p>
+
+
+    <h4>{% trans "6. Updates to This Policy" %}</h4>
+    <p>
+      {% blocktrans %}
+      This Privacy Policy may be updated as our research and technologies evolve.
+      The latest version will always be published on this page.
+      All updates are recorded in a public <a href="https://github.com/ahmia/ahmia-site">GitHub changelog</a> for transparency.
+      Continued use of the service after changes implies acceptance of the updated policy.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "Contact" %}</h4>
+    <p>
+      {% blocktrans %}
+      For privacy concerns, legal matters, or abuse reports, please contact Juha Nurmi at
+      <a href="mailto:juha.nurmi@ahmia.fi">juha.nurmi@ahmia.fi</a>.
+      Please do not include sensitive personal data unless necessary.
+      {% endblocktrans %}
+    </p>
+
+  </div>
+{% endblock %}

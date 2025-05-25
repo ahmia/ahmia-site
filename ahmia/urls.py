@@ -24,8 +24,10 @@ from . import views
 
 urlpatterns = [
     path('', views.HomepageView.as_view(), name='home'),
-    path('legal/', views.LegalView.as_view(), name='legal'),
+    path('privacy/', views.PrivacyView.as_view(), name='privacy'),
+    path('terms/', views.TermsView.as_view(), name='terms'),
     path('about/', views.AboutView.as_view(), name='about'),
+    path('legal/', views.LegalView.as_view(), name='legal'),
     path('documentation/', views.DocumentationView.as_view(), name='doc'),
     path('documentation/indexing/', views.IndexingDocumentationView.as_view(),
                                     name='doc-indexing'),

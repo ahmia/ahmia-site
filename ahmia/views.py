@@ -50,6 +50,14 @@ class HomepageView(TemplateView):
     """ Main page view """
     template_name = "index_tor.html"
 
+class PrivacyView(TemplateView):
+    """ Privacy Policy """
+    template_name = "privacy.html"
+
+class TermsView(TemplateView):
+    """ Terms of Service """
+    template_name = "terms.html"
+
 class LegalView(TemplateView):
     """ Legal page view """
     template_name = "legal.html"

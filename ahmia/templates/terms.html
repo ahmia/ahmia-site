@@ -1,0 +1,145 @@
+{% extends 'core.html' %}
+{% load i18n %}
+{% block title %}{% trans "Terms of Service" %} &mdash; Ahmia{% endblock %}
+{% block body %}
+  <div id="ahmiaDisclaimer">
+
+    <h3>{% trans "Terms of Service" %}</h3>
+    <p>
+      {% blocktrans %}
+      Last updated: 25 May 2025
+      {% endblocktrans %}
+    </p>
+
+    <p>
+      {% blocktrans %}
+      These Terms of Service govern your use of the Ahmia search engine and apply to all users, including those accessing the Tor (.onion) and clearnet versions.
+      By using Ahmia, you agree to these terms. If you do not agree, do not use the service.
+      Continued use of the service after updates constitutes acceptance of the revised terms.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "1. What Does Ahmia Do?" %}</h4>
+    <p>
+      {% blocktrans %}
+      Ahmia is a non-commercial, privacy-focused search engine that indexes and displays links to publicly accessible `.onion` services on the Tor network.
+      It provides keyword-based search functionality only. It does not host, upload, or distribute `.onion` content.
+      Ahmia does not offer user accounts, personalization, or any form of interactive services.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans %}
+      In cases where users search for CSAM or other sexual content, Ahmia provides links to self-help programs or research surveys instead of showing results.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans %}
+      Ahmia may conduct user interface experiments, such as A/B tests, to evaluate how effectively help links or alternative search result views reach users, i.e., those seeking harmful content or high-risk terms.
+      These tests may involve offering different layouts, messages, or redirect options on a randomized basis.
+      The goal is to improve user engagement with educational or self-help resources while respecting user privacy.
+      No identification of users is performed during these experiments.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans %}
+      <strong>Digital Services Act (DSA) Statement:</strong>
+      Ahmia is a small-scale, non-commercial academic project that processes approximately 130,000 searches per month,
+      with the total number of unique users being significantly lower.
+      It is designed with privacy-by-design principles and does not collect personal data, use cookies, or store IP addresses;
+      thus, Ahmia cannot estimate the number of users beyond the search count.
+      Most users access the service via the Tor Browser, making it technically impossible to determine their geographic origin or the number of EU-based users.
+      No IP address data is available for the `.onion` version of Ahmia.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "2. What You Agree Not To Do" %}</h4>
+    <ul>
+      <li>{% trans "Use Ahmia to search for, promote, or access illegal content, especially child sexual abuse material (CSAM) or sexually exploitative material." %}</li>
+      <li>{% trans "Attempt to reverse-engineer, scrape, or replicate the service without permission." %}</li>
+      <li>{% trans "Attempt to gain unauthorized access to the service or disrupt its normal functioning." %}</li>
+      <li>{% trans "Violate any applicable laws of Finland or the European Union." %}</li>
+    </ul>
+    <p>
+      {% blocktrans %}
+      Ahmia implements automatic filters to exclude CSAM-related links and rejects associated search terms.
+      Access may be limited or rate-restricted in cases of misuse.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "3. Reporting Abuse" %}</h4>
+    <p>
+      {% blocktrans %}
+      If you encounter content in Ahmia's index that violates the law or Ahmia’s ethical guidelines (e.g., CSAM or exploitation), report it by email to the maintainer.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans %}
+      Ahmia respects the Right to Be Forgotten under Article 17 of the GDPR.
+      If an indexed `.onion` link violates your rights, including privacy, copyright, or personal safety, you may submit a request.
+      Requests are evaluated case-by-case in accordance with Finnish and EU law.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "4. Intellectual Property" %}</h4>
+    <p>
+      {% blocktrans %}
+      Ahmia does not host third-party content. All search results point to external `.onion` URLs.
+      Ahmia indexes only publicly visible parts of `.onion` sites and is not responsible for their content.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans %}
+      If content indexed by Ahmia infringes on your intellectual property rights, please contact us with sufficient evidence.
+      We will review the request and may delist offending links.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "5. No Warranty" %}</h4>
+    <p>
+      {% blocktrans %}
+      Ahmia is provided “as is” and “as available.” We do not guarantee the accuracy, legality, or safety of search results.
+      We do not guarantee uninterrupted availability or error-free operation of the service.
+      Use of Ahmia is at your own risk.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "6. Governing Law and Jurisdiction" %}</h4>
+    <p>
+      {% blocktrans %}
+      These terms are governed by the laws of Finland and applicable European Union regulations.
+      Any disputes shall fall under the exclusive jurisdiction of the courts in Finland.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "7. Privacy" %}</h4>
+    <p>
+      {% blocktrans %}
+      Ahmia does not store personally identifiable information.
+      There is no registration or login functionality.
+      Users are advised not to enter personally identifiable information in search terms.
+      For more details, refer to our
+      <a href="/privacy/">Privacy Policy</a>.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "8. Updates to These Terms" %}</h4>
+    <p>
+      {% blocktrans %}
+      We may update these Terms of Service as our research or technical infrastructure evolves.
+      The most recent version will always be available on this page.
+      All updates are recorded in a public <a href="https://github.com/ahmia/ahmia-site">GitHub changelog</a> for transparency.
+      Continued use of the service after updates implies acceptance of the revised terms.
+      {% endblocktrans %}
+    </p>
+
+    <h4>{% trans "Contact" %}</h4>
+    <p>
+      {% blocktrans %}
+      For legal concerns, abuse reports, or general inquiries, contact Juha Nurmi at
+      <a href="mailto:juha.nurmi@ahmia.fi">juha.nurmi@ahmia.fi</a>.
+      Please do not send personal or sensitive information unless necessary.
+      {% endblocktrans %}
+    </p>
+
+  </div>
+{% endblock %}
