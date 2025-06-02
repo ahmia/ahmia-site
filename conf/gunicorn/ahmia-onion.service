@@ -10,7 +10,7 @@ WorkingDirectory=/usr/local/lib/ahmia-site/
 Environment="DJANGO_SETTINGS_MODULE=ahmia.settings" "LANG=en_US.UTF-8" "PYTHONPATH=/usr/local/lib/ahmia-site/"
 ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn ahmia.wsgi:application \
           --bind unix:/tmp/msydqstlz2kzerdg.sock \
-          --workers 4 \
+          --workers 8 \
           --max-requests 5000 \
           --timeout 180 \
           --log-level=info \
