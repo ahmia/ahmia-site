@@ -11,6 +11,7 @@ Environment="DJANGO_SETTINGS_MODULE=ahmia.settings" "LANG=en_US.UTF-8" "PYTHONPA
 ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn ahmia.wsgi:application \
           --bind unix:/tmp/msydqstlz2kzerdg.sock \
           --workers 8 \
+          --threads 2 \
           --max-requests 5000 \
           --timeout 180 \
           --log-level=info \
