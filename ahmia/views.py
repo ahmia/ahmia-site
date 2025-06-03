@@ -260,10 +260,23 @@ def onion_redirect(request):
             return HttpResponseBadRequest("Bad request: banned.")
     return HttpResponseRedirect(redirect_url)
 
-def help_page():
+def help_page(query):
     """ Return Help page """
+    allowed = [45, 95] + list(range(48, 58)) + list(range(97, 123))
+    query = ''.join([i if ord(i) in allowed else '_' for i in query.lower()])
+    tests = [
+        {
+            "test": "0Baseline",
+            "title": "ReDirection | Are you struggling with your use or urges to use sexual images or videos of children?",
+            "paragraph1": "Start the ReDirection program today and learn to take control of your thoughts and behavior. The self-help program is suitable for everyone, and it is secure, anonymous, and free.",
+            "paragraph2": "The ReDirection program is currently being offered through a research project as there is a need for more knowledge to support individuals. Want to make a difference? Register to start today.",
+        }
+    ]
+    weekday = date.today().isoweekday() # Monday = 1 ... Sunday = 7
+    index = (weekday - 1) % len(tests) # Cycles through 0...7 if 8 tests
+    selected_version = tests[index]
+    content = {"test_text": selected_version, "query": {"query": query}}
     template = loader.get_template('help.html')
-    content = {}
     return HttpResponse(template.render(content))
 
 def filter_hits_by_time(hits, pastdays):
@@ -335,7 +348,7 @@ class TorResultsView(ElasticsearchBaseListView):
             answer = "Bad request: too long search query"
             return HttpResponseBadRequest(answer)
         if self.banned_search(search_term):
-            return help_page()
+            return help_page(search_term)
         kwargs['q'] = search_term
         kwargs['page'] = request.GET.get('page', 0)
 
