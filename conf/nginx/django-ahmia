@@ -61,6 +61,7 @@ server {
         include proxy_params;
 
         add_header X-Cache-Status $upstream_cache_status always;
+	add_header Onion-Location http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion$request_uri always;
 
         proxy_cache my_cache;
         proxy_cache_min_uses 1;
