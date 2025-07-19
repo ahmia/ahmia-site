@@ -16,7 +16,11 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # You can filter terms and/or show some helpful content to the user
-FILTER_TERMS_AND_SHOW_HELP = ["jailbait", "12yo"] # Etc.
+FILTER_TERMS_AND_SHOW_HELP = [
+    line[3:-5].strip()
+    for line in open("/etc/nginx/banned_terms.map")
+    if line.startswith('"~*') and line.strip().endswith('" 1;')
+]
 
 # Elasticsearch settings using environment variables for sensitive information
 ELASTICSEARCH_SERVER = config('ES_URL', default="https://localhost:9200/")

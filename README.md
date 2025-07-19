@@ -67,6 +67,8 @@ __NOTE__: If your deployment directory isn't `/usr/local/lib/ahmia-site` replace
 
 * Configure and run nginx:
 ```sh
+cp banned_terms.map /etc/nginx/
+cp conf/nginx/nginx.conf /etc/nginx/nginx.conf
 cp conf/nginx/django-ahmia /etc/nginx/sites-enabled/django-ahmia
 service nginx start
 ```
