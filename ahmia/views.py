@@ -270,11 +270,20 @@ def help_page(query):
             "title": "ReDirection | Are you struggling with your use or urges to use sexual images or videos of children?",
             "paragraph1": "Start the ReDirection program today and learn to take control of your thoughts and behavior. The self-help program is suitable for everyone, and it is secure, anonymous, and free.",
             "paragraph2": "The ReDirection program is currently being offered through a research project as there is a need for more knowledge to support individuals. Want to make a difference? Register to start today.",
+        },
+        # Add more tests here
+        {
+            "test": "random" # Triggers random view on selected day
         }
+        # DO NOT ADD ANYTHING AFTER THE RANDOM PLACEHOLDER ITEM
     ]
+    # For each day, provide one random test view
     weekday = date.today().isoweekday() # Monday = 1 ... Sunday = 7
     index = (weekday - 1) % len(tests) # Cycles through 0...7 if 8 tests
     selected_version = tests[index]
+    # If today is the 'random' day (triggered by placeholder)
+    if selected_version.get("test", "") == "random":
+        selected_version = tests[round(time.time()) % (len(tests) - 1)]
     content = {"test_text": selected_version, "query": {"query": query}}
     template = loader.get_template('help.html')
     return HttpResponse(template.render(content))
