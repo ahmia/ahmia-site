@@ -15,54 +15,6 @@
 
   <link rel="stylesheet"
     href="data:text/css;base64,QC1tb3otZG9jdW1lbnQgcmVnZXhwKCcoPyFodHRwcz86Ly9haG1pYVxcLmZpfGh0dHBzPzovL2xvY2FsaG9zdHxodHRwcz86Ly8xMjdcXC4wXFwuMFxcLjF8aHR0cDovL2p1aGFudXJtaS4qY3N5ZFxcLm9uaW9ufGh0dHA6Ly9tc3lkcXN0Lioya3plcmRnXFwub25pb24pLionKXtib2R5OmJlZm9yZXttYXJnaW4tbGVmdDoxMCU7bWFyZ2luLXRvcDoyMCU7bWFyZ2luLXJpZ2h0OjEwJTtjb2xvcjpyZWQ7Zm9udC1zaXplOjIwMCU7Y29udGVudDoiV2FybmluZzogWW91IGFyZSB1c2luZyBhIG1hbi1pbi10aGUtbWlkZGxlIGZha2UgY2xvbmUgc2l0ZSAtLSBWaXNpdCBodHRwczovL2FobWlhLmZpLyB0byBmaW5kIHJpZ2h0IG9uaW9uIGFkZHJlc3MuIjtkaXNwbGF5OmJsb2NrfWE6YmVmb3Jle2NvbG9yOnJlZDtjb250ZW50OiJbU0NBTV0gIn0jYWhtaWFNYWluQ29udGVudCwjaW1hZ2VPdmVybGF5e2Rpc3BsYXk6bm9uZX19I3dhcm5pbmd7ZGlzcGxheTpub25lfQ">
-  <style>
-    .language-selector {
-      margin: 20px 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      gap: 10px;
-    }
-    .language-selector a {
-      text-decoration: none;
-      color: black;
-      padding: 8px 16px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      transition: color 0.3s, background-color 0.3s;
-    }
-    .language-selector a:hover,
-    .language-selector a:active {
-      background-color: #f0f0f0;
-    }
-
-    /* Initially hide all content divs */
-    .content {
-      display: none;
-    }
-
-    li {
-      list-style-type: none;
-    }
-
-    /* Remove the styles related to the default-target, as we will manage the default visibility differently. */
-
-    /* Show the :target content div */
-    .content:target {
-      display: block;
-    }
-
-    /* Show the English content by default. This rule now applies all the time, so the English content is the default state. */
-    #english-content {
-      display: block;
-    }
-
-    /* Hide the English content when something else is targeted. The ~ combinator selects subsequent siblings. */
-    /* This means if any other content div is :target, it will hide the #english-content. */
-    .content:target ~ #english-content {
-      display: none;
-    }
-  </style>
 </head>
 <body class="production ">
 <div class="outer">
@@ -79,110 +31,48 @@
     <div id="ahmiaResultsPage">
       <!-- Invisible default target -->
       <div id="default-target"></div>
-      <!-- The language selector bar -->
-      Are you worried about your use of child sexual abuse material? Let us help you. First, choose your language.
-      <ul class="language-selector">
-        <li><a href="#english-content">English</a></li>
-        <li><a href="#spanish-content">Español</a></li>
-        <li><a href="#german-content">Deutsch</a></li>
-        <li><a href="#dutch-content">Nederlands</a></li>
-        <li><a href="#swedish-content">Svenska</a></li>
-        <li><a href="#finnish-content">Suomi</a></li>
-        <li><a href="#czech-content">Čeština</a></li>
-        <li><a href="#slovak-content">Slovenčina</a></li>
-      </ul>
-      <!-- The content sections for each language. The div IDs correspond to the hrefs in the links above. -->
-      <div id="english-content" class="content">
+      <div class="content">
         <ol class="searchResults">
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
-          </li>
           <li class="result" style="background: #09f609">
             <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://www.redirectionprogram.com/">
-                  <strong>{{ test_text.title }}</strong>
-              </a>
+              <strong>{{ test_text.title_en }}</strong>
             </h4>
-              <p><strong>{{ test_text.paragraph1 }}</strong></p>
-              <p><strong>{{ test_text.paragraph2 }}</strong></p>
-              <cite><strong>redirectionprogram.com</strong></cite>
+              <p><strong>{{ test_text.paragraph_en_1 }}</strong></p>
+              <p><strong>{{ test_text.paragraph_en_2 }}</strong></p>
+              <p>
+                <a
+                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://www.redirectionprogram.com/">
+                  <strong>redirectionprogram.com</strong>
+                </a>
+              </p>
+              <p><strong>{{ test_text.paragraph_en_3 }}</strong></p>
+              <p>
+                <a
+                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/sites/redirection/register">
+                  <strong>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</strong>
+                </a>
+              </p>
           </li>
           <li class="result" style="background: #6bfa6b">
             <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/sites/redirection/register">
-                  <strong>{{ test_text.title }} | Help available in the Tor network</strong>
-              </a>
+              <strong>{{ test_text.title_es }}</strong>
             </h4>
-              <p><strong>{{ test_text.paragraph1 }}</strong></p>
-              <p><strong>{{ test_text.paragraph2 }}</strong></p>
-              <p><strong>The ReDirection program is accessible in the Tor network. Register for the research study via the onion link.</strong></p>
-              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=http://helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion">
-                  Sexual interest in children? – Help page.
-              </a>
-            </h4>
-              <p>This website is a list of resources for persons with a sexual interest in minors. Both online and offline resources.</p>
-              <cite>helplinkshtttptrdoukunonaiansstlrx4yherxk6azymviqtgle2yd.onion</cite>
-          </li>
-        </ol>
-      </div>
-      <div id="spanish-content" class="content">
-        <hr>
-        Spanish:
-        <ol class="searchResults">
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
+              <p><strong>{{ test_text.paragraph_es_1 }}</strong></p>
+              <p><strong>{{ test_text.paragraph_es_2 }}</strong></p>
+              <p>
+                <a
                 href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://www.redirectionprogram.com/es/">
-                  ReDirección | ¿Está teniendo dificultades con su uso o impulsos de usar imágenes o vídeos de niños/as o adolescentes?
-              </a>
-            </h4>
-              <p>Comience el programa ReDirección hoy y aprenda a tomar el control de sus pensamientos y comportamientos. El programa de autoayuda es adecuado para todos/as, y es seguro, anónimo y gratuito.
+                  <strong>redirectionprogram.com/es</strong>
+                </a>
               </p>
-              <p>El programa ReDirección se ofrece actualmente a través de un proyecto de investigación, ya que es necesario generar más conocimiento para apoyar a las personas. ¿Quiere marcar la diferencia? Regístrese para comenzar hoy.
-              </p>
-              <cite>redirectionprogram.com</cite>
-          </li>
-          <li class="result" style="background: #98FB98">
-            <h4>
-              <a
+              <p><strong>{{ test_text.paragraph_es_3 }}</strong></p>
+              <p>
+                <a
                 href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion/sites/redirection/register">
-                  ReDirección | Ayuda disponible en el navegador Tor
-              </a>
-            </h4>
-              <p>El programa ReDirección es accesible a través del navegador Tor. Regístrese para el estudio de investigación a través del enlace onion.
+                  <strong>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</strong>
+                </a>
               </p>
-              <cite>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</cite>
           </li>
-        </ol>
-      </div>
-      <div id="german-content" class="content">
-        <hr>
-        German:
-        <ol class="searchResults">
           <li class="result" style="background: #E0FFFF">
             <h4>
               <a
@@ -191,87 +81,8 @@
               </a>
             </h4>
               <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
-          </li>
-        </ol>
-      </div>
-      <div id="dutch-content" class="content">
-        <hr>
-        Dutch:
-        <ol class="searchResults">
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
-          </li>
-        </ol>
-      </div>
-      <div id="swedish-content" class="content">
-        <hr>
-        Swedish:
-        <ol class="searchResults">
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
-          </li>
-        </ol>
-      </div>
-      <div id="finnish-content" class="content">
-        <hr>
-        Finnish:
-        <ol class="searchResults">
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
-          </li>
-        </ol>
-      </div>
-      <div id="czech-content" class="content">
-        <hr>
-        Czech:
-        <ol class="searchResults">
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
-          </li>
-        </ol>
-      </div>
-      <div id="slovak-content" class="content">
-        <hr>
-        Slovak:
-        <ol class="searchResults">
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <cite>webropol.com</cite>
+              <p>English | ελληνικά | Nederlands | Svenska | Deutsch | Español | Français | हिन्दी | Português | فارسی | Tamil | Japanese | Chinese Simplified | Chinese Traditional | Suomi | Українська | नेपाली | Italiano | Русский | Polski | Bosanski | Sȑpskī | Hrvatski | ٱلْعَرَبِيَّة</p>
+              <p><strong>webropol.com</strong></p>
           </li>
         </ol>
       </div>
