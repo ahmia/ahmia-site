@@ -10,10 +10,13 @@ WorkingDirectory=/usr/local/lib/ahmia-site/
 Environment="DJANGO_SETTINGS_MODULE=ahmia.settings" "LANG=en_US.UTF-8" "PYTHONPATH=/usr/local/lib/ahmia-site/"
 ExecStart=/usr/local/lib/ahmia-site/venv/bin/gunicorn ahmia.wsgi:application \
           --bind unix:/tmp/ahmia.sock \
+          --worker-class gthread \
           --workers 8 \
-          --threads 2 \
-          --max-requests 5000 \
-          --timeout 180 \
+          --threads 8 \
+          --preload \
+          --max-requests 4000 \
+          --max-requests-jitter 400 \
+          --timeout 200 \
           --log-level=info \
           --log-file=/usr/local/lib/ahmia-site/gunicorn.log \
           --pid=/tmp/project-master.pid
