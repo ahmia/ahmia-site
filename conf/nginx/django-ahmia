@@ -84,8 +84,6 @@ server {
         proxy_cache_methods GET HEAD;
 
         proxy_cache_valid 200 301 302 30m;
-        proxy_cache_valid 404 500 10m;
-        proxy_cache_valid any 10m;
 
         proxy_no_cache $no_cache;
         proxy_cache_bypass $no_cache;
@@ -107,8 +105,6 @@ server {
         proxy_cache_methods GET HEAD;
 
         proxy_cache_valid 200 301 302 30m;
-        proxy_cache_valid 404 500 10m;
-        proxy_cache_valid any 10m;
 
         proxy_no_cache $no_cache;
         proxy_cache_bypass $no_cache;
@@ -123,30 +119,6 @@ server {
 
         proxy_no_cache 1;
         proxy_cache_bypass 1;
-    }
-
-    # Cache onion/domain listings and blacklist pages for 12 hours
-    location ~ ^/(blacklist/banned|onions|address)/?$ {
-        proxy_read_timeout 300;
-        proxy_connect_timeout 300;
-
-        proxy_pass http://django;
-        include proxy_params;
-
-        add_header X-Cache-Status $upstream_cache_status always;
-
-        proxy_cache my_cache;
-        proxy_cache_min_uses 1;
-        proxy_cache_methods GET HEAD;
-
-        # 12-hour cache for successful responses
-        proxy_cache_valid 200 301 302 12h;
-        # fallback shorter cache for errors
-        proxy_cache_valid 404 500 10m;
-        proxy_cache_valid any 10m;
-
-        proxy_no_cache $no_cache;
-        proxy_cache_bypass $no_cache;
     }
 
 }
@@ -198,8 +170,6 @@ server {
         proxy_cache_methods GET HEAD;
 
         proxy_cache_valid 200 301 302 30m;
-        proxy_cache_valid 404 500 10m;
-        proxy_cache_valid any 10m;
 
         proxy_no_cache $no_cache;
         proxy_cache_bypass $no_cache;
@@ -217,8 +187,6 @@ server {
         proxy_cache_methods GET HEAD;
 
         proxy_cache_valid 200 301 302 30m;
-        proxy_cache_valid 404 500 10m;
-        proxy_cache_valid any 10m;
 
         proxy_no_cache $no_cache;
         proxy_cache_bypass $no_cache;
@@ -232,27 +200,6 @@ server {
 
         proxy_no_cache 1;
         proxy_cache_bypass 1;
-    }
-
-    location ~ ^/(blacklist/banned|onions|address)/?$ {
-        proxy_read_timeout 300;
-        proxy_connect_timeout 300;
-
-        proxy_pass http://django-onion;
-        include proxy_params;
-
-        add_header X-Cache-Status $upstream_cache_status always;
-
-        proxy_cache my_cache;
-        proxy_cache_min_uses 1;
-        proxy_cache_methods GET HEAD;
-
-        proxy_cache_valid 200 301 302 2h;
-        proxy_cache_valid 404 500 10m;
-        proxy_cache_valid any 10m;
-
-        proxy_no_cache $no_cache;
-        proxy_cache_bypass $no_cache;
     }
 
 }
