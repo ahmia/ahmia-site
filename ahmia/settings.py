@@ -30,6 +30,9 @@ ELASTICSEARCH_USERNAME = config('ES_USERNAME', default='elastic')
 ELASTICSEARCH_PASSWORD = config('ES_PASSWORD', default='password12345')
 ELASTICSEARCH_CA_CERTS = config('ES_CA_CERTS', default='/etc/elasticsearch/certs/http_ca.crt')
 ELASTICSEARCH_TIMEOUT = config('ELASTICSEARCH_TIMEOUT', cast=int, default=60)
+VERIFY_CERT = config('VERIFY_CERT', cast=bool, default=False)
+
+SALT = config('SALT', default='secret_salt_value')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/

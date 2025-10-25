@@ -1,5 +1,4 @@
 """ Views """
-import os
 import time
 import hashlib
 from datetime import date, datetime, timedelta
@@ -27,15 +26,12 @@ es_client = Elasticsearch(
     hosts=[settings.ELASTICSEARCH_SERVER],
     http_auth=(settings.ELASTICSEARCH_USERNAME, settings.ELASTICSEARCH_PASSWORD),
     ca_certs=settings.ELASTICSEARCH_CA_CERTS,
+    verify_certs=settings.VERIFY_CERT,
+    ssl_show_warn=settings.VERIFY_CERT,
     timeout=settings.ELASTICSEARCH_TIMEOUT
 )
 
-# Create a semi-random salt on startup:
-# hash of current epoch seconds + PID + random bytes
-START_TIME = int(time.time())
-SECRET_SALT = hashlib.sha256(
-    f"{START_TIME}-{os.getpid()}-{os.urandom(16).hex()}".encode()
-).hexdigest()
+SECRET_SALT = settings.SALT
 
 def generate_token(minute=None):
     """Return a 6-char rolling token that changes every minute."""
