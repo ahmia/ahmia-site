@@ -23,7 +23,8 @@ FILTER_TERMS_AND_SHOW_HELP = [
 ]
 
 # Elasticsearch settings using environment variables for sensitive information
-ELASTICSEARCH_SERVER = config('ES_URL', default="https://localhost:9200/")
+#I.e, ELASTICSEARCH_SERVER = config('ES_URL', default="https://localhost:9200/")
+ELASTICSEARCH_SERVER = config('ES_URL', default="https://10.0.0.2:9200/")
 ELASTICSEARCH_INDEX = 'latest-tor'
 ELASTICSEARCH_USERNAME = config('ES_USERNAME', default='elastic')
 ELASTICSEARCH_PASSWORD = config('ES_PASSWORD', default='password12345')

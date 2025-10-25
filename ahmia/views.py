@@ -1,4 +1,5 @@
 """ Views """
+import os
 import time
 import hashlib
 from datetime import date, datetime, timedelta
@@ -29,6 +30,35 @@ es_client = Elasticsearch(
     timeout=settings.ELASTICSEARCH_TIMEOUT
 )
 
+# Create a semi-random salt on startup:
+# hash of current epoch seconds + PID + random bytes
+START_TIME = int(time.time())
+SECRET_SALT = hashlib.sha256(
+    f"{START_TIME}-{os.getpid()}-{os.urandom(16).hex()}".encode()
+).hexdigest()
+
+def generate_token(minute=None):
+    """Return a 6-char rolling token that changes every minute."""
+    if minute is None:
+        minute = int(time.time() // 60)
+    raw = f"{SECRET_SALT}:{minute}"
+    return hashlib.sha1(raw.encode()).hexdigest()[:6]
+
+def valid_token(token):
+    """Check if token matches any of the last 60 minutes."""
+    now_minute = int(time.time() // 60)
+    for i in range(0, 60):  # current + previous 60 minutes
+        if token == generate_token(now_minute - i):
+            return True
+    return False
+
+class TokenMixin:
+    """Injects a rolling search_token into the context for templates with a search form."""
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_token"] = generate_token()
+        return context
+
 def banned_domains_db(hits=None):
     """Retrieve or update the list of banned domains from the database."""
     # Retrieve existing banned domains from the database
@@ -46,35 +76,35 @@ def banned_domains_db(hits=None):
         return banned_list.union(set(hits)) # Return combined list
     return banned_list
 
-class HomepageView(TemplateView):
+class HomepageView(TokenMixin, TemplateView):
     """ Main page view """
     template_name = "index_tor.html"
 
-class PrivacyView(TemplateView):
+class PrivacyView(TokenMixin, TemplateView):
     """ Privacy Policy """
     template_name = "privacy.html"
 
-class TermsView(TemplateView):
+class TermsView(TokenMixin, TemplateView):
     """ Terms of Service """
     template_name = "terms.html"
 
-class LegalView(TemplateView):
+class LegalView(TokenMixin, TemplateView):
     """ Legal page view """
     template_name = "legal.html"
 
-class DocumentationView(TemplateView):
+class DocumentationView(TokenMixin, TemplateView):
     """  Documentation view """
     template_name = "documentation.html"
 
-class IndexingDocumentationView(TemplateView):
+class IndexingDocumentationView(TokenMixin, TemplateView):
     """Static page about the indexing and crawling."""
     template_name = "indexing.html"
 
-class AboutView(TemplateView):
+class AboutView(TokenMixin, TemplateView):
     """ About page view """
     template_name = "about.html"
 
-class AddView(FormView):
+class AddView(TokenMixin, FormView):
     """Add new onion addresses view."""
     form_class = AddOnionForm
     template_name = "add.html"
@@ -90,7 +120,7 @@ class AddView(FormView):
         messages.success(self.request, _("Onion address added successfully."))
         return super().form_valid(form)
 
-class AddListView(ListView):
+class AddListView(TokenMixin, ListView):
     """List all added onion addresses view."""
     model = HiddenWebsite
     template_name = "add_list.html"
@@ -104,11 +134,11 @@ class AddListView(ListView):
         domains = list({f"http://{url.onion.split('/')[2]}/" for url in urls})
         return domains
 
-class BlacklistView(TemplateView):
+class BlacklistView(TokenMixin, TemplateView):
     """Blacklist page"""
     template_name = "blacklist.html"
 
-class ElasticsearchBaseListView(ListView):
+class ElasticsearchBaseListView(TokenMixin, ListView):
     """Base view to display lists of items coming from Elasticsearch."""
     object_list = None
 
@@ -382,6 +412,7 @@ def help_page(query):
     if selected_version.get("test", "") == "random":
         selected_version = tests[round(time.time()) % (len(tests) - 1)]
     content = {"test_text": selected_version, "query": {"query": query}}
+    content["search_token"] = generate_token() # inject token for hidden field
     template = loader.get_template('help.html')
     return HttpResponse(template.render(content))
 
@@ -449,6 +480,10 @@ class TorResultsView(ElasticsearchBaseListView):
         This method is override to add parameters to the get_context_data call
         """
         start = time.time()
+        token = request.GET.get("t", "")
+        if not valid_token(token):
+            return HttpResponseBadRequest("Bad request.")
+
         search_term = request.GET.get('q', '')
         if len(search_term) > 100 or len(search_term.split(" ")) > 10:
             answer = "Bad request: too long search query"
@@ -551,6 +586,7 @@ class TorResultsView(ElasticsearchBaseListView):
         return {
             'suggest': self.object_list.suggest,
             'page': page + 1,
+            'search_token': generate_token(),
             'max_pages': max_pages,
             'result_begin': self.RESULTS_PER_PAGE * page,
             'result_end': self.RESULTS_PER_PAGE * (page + 1),
