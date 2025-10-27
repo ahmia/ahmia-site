@@ -12,7 +12,9 @@ def get_elasticsearch_client():
         hosts=[settings.ELASTICSEARCH_SERVER],
         http_auth=(settings.ELASTICSEARCH_USERNAME, settings.ELASTICSEARCH_PASSWORD),
         ca_certs=settings.ELASTICSEARCH_CA_CERTS,
-        timeout=settings.ELASTICSEARCH_TIMEOUT,
+        verify_certs=settings.VERIFY_CERT,
+        ssl_show_warn=settings.VERIFY_CERT,
+        timeout=settings.ELASTICSEARCH_TIMEOUT
     )
 
 def extract_domain_from_url(url):

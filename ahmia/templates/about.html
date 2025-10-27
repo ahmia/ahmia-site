@@ -44,19 +44,36 @@
           {% blocktrans %} Ahmia is an active area of research, and is in development on
               GitHub<a href="//github.com/ahmia">
               <img src="/static/images/logos/github.png" alt="Github link" class="github"></a>
-              as a free and open source project. If you would like to learn more about Ahmia,
-              download our documentation or presentations on the search
-              engine:
+              as a free and open source project.
           {% endblocktrans %}
         </p>
+        <p>
+            You are free to build your own index and crawler.
+        </p>
+        <p>
+            The source code is mainly divided into three parts:
+        </p>
         <ul>
-          <li><a href="{% url 'doc' %}">{% trans "Documentation" %}</a></li>
-          <li>
-              <a href="https://blog.torproject.org/blog/tor-heart-ahmia-project">
-                {% trans "Ahmia and the Tor Ecosystem" %}
-              </a>
-          </li>
+            <li><a href="//github.com/ahmia/ahmia-index">{% trans "ahmia-index" %}</a><br>Elasticsearch index</li>
+            <li><a href="//github.com/ahmia/ahmia-crawler">{% trans "ahmia-crawler" %}</a><br>Onion crawler</li>
+            <li><a href="//github.com/ahmia/ahmia-site">{% trans "ahmia-site" %}</a><br>The search website</li>
         </ul>
+
+        <h3>For onion service operators</h3>
+        <p>
+            Add onion domains and sub-domains for indexing: <a href="{% url 'add' %}">  Add</a>
+        </p>
+        <p>
+            Child sexual abuse material blocklist: <a href="/blacklist/">Blocklist</a>
+        </p>
+
+        <h3>Onion information</h3>
+        <p>
+            All banned onion services: <a href="/banned/">https://ahmia.fi/banned/</a>.
+        </p>
+        <p>
+            All known non-banned onion domains: <a href="/onions/">https://ahmia.fi/onions/</a>
+        </p>
       </div>
   </div>
 
