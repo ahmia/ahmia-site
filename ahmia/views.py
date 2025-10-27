@@ -38,7 +38,19 @@ def generate_token(minute=None):
     if minute is None:
         minute = int(time.time() // 60)
     raw = f"{SECRET_SALT}:{minute}"
-    return hashlib.sha1(raw.encode()).hexdigest()[:6]
+    digest = hashlib.sha1(raw.encode()).hexdigest()
+    return digest[:6]
+
+def rotating_field_names():
+    """Return a 6-char rolling field names for 60 minutes."""
+    field_names_60 = []
+    now_minute = int(time.time() // 60)
+    for i in range(0, 60):  # current + previous 60 minutes
+        minute = now_minute - i
+        raw = f"{SECRET_SALT}:{minute}"
+        digest = hashlib.sha1(raw.encode()).hexdigest()[6:12]
+        field_names_60.append(digest)
+    return field_names_60
 
 def valid_token(token):
     """Check if token matches any of the last 60 minutes."""
@@ -53,6 +65,7 @@ class TokenMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["search_token"] = generate_token()
+        context["token_field"] = rotating_field_names()[0]
         return context
 
 def banned_domains_db(hits=None):
@@ -409,6 +422,7 @@ def help_page(query):
         selected_version = tests[round(time.time()) % (len(tests) - 1)]
     content = {"test_text": selected_version, "query": {"query": query}}
     content["search_token"] = generate_token() # inject token for hidden field
+    content["token_field"] = rotating_field_names()[0]
     template = loader.get_template('help.html')
     return HttpResponse(template.render(content))
 
@@ -476,9 +490,13 @@ class TorResultsView(ElasticsearchBaseListView):
         This method is override to add parameters to the get_context_data call
         """
         start = time.time()
-        token = request.GET.get("t", "")
+        token = ""
+        for field_name in rotating_field_names():
+            token = request.GET.get(field_name, "")
+            if token:
+                break
         if not valid_token(token):
-            return HttpResponseBadRequest("Bad request.")
+            return redirect("home")
 
         search_term = request.GET.get('q', '')
         if len(search_term) > 100 or len(search_term.split(" ")) > 10:
@@ -583,6 +601,7 @@ class TorResultsView(ElasticsearchBaseListView):
             'suggest': self.object_list.suggest,
             'page': page + 1,
             'search_token': generate_token(),
+            'token_field': rotating_field_names()[0],
             'max_pages': max_pages,
             'result_begin': self.RESULTS_PER_PAGE * page,
             'result_end': self.RESULTS_PER_PAGE * (page + 1),

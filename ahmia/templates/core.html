@@ -45,7 +45,7 @@
                 action="{% url 'results' %}" method="get">
             <input id="id_q" type="search" name="q"
                    placeholder="{% trans "Search Ahmia" %}" value="{{ query_string }}">
-            <input type="hidden" name="t" value="{{ search_token }}">
+            <input type="hidden" name="{{ token_field }}" value="{{ search_token }}">
             <input type="submit" value="{% trans "Search" %}" style="submitButton">
           </form>
         </div>
