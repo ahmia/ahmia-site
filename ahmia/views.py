@@ -197,7 +197,7 @@ class OnionListView(ElasticsearchBaseListView):
                     "domains": {
                         "terms": {
                             "field": "domain",
-                            "size": 30000  # Adjust based on expected count
+                            "size": 300000  # Adjust based on expected count
                         }
                     }
                 }
