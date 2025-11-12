@@ -420,9 +420,27 @@ def help_page(query):
     # If today is the 'random' day (triggered by placeholder)
     if selected_version.get("test", "") == "random":
         selected_version = tests[round(time.time()) % (len(tests) - 1)]
-    content = {"test_text": selected_version, "query": {"query": query}}
-    content["search_token"] = generate_token() # inject token for hidden field
-    content["token_field"] = rotating_field_names()[0]
+    # Background color rotation logic
+    color_sets = [
+        #("#09f609", "#6bfa6b"),  # green
+        ("#777777", "#bbbbbb"),  # gray
+        ("#0969f6", "#6ba7fa"),  # blue
+        ("#f6f609", "#fafa6b"),  # yellow
+        ("#f68b09", "#fab96b"),  # orange
+        ("#f60909", "#fa6b6b"),  # red
+    ]
+    # Select color for each full test cycle
+    color_index = (days_since_anchor // len(tests)) % len(color_sets)
+    bg_primary, bg_secondary = color_sets[color_index]
+
+    content = {
+        "test_text": selected_version,
+        "query": {"query": query},
+        "bg_primary": bg_primary,
+        "bg_secondary": bg_secondary,
+        "search_token": generate_token(),
+        "token_field": rotating_field_names()[0],
+    }
     template = loader.get_template('help.html')
     return HttpResponse(template.render(content))
 
