@@ -404,9 +404,9 @@ def help_page(query):
             "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
         },
         # Random day
-        {
-            "test": "random" # Triggers random view on selected day
-        }
+        #{
+        #    "test": "random" # Triggers random view on selected day
+        #}
         # DO NOT ADD ANYTHING AFTER THE RANDOM PLACEHOLDER ITEM
     ]
     # Daily rolling index across all items
@@ -422,12 +422,12 @@ def help_page(query):
         selected_version = tests[round(time.time()) % (len(tests) - 1)]
     # Background color rotation logic
     color_sets = [
-        #("#09f609", "#6bfa6b"),  # green
         ("#777777", "#bbbbbb"),  # gray
         ("#0969f6", "#6ba7fa"),  # blue
         ("#f6f609", "#fafa6b"),  # yellow
         ("#f68b09", "#fab96b"),  # orange
         ("#f60909", "#fa6b6b"),  # red
+        ("#09f609", "#6bfa6b"),  # green
     ]
     # Select color for each full test cycle
     color_index = (days_since_anchor // len(tests)) % len(color_sets)
