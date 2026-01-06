@@ -316,90 +316,46 @@ def help_page(query):
             "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:",
         },
         {
-            "test": "1", # 1. Legality/Consequences | Negative-Framed
-            "title_en": "ReDirection | Child sexual abuse imagery is illegal.",
-            "paragraph_en_1": "Accessing sexual images of children puts you at risk of arrest and may cost you your relationships, your job, or your freedom.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
+            "test": "1", # Harm Negative-Framed + Legal Positive-Framed
+            "title_en": "ReDirection | Child sexual abuse imagery causes harm to children and is illegal.",
+            "paragraph_en_1": "Searching for and viewing sexual images of children harms children and is illegal. Getting professional help may reduce the risk of arrest and help you keep your relationships, your job, and your freedom.",
+            "paragraph_en_2": "A single click and you can take the first step to change your behaviour by accessing support through the ReDirection program.",
             "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | Las imágenes de abuso sexual infantil son ilegales.",
-            "paragraph_es_1": "Acceder a imágenes sexuales de niños/as te expone a ser arrestado y puede costarte tus relaciones, tu trabajo o tu libertad.",
+            "title_es": "ReDirección | Las imágenes de abuso sexual infantil causan daño a los niños y las niñas y son ilegales.",
+            "paragraph_es_1": "Buscar y ver imágenes sexuales de niños y niñas causa daño a los menores y es ilegal. Recibir ayuda profesional puede reducir el riesgo de detención y ayudarte a conservar tus relaciones, tu empleo y tu libertad.",
             "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
             "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
         },
         {
-            "test": "2", # 2. Legality/Consequences | Positive-Framed
-            "title_en": "ReDirection | Child sexual abuse imagery is illegal.",
-            "paragraph_en_1": "Getting professional help may reduce the risk of arrest and help you keep your relationships, your job, your freedom.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
+            "test": "2", # Harm Negative-Framed + Legal Positive-Framed
+            "title_en": "ReDirection | Viewing child sexual abuse imagery harms children and puts you at risk.",
+            "paragraph_en_1": "Every time sexual images of children are viewed, real children are harmed. This behaviour is illegal, but seeking professional help now may lower the risk of arrest and help protect your future.",
+            "paragraph_en_2": "A single click and you can take the first step to change your behaviour by accessing support through the ReDirection program.",
             "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | Las imágenes de abuso sexual infantil son ilegales.",
-            "paragraph_es_1": "Recibir ayuda profesional puede reducir el riesgo de arresto y ayudarte a proteger tus relaciones, tu empleo y tu libertad.",
+            "title_es": "ReDirección | Ver imágenes de abuso sexual infantil daña a los niños y te pone en riesgo.",
+            "paragraph_es_1": "Cada vez que se ven imágenes sexuales de niños y niñas, se causa daño real a menores. Este comportamiento es ilegal, pero recibir ayuda profesional ahora puede reducir el riesgo de detención y ayudarte a proteger tu futuro.",
             "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
             "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
         },
         {
-            "test": "3", # 3. Harm | Negative-Framed
-            "title_en": "ReDirection | Child sexual abuse imagery causes harm to children.",
-            "paragraph_en_1": "Searching for and viewing sexual images of children adds to that harm.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
+            "test": "3", # Harm Negative-Framed + Legal Positive-Framed
+            "title_en": "ReDirection | Child sexual abuse imagery causes lasting harm — help can stop it.",
+            "paragraph_en_1": "Sexual images of children are created through abuse that causes lifelong harm. This content is illegal, but getting help can reduce the risk of arrest and help you regain control of your life.",
+            "paragraph_en_2": "A single click and you can take the first step to change your behaviour by accessing support through the ReDirection program.",
             "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | Las imágenes de abuso sexual infantil causan daño a los niños y las niñas.",
-            "paragraph_es_1": "Buscar y ver estas imágenes sexuales de niños/as aumenta ese daño.",
+            "title_es": "ReDirección | Las imágenes de abuso sexual infantil causan daños duraderos — la ayuda puede detenerlo.",
+            "paragraph_es_1": "Las imágenes sexuales de niños y niñas se producen a través de abusos que causan daños de por vida. Este contenido es ilegal, pero recibir ayuda puede reducir el riesgo de detención y ayudarte a recuperar el control de tu vida.",
             "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
             "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
         },
         {
-            "test": "4", # 4. Harm | Positive-Framed
-            "title_en": "ReDirection | Child sexual abuse imagery causes harm to children.",
-            "paragraph_en_1": "Getting help to stop viewing sexual images of children is one way you can stop that cycle of harm.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
+            "test": "4", # Harm Negative-Framed + Legal Positive-Framed
+            "title_en": "ReDirection | Child sexual abuse imagery harms children — getting help protects you.",
+            "paragraph_en_1": "Searching for sexual images of children causes serious harm to victims and is illegal. Choosing professional help can reduce the risk of arrest and help you keep what matters most in your life.",
+            "paragraph_en_2": "A single click and you can take the first step to change your behaviour by accessing support through the ReDirection program.",
             "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | Las imágenes de abuso sexual infantil causan daño a los niños.",
-            "paragraph_es_1": "Recibir ayuda para dejar de ver imágenes sexuales de niños/as es una forma de detener ese ciclo de daño.",
-            "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
-            "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
-        },
-        {
-            "test": "5", # 5. Control | Negative-Framed
-            "title_en": "ReDirection | Getting help for child sexual abuse imagery starts with a single click.",
-            "paragraph_en_1": "Don’t dwell on the barriers stopping you from getting anonymous help.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
-            "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | Recibir ayuda para el consumo de imágenes de abuso sexual infantil comienza con un solo clic.",
-            "paragraph_es_1": "No te detengas en las barreras que te impiden obtener ayuda de manera anónima.",
-            "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
-            "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
-        },
-        {
-            "test": "6", # 6. Control | Positive-Framed
-            "title_en": "ReDirection | Getting help for child sexual abuse imagery starts with a single click.",
-            "paragraph_en_1": "It’s easier than you think to get anonymous help to stop viewing sexual images of children.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
-            "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | Recibir ayuda para el consumo de imágenes de abuso sexual infantil comienza con un solo clic.",
-            "paragraph_es_1": "Obtener ayuda anónima para dejar de ver imágenes sexuales de niños/as es más fácil de lo que piensas.",
-            "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
-            "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
-        },
-        {
-            "test": "7", # 7. Distress | Negative-Framed
-            "title_en": "ReDirection | How is searching for child sexual abuse imagery affecting you?",
-            "paragraph_en_1": "Take a moment to think about how searching for sexual images of children is likely to cause you feelings of shame, guilt, and anxiety.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
-            "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | ¿Cómo te está afectando buscar imágenes de abuso sexual infantil?",
-            "paragraph_es_1": "Tómate un momento para pensar en cómo buscar imágenes sexuales de niños/as probablemente te cause sentimientos de vergüenza, culpa y ansiedad.",
-            "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
-            "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
-        },
-        {
-            "test": "8", # 8. Distress | Positive-Framed
-            "title_en": "ReDirection | How is searching for child sexual abuse imagery affecting you?",
-            "paragraph_en_1": "Getting help to stop searching for sexual images of children can take away your feelings of shame, guilt, and anxiety.",
-            "paragraph_en_2": "You can take the first step to change your behaviour by accessing support through the ReDirection program.",
-            "paragraph_en_3": "The ReDirection program is accessible in the Tor network:",
-            "title_es": "ReDirección | ¿Cómo te está afectando buscar imágenes de abuso sexual infantil?",
-            "paragraph_es_1": "Recibir ayuda para dejar de buscar imágenes sexuales de niños/as puede eliminar tus sentimientos de vergüenza, culpa y ansiedad.",
+            "title_es": "ReDirección | Las imágenes de abuso sexual infantil dañan a los niños — recibir ayuda te protege.",
+            "paragraph_es_1": "Buscar imágenes sexuales de niños y niñas causa graves daños a las víctimas y es ilegal. Elegir ayuda profesional puede reducir el riesgo de detención y ayudarte a conservar lo que más importa en tu vida.",
             "paragraph_es_2": "Puedes dar el primer paso para cambiar tu comportamiento accediendo a apoyo a través del programa ReDirección.",
             "paragraph_es_3": "El programa ReDirección es accesible a través del navegador Tor:"
         },
@@ -422,12 +378,12 @@ def help_page(query):
         selected_version = tests[round(time.time()) % (len(tests) - 1)]
     # Background color rotation logic
     color_sets = [
-        ("#0969f6", "#6ba7fa"),  # blue
+        #("#0969f6", "#6ba7fa"),  # blue
         ("#f6f609", "#fafa6b"),  # yellow
         ("#f68b09", "#fab96b"),  # orange
-        ("#f60909", "#fa6b6b"),  # red
-        ("#777777", "#bbbbbb"),  # gray
-        ("#09f609", "#6bfa6b"),  # green
+        #("#f60909", "#fa6b6b"),  # red
+        #("#777777", "#bbbbbb"),  # gray
+        #("#09f609", "#6bfa6b"),  # green
     ]
     # Select color for each full test cycle
     color_index = (days_since_anchor // len(tests)) % len(color_sets)
