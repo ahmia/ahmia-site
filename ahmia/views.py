@@ -136,12 +136,16 @@ class AddListView(TokenMixin, ListView):
     context_object_name = "hidden_websites"
 
     def get_queryset(self):
-        """ Retrieve the original queryset and filter it based on banned domains """
-        queryset = super().get_queryset()
-        banned = banned_domains_db()
-        urls = [w for w in queryset if not any(domain in w.onion for domain in banned)]
-        domains = list({f"http://{url.onion.split('/')[2]}/" for url in urls})
-        return domains
+        """ New onions """
+        queryset = HiddenWebsite.objects.all().only("onion")
+        domains = set() # Extract unique domains efficient
+        for onion_url in queryset.values_list("onion", flat=True):
+            try:
+                domain = onion_url.split("/")[2]
+                domains.add(f"http://{domain}/")
+            except (IndexError, AttributeError):
+                continue
+        return list(domains)
 
 class BlacklistView(TokenMixin, TemplateView):
     """Blacklist page"""
