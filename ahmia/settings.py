@@ -54,6 +54,8 @@ ALLOWED_HOSTS = [
 ]
 
 HELP_DOMAINS = [
+    'webropol.com',
+    'link.webropol.com',
     'webropolsurveys.com',
     'pelastakaalapset.fi',
     'mielenterveystalo.fi',
