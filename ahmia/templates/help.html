@@ -34,6 +34,17 @@
       <div id="default-target"></div>
       <div class="content">
         <ol class="searchResults">
+          <li class="result" style="background: #E0FFFF">
+            <h4>
+              <a
+                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropol.com/s/survey-preventive-pathways">
+                Take Part in New Survey! | Help Improve Our Messaging
+              </a>
+            </h4>
+              <p>Have you ever seen an online warning message when searching for sexual images or videos of children? We want to understand what you think and feel about these messages.</p>
+              <p>The survey is completely anonymous and no personal information is collected.</p>
+              <p><strong>webropol.com</strong></p>
+          </li>
           <li class="result" style="background: {{ bg_primary }}">
             <h4>
               <strong>{{ test_text.title_en }}</strong>
@@ -73,17 +84,6 @@
                   <strong>6wvybf7ub3xk5ow66wt7os3aovbzoo2eei6vjirvhvvkmqg4alnezzid.onion</strong>
                 </a>
               </p>
-          </li>
-          <li class="result" style="background: #E0FFFF">
-            <h4>
-              <a
-                href="{% url 'onion-redirect' %}?search_term={{ query.query }}&label={{ test_text.test }}&redirect_url=https://link.webropolsurveys.com/S/BB4A74DCF79654B2">
-                Take Part in Survey | Help Us Understand Searching for Sexual Images of Children
-              </a>
-            </h4>
-              <p>Have you searched for sexual images or videos of children? We want to hear from you. We are carrying out anonymous research to better understand these behaviours. Share your experiences to help us improve support.</p>
-              <p>English | ελληνικά | Nederlands | Svenska | Deutsch | Español | Français | हिन्दी | Português | فارسی | Tamil | Japanese | Chinese Simplified | Chinese Traditional | Suomi | Українська | नेपाली | Italiano | Русский | Polski | Bosanski | Sȑpskī | Hrvatski | ٱلْعَرَبِيَّة</p>
-              <p><strong>webropol.com</strong></p>
           </li>
         </ol>
       </div>
