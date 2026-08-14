@@ -536,6 +536,11 @@ class TorResultsView(ElasticsearchBaseListView):
                         {
                             "term": {"is_banned": True} # BANサイトは除外
                         }
+                    ],
+                    "filter":[
+                        {
+                            "term": {"is_representative": True}
+                        }
                     ]
                 }
             },
