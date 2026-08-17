@@ -1371,3 +1371,22 @@ div.elastic.inner {
 .messages .success{
   color: dodgerblue;
 }
+
+/* Ahmia logo */
+
+.ahmia-home-logo {
+    margin: 0 0 1.2em;
+}
+
+.ahmia-home-logo img {
+    display: block;
+    width: 360px;
+    max-width: 80vw;
+    height: auto;
+}
+
+.ahmia-header-logo img {
+    display: block;
+    width: 140px;
+    height: auto;
+}

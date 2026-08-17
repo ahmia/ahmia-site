@@ -40,7 +40,9 @@
       </div>
       {% block searchbar %}
         <div class="maxiContent">
-          <h1><a href="{% url 'home' %}">Ahmia</a></h1>
+          <h1 class="ahmia-header-logo">
+            <a href="{% url 'home' %}"><img src="{% static 'images/ahmia-logo-light.svg' %}" alt="Ahmia"></a>
+          </h1>
           <form id="searchForm" class="searchForm autocomplete"
                 action="{% url 'results' %}" method="get">
             <input id="id_q" type="search" name="q"
