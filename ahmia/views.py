@@ -21,6 +21,8 @@ from .forms import AddOnionForm
 from .models import HiddenWebsite, BannedWebsite
 from .validators import allowed_url, extract_domain_from_url
 
+import traceback # デバッグ用に追加（中村）
+
 # Initialize Elasticsearch client outside of the view class to reuse the connection
 es_client = Elasticsearch(
     hosts=[settings.ELASTICSEARCH_SERVER],
@@ -427,6 +429,7 @@ def filter_hits_by_terms(hits):
             ret.append(hit)
     return ret
 
+# 同一ドメインからは10件までしかとらない
 def remove_duplicate_urls(hits):
     """Return results with unique URLs."""
     seen_urls = set()
@@ -451,6 +454,7 @@ class TorResultsView(ElasticsearchBaseListView):
     template_name = "tor_results.html"
     RESULTS_PER_PAGE = 100
 
+    # 検索語が禁止ワードでないかのチェック
     def banned_search(self, search_term):
         """
         This algorithm filters banned search terms.
@@ -463,11 +467,13 @@ class TorResultsView(ElasticsearchBaseListView):
                     return True # Filtered
         return False # Not filtered
 
+    # 実際の検索処理
     def get(self, request, *args, **kwargs):
         """
         This method is override to add parameters to the get_context_data call
         """
         start = time.time()
+        # bot対策
         token = ""
         for field_name in rotating_field_names():
             token = request.GET.get(field_name, "")
@@ -475,49 +481,70 @@ class TorResultsView(ElasticsearchBaseListView):
                 break
         if not valid_token(token):
             return redirect("home")
-
+        
         search_term = request.GET.get('q', '')
+        # 検索語の長さチェック
         if len(search_term) > 100 or len(search_term.split(" ")) > 10:
             answer = "Bad request: too long search query"
             return HttpResponseBadRequest(answer)
+        # 検索語の禁止チェック
         if self.banned_search(search_term):
             return help_page(search_term)
         kwargs['q'] = search_term
         kwargs['page'] = request.GET.get('page', 0)
-
-        self.get_queryset(**kwargs)
-
-        self.filter_hits()
-
+        # ESへ検索語を送り、結果を受け取る
+        try:
+            self.get_queryset(**kwargs)
+        except Exception:
+            print("ERROR in get_queryset")
+            print(traceback.format_exc())
+            raise
+        # 検索結果を加工
+        try: 
+            self.filter_hits()
+        except Exception:
+            print("ERROR in filter_hits")
+            print(traceback.format_exc())
+            raise
         kwargs['time'] = round(time.time() - start, 2)
-
-        context = self.get_context_data(**kwargs)
+        try: 
+            context = self.get_context_data(**kwargs)
+        except Exception:
+            print("ERROR in context")
+            print(traceback.format_exc())
+            raise
         return self.render_to_response(context)
 
+    # 検索クエリの作成
     def get_es_context(self, **kwargs):
         return { "index": settings.ELASTICSEARCH_INDEX, "body":
             {
-            "size": 5000,  # Specify the number of search hits to return
+            "size": 5000,  # 最大5000件まで返す
             "query": {
                 "bool": {
                     "must": [
                         {
                             "multi_match": {
-                                "query": kwargs['q'],
-                                "fields": ["title^6", "h1^5", "content^1"],
-                                "type": "best_fields",
-                                "minimum_should_match": "75%"
+                                "query": kwargs['q'], # 検索語
+                                "fields": ["title^6", "h1^5", "content^1"], # 重みづけ
+                                "type": "best_fields", # タイトル重視
+                                "minimum_should_match": "75%" # 検索語の75%以上の一致が必須
                                 }
                         }
                     ],
                     "must_not": [
                         {
-                            "term": {"is_banned": True}
+                            "term": {"is_banned": True} # BANサイトは除外
+                        }
+                    ],
+                    "filter":[
+                        {
+                            "term": {"is_representative": True}
                         }
                     ]
                 }
             },
-            "_source": ["title", "url", "meta", "updated_on", "domain"]
+            "_source": ["title", "url", "meta", "updated_on", "domain"] # これを要求
         }}
 
     def format_hits(self, hits):
@@ -528,6 +555,43 @@ class TorResultsView(ElasticsearchBaseListView):
             suggest = hits['suggest']['simple-phrase'][0]['options'][0]['text']
         except (KeyError, IndexError, TypeError):
             suggest = None
+
+        # ===== 修正① total（ES8対応）=====
+        total = hits['hits']['total']
+        if isinstance(total, dict):
+            total = total.get("value", 0)
+
+        new_hits = []
+
+        for hit in hits['hits']['hits']:
+            new_hit = hit['_source']
+
+            # ===== 修正② updated_on（安全化）=====
+            updated_on = new_hit.get('updated_on')
+            if updated_on:
+                try:
+                    # ISO8601対策（ミリ秒・Zを雑に吸収）
+                    updated_on = updated_on.replace("Z", "")
+                    if "." in updated_on:
+                        updated_on = updated_on.split(".")[0]
+
+                    new_hit['updated_on'] = datetime.strptime(
+                        updated_on,
+                        '%Y-%m-%dT%H:%M:%S'
+                    )
+                except Exception:
+                    new_hit['updated_on'] = None
+            else:
+                new_hit['updated_on'] = None
+
+            new_hits.append(new_hit)
+
+        self.object_list = SimpleNamespace(
+            total=total,
+            hits=new_hits,
+            suggest=suggest
+        )
+        """
         total = hits['hits']['total']
         new_hits = []
         for hit in hits['hits']['hits']:
@@ -536,7 +600,7 @@ class TorResultsView(ElasticsearchBaseListView):
             new_hit['updated_on'] = datetime.strptime(updated_on, '%Y-%m-%dT%H:%M:%S')
             new_hits.append(new_hit)
         self.object_list = SimpleNamespace(total=total, hits=new_hits, suggest=suggest)
-
+        """
     def filter_hits(self):
         """
         1. Remove results which contain FILTERED TERMS.
