@@ -1,1375 +1,480 @@
+/* Responsive Ahmia theme. Self-contained: no external fonts or assets. */
 @-moz-document regexp('(?!https?://ahmia\\.fi|https?://localhost|https?://127\\.0\\.0\\.1|http://msydqst.*2kzerdg\\.onion|http://juhanurmi.*csyd\\.onion).*') {
-        body:before {
-                margin-left: 10%;
-                margin-top: 20%;
-                margin-right: 10%;
-                color: #FF0000;
-                font-size: 200%;
-                content: "Warning: You are using a man-in-the-middle fake clone site -- Visit https://ahmia.fi/ to find right onion address.";
-                display: block;
-        }
-        a:before {
-                color: #f00;
-                content: "[SCAM] ";
-        }
-
-	#imageOverlay {
-		display: none;
-	}
-	#ahmiaMainContent {
-		display: none;
-	}
+  body::before {
+    display: block;
+    margin: 20vh 10% 0;
+    color: #ff4d5e;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.35;
+    content: "Warning: You are using a man-in-the-middle fake clone site -- Visit https://ahmia.fi/ to find right onion address.";
+  }
+  a::before { color: #ff4d5e; content: "[SCAM] "; }
+  #imageOverlay, #ahmiaMainContent { display: none; }
 }
 
+:root {
+  --bg: #f6f5f7;
+  --surface: #fff;
+  --text: #211f24;
+  --muted: #66616b;
+  --border: #d9d5dc;
+  --header: #29272b;
+  --purple: #7b3f91;
+  --lime: #c7ff70;
+  --lime-hover: #b5f252;
+  --link: #17698d;
+  --visited: #594394;
+  --danger: #b42335;
+  --warning: #7b5100;
+  --success: #166534;
+  --shadow-sm: 0 1px 3px rgb(20 16 24 / 18%);
+  --shadow-md: 0 8px 24px rgb(20 16 24 / 18%);
+  --radius: .35rem;
+  --content: 72rem;
+  --reading: 60rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
 html {
-  font-family: sans-serif; /* 1 */
-  -ms-text-size-adjust: 100%; /* 2 */
-  -webkit-text-size-adjust: 100%; /* 2 */
+  min-height: 100%;
+  font: 100%/1.5 Arial, Helvetica, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
-
-/**
- * Remove default margin.
- */
-
 body {
+  min-width: 20rem;
+  min-height: 100%;
   margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
 }
-
-/* HTML5 display definitions
-   ========================================================================== */
-
-/**
- * Correct `block` display not defined for any HTML5 element in IE 8/9.
- * Correct `block` display not defined for `details` or `summary` in IE 10/11
- * and Firefox.
- * Correct `block` display not defined for `main` in IE 11.
- */
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-menu,
-nav,
-section,
-summary {
-  display: block;
-}
-
-/**
- * 1. Correct `inline-block` display not defined in IE 8/9.
- * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
- */
-
-audio,
-canvas,
-progress,
-video {
-  display: inline-block; /* 1 */
-  vertical-align: baseline; /* 2 */
-}
-
-/**
- * Prevent modern browsers from displaying `audio` without controls.
- * Remove excess height in iOS 5 devices.
- */
-
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
-/**
- * Address `[hidden]` styling not present in IE 8/9/10.
- * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.
- */
-
-[hidden],
-template {
-  display: none;
-}
-
-/* Links
-   ========================================================================== */
-
-/**
- * Remove the gray background color from active links in IE 10.
- */
-
+article, aside, footer, header, main, nav, section { display: block; }
+img, svg { max-width: 100%; height: auto; }
+button, input, select, textarea { margin: 0; color: inherit; font: inherit; }
+button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; }
+button:disabled, input:disabled { cursor: not-allowed; opacity: .65; }
 a {
-  background-color: transparent;
+  color: var(--link);
+  overflow-wrap: anywhere;
+  text-decoration-thickness: .08em;
+  text-underline-offset: .16em;
 }
-
-/**
- * Improve readability of focused elements when they are also in an
- * active/hover state.
- */
-
-a:active,
-a:hover {
-  outline: 0;
+a:visited { color: var(--visited); }
+a:hover { text-decoration: none; }
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
 }
-
-/* Text-level semantics
-   ========================================================================== */
-
-/**
- * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
- */
-
-abbr[title] {
-  border-bottom: 1px dotted;
+h1, h2, h3, h4 { color: #2b2530; line-height: 1.2; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); }
+h2 { font-size: clamp(1.65rem, 4vw, 2.15rem); }
+h3 { font-size: clamp(1.3rem, 3vw, 1.6rem); }
+h4 { font-size: 1.15rem; }
+p, li { overflow-wrap: anywhere; }
+code, kbd, pre, samp {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
-
-/**
- * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
- */
-
-b,
-strong {
-  font-weight: bold;
-}
-
-/**
- * Address styling not present in Safari and Chrome.
- */
-
-dfn {
-  font-style: italic;
-}
-
-/**
- * Address variable `h1` font-size and margin within `section` and `article`
- * contexts in Firefox 4+, Safari, and Chrome.
- */
-
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
-
-/**
- * Address styling not present in IE 8/9.
- */
-
-mark {
-  background: #ff0;
-  color: #000;
-}
-
-/**
- * Address inconsistent and variable font size in all browsers.
- */
-
-small {
-  font-size: 80%;
-}
-
-/**
- * Prevent `sub` and `sup` affecting `line-height` in all browsers.
- */
-
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-
-sup {
-  top: -0.5em;
-}
-
-sub {
-  bottom: -0.25em;
-}
-
-/* Embedded content
-   ========================================================================== */
-
-/**
- * Remove border when inside `a` element in IE 8/9/10.
- */
-
-img {
-  border: 0;
-}
-
-/**
- * Correct overflow not hidden in IE 9/10/11.
- */
-
-svg:not(:root) {
-  overflow: hidden;
-}
-
-/* Grouping content
-   ========================================================================== */
-
-/**
- * Address margin not present in IE 8/9 and Safari.
- */
-
-figure {
-  margin: 1em 40px;
-}
-
-/**
- * Address differences between Firefox and other browsers.
- */
-
-hr {
-  box-sizing: content-box;
-  height: 0;
-}
-
-/**
- * Contain overflow in all browsers.
- */
-
-pre {
-  overflow: auto;
-}
-
-/**
- * Address odd `em`-unit font size rendering in all browsers.
- */
-
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-
-/* Forms
-   ========================================================================== */
-
-/**
- * Known limitation: by default, Chrome and Safari on OS X allow very limited
- * styling of `select`, unless a `border` property is set.
- */
-
-/**
- * 1. Correct color not being inherited.
- *    Known issue: affects color of disabled elements.
- * 2. Correct font properties not being inherited.
- * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
- */
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit; /* 1 */
-  font: inherit; /* 2 */
-  margin: 0; /* 3 */
-}
-
-/**
- * Address `overflow` set to `hidden` in IE 8/9/10/11.
- */
-
-button {
-  overflow: visible;
-}
-
-/**
- * Address inconsistent `text-transform` inheritance for `button` and `select`.
- * All other form control elements do not inherit `text-transform` values.
- * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
- * Correct `select` style inheritance in Firefox.
- */
-
-button,
-select {
-  text-transform: none;
-}
-
-/**
- * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
- *    and `video` controls.
- * 2. Correct inability to style clickable `input` types in iOS.
- * 3. Improve usability and consistency of cursor style between image-type
- *    `input` and others.
- */
-
-button,
-html input[type="button"], /* 1 */
-input[type="reset"],
-input[type="submit"] {
-  -webkit-appearance: button; /* 2 */
-  cursor: pointer; /* 3 */
-}
-
-/**
- * Re-set default cursor for disabled elements.
- */
-
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-
-/**
- * Remove inner padding and border in Firefox 4+.
- */
-
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-
-/**
- * Address Firefox 4+ setting `line-height` on `input` using `!important` in
- * the UA stylesheet.
- */
-
-input {
-  line-height: normal;
-}
-
-/**
- * It's recommended that you don't attempt to style these elements.
- * Firefox's implementation doesn't respect box-sizing, padding, or width.
- *
- * 1. Address box sizing set to `content-box` in IE 8/9/10.
- * 2. Remove excess padding in IE 8/9/10.
- */
-
-input[type="checkbox"],
-input[type="radio"] {
-  box-sizing: border-box; /* 1 */
-  padding: 0; /* 2 */
-}
-
-/**
- * Fix the cursor style for Chrome's increment/decrement buttons. For certain
- * `font-size` values of the `input`, it causes the cursor style of the
- * decrement button to change from `default` to `text`.
- */
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
-
-/**
- * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
- * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.
- */
-
-input[type="search"] {
-  -webkit-appearance: textfield; /* 1 */
-  box-sizing: content-box; /* 2 */
-}
-
-/**
- * Remove inner padding and search cancel button in Safari and Chrome on OS X.
- * Safari (but not Chrome) clips the cancel button when the search input has
- * padding (and `textfield` appearance).
- */
-
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-
-/**
- * Define consistent border, margin, and padding.
- */
-
-fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
-}
-
-/**
- * 1. Correct `color` not being inherited in IE 8/9/10/11.
- * 2. Remove padding so people aren't caught out if they zero out fieldsets.
- */
-
-legend {
-  border: 0; /* 1 */
-  padding: 0; /* 2 */
-}
-
-/**
- * Remove default vertical scrollbar in IE 8/9/10/11.
- */
-
-textarea {
-  overflow: auto;
-}
-
-/**
- * Don't inherit the `font-weight` (applied by a rule above).
- * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
- */
-
-optgroup {
-  font-weight: bold;
-}
-
-/* Tables
-   ========================================================================== */
-
-/**
- * Remove most spacing between table cells.
- */
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-td,
-th {
-  padding: 0;
-}
-
-ul.messages {
-    list-style-type: none;
-    padding: 0;
-}
-
-ul.messages li.success {
-    color: green;
-}
-
-ul.messages li.error {
-    color: red;
-}
-
-.responsive {
-  box-sizing: border-box;
-}
+code { padding: .1em .3em; border-radius: .2rem; background: #e9e6eb; }
+pre { max-width: 100%; overflow: auto; }
+hr { border: 0; border-top: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: .75rem; border-bottom: 1px solid var(--border); text-align: left; }
+.hidden, [hidden] { display: none !important; }
 .sr {
-  position: absolute;
-  display: block;
-  top: -1000px;
-  left: -1000px;
-  width: 5px;
-  height: 5px;
-  color: transparent;
-  background-color: transparent;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
-.hidden {
-  display: none;
+.responsive { box-sizing: border-box; }
+.outer, .inner { width: 100%; }
+#content.inner { min-height: 100vh; }
+#notTorBrowserWarning { display: none; }
+
+/* Shared forms */
+.searchForm, #ahmiaSearchArea form, #ahmiaAddService form,
+#ahmiaBlacklist form, #ahmiaAddOnion form {
+  display: flex;
+  gap: .5rem;
+  align-items: stretch;
 }
-/* core controls */
-.searchForm input[type=search],
-.searchForm input[type=text] {
-  box-sizing: border-box;
-  color: #000;
-  /* color: @text-on-light-bg-placeholder; */
-  font-size: 1.6em;
-  font-family: sans-serif;
-  line-height: 1.8em;
-  padding-left: 0.5em;
-  text-align: left;
-  min-width: 20em;
-  border: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
+input[type="search"], input[type="text"], input[type="url"],
+input[type="email"], select, textarea {
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: .65rem .8rem;
+  border: 1px solid #8f8993;
+  border-radius: var(--radius);
+  background: #fff;
+  color: #171519;
+  box-shadow: inset 0 1px 2px rgb(20 16 24 / 12%);
 }
-.searchForm input[type=submit] {
-  box-sizing: border-box;
-  font-family: sans-serif;
-  display: inline-block;
-  background-color: #c7ff70;
-  color: #000;
-  border: 1px solid #c7ff70;
-  border-top-width: 2px;
-  font-size: 1.6em;
-  line-height: 1.8em;
-  text-align: center;
-  padding: 0 0.8em;
+input[type="search"], input[type="text"], input[type="url"] { flex: 1 1 auto; }
+input[type="submit"], button {
+  min-height: 2.75rem;
+  padding: .65rem 1.15rem;
+  border: 1px solid #9bd638;
+  border-radius: var(--radius);
+  background: var(--lime);
+  color: #181d10;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 150ms ease, transform 150ms ease;
 }
-.searchForm input[type=submit]:hover {
-  color: #294957;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s;
-}
-div#flashMessage,
-div.flashMessage {
-  margin: 0 auto 1em;
-}
-div#flashMessage p,
-div.flashMessage p {
-  text-align: center;
-  border-bottom: none;
-  padding: 1em;
-  margin: 0 0 1em 0;
-}
-div#flashMessage p.info,
-div.flashMessage p.info {
-  background-color: rgba(0, 0, 0, 0.2);
-  color: rgba(0, 0, 0, 0.4);
-}
-div#flashMessage p.warn,
-div.flashMessage p.warn {
-  background-color: #c7ff70;
-  color: rgba(0, 0, 0, 0.9);
-}
-div#flashMessage p.error,
-div.flashMessage p.error {
-  background-color: #ff707d;
-  color: rgba(0, 0, 0, 0.9);
-}
-/*
-  "main"/desktop search styles
-  TODO: move to media query
-*/
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-body {
-  background-color: #fafafa;
-  font-family: sans-serif;
-  font-weight: light;
-  font-size: 12px;
-}
-body.main {
-  background-color: #000;
-  overflow: hidden;
-}
-body a:link {
-  color: #19749b;
-  text-decoration: underline;
-  transition: color 0.3s;
-}
-body a:visited {
-  color: #294957;
-  text-decoration: underline;
-}
-body a:hover {
-  color: #294957;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-body code {
-  font-family: monospace;
-}
-#imageOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.4;
-  background-color: #000;
-  background-image: url('/static/images/metro.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  z-index: -1;
-}
-div.elastic.outer {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  margin: 0 auto;
-}
-div.elastic.inner {
-  display: block;
-  width: 80%;
-  margin: 0 auto;
-}
-#notTorBrowserWarning {
-  display: none;
-}
+input[type="submit"]:hover, button:hover { background: var(--lime-hover); }
+input[type="submit"]:active, button:active { transform: translateY(1px); }
 
 /* Header */
-
 #ahmiaHeader {
-  overflow: hidden;
-  color: #fff;
-  box-sizing: border-box;
-  background-color: #303030;
-}
-#ahmiaHeader.mini {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
+  z-index: 10;
   width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
-#ahmiaHeader.mini h1 {
-  display: none;
-}
-#ahmiaHeader.mini #searchForm {
-  display: none;
-}
-#ahmiaHeader.maxi .maxiContent {
-  margin: 0 1.0em 0;
-  padding-bottom: 1.0em;
-}
-#ahmiaHeader.maxi .maxiContent h1 {
-  font-family: sans-serif;
-  font-size: 2.0em;
-  margin: 0.5em 0;
-  padding: 0;
-  display: block;
-  float: left;
-}
-#ahmiaHeader.maxi .maxiContent h1 a {
-  color: rgba(255, 255, 255, 0.7);
-  box-shadow: none;
-  text-decoration: none;
-  transition: 0.3s all;
-}
-#ahmiaHeader.maxi .maxiContent h1 a:hover {
-  text-decoration: none;
+  overflow: visible;
+  border-bottom: 1px solid #18171a;
+  background: var(--header);
   color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-  transition: 0.3s all;
+  box-shadow: var(--shadow-sm);
 }
-#ahmiaHeader.maxi .maxiContent .searchForm {
-  display: block;
-  float: left;
-  margin-left: 2.0em;
+#ahmiaHeader .maxiContent {
+  display: flex;
+  width: min(100%, var(--content));
+  margin: 0 auto;
+  padding: 1rem clamp(1rem, 3vw, 2rem);
+  gap: 1.25rem;
+  align-items: center;
 }
-#ahmiaHeader.maxi .maxiContent .searchForm input {
-  font-size: 1.3em;
-  line-height: 2.0em;
-  margin: 0.5em 0;
-}
-#ahmiaHeader.maxi .maxiContent .searchForm input[type="search"] {
-  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
-}
-#ahmiaHeader.maxi .maxiContent .searchForm input[type="submit"] {
-  background-color: #c7ff70;
-  border: 1px solid #c7ff70;
-  margin-left: 0.5em;
-  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
-}
-#ahmiaHeader.maxi .maxiContent nav {
-  vertical-align: bottom;
-}
-#ahmiaHeader #collapseIfResponsive {
-  display: none;
-}
-#ahmiaHeader nav {
+#ahmiaHeader .ahmia-header-logo {
+  flex: 0 0 auto;
   margin: 0;
-  border-bottom: 3px solid rgba(0, 0, 0, 0.4);
-  display: block;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  padding: 0 1em;
+  line-height: 0;
+}
+.ahmia-header-logo img { display: block; width: 8.75rem; }
+#ahmiaHeader .searchForm { flex: 1 1 36rem; max-width: 44rem; }
+#ahmiaHeader .searchForm input[type="search"],
+#ahmiaHeader .searchForm input[type="text"] { width: 100%; }
+#ahmiaHeader nav {
+  display: flex;
+  width: min(100%, var(--content));
+  min-height: 2.75rem;
+  margin: 0 auto;
+  padding: 0 clamp(.5rem, 2vw, 1.5rem);
+  gap: 1rem;
+  align-items: stretch;
+  justify-content: space-between;
 }
 #ahmiaHeader ul {
+  display: flex;
   margin: 0;
   padding: 0;
-}
-#ahmiaHeader ul.primary,
-#ahmiaHeader ul.primary li {
-  float: left;
-}
-#ahmiaHeader ul.secondary,
-#ahmiaHeader ul.secondary li {
-  float: right;
-}
-#ahmiaHeader ul.primary li:first-child {
-  margin-left: 0;
-}
-#ahmiaHeader ul.secondary li:first-child {
-  margin-right: 2em;
-}
-#ahmiaHeader ul li {
-  margin: 0.4em 0 0.4em 1em;
-  display: inline-block;
-  float: left;
-  list-style-type: none;
-}
-#ahmiaHeader ul li a {
-  color: #bbb;
-  text-decoration: none;
-}
-#ahmiaHeader ul li a:hover {
-  text-decoration: underline;
-  transition: all 0.2s;
-}
-
-/* Main Content */
-
-#ahmiaMainContent {
-  color: #fff;
-  position: absolute;
-  left: 5%;
-  top: 50%;
-  width: 60%;
-  transform: translate(0%, -50%);
-  -webkit-transform: translate(0%, -50%);
-  -moz-transform: translate(0%, -50%);
-  -ms-transform: translate(0%, -50%);
-}
-#ahmiaMainContent h1 {
-  font-family: sans-serif;
-  font-size: 3.2em;
-  color: #fff;
-  text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.4);
-}
-#ahmiaMainContent #ahmiaSearchArea input[type=search],
-#ahmiaMainContent #ahmiaSearchArea input[type=text] {
-  box-sizing: border-box;
-  color: #000;
-  /* color: @text-on-light-bg-placeholder; */
-  font-size: 1.6em;
-  font-family: sans-serif;
-  line-height: 1.8em;
-  padding-left: 0.5em;
-  text-align: left;
-  min-width: 20em;
-  border: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
-}
-#ahmiaMainContent #ahmiaSearchArea input[type=submit] {
-  box-sizing: border-box;
-  font-family: sans-serif;
-  display: inline-block;
-  background-color: #c7ff70;
-  color: #000;
-  border: 1px solid #c7ff70;
-  border-top-width: 2px;
-  font-size: 1.6em;
-  line-height: 1.8em;
-  text-align: center;
-  padding: 0 0.8em;
-}
-#ahmiaMainContent #ahmiaSearchArea input[type=submit]:hover {
-  color: #294957;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s;
-}
-#ahmiaMainContent #ahmiaDescriptionArea {
-  margin-top: 2.5em;
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  padding-top: 2.3em;
-}
-#ahmiaMainContent #ahmiaDescriptionArea a:link {
-  color: #c7ff70;
-  text-decoration: none;
-}
-#ahmiaMainContent #ahmiaDescriptionArea a:hover {
-  text-decoration: underline;
-  transition: all 0.2s;
-}
-#ahmiaMainContent #ahmiaDescriptionArea a:visited {
-  text-decoration: underline;
-  transition: all 0.2s;
-}
-#ahmiaMainContent #ahmiaDescriptionArea p {
-  font-size: 1.1em;
-  margin-top: 0;
-  margin-bottom: 1em;
-  line-height: 1.7em;
-  text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
-}
-
-/* Results Page */
-
-#ahmiaResultsPage {
-  margin: 1.0em;
-}
-
-/* Filters Menu */
-
-/* # todo simplifying the code for the filters menu would be a good idea if possible
- * # todo making the dropdown on click instead on hover would be nice, (e.g checkbox hack),
- * #      but integrating to the already code below is tricky
- */
-
-#ahmiaResultsPage #resultsFiltersMenu a {
-   outline: 0;
-   color: #1c3c4a;  /* a bit darker that #body a
-   /*color: rgba(0, 0, 0, 0.4);*/
-}
-
-#ahmiaResultsPage #resultsFiltersMenu, #resultsFiltersMenu ul {
+  flex-wrap: wrap;
+  align-items: stretch;
   list-style: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 0 0 29px 0;
-  margin: 0 0 10px 0;
+}
+#ahmiaHeader ul.secondary { justify-content: flex-end; }
+#ahmiaHeader li { display: flex; }
+#ahmiaHeader li a, #ahmiaHeader li a:visited {
+  display: flex;
+  min-height: 2.75rem;
+  padding: .65rem .75rem;
+  color: #d8d4da;
+  align-items: center;
   text-decoration: none;
 }
-#ahmiaResultsPage #resultsFiltersMenu ul {
+#ahmiaHeader li a:hover { background: #3c393f; color: #fff; }
+#ahmiaHeader #collapseIfResponsive { display: none; }
+#ahmiaHeader.mini .maxiContent { display: none; }
+
+/* Homepage */
+body.main { min-height: 100vh; background: #050505; color: #f8f6f9; }
+body.main #content.inner { position: relative; isolation: isolate; }
+#imageOverlay {
+  position: fixed;
+  z-index: -2;
+  inset: 0;
+  background: #050505 url('/static/images/metro.jpg') center / cover no-repeat;
+}
+#imageOverlay::after {
   position: absolute;
-  top: 25px;
-  left: -1px;
-  padding: 0;
-  display: none;
-  text-decoration: none;
+  content: "";
+  inset: 0;
+  background: rgb(0 0 0 / 68%);
 }
-#ahmiaResultsPage #resultsFiltersMenu li {
-  float: left;
-  margin-right: 3px;
-  position: relative;
-  text-decoration: none;
+#ahmiaMainContent {
+  width: min(100% - 2rem, 52rem);
+  margin: 0 max(1rem, calc((100vw - var(--content)) / 2 + 2rem));
+  padding: clamp(4rem, 14vh, 9rem) 0 3rem;
+  color: #fff;
 }
-#ahmiaResultsPage #resultsFiltersMenu .options {
-  /* # todo this would be nice to move the dropdown like 5px below,
-       but currently it disappears if cursor moves slowly */
-  margin-top: 0;
+.ahmia-home-logo { margin: 0 0 2rem; }
+.ahmia-home-logo img { display: block; width: min(22.5rem, 82vw); }
+#ahmiaSearchArea form { width: min(100%, 40rem); }
+#ahmiaSearchArea input[type="search"] { width: 100%; border: 2px solid #fff; font-size: 1.125rem; }
+#ahmiaDescriptionArea {
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgb(255 255 255 / 38%);
 }
-#ahmiaResultsPage #resultsFiltersMenu .category {
-  margin-right: 14px;
+#ahmiaDescriptionArea p {
+  max-width: 50rem;
+  margin: 0 0 .9rem;
+  color: #f2eef4;
+  font-size: .975rem;
+  line-height: 1.7;
+  text-shadow: 0 1px 8px #000;
 }
-#ahmiaResultsPage #resultsFiltersMenu .label {
-  margin-left: -2px;
-  font-size: 1.2em;
-}
-#ahmiaResultsPage #resultsFiltersMenu .first {
-  padding-top: 3px;
-}
-#ahmiaResultsPage #resultsFiltersMenu .last {
-  padding-bottom: 3px;
-}
-#ahmiaResultsPage #resultsFiltersMenu .child {
-  padding-left: 6px;
-  width: 125px;
-  margin: 3px 0 3px 0;
-  font-size: 1.1em;
-}
+#ahmiaDescriptionArea a, #ahmiaDescriptionArea a:visited { color: var(--lime); }
 
-#ahmiaResultsPage #resultsFiltersMenu li img {
-  float: right;
-  margin: 7px 20px 0 3px;
-}
-
-#ahmiaResultsPage #resultsFiltersMenu ul li {
-  float: none;
-  margin: 0;
-  padding: 0;
-  line-height: 15px;
-  text-decoration: none;
-  background: #fafafa;
-}
-
-#ahmiaResultsPage #resultsFiltersMenu a:link, #resultsFiltersMenu {
-  /*text-shadow:1px 1px 0px #fff; !* this is nice but does it fit to the rest of the page? *!*/
-  display: block;
-  text-align: left;
-  padding: 5px;
-  text-decoration: none;
-  vertical-align: baseline;
-  clear: both;
-}
-#ahmiaResultsPage #resultsFiltersMenu .child:hover {
-  background-color: rgba(0,0,0,.2);
-  /*background-color: rgba(89,112,170,.3);*/
-  /*border: 1px solid #000;*/
-}
-
-#ahmiaResultsPage #resultsFiltersMenu .category:hover ul {
-  display: block;
-  box-shadow: 4px 4px 8px 4px rgba(1,0,1,0.2);   /* give it a 3d feeling: */
-  background: #fafafa;
-}
-
-/* Results Subheader */
-
-#ahmiaResultsPage div.resultsSubheader {
-  margin-bottom: 1em;
-  padding-bottom: 1em;
-}
-#ahmiaResultsPage div.resultsSubheader p {
-  color: rgba(0, 0, 0, 0.4);
-  margin: 0;
-  padding: 0;
-}
-
-/* Did you mean */
-#ahmiaResultsPage #didYouMean p {
-  color: rgba(0, 0, 0, 0.4);
-  font-size: 1.3em;
-  margin: 0 0 5px 0;
-}
-
-#ahmiaResultsPage #didYouMean a {
-  text-decoration: none;
-  color: #19749b;
-}
-
-#ahmiaResultsPage #didYouMean a:hover {
-  color: #294957;
-}
-
-/* Results Page Generic */
-
-#ahmiaResultsPage p {
-  font-size: 1.1em;
-  color: #000;
-  margin: 1em 0;
-  line-height: 1.7em;
-}
-#ahmiaResultsPage ol {
-  list-style-type: none;
-  padding: 0;
-  margin: 0 -1em;
-}
-#ahmiaResultsPage ol li {
-  box-sizing: border-box;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-  cursor: pointer;
-  padding: 1em;
-  transition: background-color 0.3s;
-}
-#ahmiaResultsPage ol li.selected {
-  border-top-color: rgba(127, 127, 127, 0.2);
-  border-bottom-color: rgba(127, 127, 127, 0.2);
-  background-color: rgba(255, 255, 255, 0.8);
-  transition: background-color 0.3s;
-}
-#ahmiaResultsPage ol li.selected h4 a:link {
-  /* mimic li h4 a:hover */
-  text-decoration: none;
-}
-#ahmiaResultsPage ol li p,
-#ahmiaResultsPage ol li h4 {
-  /* restrict width for legibility */
-  max-width: 70%;
-}
-#ahmiaResultsPage ol li h4 {
-  font-weight: normal;
-  margin: 0;
-  padding: 0;
-  font-size: 1.6em;
-  line-height: 1em;
-}
-#ahmiaResultsPage ol li h4 a:link {
-  color: #19749b;
-  text-decoration: underline;
-}
-#ahmiaResultsPage ol li h4 a:hover {
-  color: #294957;
-  text-decoration: none;
-}
-#ahmiaResultsPage ol li h4 a:visited {
-  color: #52f;
-  text-decoration: underline;
-}
-#ahmiaResultsPage ol li p {
-  color: rgba(0, 0, 0, 0.9);
-  margin: 0.7em 0 0;
-}
-#ahmiaResultsPage ol li p.metadata {
-  margin: 0.5em 0;
-  color: rgba(0, 0, 0, 0.4);
-}
-#ahmiaResultsPage ol li p.metadata a:link {
-  color: rgba(0, 0, 0, 0.4);
-  text-decoration: underline;
-}
-#ahmiaResultsPage ol li p.metadata a:visited {
-  color: rgba(0, 0, 0, 0.4);
-}
-#ahmiaResultsPage ol li p.metadata a:hover {
-  color: rgba(0, 0, 0, 0.4);
-  text-decoration: none;
-}
-#ahmiaResultsPage ol li p.metadata span.hidden {
-  display: none;
-}
-
-/* Results Page Pager */
-
-#ahmiaResultsPage div.pager {
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
-  padding-top: 1em;
-  padding-bottom: 5em;
-  overflow: hidden;
-}
-#ahmiaResultsPage div.pager a:link {
-  color: #19749b;
-  text-decoration: none;
-}
-#ahmiaResultsPage div.pager a:hover {
-  color: #294957;
-  text-decoration: underline;
-}
-#ahmiaResultsPage div.pager a:visited {
-  color: #52f;
-}
-#ahmiaResultsPage div.pager ul {
-  margin: 0;
-  padding: 0;
-  float: left;
-}
-#ahmiaResultsPage div.pager ul li {
-  font-size: 1.1em;
-  margin: 0 1em 0 0;
-  padding: 0;
-  list-style-type: none;
-  display: inline-block;
-}
-#ahmiaResultsPage div.pager ul li:first-child {
-  margin-right: 2em;
-}
-#ahmiaResultsPage div.pager ul li:last-child {
-  margin-left: 2em;
-}
-#ahmiaResultsPage div.pager ul li.active a:link,
-#ahmiaResultsPage div.pager ul li.active a:hover,
-#ahmiaResultsPage div.pager ul li.active a:visited {
-  color: #000;
-  text-decoration: none;
-}
-#ahmiaResultsPage div.pager ul li.endcap a:link,
-#ahmiaResultsPage div.pager ul li.endcap a:hover,
-#ahmiaResultsPage div.pager ul li.endcap a:visited {
-  text-decoration: underline;
-}
-#ahmiaResultsPage div.pager ul li.limited a:link,
-#ahmiaResultsPage div.pager ul li.limited a:hover,
-#ahmiaResultsPage div.pager ul li.limited a:visited {
-  color: rgba(0, 0, 0, 0.4);
-  text-decoration: none;
-}
-#ahmiaResultsPage div.pager p.footer {
-  margin: 0;
-  padding: 0;
-  font-size: 1.1em;
-  float: right;
-}
-
-/* Disclaimer */
-
-#ahmiaDisclaimer {
-  width: 70%;
-  max-width: 960px;
-  margin: 0 auto 3em;
-  padding-top: 1em;
-}
-#ahmiaDisclaimer h2,
-#ahmiaDisclaimer h3,
-#ahmiaDisclaimer h4 {
-  font-family: sans-serif;
-}
-#ahmiaDisclaimer h2 {
-  font-size: 1.8em;
-}
-#ahmiaDisclaimer h3 {
-  font-size: 1.5em;
-}
-#ahmiaDisclaimer h4 {
-  font-size: 1.3em;
-}
-#ahmiaDisclaimer p {
-  font-size: 1.3em;
-  line-height: 1.8em;
-  text-align: left;
-  margin-bottom: 1em;
-  padding: 0;
-}
-#ahmiaDisclaimer p.end {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  margin-bottom: 2em;
-  padding-bottom: 2em;
-}
-
-/* Add Onion */
-
-#ahmiaAddOnion {
-  width: 70%;
-  max-width: 960px;
+/* Results */
+#ahmiaResultsPage {
+  width: min(100% - 2rem, var(--content));
   margin: 0 auto;
-  padding-top: 1em;
+  padding: 2rem 0 4rem;
 }
-#ahmiaAddOnion p {
-  font-size: 1.3em;
-  line-height: 1.8em;
-  text-align: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding-bottom: 2em;
-  margin-bottom: 2em;
+#resultsFiltersMenuWrapper { min-height: 3.25rem; border-bottom: 1px solid var(--border); }
+#resultsFiltersMenu, #resultsFiltersMenu ul { margin: 0; padding: 0; list-style: none; }
+#resultsFiltersMenu .category { position: relative; display: inline-block; }
+#resultsFiltersMenu .label, #resultsFiltersMenu .label:visited {
+  display: inline-flex;
+  min-height: 2.75rem;
+  padding: .65rem .8rem;
+  color: #38313d;
+  align-items: center;
+  gap: .45rem;
+  text-decoration: none;
 }
-#ahmiaAddOnion input[type=search],
-#ahmiaAddOnion input[type=text] {
-  box-sizing: border-box;
-  color: #000;
-  /* color: @text-on-light-bg-placeholder; */
-  font-size: 1.6em;
-  font-family: sans-serif;
-  line-height: 1.8em;
-  padding-left: 0.5em;
-  text-align: left;
-  min-width: 20em;
-  border: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
+#resultsFiltersMenu .label:hover,
+#resultsFiltersMenu .category:focus-within .label { background: #e8e5ea; }
+#resultsFiltersMenu .label img { width: auto; max-width: .75rem; }
+#resultsFiltersMenu .options {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% - .2rem);
+  left: 0;
+  display: none;
+  width: 10rem;
+  padding: .35rem 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
 }
-#ahmiaAddOnion input[type=submit] {
-  box-sizing: border-box;
-  font-family: sans-serif;
-  display: inline-block;
-  background-color: #c7ff70;
-  color: #000;
-  border: 1px solid #c7ff70;
-  border-top-width: 2px;
-  font-size: 1.6em;
-  line-height: 1.8em;
-  text-align: center;
-  padding: 0 0.8em;
-}
-#ahmiaAddOnion input[type=submit]:hover {
-  color: #294957;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s;
-}
-#ahmiaAddOnion div#ahmiaFormContainer {
+#resultsFiltersMenu .category:hover .options,
+#resultsFiltersMenu .category:focus-within .options { display: block; }
+#resultsFiltersMenu .child a, #resultsFiltersMenu .child a:visited {
   display: block;
-  width: 70%;
-  overflow: visible;
-  margin: -1em auto;
+  padding: .65rem .8rem;
+  color: #352f39;
+  text-decoration: none;
 }
-#ahmiaAddOnion form {
+#resultsFiltersMenu .child a:hover,
+#resultsFiltersMenu .child a:focus-visible { background: #ece9ee; }
+.resultsSubheader, #didYouMean, #noResults { max-width: 54rem; }
+.resultsSubheader p, #didYouMean p { color: var(--muted); }
+#noResults {
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--purple);
+  background: #eee9f1;
+  line-height: 1.7;
+}
+.searchResults { margin: 1rem 0 0; padding: 0; list-style: none; }
+.searchResults .result {
+  max-width: 64rem;
+  margin: 0;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+}
+.searchResults .result[style] {
+  padding: 1.25rem;
+  border: 1px solid rgb(71 64 75 / 14%);
+  border-radius: var(--radius);
+}
+.searchResults .result + .result { margin-top: .25rem; }
+.searchResults h4 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  font-weight: 500;
+}
+.searchResults h4 a { overflow-wrap: anywhere; }
+.searchResults p {
+  max-width: 54rem;
+  margin: .55rem 0 .35rem;
+  color: #3d3940;
+  line-height: 1.6;
+}
+.searchResults cite, .searchResults .lastSeen {
+  color: #3e6d35;
+  font-size: .9rem;
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+.searchResults .selected { background: #efedf1; }
+#ahmiaResultsPage .pager {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+#ahmiaResultsPage .pager ul {
   display: flex;
+  margin: 0;
+  padding: 0;
+  gap: .4rem;
+  flex-wrap: wrap;
+  list-style: none;
+}
+#ahmiaResultsPage .pager a {
+  display: inline-flex;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: .5rem;
+  align-items: center;
   justify-content: center;
 }
-#ahmiaAddOnion input[type="text"] {
-  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
-  margin-right: 0.5em;
-}
 
-/* Blacklist ~ AddService */
-
-#ahmiaBlacklist,
-#ahmiaAddService {
-  width: 70%;
-  max-width: 960px;
+/* Reading and form pages */
+#ahmiaDisclaimer, #ahmiaAboutPage, #ahmiaBlacklist,
+#ahmiaAddService, #ahmiaAddOnion {
+  width: min(100% - 2rem, var(--reading));
   margin: 0 auto;
-  padding-top: 1em;
+  padding: clamp(1.5rem, 4vw, 3rem) 0 4rem;
 }
-#ahmiaBlacklist p,
-#ahmiaAddService p {
-  font-size: 1.3em;
-  line-height: 1.8em;
-  text-align: left;
+#ahmiaDisclaimer p, #ahmiaDisclaimer li, #ahmiaAboutPage p,
+#ahmiaAboutPage li, #ahmiaBlacklist p, #ahmiaAddService p,
+#ahmiaAddOnion p { line-height: 1.75; }
+#ahmiaDisclaimer h3:first-child, #ahmiaAboutPage h1:first-child { margin-top: 0; }
+#ahmiaDisclaimer p.end, #ahmiaBlacklist p.end, #ahmiaAddService p.end,
+#ahmiaAboutPage .aboutAhmia, #ahmiaAboutPage .aboutTeam,
+#ahmiaAboutPage .moreOnAhmia, #ahmiaAboutPage .credits {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
 }
-#ahmiaBlacklist p.end,
-#ahmiaAddService p.end {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  margin-bottom: 2em;
-  padding-bottom: 2em;
+#ahmiaDisclaimer ul, #ahmiaAboutPage ul { padding-left: 1.5rem; }
+#ahmiaFormContainer { max-width: 50rem; margin: 1.25rem auto 3rem; }
+#ahmiaFormContainer input[type="url"], #ahmiaFormContainer input[type="text"],
+#ahmiaFormContainer input[type="search"] { width: 100%; }
+.checkForm { text-align: center; }
+#ahmiaFormContainer .checkForm {
+  color: var(--muted);
+  font-size: .95rem;
+  font-weight: 400;
+  overflow-wrap: anywhere;
 }
-#ahmiaBlacklist input[type=search],
-#ahmiaAddService input[type=search],
-#ahmiaBlacklist input[type=text],
-#ahmiaAddService input[type=text] {
-  box-sizing: border-box;
-  color: #000;
-  /* color: @text-on-light-bg-placeholder; */
-  font-size: 1.6em;
-  font-family: sans-serif;
-  line-height: 1.8em;
-  padding-left: 0.5em;
-  text-align: left;
-  min-width: 20em;
-  border: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9);
-}
-#ahmiaBlacklist input[type=submit],
-#ahmiaAddService input[type=submit] {
-  box-sizing: border-box;
-  font-family: sans-serif;
-  display: inline-block;
-  background-color: #c7ff70;
-  color: #000;
-  border: 1px solid #c7ff70;
-  border-top-width: 2px;
-  font-size: 1.6em;
-  line-height: 1.8em;
-  text-align: center;
-  padding: 0 0.8em;
-}
-#ahmiaBlacklist input[type=submit]:hover,
-#ahmiaAddService input[type=submit]:hover {
-  color: #294957;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s;
-}
-#ahmiaBlacklist div#ahmiaFormContainer,
-#ahmiaAddService div#ahmiaFormContainer {
-  display: block;
-  width: 70%;
-  overflow: visible;
-  margin: 1em auto 7em;
-}
-#ahmiaBlacklist div#ahmiaFormContainer div#flashMessage,
-#ahmiaAddService div#ahmiaFormContainer div#flashMessage {
-  margin-top: 1em;
-}
-#ahmiaBlacklist form,
-#ahmiaAddService form {
-  display: flex;
-  justify-content: center;
-}
-#ahmiaBlacklist input[type="text"],
-#ahmiaAddService input[type="text"] {
-  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.4);
-  margin-right: 0.5em;
-}
-#ahmiaBlacklist h2,
-#ahmiaAddService h2,
-#ahmiaBlacklist h3,
-#ahmiaAddService h3,
-#ahmiaBlacklist h4,
-#ahmiaAddService h4 {
-  font-family: sans-serif;
-}
-#ahmiaBlacklist h2,
-#ahmiaAddService h2 {
-  font-size: 1.8em;
-}
-#ahmiaBlacklist h3,
-#ahmiaAddService h3 {
-  font-size: 1.5em;
-}
-#ahmiaBlacklist h3.checkForm,
-#ahmiaAddService h3.checkForm {
-  text-align: center;
-}
-#ahmiaBlacklist h4,
-#ahmiaAddService h4 {
-  font-size: 1.3em;
-}
-
-/* About Page */
-
-#ahmiaAboutPage {
-  /* elasticize this for legibility */
-  width: 70%;
-  max-width: 960px;
-  margin: 0 auto;
-}
-#ahmiaAboutPage h2,
-#ahmiaAboutPage h3,
-#ahmiaAboutPage h4 {
-  font-family: sans-serif;
-}
-#ahmiaAboutPage h2 {
-  font-size: 1.8em;
-}
-#ahmiaAboutPage h3 {
-  font-size: 1.5em;
-}
-#ahmiaAboutPage h4 {
-  font-size: 1.3em;
-}
-#ahmiaAboutPage p,
-#ahmiaAboutPage li {
-  font-size: 1.3em;
-  line-height: 1.8em;
-}
-#ahmiaAboutPage div.aboutAhmia,
-#ahmiaAboutPage div.aboutTeam,
-#ahmiaAboutPage div.moreOnAhmia,
-#ahmiaAboutPage div.credits {
-  margin: 1em 0;
-  padding: 2em 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-#ahmiaAboutPage div.aboutAhmia h3,
-#ahmiaAboutPage div.aboutTeam h3,
-#ahmiaAboutPage div.moreOnAhmia h3,
-#ahmiaAboutPage div.credits h3 {
-  color: rgba(0, 0, 0, 0.9);
-  margin-top: 0;
-  padding-top: 0;
-}
-#ahmiaAboutPage div.aboutTeam p {
-  margin-top: 1.6em;
-}
-#ahmiaAboutPage div.aboutTeam img.teamPhoto {
-  padding-bottom: 1em;
-  padding-right: 3em;
+.aboutTeam { display: flow-root; }
+.aboutTeam .teamPhoto {
   float: left;
-  width: 140px;
-  height: 140px;
+  width: 8.75rem;
+  height: 8.75rem;
+  margin: 0 1.5rem 1rem 0;
+  border-radius: .5rem;
+  object-fit: cover;
 }
-#ahmiaAboutPage div.moreOnAhmia img.github {
-  height: 1.3em;
+.moreOnAhmia img.github {
   width: 1.3em;
+  height: 1.3em;
+  margin-left: .3em;
+  vertical-align: text-bottom;
 }
-#ahmiaAboutPage div.moreOnAhmia img.github_doc {
-  height: 2.3em;
-  width: 2.3em;
+.moreOnAhmia img.github_doc, .aboutAhmia img.github_doc { width: 2.3em; height: 2.3em; }
+.moreOnAhmia ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: .75rem 1.5rem;
 }
-#ahmiaAboutPage div.moreOnAhmia ul li {
-  display:inline-block;
-  width: 300px;
-  font-size: 1.3em;
+.steps { margin: 0; padding: 0; list-style: none; }
+.steps li, .hs_site { padding: .65rem 0; border-bottom: 1px solid var(--border); }
+.hs_site h3 { margin: 0; font-size: .9rem; font-weight: 400; }
+
+/* Feedback */
+.messages { margin: 1rem 0; padding: 0; list-style: none; }
+.messages li, #flashMessage p, .flashMessage p {
+  margin: .5rem 0;
+  padding: .8rem 1rem;
+  border-left: 4px solid currentColor;
+  border-radius: var(--radius);
+  background: #ece9ee;
+}
+.messages .success, #flashMessage .success, .flashMessage .success {
+  color: var(--success);
+  background: #e8f5eb;
+}
+.messages .warning, #flashMessage .warn, .flashMessage .warn {
+  color: var(--warning);
+  background: #fff5d6;
+}
+.messages .error, #flashMessage .error, .flashMessage .error {
+  color: var(--danger);
+  background: #ffeaed;
+}
+#flashMessage .info, .flashMessage .info { color: #3c3550; background: #eeeaf4; }
+#warning {
+  width: min(100% - 2rem, var(--content));
+  margin: 1rem auto;
+  padding: 1rem;
+  border-left: 4px solid var(--warning);
+  background: #fff5d6;
 }
 
-#ahmiaAboutPage div.credits {
-  border-bottom-color: transparent;
-  margin-bottom: 3em;
-}
-#ahmiaAboutPage div.credits p {
-  color: rgba(0, 0, 0, 0.4);
-  margin-top: 0;
-  text-align: center;
-}
-#ahmiaAboutPage div.credits p a:link,
-#ahmiaAboutPage div.credits p a:visited,
-#ahmiaAboutPage div.credits p a:hover {
-  color: rgba(0, 0, 0, 0.4);
-}
-#ahmiaAboutPage div.credits p a:hover {
-  text-decoration: none;
-}
-#ahmiaAboutPage div.credits ul {
-  list-style-type: none;
-  display: flex;
-  overflow: hidden;
-  justify-content: center;
-}
-#ahmiaAboutPage div.credits ul li {
-  display: inline-block;
-  margin-right: 1em;
-}
-#ahmiaAboutPage div.credits ul li img {
-  border: 0;
-  height: 50px;
-  opacity: 0.9;
-}
-#ahmiaAboutPage div.aboutAhmia img.github_doc {
-  height: 2.3em;
-  width: 2.3em;
-  padding-left: 1em;
-
+@media (max-width: 48rem) {
+  #ahmiaHeader .maxiContent {
+    padding: .85rem 1rem;
+    gap: .85rem;
+    flex-wrap: wrap;
+  }
+  #ahmiaHeader .ahmia-header-logo { width: 100%; }
+  .ahmia-header-logo img { width: 7.5rem; }
+  #ahmiaHeader .searchForm { width: 100%; max-width: none; flex-basis: 100%; }
+  #ahmiaHeader nav { display: block; padding: .25rem .5rem; }
+  #ahmiaHeader ul, #ahmiaHeader ul.secondary { justify-content: flex-start; }
+  #ahmiaHeader li a, #ahmiaHeader li a:visited { padding: .6rem; }
+  #ahmiaMainContent {
+    margin: 0 auto;
+    padding: clamp(3.5rem, 10vh, 6rem) 0 2rem;
+  }
+  .ahmia-home-logo { margin-bottom: 1.5rem; }
+  #ahmiaDescriptionArea { margin-top: 1.5rem; padding-top: 1.25rem; }
+  .searchResults .result { padding: 1rem 0; }
+  .searchResults .result[style] { padding: 1rem; }
 }
 
-.messages .error{
-  color: red;
+@media (max-width: 34rem) {
+  .searchForm, #ahmiaSearchArea form, #ahmiaAddService form,
+  #ahmiaBlacklist form, #ahmiaAddOnion form { flex-direction: column; }
+  input[type="submit"], button { width: 100%; }
+  #ahmiaHeader.mini nav { display: flex; overflow-x: auto; scrollbar-width: thin; }
+  #ahmiaHeader.mini ul { flex-wrap: nowrap; }
+  #ahmiaHeader.mini li a { white-space: nowrap; }
+  #ahmiaMainContent { width: min(100% - 1.5rem, 52rem); }
+  #ahmiaDescriptionArea p { font-size: .925rem; }
+  #ahmiaResultsPage, #ahmiaDisclaimer, #ahmiaAboutPage,
+  #ahmiaBlacklist, #ahmiaAddService, #ahmiaAddOnion {
+    width: min(100% - 1.5rem, var(--reading));
+  }
+  .aboutTeam .teamPhoto { float: none; display: block; margin: 0 0 1rem; }
 }
 
-.messages .warning{
-  color: orange;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
-.messages .success{
-  color: dodgerblue;
+@media print {
+  #ahmiaHeader nav, #ahmiaHeader .searchForm, #imageOverlay { display: none; }
+  body, body.main { background: #fff; color: #000; }
+  #ahmiaMainContent { width: 100%; margin: 0; padding: 1rem; color: #000; }
+  #ahmiaDescriptionArea p { color: #000; text-shadow: none; }
 }
 
 /* Ahmia logo */
