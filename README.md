@@ -125,6 +125,18 @@ systemctl cat nginx
 40 5 */3 * * cd /usr/local/lib/ahmia-site && venv/bin/python manage.py deleteonions >> weeklydelete.log 2>&1
 ```
 
+# Tests
+
+With the dependencies installed and the filter map files configured at the
+paths in `ahmia/settings.py`, run:
+
+```sh
+python manage.py test
+```
+
+The redirect tests start a local Django HTTP server and use a temporary SQLite
+test database. They do not require a running Elasticsearch service.
+
 # License
 
 Ahmia is licensed under the [3-clause BSD license](

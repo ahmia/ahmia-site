@@ -277,6 +277,9 @@ def remove_non_ascii(text):
 
 def xss_safe(redirect_url):
     """ Validate that redirect URL is cross-site scripting safe """
+    # Browsers can interpret backslashes as authority/path separators.
+    if "\\" in redirect_url:
+        return False
     url = remove_non_ascii(redirect_url) # Remove special chars
     url = url.strip().replace(" ", "") # Remove empty spaces and newlines
     if not url.startswith('http'):

@@ -29,7 +29,7 @@ def extract_domain_from_url(url):
 def allowed_url(url):
     """Checks if the URL is allowed based on its domain."""
     domain = extract_domain_from_url(url)
-    if is_valid_onion(domain) or domain in settings.HELP_DOMAINS:
+    if domain and (is_valid_onion(domain) or domain in settings.HELP_DOMAINS):
         return True
     return False
 
