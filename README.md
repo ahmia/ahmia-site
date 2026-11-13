@@ -125,6 +125,27 @@ systemctl cat nginx
 40 5 */3 * * cd /usr/local/lib/ahmia-site && venv/bin/python manage.py deleteonions >> weeklydelete.log 2>&1
 ```
 
+# Submitted services as JSON
+
+The public list of submitted onion services is available in JSON as well as
+HTML. Request `/add/onionsadded/?format=json` to receive an object such as:
+
+```json
+{"services": ["http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/"]}
+```
+
+The `services` array contains the same deduplicated service URLs as the HTML
+list, sorted alphabetically. As with the HTML list, paths are removed and the
+URLs use `http://`. The list reflects submitted URLs, not necessarily indexed
+or reachable services, and is periodically cleared by the `deleteonions`
+management command. An empty list is returned as `{"services": []}`.
+
+# Tests
+
+After installing dependencies and configuring the filter maps referenced in
+`ahmia/settings.py`, run `python manage.py test`. The submitted-service tests
+use a local Django HTTP server and SQLite; Elasticsearch is not required.
+
 # License
 
 Ahmia is licensed under the [3-clause BSD license](

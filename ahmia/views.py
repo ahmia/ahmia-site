@@ -10,7 +10,7 @@ from elasticsearch import Elasticsearch
 from django.conf import settings
 from django.template import loader
 from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, FormView, ListView
@@ -135,6 +135,11 @@ class AddListView(TokenMixin, ListView):
     model = HiddenWebsite
     template_name = "add_list.html"
     context_object_name = "hidden_websites"
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get("format") == "json":
+            return JsonResponse({"services": sorted(self.get_queryset())})
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         """ New onions """
